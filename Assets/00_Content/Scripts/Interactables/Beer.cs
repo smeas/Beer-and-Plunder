@@ -1,21 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Interactables
-{
-	public class Beer : MonoBehaviour, IInteractable
-	{
-		[SerializeField]
-		private BeerData beerData;
+namespace Interactables {
+	public class Beer : PickUp, IUseable {
 
-		public void Interact()
+		[SerializeField] private BeerData beerData;
+		
+		public void Use()
 		{
-			throw new System.NotImplementedException();
-		}
-		public void CancelInteraction()
-		{
-			throw new System.NotImplementedException();
+			//Drink it? Temporary fighting buff lulz xD
+
+			//Give to customer
+
+			Debug.Log("Using item beer...");
 		}
 	}
 }

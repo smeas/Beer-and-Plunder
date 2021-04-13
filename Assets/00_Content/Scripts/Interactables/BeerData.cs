@@ -5,13 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Interactables
-{
+namespace Interactables {
+
 	[CreateAssetMenu(fileName = "Beer", menuName = "Beer")]
-	public class BeerData : ScriptableObject
-	{
-		public BeerType Type { get; set; }
-		public int Cost { get; set; }
-		public GameObject Model { get; set; }
+	public class BeerData : ScriptableObject {
+		public BeerType type;
+		public int cost;
 	}
 }
