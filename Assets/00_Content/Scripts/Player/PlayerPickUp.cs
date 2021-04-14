@@ -12,6 +12,7 @@ namespace Player {
 
 		//Should probably be displayed on a canvas instead.
 		[SerializeField] private GameObject highlight;
+		[SerializeField] private LayerMask pickUpLayer;
 
 		private List<PickUp> pickUps;
 		private PickUp closestPickUp;
@@ -24,7 +25,20 @@ namespace Player {
 			sphereCollider = GetComponent<SphereCollider>();
 		}
 
+		private void FixedUpdate() {
+
+			if (pickUps.Count <= 0) {
+
+				HighlightPickUp(null);
+				return;
+			}
+
+			closestPickUp = pickUps.OrderBy(x => (x.transform.position - transform.position).sqrMagnitude).First();
+			HighlightPickUp(closestPickUp);
+		}
+
 		public void PickUpClosestItem() {
+
 			HighlightPickUp(null);
 
 			if (pickUps.Count < 1 || closestPickUp == null)
@@ -53,28 +67,17 @@ namespace Player {
 
 		private void OnTriggerEnter(Collider other) {
 
-			if (other.gameObject.CompareTag("PickUp") && pickedUpItem == null) {
+			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
 
 				pickUps.Add(other.gameObject.GetComponent<PickUp>());
-				closestPickUp = pickUps.OrderBy(x => (x.transform.position - transform.position).sqrMagnitude).First();
-				HighlightPickUp(closestPickUp);
 			}
 		}
 
 		private void OnTriggerExit(Collider other) {
 
-			if (other.gameObject.CompareTag("PickUp") && pickedUpItem == null) {
+			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
 
 				pickUps.Remove(other.gameObject.GetComponent<PickUp>());
-
-				if (pickUps.Count < 1) {
-
-					HighlightPickUp(null);
-					return;
-				}
-
-				closestPickUp = pickUps.OrderBy(x => (x.transform.position - transform.position).sqrMagnitude).First();
-				HighlightPickUp(closestPickUp);
 			}
 		}
 

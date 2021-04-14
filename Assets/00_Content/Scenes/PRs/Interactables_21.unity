@@ -578,6 +578,10 @@ PrefabInstance:
       propertyPath: highlight
       value: 
       objectReference: {fileID: 249539305}
+    - target: {fileID: 1635980267, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
+      propertyPath: pickUpLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 2187889529978375777, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
       propertyPath: m_Name
       value: Player
@@ -657,6 +661,10 @@ PrefabInstance:
     - target: {fileID: 8117381662335087885, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
       propertyPath: m_Name
       value: PickUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117381662335087885, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab1ae710871727d469c9cefe791c870c, type: 3}

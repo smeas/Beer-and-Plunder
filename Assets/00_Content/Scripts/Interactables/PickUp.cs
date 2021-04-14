@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Interactables {
 
-	public class PickUp : MonoBehaviour, IPickUp {
+	public class PickUp : MonoBehaviour {
 
 		[SerializeField] Transform itemGrabTransform;
 
@@ -18,7 +18,7 @@ namespace Interactables {
 
 		public void PickUpItem(Transform playerGrabTransform) {
 			transform.SetParent(playerGrabTransform);
-			var offset = transform.position - itemGrabTransform.position;
+			Vector3 offset = transform.position - itemGrabTransform.position;
 			transform.localPosition = offset;
 			transform.localRotation = Quaternion.identity;
 		}

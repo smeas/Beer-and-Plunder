@@ -12,8 +12,8 @@ namespace Interactables {
 		[SerializeField] private Transform beerSpawnpoint;
 
 		public override void Interact() {
-			if (beerSpawnpoint == null)
-			{
+
+			if (beerSpawnpoint == null) {
 				Debug.LogError("No spawnpoint for beer on beerTap");
 				return;
 			}

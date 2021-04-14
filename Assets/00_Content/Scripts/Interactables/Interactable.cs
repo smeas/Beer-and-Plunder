@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Interactables {
-	public class Interactable : MonoBehaviour, IInteractable {
+	public class Interactable : MonoBehaviour {
 
 		public virtual void CancelInteraction() {
 		}
