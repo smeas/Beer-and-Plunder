@@ -16,21 +16,24 @@ namespace Player {
 		private List<PickUp> pickUps;
 		private PickUp closestPickUp;
 		private PickUp pickedUpItem;
+		private SphereCollider sphereCollider;
 
 		private void Start() {
 
 			pickUps = new List<PickUp>();
+			sphereCollider = GetComponent<SphereCollider>();
 		}
 
 		public void PickUpClosestItem() {
 			HighlightPickUp(null);
 
-			if (pickUps.Count < 1)
+			if (pickUps.Count < 1 || closestPickUp == null)
 				return;
 
 			closestPickUp.PickUpItem(playerGrabTransform);
-			pickUps.Remove(closestPickUp);
 			pickedUpItem = closestPickUp;
+			pickUps.Clear();
+			sphereCollider.enabled = false;
 		}
 
 		public void DropItem() {
@@ -40,6 +43,7 @@ namespace Player {
 
 			pickedUpItem.DropItem();
 			pickedUpItem = null;
+			sphereCollider.enabled = true;
 		}
 
 		public void UseItem() {
@@ -69,7 +73,7 @@ namespace Player {
 					return;
 				}
 
-				closestPickUp = pickUps.OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).First();
+				closestPickUp = pickUps.OrderBy(x => (x.transform.position - transform.position).sqrMagnitude).First();
 				HighlightPickUp(closestPickUp);
 			}
 		}
