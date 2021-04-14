@@ -52,7 +52,7 @@ namespace Player {
 			if (other.gameObject.CompareTag("PickUp") && pickedUpItem == null) {
 
 				pickUps.Add(other.gameObject.GetComponent<PickUp>());
-				closestPickUp = pickUps.OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).First();
+				closestPickUp = pickUps.OrderBy(x => (x.transform.position - transform.position).sqrMagnitude).First();
 				HighlightPickUp(closestPickUp);
 			}
 		}
@@ -87,4 +87,3 @@ namespace Player {
 		}
 	}
 }
-
