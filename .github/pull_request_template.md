@@ -1,11 +1,11 @@
-Fixes #
+Closes #
 
 **Description**  
 A description of the changes made.
 
 **List of changes**  
-- [ ] Change
-- [ ] Another change
+- Change
+- Another change
 
 **Additional context**  
 Additional context/images.
