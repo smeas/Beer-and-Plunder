@@ -1,7 +1,7 @@
 //
 // Author: Jonatan Johansson
 // Created: 2018/19-XX-XX
-// Updated: 2020-11-17
+// Updated: 2021-04-14
 //
 
 using System;
@@ -46,6 +46,11 @@ public struct SceneReference : ISerializationCallbackReceiver {
 		#endif
 		}
 	}
+
+	public void Load() => SceneManager.LoadScene(BuildIndex);
+	public void Load(LoadSceneMode mode) => SceneManager.LoadScene(BuildIndex, mode);
+	public AsyncOperation LoadAsync() => SceneManager.LoadSceneAsync(BuildIndex);
+	public AsyncOperation LoadAsync(LoadSceneMode mode) => SceneManager.LoadSceneAsync(BuildIndex, mode);
 
 	public void OnBeforeSerialize() {
 	#if UNITY_EDITOR
