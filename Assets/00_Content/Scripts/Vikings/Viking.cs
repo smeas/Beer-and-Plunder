@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using ScriptableObjects;
+using UnityEngine;
 
 namespace Vikings {
 	public delegate void VikingLeaving(Viking sender);
 
 	public class Viking : MonoBehaviour {
+		[SerializeField] private VikingData vikingData;
+
 		private VikingState state;
 		private int desires;
 
@@ -13,7 +16,7 @@ namespace Vikings {
 		private void Start() {
 			state = new PassiveVikingState(this);
 
-			Stats = new VikingStats();
+			Stats = new VikingStats(vikingData);
 			desires = 2;
 		}
 

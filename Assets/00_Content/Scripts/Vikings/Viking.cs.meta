@@ -1,3 +1,12 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 2bcbdfb71e95467c96689f074b1d9229
-timeCreated: 1618303664
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,22 +1,23 @@
-﻿using UnityEngine;
+﻿using ScriptableObjects;
+using UnityEngine;
 
 namespace Vikings {
 	public class VikingStats {
-		private float moodDeclineRate = 10;
+		private VikingData data;
 
 		private float mood;
 		public float Mood => mood;
 
-		public VikingStats() {
-			mood = 100;
+		public VikingStats(VikingData data) {
+			mood = data.startMood;
 		}
 
 		public void Decline() {
-			mood -= moodDeclineRate * Time.deltaTime;
+			mood -= data.moodDeclineRate * Time.deltaTime;
 		}
 
 		public void Reset() {
-			mood = 100;
+			mood = data.startMood;
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Vikings {
+﻿namespace Vikings {
 	public class DesiringVikingState : VikingState {
 		public DesiringVikingState(Viking viking) : base(viking) {
 		}
