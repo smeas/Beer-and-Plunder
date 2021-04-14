@@ -9,6 +9,7 @@ namespace Vikings {
 		public float Mood => mood;
 
 		public VikingStats(VikingData data) {
+			this.data = data;
 			mood = data.startMood;
 		}
 
