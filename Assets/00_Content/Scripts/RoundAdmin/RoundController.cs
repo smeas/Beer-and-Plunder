@@ -19,9 +19,9 @@ namespace Rounds {
 
 		private void Start() {
 
-			tavern.Bankrupt += OnTavernBankrupt;
+			tavern.onBankrupcy += HandleOnTavernBankrupt;
 
-			tavern.Destroyed += TavernDestroyed;
+			tavern.onDestroyed += HandleOnTavernDestroyed;
 
 			SetUpWaves();
 
@@ -55,11 +55,11 @@ namespace Rounds {
 		private void SendNextWave() { //Sends to vikingManager
 		}
 
-		private void TavernDestroyed() {
+		private void HandleOnTavernDestroyed() {
 			throw new System.NotImplementedException();
 		}
 
-		private void OnTavernBankrupt() {
+		private void HandleOnTavernBankrupt() {
 			throw new System.NotImplementedException();
 		}
 	}
