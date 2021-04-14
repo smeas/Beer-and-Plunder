@@ -9,30 +9,18 @@ namespace Interactables {
 
 	public class PickUp : MonoBehaviour, IPickUp {
 
-		[SerializeField]
-		Transform itemGrabTransform;
+		[SerializeField] Transform itemGrabTransform;
 
 		public void DropItem() {
-
-			if (itemGrabTransform == null) {
-				transform.SetParent(null);
-				return;
-			}
-
-			itemGrabTransform.SetParent(null);
+			transform.SetParent(null);
+			transform.rotation = Quaternion.identity;
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
-
-			//TODO - Move to players hands
-
-			if (itemGrabTransform == null) {
-				Debug.Log("No grabPoint set for item, using default position");
-				transform.SetParent(playerGrabTransform);
-				return;
-			}
-
-			itemGrabTransform.SetParent(playerGrabTransform);
+			transform.SetParent(playerGrabTransform);
+			var offset = transform.position - itemGrabTransform.position;
+			transform.localPosition = offset;
+			transform.localRotation = Quaternion.identity;
 		}
 	}
 }

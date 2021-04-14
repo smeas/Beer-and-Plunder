@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Interactables 
-{
+namespace Interactables {
 	public interface IUseable {
 
 		void Use();

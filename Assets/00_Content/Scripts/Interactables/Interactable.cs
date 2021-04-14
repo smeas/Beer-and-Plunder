@@ -8,15 +8,9 @@ using UnityEngine;
 namespace Interactables {
 	public class Interactable : MonoBehaviour, IInteractable {
 
-		public Action onInteraction;
-		public Action onInteractionCancelled;
-
-		public void CancelInteraction() {
-			onInteractionCancelled?.Invoke();
+		public virtual void CancelInteraction() {
 		}
-
-		public void Interact() {
-			onInteraction?.Invoke();
+		public virtual void Interact() {
 		}
 	}
 }

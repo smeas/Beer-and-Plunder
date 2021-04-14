@@ -8,8 +8,7 @@ namespace Interactables {
 
 		[SerializeField] private BeerData beerData;
 		
-		public void Use()
-		{
+		public void Use() {
 			//Drink it? Temporary fighting buff lulz xD
 
 			//Give to customer
