@@ -28,8 +28,6 @@ namespace Player {
 		private void FixedUpdate() {
 
 			if (pickUps.Count <= 0) {
-
-				HighlightPickUp(null);
 				return;
 			}
 
@@ -78,6 +76,10 @@ namespace Player {
 			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
 
 				pickUps.Remove(other.gameObject.GetComponent<PickUp>());
+
+				if (pickUps.Count <= 0) {
+					HighlightPickUp(null);
+				}
 			}
 		}
 
