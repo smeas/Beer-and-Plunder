@@ -6,33 +6,32 @@ using UnityEngine;
 namespace Taverns {
 	public class Tavern : MonoBehaviour {
 
-		public event Action Bankrupt;
-		public event Action Destroyed;
+		[SerializeField] private int maxSittingGuests;
+		[SerializeField] private float maxHealth = 100;
+		[SerializeField] private float startingHealth = 100;
+		[SerializeField] private float startingMoney = 50;
+		[SerializeField] private float maxMoney = 100;
 
 		private bool IsBankrupt => Money <= 0;
 		private bool IsDestroyed => Health <= 0;
 
-		[SerializeField] private int maxSittingGuests;
-
 		private int sittingGuests;
+		private float health;
+		private float money;
+
+		public event Action Bankrupt;
+		public event Action Destroyed;
+
 		public int SittingGuests {
 			get => sittingGuests;
 			set { sittingGuests = Mathf.Clamp(value, 0, maxSittingGuests); }
 		}
 
-		[SerializeField] private float maxHealth = 100;
-		[SerializeField] private float startingHealth = 100;
-
-		private float health;
 		public float Health {
 			get => health;
 			set { health = Mathf.Round(Mathf.Clamp(value, -1, maxHealth)); }
 		}
 
-		[SerializeField] private float startingMoney = 50;
-		[SerializeField] private float maxMoney = 100;
-
-		private float money;
 		public float Money {
 			get => money;
 			set => money = Mathf.Round(Mathf.Clamp(value, -1, maxMoney));
