@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Taverns;
 
-namespace Rounds
-{
-    public class RoundController : MonoBehaviour
-    {
+namespace Rounds {
+	public class RoundController : MonoBehaviour {
 		[SerializeField] private Tavern tavern;
 		[SerializeField] private GameObject vikingManager;
 
@@ -46,7 +44,7 @@ namespace Rounds
 		private void CheckWave() {
 			timeSinceWave += Time.deltaTime;
 
-			if(timeSinceWave > timeBetweenWave) {
+			if (timeSinceWave > timeBetweenWave) {
 
 				//send the object on the list to VikingManager here.
 

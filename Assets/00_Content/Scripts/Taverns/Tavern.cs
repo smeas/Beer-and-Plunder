@@ -28,7 +28,7 @@ namespace Taverns {
 			get => health;
 			set { health = Mathf.Round(Mathf.Clamp(value, -1, maxHealth)); }
 		}
-		
+
 		[SerializeField] private float startingMoney = 50;
 		[SerializeField] private float maxMoney = 100;
 
@@ -44,19 +44,20 @@ namespace Taverns {
 			SittingGuests = 0;
 		}
 
-		public void EarnsMoney(float moneyEarned) {   
+		public void EarnsMoney(float moneyEarned) {
 			Money += moneyEarned;
 		}
 
-		public void SpendsMoney(float moneySpent) {	Money -= moneySpent;
-			if(IsBankrupt)
-			{ Debug.Log("game over, you are bankrupt!");
+		public void SpendsMoney(float moneySpent) {
+			Money -= moneySpent;
+			if (IsBankrupt) {
+				Debug.Log("game over, you are bankrupt!");
 
 				Bankrupt?.Invoke();
 			}
 		}
 
-		public void TakesDamage(float damage) {	
+		public void TakesDamage(float damage) {
 			Health -= damage;
 
 			if (IsDestroyed) {
@@ -66,7 +67,7 @@ namespace Taverns {
 			}
 		}
 
-		public void RepairsDamage(float repair) {	
+		public void RepairsDamage(float repair) {
 			Health += repair;
 		}
 
