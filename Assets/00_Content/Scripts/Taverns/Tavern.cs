@@ -15,32 +15,25 @@ namespace Taverns {
 		private bool IsBankrupt => Money <= 0;
 		private bool IsDestroyed => Health <= 0;
 
-		private int sittingGuests;
 		private float health;
 		private float money;
 
 		public event Action Bankrupt;
 		public event Action Destroyed;
 
-		public int SittingGuests {
-			get => sittingGuests;
-			set { sittingGuests = Mathf.Clamp(value, 0, maxSittingGuests); }
-		}
-
 		public float Health {
 			get => health;
-			set { health = Mathf.Round(Mathf.Clamp(value, -1, maxHealth)); }
+			set { health = Mathf.Round(Mathf.Clamp(value, 0, maxHealth)); }
 		}
 
 		public float Money {
 			get => money;
-			set => money = Mathf.Round(Mathf.Clamp(value, -1, maxMoney));
+			set => money = Mathf.Round(Mathf.Clamp(value, 0, maxMoney));
 		}
 
 		void Start() {
 			Health = startingHealth;
 			Money = startingMoney;
-			SittingGuests = 0;
 		}
 
 		public void EarnsMoney(float moneyEarned) {
@@ -68,14 +61,6 @@ namespace Taverns {
 
 		public void RepairsDamage(float repair) {
 			Health += repair;
-		}
-
-		public void GuestSitsDown() {
-			SittingGuests++;
-		}
-
-		public void GuestStandsUp() {
-			SittingGuests--;
 		}
 	}
 }
