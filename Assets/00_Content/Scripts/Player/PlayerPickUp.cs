@@ -19,6 +19,7 @@ namespace Player {
 		private PickUp pickedUpItem;
 		private SphereCollider sphereCollider;
 		private GameObject highlight;
+		private bool isUsingItem;
 
 		private void Start() {
 
@@ -57,19 +58,30 @@ namespace Player {
 			if (pickedUpItem == null)
 				return;
 
+			if (isUsingItem) {
+				if (pickedUpItem is IUseable usable)
+					usable.EndUse();
+
+				isUsingItem = false;
+			}
+
 			pickedUpItem.DropItem();
 			pickedUpItem = null;
 			sphereCollider.enabled = true;
 		}
 
 		public void UseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable usable)
+			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
 				usable.Use(playerRoot);
+				isUsingItem = true;
+			}
 		}
 
 		public void EndUseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable usable)
+			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
 				usable.EndUse();
+				isUsingItem = false;
+			}
 		}
 
 		private void OnTriggerEnter(Collider other) {
