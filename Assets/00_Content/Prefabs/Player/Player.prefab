@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807718990}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.47, y: 0, z: 0.427}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4223223547760060935}
@@ -274,7 +274,19 @@ MonoBehaviour:
         m_CallState: 2
   onUse:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1635980267}
+        m_TargetAssemblyTypeName: Player.PlayerPickUp, Assembly-CSharp
+        m_MethodName: UseItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPickup:
     m_PersistentCalls:
       m_Calls:
@@ -429,8 +441,8 @@ GameObject:
   - component: {fileID: 4223223547760060935}
   - component: {fileID: 3382940680453500590}
   - component: {fileID: 1635980267}
-  m_Layer: 0
-  m_Name: PickUpRange
+  m_Layer: 6
+  m_Name: PickUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,3 +490,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGrabTransform: {fileID: 807718991}
   highlight: {fileID: 0}
+  pickUpLayer:
+    serializedVersion: 2
+    m_Bits: 64

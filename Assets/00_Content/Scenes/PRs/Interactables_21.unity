@@ -566,22 +566,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 807718991, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 807718991, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.427
-      objectReference: {fileID: 0}
     - target: {fileID: 1635980267, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
       propertyPath: highlight
       value: 
       objectReference: {fileID: 249539305}
-    - target: {fileID: 1635980267, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: pickUpLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 2187889529978375777, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
       propertyPath: m_Name
       value: Player
@@ -630,55 +618,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1635980267}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UseItem
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Player.PlayerPickUp, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2187889529978375782, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: onUse.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 8117381662335087885, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: m_Name
-      value: PickUp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8117381662335087885, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
---- !u!114 &1635980267 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1635980267, guid: ab1ae710871727d469c9cefe791c870c, type: 3}
-  m_PrefabInstance: {fileID: 1308422230}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ff1f26823dff341928c957f504308d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1686472591
 PrefabInstance:
   m_ObjectHideFlags: 0
