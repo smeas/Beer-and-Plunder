@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bcbdfb71e95467c96689f074b1d9229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
