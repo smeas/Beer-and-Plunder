@@ -32,6 +32,7 @@ namespace Player {
 
 			Vector3 movement = (forward * moveInput.y + right * moveInput.x) * (walkingSpeed * Time.deltaTime);
 			rigidbody.MovePosition(transform.position + movement);
+			transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
 		}
 
 		private (Vector3 forward, Vector3 right) GetCameraRelativeMovementDirections() {
