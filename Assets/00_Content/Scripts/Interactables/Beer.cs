@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Interactables {
@@ -8,12 +5,14 @@ namespace Interactables {
 
 		[SerializeField] private BeerData beerData;
 		
-		public void Use() {
+		public void Use(GameObject user) {
 			//Drink it? Temporary fighting buff lulz xD
 
 			//Give to customer
 
 			Debug.Log("Using item beer...");
 		}
+
+		public void EndUse() { }
 	}
 }

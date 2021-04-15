@@ -1,28 +1,33 @@
-using Interactables;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using Interactables;
+using UnityEngine;
 
 namespace Player {
 
 	public class PlayerPickUp : MonoBehaviour {
 
 		[SerializeField] private Transform playerGrabTransform;
+		[SerializeField] private GameObject playerRoot;
 
 		//Should probably be displayed on a canvas instead.
-		[SerializeField] private GameObject highlight;
+		[SerializeField] private GameObject highlightPrefab;
 		[SerializeField] private LayerMask pickUpLayer;
 
 		private List<PickUp> pickUps;
 		private PickUp closestPickUp;
 		private PickUp pickedUpItem;
 		private SphereCollider sphereCollider;
+		private GameObject highlight;
+		private bool isUsingItem;
 
 		private void Start() {
 
 			pickUps = new List<PickUp>();
 			sphereCollider = GetComponent<SphereCollider>();
+
+			highlight = Instantiate(highlightPrefab);
+			highlight.SetActive(false);
 		}
 
 		private void FixedUpdate() {
@@ -53,21 +58,37 @@ namespace Player {
 			if (pickedUpItem == null)
 				return;
 
+			if (isUsingItem) {
+				if (pickedUpItem is IUseable usable)
+					usable.EndUse();
+
+				isUsingItem = false;
+			}
+
 			pickedUpItem.DropItem();
 			pickedUpItem = null;
 			sphereCollider.enabled = true;
 		}
 
 		public void UseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable)
-				Debug.Log("Using item...");
+			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
+				usable.Use(playerRoot);
+				isUsingItem = true;
+			}
+		}
+
+		public void EndUseItem() {
+			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
+				usable.EndUse();
+				isUsingItem = false;
+			}
 		}
 
 		private void OnTriggerEnter(Collider other) {
 
 			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
 
-				pickUps.Add(other.gameObject.GetComponent<PickUp>());
+				pickUps.Add(other.attachedRigidbody.GetComponent<PickUp>());
 			}
 		}
 
@@ -75,7 +96,7 @@ namespace Player {
 
 			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
 
-				pickUps.Remove(other.gameObject.GetComponent<PickUp>());
+				pickUps.Remove(other.attachedRigidbody.GetComponent<PickUp>());
 
 				if (pickUps.Count <= 0) {
 					HighlightPickUp(null);
