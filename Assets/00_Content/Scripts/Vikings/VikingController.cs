@@ -1,16 +1,18 @@
 ﻿using System;
+using Rounds;
 using UnityEngine;
 
 namespace Vikings {
 	public class VikingController : MonoBehaviour {
 		[SerializeField] private Viking vikingPrefab;
 		[SerializeField] private Transform[] spawnPoints;
-		[SerializeField] private float spawnDelay = 2.5f;
 
 		private Viking[] spawnedVikings;
 		private float spawnTimer;
 
 		public bool CanSpawn { get; set; } = true;
+		public float SpawnDelay { get; set; } = 1f;
+		public VikingScaling StatScaling { get; set; } = new VikingScaling();
 
 		private void Start() {
 			spawnedVikings = new Viking[spawnPoints.Length];
@@ -23,7 +25,7 @@ namespace Vikings {
 
 			if (spawnTimer <= 0) {
 				SpawnViking();
-				spawnTimer = spawnDelay;
+				spawnTimer = SpawnDelay;
 			}
 		}
 
@@ -34,7 +36,7 @@ namespace Vikings {
 
 			Vector3 position = spawnPoints[index].position;
 			Viking viking = Instantiate(vikingPrefab, position, Quaternion.identity, transform);
-
+			viking.StatScaling = StatScaling;
 			spawnedVikings[index] = viking;
 
 			viking.LeaveTavern += OnLeaveTavern;

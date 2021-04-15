@@ -1,4 +1,5 @@
-﻿using ScriptableObjects;
+﻿using Rounds;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Vikings {
@@ -11,12 +12,15 @@ namespace Vikings {
 		private int desires;
 
 		public VikingStats Stats { get; private set; }
+		public VikingScaling StatScaling { get; set; }
 		public event VikingLeaving LeaveTavern;
 
 		private void Start() {
-			state = new PassiveVikingState(this);
+			// StatScaling is normally provided by the viking manager
+			StatScaling ??= new VikingScaling();
 
-			Stats = new VikingStats(vikingData);
+			state = new PassiveVikingState(this);
+			Stats = new VikingStats(vikingData, StatScaling);
 			desires = 2;
 		}
 
