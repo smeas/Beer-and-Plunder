@@ -1,14 +1,14 @@
-using Interactables;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using Interactables;
+using UnityEngine;
 
 namespace Player {
 
 	public class PlayerPickUp : MonoBehaviour {
 
 		[SerializeField] private Transform playerGrabTransform;
+		[SerializeField] private GameObject playerRoot;
 
 		//Should probably be displayed on a canvas instead.
 		[SerializeField] private GameObject highlight;
@@ -59,8 +59,13 @@ namespace Player {
 		}
 
 		public void UseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable)
-				Debug.Log("Using item...");
+			if (pickedUpItem != null && pickedUpItem is IUseable usable)
+				usable.Use(playerRoot);
+		}
+
+		public void EndUseItem() {
+			if (pickedUpItem != null && pickedUpItem is IUseable usable)
+				usable.EndUse();
 		}
 
 		private void OnTriggerEnter(Collider other) {
