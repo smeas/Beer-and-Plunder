@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
   m_Name: NormalViking
   m_EditorClassIdentifier: 
-  moodDeclineRate: 5
-  startMood: 100
+  startMood: 65
+  moodDeclineRate: 10
