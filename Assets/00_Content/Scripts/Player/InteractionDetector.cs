@@ -94,12 +94,12 @@ namespace Player {
 		}
 
 		private void HighlightPickUp(PickUp pickUp) {
-			pickUpHighlight.transform.position = pickUp.transform.position + Vector3.up;
+			pickUpHighlight.transform.position = pickUp.transform.position + Vector3.up * 2;
 			pickUpHighlight.SetActive(true);
 		}
 
 		private void HighlightInteractable(Interactable interactable) {
-			interactableHighlight.transform.position = interactable.transform.position + Vector3.up;
+			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 2;
 			interactableHighlight.SetActive(true);
 		}
 

@@ -16,7 +16,7 @@ namespace Vikings {
 
 		public override VikingState Enter() {
 			highlight = Object.Instantiate(viking.beingSeatedHighlightPrefab, viking.transform);
-			highlight.transform.localPosition = Vector3.up;
+			highlight.transform.localPosition = Vector3.up * 2;
 
 			return this;
 		}
