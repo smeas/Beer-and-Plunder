@@ -1,5 +1,7 @@
+using System;
 using Player;
 using UnityEngine;
+using TMPro;
 using Taverns;
 using Vikings;
 
@@ -8,6 +10,10 @@ namespace Rounds {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private Tavern tavern;
 		[SerializeField] private VikingController vikingController;
+		[SerializeField] private GameObject scoreCardUI;
+		[SerializeField] private TextMeshProUGUI roundNumberText;
+		[SerializeField] private TextMeshProUGUI complimentText;
+		
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 
@@ -15,8 +21,8 @@ namespace Rounds {
 		private int currentRound = 1;
 
 		private void Start() {
-			tavern.onBankrupcy += HandleOnTavernBankrupt;
-			tavern.onDestroyed += HandleOnTavernDestroyed;
+			tavern.OnBankrupcy += HandleOnTavernBankrupt;
+			tavern.OnDestroyed += HandleOnTavernDestroyed;
 
 			roundTimer = roundDuration;
 			SendNextDifficulty();
@@ -25,11 +31,19 @@ namespace Rounds {
 		private void Update() {
 			roundTimer = Mathf.Max(0, roundTimer - Time.deltaTime);
 
-			if (roundTimer <= 0) {
-				currentRound++;
-				SendNextDifficulty();
-				roundTimer = roundDuration;
-			}
+			if (roundTimer <= 0) RoundWon();
+		}
+
+		private void RoundWon() {
+
+			Debug.Log("RoundController has gone into RoundOver-funktion");
+			Debug.Log(currentRound);
+
+			SetUpNextRound();
+
+			SetUpScoreCard();
+
+
 		}
 
 		private void SendNextDifficulty() {
@@ -44,6 +58,18 @@ namespace Rounds {
 
 			vikingController.SpawnDelay = difficulty.ScaledSpawnDelay(currentRound);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
+		}
+
+		private void SetUpNextRound() {
+			currentRound++;
+			SendNextDifficulty();
+			roundTimer = roundDuration;
+		}
+
+		private void SetUpScoreCard() {
+			roundNumberText.text = (currentRound -1).ToString();
+			
+			scoreCardUI.SetActive(true);
 		}
 
 		private void HandleOnTavernDestroyed() {
