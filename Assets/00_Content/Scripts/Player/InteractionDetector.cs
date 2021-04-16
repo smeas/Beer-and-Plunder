@@ -39,19 +39,19 @@ namespace Player {
 
 		private void OnTriggerEnter(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Add(other.attachedRigidbody.GetComponent<PickUp>());
+				pickUpsInRange.Add(FindComponent<PickUp>(other));
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Add(other.attachedRigidbody.GetComponent<Interactable>());
+				interactablesInRange.Add(FindComponent<Interactable>(other));
 			}
 		}
 
 		private void OnTriggerExit(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Remove(other.attachedRigidbody.GetComponent<PickUp>());
+				pickUpsInRange.Remove(FindComponent<PickUp>(other));
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Remove(other.attachedRigidbody.GetComponent<Interactable>());
+				interactablesInRange.Remove(FindComponent<Interactable>(other));
 			}
 		}
 
@@ -109,6 +109,13 @@ namespace Player {
 
 		private void ClearInteractableHighlight() {
 			interactableHighlight.SetActive(false);
+		}
+
+		private static T FindComponent<T>(Collider other) where T : Component {
+			if (other.attachedRigidbody != null)
+				return other.attachedRigidbody.GetComponent<T>();
+
+			return other.GetComponent<T>();
 		}
 	}
 }
