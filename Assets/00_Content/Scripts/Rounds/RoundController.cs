@@ -35,15 +35,9 @@ namespace Rounds {
 		}
 
 		private void RoundWon() {
-
-			Debug.Log("RoundController has gone into RoundOver-funktion");
-			Debug.Log(currentRound);
-
 			SetUpNextRound();
 
 			SetUpScoreCard();
-
-
 		}
 
 		private void SendNextDifficulty() {
