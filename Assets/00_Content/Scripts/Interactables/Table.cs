@@ -3,7 +3,11 @@ using Vikings;
 
 namespace Interactables {
 	public class Table : Interactable {
-		[SerializeField] private Chair[] chairs;
+		private Chair[] chairs;
+
+		private void Start() {
+			chairs = GetComponentsInChildren<Chair>();
+		}
 
 		public bool TryFindEmptyChairForViking(Viking viking, out Chair closest) {
 			Vector3 vikingPosition = viking.transform.position;
