@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace ScriptableObjects {
-	[CreateAssetMenu(fileName = "new Viking", menuName = "VikingData", order = 0)]
+	[CreateAssetMenu(fileName = "new Viking", menuName = "Game/VikingData", order = 0)]
 	public class VikingData : ScriptableObject {
 		[Range(0, 100)]
 		public float startMood;

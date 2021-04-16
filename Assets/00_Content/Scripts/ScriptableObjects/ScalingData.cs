@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace ScriptableObjects {
-	[CreateAssetMenu(fileName = "new ScalingData", menuName = "ScalingData", order = 0)]
+	[CreateAssetMenu(fileName = "new ScalingData", menuName = "Game/ScalingData", order = 0)]
 	public class ScalingData : ScriptableObject {
 		[SerializeField, Min(0), Header("SpawnDelay")]
 		private float initialSpawnDelay = 1f;
