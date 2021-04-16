@@ -415,7 +415,19 @@ MonoBehaviour:
         m_CallState: 2
   onInteract:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4004794608759683555}
+        m_TargetAssemblyTypeName: Player.PlayerInteract, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2187889529978375781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,8 +549,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4223223547760060935}
   - component: {fileID: 3382940680453500590}
+  - component: {fileID: 6391018513655201212}
   - component: {fileID: 1635980267}
-  m_Layer: 6
+  - component: {fileID: 4004794608759683555}
+  m_Layer: 8
   m_Name: PickUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,6 +587,26 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6391018513655201212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8117381662335087885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a2668eb15041a09619547a8ed7f1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpHighlightPrefab: {fileID: 5559515752884507063, guid: f80721870a785cd43b8c8367a6934816, type: 3}
+  interactableHighlightPrefab: {fileID: 5559515752884507063, guid: e73de03f083e05a4280e7a3f9a7577ee, type: 3}
+  pickUpLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &1635980267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +621,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGrabTransform: {fileID: 807718991}
   playerRoot: {fileID: 2187889529978375777}
-  highlightPrefab: {fileID: 5559515752884507063, guid: f80721870a785cd43b8c8367a6934816, type: 3}
-  pickUpLayer:
-    serializedVersion: 2
-    m_Bits: 64
+--- !u!114 &4004794608759683555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8117381662335087885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f4b7ea6a45a44e89d1272096bfe8faf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

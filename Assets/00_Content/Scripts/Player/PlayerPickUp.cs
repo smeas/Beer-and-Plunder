@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Interactables;
 using UnityEngine;
 
@@ -10,47 +8,21 @@ namespace Player {
 		[SerializeField] private Transform playerGrabTransform;
 		[SerializeField] private GameObject playerRoot;
 
-		//Should probably be displayed on a canvas instead.
-		[SerializeField] private GameObject highlightPrefab;
-		[SerializeField] private LayerMask pickUpLayer;
-
-		private List<PickUp> pickUps;
-		private PickUp closestPickUp;
+		private InteractionDetector detector;
 		private PickUp pickedUpItem;
-		private SphereCollider sphereCollider;
-		private GameObject highlight;
 		private bool isUsingItem;
 
 		private void Start() {
-
-			pickUps = new List<PickUp>();
-			sphereCollider = GetComponent<SphereCollider>();
-
-			highlight = Instantiate(highlightPrefab);
-			highlight.SetActive(false);
-		}
-
-		private void FixedUpdate() {
-
-			if (pickUps.Count <= 0) {
-				return;
-			}
-
-			closestPickUp = pickUps.OrderBy(x => (x.transform.position - transform.position).sqrMagnitude).First();
-			HighlightPickUp(closestPickUp);
+			detector = GetComponent<InteractionDetector>();
 		}
 
 		public void PickUpClosestItem() {
 
-			HighlightPickUp(null);
-
-			if (pickUps.Count < 1 || closestPickUp == null)
+			if (detector.ClosestPickUp == null)
 				return;
 
-			closestPickUp.PickUpItem(playerGrabTransform);
-			pickedUpItem = closestPickUp;
-			pickUps.Clear();
-			sphereCollider.enabled = false;
+			pickedUpItem = detector.ClosestPickUp;
+			pickedUpItem.PickUpItem(playerGrabTransform);
 		}
 
 		public void DropItem() {
@@ -67,7 +39,6 @@ namespace Player {
 
 			pickedUpItem.DropItem();
 			pickedUpItem = null;
-			sphereCollider.enabled = true;
 		}
 
 		public void UseItem() {
@@ -84,36 +55,10 @@ namespace Player {
 			}
 		}
 
-		private void OnTriggerEnter(Collider other) {
-
-			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
-
-				pickUps.Add(other.attachedRigidbody.GetComponent<PickUp>());
-			}
+		public bool CanPickUp(PickUp pickUp) {
+			return pickedUpItem == null;
 		}
 
-		private void OnTriggerExit(Collider other) {
-
-			if ((pickUpLayer & (1 << other.gameObject.layer)) != 0 && pickedUpItem == null) {
-
-				pickUps.Remove(other.attachedRigidbody.GetComponent<PickUp>());
-
-				if (pickUps.Count <= 0) {
-					HighlightPickUp(null);
-				}
-			}
-		}
-
-		private void HighlightPickUp(PickUp pickUp) {
-
-			if(pickUp == null) {
-				highlight.SetActive(false);
-				return;
-			}
-
-			highlight.transform.position = pickUp.transform.position + Vector3.up;
-			highlight.SetActive(true);
-			//TODO - Render pickUp icon/button on item in worldspace canvas.
-		}
+		public void OnClosestPickUpChange(PickUp pickUp) { }
 	}
 }
