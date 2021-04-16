@@ -3,7 +3,7 @@ using Player;
 using UnityEngine;
 using Vikings;
 
-namespace Interactables {
+namespace Interactables.Instruments {
 	[RequireComponent(typeof(AudioSource))]
 	public class Instrument : PickUp, IUseable {
 		[SerializeField] private InstrumentData instrumentData;
