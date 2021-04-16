@@ -32,14 +32,10 @@ namespace Player {
 			interactableHighlight.SetActive(false);
 
 			playerPickUp.OnItemPickedUp += HandleOnItemPickedUp;
-			playerPickUp.OnItemDropped += HandleOnItemDropped;
 		}
 
 		private void HandleOnItemPickedUp(PickUp item) {
 			pickUpsInRange.Remove(item);
-		}
-
-		private void HandleOnItemDropped(PickUp item) {
 		}
 
 		private void FixedUpdate() {
@@ -49,19 +45,19 @@ namespace Player {
 
 		private void OnTriggerEnter(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Add(other.attachedRigidbody.GetComponent<PickUp>());
+				pickUpsInRange.Add(other.GetComponentInParent<PickUp>());
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Add(other.attachedRigidbody.GetComponent<Interactable>());
+				interactablesInRange.Add(other.GetComponentInParent<Interactable>());
 			}
 		}
 
 		private void OnTriggerExit(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Remove(other.attachedRigidbody.GetComponent<PickUp>());
+				pickUpsInRange.Remove(other.GetComponentInParent<PickUp>());
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Remove(other.attachedRigidbody.GetComponent<Interactable>());
+				interactablesInRange.Remove(other.GetComponentInParent<Interactable>());
 			}
 		}
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Interactables {
@@ -6,12 +9,27 @@ namespace Interactables {
 	public class PickUp : MonoBehaviour {
 
 		[SerializeField] private Transform itemGrabTransform;
-		[SerializeField] private new Collider collider;
+		[SerializeField] private Collider objectCollider;
+		[SerializeField] private LayerMask slotLayer;
+
+		//Drop item on floor or snap to slot if close
 		public void DropItem() {
+
 			transform.SetParent(null);
+			Collider[] collisions = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
+
+			if(collisions.Length > 0) {
+
+				Collider[] slots = collisions.Where(x => slotLayer.ContainsLayer(x.gameObject.layer)).ToArray();
+
+				if(slots.Length > 0) {
+					Collider closestSlot = slots.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).First();
+					transform.position = closestSlot.transform.position;
+				}
+			}
+
 			transform.rotation = Quaternion.identity;
-			
-			collider.enabled = true;
+			objectCollider.gameObject.SetActive(true);
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
@@ -24,7 +42,7 @@ namespace Interactables {
 			transform.localPosition = offset;
 			transform.localRotation = Quaternion.identity;
 
-			collider.enabled = false;
+			objectCollider.gameObject.SetActive(false);
 		}
 	}
 }
