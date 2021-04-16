@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a10e0a233a3431ba60a6b628a62c061, type: 3}
   m_Name: Singleplayer
   m_EditorClassIdentifier: 
-  <InitialSpawnDelay>k__BackingField: 2
-  <SpawnDelayMultiplier>k__BackingField: 0.95
-  <StartingMoodMultiplier>k__BackingField: 0.99
-  <MoodDeclineMultiplier>k__BackingField: 1.05
+  initialSpawnDelay: 1
+  spawnDelayRate: 0.5
+  minimumSpawnDelay: 0
+  initialStartingMoodMultiplier: 1
+  startingMoodMultiplierRate: 0.5
+  minimumStartingMoodMultiplier: 0
+  initialMoodDeclineMultiplier: 1
+  moodDeclineMultiplierRate: 0.5
+  maximumMoodDeclineMultiplier: 2
