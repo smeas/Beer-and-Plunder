@@ -16,8 +16,8 @@ namespace Player {
 		private GameObject pickUpHighlight;
 		private GameObject interactableHighlight;
 
-		private readonly List<PickUp> pickUpsInRange = new List<PickUp>();
-		private readonly List<Interactable> interactablesInRange = new List<Interactable>();
+		private List<PickUp> pickUpsInRange = new List<PickUp>();
+		private List<Interactable> interactablesInRange = new List<Interactable>();
 
 		public PickUp ClosestPickUp { get; private set; }
 		public Interactable ClosestInteractable { get; private set; }
@@ -30,6 +30,16 @@ namespace Player {
 			interactableHighlight = Instantiate(interactableHighlightPrefab);
 			pickUpHighlight.SetActive(false);
 			interactableHighlight.SetActive(false);
+
+			playerPickUp.OnItemPickedUp += HandleOnItemPickedUp;
+			playerPickUp.OnItemDropped += HandleOnItemDropped;
+		}
+
+		private void HandleOnItemPickedUp(PickUp item) {
+			pickUpsInRange.Remove(item);
+		}
+
+		private void HandleOnItemDropped(PickUp item) {
 		}
 
 		private void FixedUpdate() {

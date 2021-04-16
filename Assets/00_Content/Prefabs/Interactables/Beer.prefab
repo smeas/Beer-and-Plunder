@@ -158,6 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemGrabTransform: {fileID: 3824459049787496328}
+  collider: {fileID: 1262854382656651556}
   beerData: {fileID: 11400000, guid: 1edea882df6ee684ea9f25370d7a98cf, type: 2}
 --- !u!1 &1606772948269209316
 GameObject:

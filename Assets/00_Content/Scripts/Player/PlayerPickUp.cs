@@ -1,4 +1,5 @@
 using Interactables;
+using System;
 using UnityEngine;
 
 namespace Player {
@@ -12,6 +13,9 @@ namespace Player {
 		private PickUp pickedUpItem;
 		private bool isUsingItem;
 
+		public event Action<PickUp> OnItemPickedUp;
+		public event Action<PickUp> OnItemDropped;
+
 		private void Start() {
 			detector = GetComponent<InteractionDetector>();
 		}
@@ -23,6 +27,8 @@ namespace Player {
 
 			pickedUpItem = detector.ClosestPickUp;
 			pickedUpItem.PickUpItem(playerGrabTransform);
+
+			OnItemPickedUp?.Invoke(pickedUpItem);
 		}
 
 		public void DropItem() {
@@ -38,7 +44,10 @@ namespace Player {
 			}
 
 			pickedUpItem.DropItem();
+			OnItemDropped?.Invoke(pickedUpItem);
+
 			pickedUpItem = null;
+
 		}
 
 		public void UseItem() {
