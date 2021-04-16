@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ScriptableObjects {
+namespace Rounds {
 	[CreateAssetMenu(fileName = "new ScalingData", menuName = "Game/ScalingData", order = 0)]
 	public class ScalingData : ScriptableObject {
 		[SerializeField, Min(0), Header("SpawnDelay")]

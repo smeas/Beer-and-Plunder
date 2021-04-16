@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Interactables {
+namespace Interactables.Beers {
 
 	[CreateAssetMenu(fileName = "Beer", menuName = "Game/Beer")]
 	public class BeerData : ScriptableObject {

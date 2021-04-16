@@ -1,5 +1,4 @@
 using Player;
-using ScriptableObjects;
 using UnityEngine;
 using Taverns;
 using Vikings;

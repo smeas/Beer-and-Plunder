@@ -1,6 +1,4 @@
-﻿using ScriptableObjects;
-
-namespace Rounds {
+﻿namespace Rounds {
 	public class VikingScaling {
 		public readonly float startMoodMultiplier = 1f;
 		public readonly float moodDeclineMultiplier = 1f;

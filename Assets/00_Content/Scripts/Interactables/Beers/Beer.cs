@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Interactables {
+namespace Interactables.Beers {
 	public class Beer : PickUp, IUseable {
 
 		[SerializeField] private BeerData beerData;
