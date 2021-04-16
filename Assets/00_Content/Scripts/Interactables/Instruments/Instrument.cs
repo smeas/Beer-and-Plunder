@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Player;
-using ScriptableObjects;
 using UnityEngine;
 using Vikings;
 
-namespace Interactables {
+namespace Interactables.Instruments {
 	[RequireComponent(typeof(AudioSource))]
 	public class Instrument : PickUp, IUseable {
 		[SerializeField] private InstrumentData instrumentData;

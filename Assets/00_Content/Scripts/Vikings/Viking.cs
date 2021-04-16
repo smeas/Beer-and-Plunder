@@ -1,4 +1,4 @@
-﻿using ScriptableObjects;
+﻿using Rounds;
 using UnityEngine;
 
 namespace Vikings {
@@ -8,15 +8,18 @@ namespace Vikings {
 		[SerializeField] private VikingData vikingData;
 
 		private VikingState state;
+		private VikingScaling statScaling;
 		private int desires;
 
 		public VikingStats Stats { get; private set; }
 		public event VikingLeaving LeaveTavern;
 
 		private void Start() {
-			state = new PassiveVikingState(this);
+			// statScaling is normally provided by the viking manager
+			statScaling ??= new VikingScaling();
 
-			Stats = new VikingStats(vikingData);
+			state = new PassiveVikingState(this);
+			Stats = new VikingStats(vikingData, statScaling);
 			desires = 2;
 		}
 
@@ -32,6 +35,10 @@ namespace Vikings {
 			
 			if (desires <= 0)
 				Leave();
+		}
+
+		public void SetScaling(VikingScaling scaling) {
+			statScaling = scaling;
 		}
 
 		public bool TryGiveItem() {

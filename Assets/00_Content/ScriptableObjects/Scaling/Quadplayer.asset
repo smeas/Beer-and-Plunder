@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
-  m_Name: NormalViking
+  m_Script: {fileID: 11500000, guid: 9a10e0a233a3431ba60a6b628a62c061, type: 3}
+  m_Name: Quadplayer
   m_EditorClassIdentifier: 
-  startMood: 65
-  moodDeclineRate: 10
+  <InitialSpawnDelay>k__BackingField: 2
+  <SpawnDelayMultiplier>k__BackingField: 0.95
+  <StartingMoodMultiplier>k__BackingField: 0.99
+  <MoodDeclineMultiplier>k__BackingField: 1.05
