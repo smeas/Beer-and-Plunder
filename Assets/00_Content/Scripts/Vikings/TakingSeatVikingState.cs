@@ -1,5 +1,6 @@
 using Interactables;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Vikings {
 	/// <summary>
@@ -7,22 +8,40 @@ namespace Vikings {
 	/// </summary>
 	public class TakingSeatVikingState : VikingState {
 		private readonly Chair chair;
+		private NavMeshAgent navMeshAgent;
 
 		public TakingSeatVikingState(Viking viking, Chair chair) : base(viking) {
 			this.chair = chair;
 		}
 
 		public override VikingState Enter() {
-			viking.CurrentChair = chair;
-			chair.OnVikingTakeChair(viking);
+			navMeshAgent = viking.GetComponent<NavMeshAgent>();
+			navMeshAgent.enabled = true;
 
-			Transform transform = viking.transform;
-			transform.position = chair.SitPivot.position;
-			transform.rotation = chair.SitPivot.rotation;
+			_ = navMeshAgent.SetDestination(chair.transform.position);
 
+			return this;
+		}
+
+		public override void Exit() {
+			navMeshAgent.enabled = false;
 			viking.GetComponent<Rigidbody>().isKinematic = true;
+		}
 
-			return new PassiveVikingState(viking);
+		public override VikingState Update() {
+			if (navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001) {
+				// Arrived at destination (mostly)
+				viking.CurrentChair = chair;
+				chair.OnVikingTakeChair(viking);
+
+				Transform transform = viking.transform;
+				transform.position = chair.SitPivot.position;
+				transform.rotation = chair.SitPivot.rotation;
+
+				return new PassiveVikingState(viking);
+			}
+
+			return this;
 		}
 	}
 }

@@ -1,14 +1,19 @@
 using Interactables;
 using Player;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Vikings {
 	/// <summary>
 	/// State for when the viking is being seated by a player - the player is leading the viking to their chair.
 	/// </summary>
 	public class BeingSeatedVikingState : VikingState {
+		private const float RecalculatePathDelay = 0.5f;
+
 		private readonly GameObject player;
 		private GameObject highlight;
+		private NavMeshAgent navMeshAgent;
+		private float pathTimer;
 
 		public BeingSeatedVikingState(Viking viking, GameObject player) : base(viking) {
 			this.player = player;
@@ -18,15 +23,26 @@ namespace Vikings {
 			highlight = Object.Instantiate(viking.beingSeatedHighlightPrefab, viking.transform);
 			highlight.transform.localPosition = Vector3.up * 2;
 
+			navMeshAgent = viking.GetComponent<NavMeshAgent>();
+			navMeshAgent.enabled = true;
+			_ = navMeshAgent.SetDestination(player.transform.position);
+			pathTimer = RecalculatePathDelay;
+
 			return this;
 		}
 
 		public override void Exit() {
 			Object.Destroy(highlight);
+			navMeshAgent.enabled = false;
 		}
 
-		// TODO: Follow the player.
 		public override VikingState Update() {
+			pathTimer -= Time.deltaTime;
+			if (pathTimer <= 0) {
+				pathTimer = RecalculatePathDelay;
+				_ = navMeshAgent.SetDestination(player.transform.position);
+			}
+
 			return this;
 		}
 
