@@ -36,7 +36,7 @@ namespace Vikings {
 
 			Vector3 position = spawnPoints[index].position;
 			Viking viking = Instantiate(vikingPrefab, position, Quaternion.identity, transform);
-			viking.StatScaling = StatScaling;
+			viking.SetScaling(StatScaling);
 			spawnedVikings[index] = viking;
 
 			viking.LeaveTavern += OnLeaveTavern;
