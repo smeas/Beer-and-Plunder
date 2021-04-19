@@ -1,7 +1,7 @@
 ﻿using Interactables;
 using UnityEngine;
 
-namespace Vikings {
+namespace Vikings.States {
 	public abstract class VikingState {
 		protected Viking viking;
 

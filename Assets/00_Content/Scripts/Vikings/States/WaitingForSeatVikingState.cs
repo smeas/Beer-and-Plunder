@@ -2,7 +2,7 @@ using Interactables;
 using Player;
 using UnityEngine;
 
-namespace Vikings {
+namespace Vikings.States {
 	/// <summary>
 	/// State for when the viking is waiting to be seated - standing in queue at the door.
 	/// </summary>

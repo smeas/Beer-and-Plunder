@@ -1,6 +1,7 @@
 using Interactables;
 using Rounds;
 using UnityEngine;
+using Vikings.States;
 
 namespace Vikings {
 	public delegate void VikingLeaving(Viking sender);
