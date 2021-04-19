@@ -7,7 +7,7 @@ namespace Interactables.Beers {
 		[SerializeField] private GameObject beerPrefab;
 		[SerializeField] private Transform beerSpawnpoint;
 
-		public override void Interact() {
+		public override void Interact(GameObject player, PickUp item) {
 
 			if (beerSpawnpoint == null) {
 				Debug.LogError("No spawnpoint for beer on beerTap");

@@ -12,6 +12,8 @@ namespace Player {
 		private PickUp pickedUpItem;
 		private bool isUsingItem;
 
+		public PickUp PickedUpItem => pickedUpItem;
+
 		private void Start() {
 			detector = GetComponent<InteractionDetector>();
 		}

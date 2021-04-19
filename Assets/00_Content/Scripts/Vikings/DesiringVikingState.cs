@@ -8,9 +8,5 @@
 
 			return this;
 		}
-
-		public override VikingState GiveItem() {
-			return new PassiveVikingState(viking);
-		}
 	}
 }
