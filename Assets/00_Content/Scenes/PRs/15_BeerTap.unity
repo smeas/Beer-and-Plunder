@@ -187,6 +187,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction
+      value: 
+      objectReference: {fileID: 1098889012932391060, guid: d0097f6e83ffbb14d9490ddb3ff9fc1b, type: 3}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: pourTimeMultiplier
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputActionInteract
+      value: 
+      objectReference: {fileID: 1098889012932391060, guid: d0097f6e83ffbb14d9490ddb3ff9fc1b, type: 3}
     - target: {fileID: 894439518, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: m_Camera
       value: 

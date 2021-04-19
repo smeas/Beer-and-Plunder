@@ -10,11 +10,11 @@ namespace Interactables.Beers {
 	public class BeerTap : Interactable {
 
 		[Header("Settings")]
-		[Range(0.1f, 2f)]
-		[SerializeField] private float pourTimeMultiplier = 1f;
+		[Range(1, 100f)]
+		[SerializeField] private float pourTimeMultiplier = 10f;
 
 		[Header("GameObjects")]
-		[SerializeField] private InputActionAsset InputActions;
+		[SerializeField] private InputActionReference inputActionInteract;
 		[SerializeField] private GameObject beerPrefab;
 		[SerializeField] private Transform beerSpawnpoint;
 		[SerializeField] private Image progressBarImage;
@@ -22,13 +22,10 @@ namespace Interactables.Beers {
 
 		private ItemSlot itemSlot;
 		private float pouringProgress = 0;
-		InputAction inputActionInteract;
 		ButtonControl buttonInteract;
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
-			inputActionInteract = InputActions.FindAction("Interact");
-			buttonInteract = (ButtonControl)inputActionInteract.controls[0];
 		}
 
 		public override void Interact() {
@@ -52,10 +49,10 @@ namespace Interactables.Beers {
 
 		private IEnumerator PourBeer() {
 
-			while (!itemSlot.HasItemInSlot && buttonInteract.isPressed && pouringProgress <= 100) {
-
+			while (!itemSlot.HasItemInSlot && inputActionInteract.action.activeControl != null &&
+				inputActionInteract.action.activeControl.IsPressed(0) && pouringProgress <= 100) {
 				
-				pouringProgress += 1 * pourTimeMultiplier; 
+				pouringProgress += pourTimeMultiplier * Time.deltaTime; 
 
 				if(!progressBar.activeInHierarchy)
 					progressBar.SetActive(true);
@@ -71,10 +68,6 @@ namespace Interactables.Beers {
 
 				yield return null;
 			}
-			
-			yield return 0;
 		}
-
-		
 	}
 }

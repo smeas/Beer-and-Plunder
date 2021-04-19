@@ -9,14 +9,22 @@ namespace Interactables {
 	public class PickUp : MonoBehaviour {
 
 		[SerializeField] private Transform itemGrabTransform;
-		[SerializeField] private Collider objectCollider;
 		[SerializeField] private LayerMask itemSlotLayer;
+
+		private Collider coll;
+		private MeshFilter meshFilter;
+
+		public void Start() {
+			coll = GetComponentInChildren<Collider>();
+			meshFilter = GetComponentInChildren<MeshFilter>();
+		}
 
 		//Drop item on floor or snap to slot if close
 		public void DropItem() {
 
 			transform.SetParent(null);
-			Collider[] collisions = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
+			Collider[] collisions = Physics.OverlapBox(meshFilter.transform.TransformPoint(meshFilter.mesh.bounds.center),
+				meshFilter.mesh.bounds.extents, Quaternion.identity);
 
 			if(collisions.Length > 0) {
 
@@ -32,7 +40,7 @@ namespace Interactables {
 			}
 
 			transform.rotation = Quaternion.identity;
-			objectCollider.gameObject.SetActive(true);
+			coll.gameObject.SetActive(true);
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
@@ -45,7 +53,7 @@ namespace Interactables {
 			transform.localPosition = offset;
 			transform.localRotation = Quaternion.identity;
 
-			objectCollider.gameObject.SetActive(false);
+			coll.gameObject.SetActive(false);
 		}
 	}
 }
