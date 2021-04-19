@@ -9,9 +9,14 @@ namespace Interactables.Beers {
 
 	public class BeerTap : Interactable {
 
+		[Header("Settings")]
+		[Range(0.1f, 2f)]
+		[SerializeField] private float pourTimeMultiplier = 1f;
+
+		[Header("GameObjects")]
+		[SerializeField] private InputActionAsset InputActions;
 		[SerializeField] private GameObject beerPrefab;
 		[SerializeField] private Transform beerSpawnpoint;
-		[SerializeField] private InputActionAsset asset;
 		[SerializeField] private Image progressBarImage;
 		[SerializeField] private GameObject progressBar;
 
@@ -22,7 +27,7 @@ namespace Interactables.Beers {
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
-			inputActionInteract = asset.FindAction("Interact");
+			inputActionInteract = InputActions.FindAction("Interact");
 			buttonInteract = (ButtonControl)inputActionInteract.controls[0];
 		}
 
@@ -49,7 +54,8 @@ namespace Interactables.Beers {
 
 			while (!itemSlot.HasItemInSlot && buttonInteract.isPressed && pouringProgress <= 100) {
 
-				pouringProgress++;
+				
+				pouringProgress += 1 * pourTimeMultiplier; 
 
 				if(!progressBar.activeInHierarchy)
 					progressBar.SetActive(true);

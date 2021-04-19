@@ -10,7 +10,7 @@ namespace Interactables {
 
 		[SerializeField] private Transform itemGrabTransform;
 		[SerializeField] private Collider objectCollider;
-		[SerializeField] private LayerMask slotLayer;
+		[SerializeField] private LayerMask itemSlotLayer;
 
 		//Drop item on floor or snap to slot if close
 		public void DropItem() {
@@ -20,11 +20,14 @@ namespace Interactables {
 
 			if(collisions.Length > 0) {
 
-				Collider[] slots = collisions.Where(x => slotLayer.ContainsLayer(x.gameObject.layer)).ToArray();
+				Collider[] slots = collisions.Where(x => itemSlotLayer.ContainsLayer(x.gameObject.layer)).ToArray();
 
 				if(slots.Length > 0) {
 					Collider closestSlot = slots.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).First();
-					transform.position = closestSlot.transform.position;
+					var itemSlot = closestSlot.gameObject.GetComponent<ItemSlot>();
+					
+					if(!itemSlot.HasItemInSlot)
+						transform.position = closestSlot.transform.position;
 				}
 			}
 

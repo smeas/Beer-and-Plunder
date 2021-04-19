@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemGrabTransform: {fileID: 3824459049787496328}
   objectCollider: {fileID: 4573254563879227990}
-  slotLayer:
+  itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
   beerData: {fileID: 11400000, guid: 1edea882df6ee684ea9f25370d7a98cf, type: 2}
