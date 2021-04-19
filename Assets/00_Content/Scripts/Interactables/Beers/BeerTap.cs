@@ -31,7 +31,7 @@ namespace Interactables.Beers {
 			buttonInteract = (ButtonControl)inputActionInteract.controls[0];
 		}
 
-		public override void Interact() {
+		public override void Interact(GameObject player, PickUp item) {
 
 			if (beerSpawnpoint == null) {
 				Debug.LogError("No spawnpoint for beer on beerTap");

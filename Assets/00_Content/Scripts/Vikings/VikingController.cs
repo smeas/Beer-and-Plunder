@@ -1,6 +1,7 @@
 ﻿using System;
 using Rounds;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Vikings {
 	public class VikingController : MonoBehaviour {
@@ -8,10 +9,11 @@ namespace Vikings {
 		[SerializeField] private Transform[] spawnPoints;
 
 		private Viking[] spawnedVikings;
+		private float spawnDelay = 1f;
+		private float spawnVariance;
 		private float spawnTimer;
 
 		public bool CanSpawn { get; set; } = true;
-		public float SpawnDelay { get; set; } = 1f;
 		public VikingScaling StatScaling { get; set; } = new VikingScaling();
 
 		private void Start() {
@@ -21,11 +23,11 @@ namespace Vikings {
 		private void Update() {
 			if (!CanSpawn) return;
 
-			spawnTimer = Mathf.Max(0, spawnTimer - Time.deltaTime);
+			spawnTimer -= Time.deltaTime;
 
 			if (spawnTimer <= 0) {
 				SpawnViking();
-				spawnTimer = SpawnDelay;
+				spawnTimer = spawnDelay + Random.Range(-spawnVariance, spawnVariance);
 			}
 		}
 
@@ -57,6 +59,11 @@ namespace Vikings {
 
 			spawnedVikings[index] = null;
 			Destroy(sender.gameObject);
+		}
+
+		public void SetSpawnSettings(float delay, float variance) {
+			spawnDelay = delay;
+			spawnVariance = variance;
 		}
 	}
 }

@@ -16,6 +16,8 @@ namespace Player {
 		public event Action<PickUp> OnItemPickedUp;
 		public event Action<PickUp> OnItemDropped;
 
+		public PickUp PickedUpItem => pickedUpItem;
+
 		private void Start() {
 			detector = GetComponent<InteractionDetector>();
 		}
