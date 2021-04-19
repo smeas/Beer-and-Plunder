@@ -42,7 +42,7 @@ namespace Rounds {
 				? PlayerManager.Instance.NumPlayers - 1
 				: 0];
 
-			vikingController.SpawnDelay = difficulty.ScaledSpawnDelay(currentRound);
+			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
 
