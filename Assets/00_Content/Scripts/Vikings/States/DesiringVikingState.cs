@@ -23,6 +23,11 @@ namespace Vikings.States {
 
 		public override VikingState Interact(GameObject player, PickUp item) {
 			viking.Stats.Reset();
+			viking.Desires--;
+
+			if (viking.Desires <= 0)
+				return new LeavingVikingState(viking);
+
 			return new PassiveVikingState(viking);
 		}
 	}
