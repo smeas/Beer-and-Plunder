@@ -48,6 +48,11 @@ namespace Vikings {
 
 		public override VikingState TakeSeat(Chair chair) {
 			player.GetComponent<PlayerSteward>().EndSeatingViking(viking);
+
+			// Reserve the chair
+			viking.CurrentChair = chair;
+			chair.OnVikingTakeChair(viking);
+
 			return new TakingSeatVikingState(viking, chair);
 		}
 	}

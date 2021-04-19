@@ -31,9 +31,6 @@ namespace Vikings {
 		public override VikingState Update() {
 			if (navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001) {
 				// Arrived at destination (mostly)
-				viking.CurrentChair = chair;
-				chair.OnVikingTakeChair(viking);
-
 				Transform transform = viking.transform;
 				transform.position = chair.SitPivot.position;
 				transform.rotation = chair.SitPivot.rotation;
