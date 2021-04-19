@@ -8,6 +8,9 @@ namespace Vikings {
 	public class Viking : Interactable {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
+		[SerializeField] public MeshRenderer bodyMeshRenderer;
+		[SerializeField] public Material normalMaterial;
+		[SerializeField] public Material desiringMaterial;
 
 		private VikingState state;
 		private VikingScaling statScaling;
