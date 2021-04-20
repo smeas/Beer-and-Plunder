@@ -1,7 +1,6 @@
 using System;
 using Player;
 using UnityEngine;
-using TMPro;
 using Taverns;
 using Vikings;
 
@@ -10,21 +9,24 @@ namespace Rounds {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private Tavern tavern;
 		[SerializeField] private VikingController vikingController;
-		[SerializeField] private GameObject scoreCardUI;
-		[SerializeField] private TextMeshProUGUI roundNumberText;
-		[SerializeField] private TextMeshProUGUI complimentText;
-		
+		[SerializeField] private ScoreCard scoreCardPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 
+		private ScoreCard scoreCard;
 		private float roundTimer;
 		private int currentRound = 1;
 
 		private void Start() {
+			scoreCard = Instantiate(scoreCardPrefab);
+			scoreCard.gameObject.SetActive(false);
+
 			tavern.OnBankrupcy += HandleOnTavernBankrupt;
 			tavern.OnDestroyed += HandleOnTavernDestroyed;
+			scoreCard.OnNextRound += HandleOnNextRound;
 
 			roundTimer = roundDuration;
+
 			SendNextDifficulty();
 		}
 
@@ -35,9 +37,7 @@ namespace Rounds {
 		}
 
 		private void RoundWon() {
-			SetUpNextRound();
-
-			SetUpScoreCard();
+			ShowScoreCard();
 		}
 
 		private void SendNextDifficulty() {
@@ -54,16 +54,29 @@ namespace Rounds {
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
 
+		private void ShowScoreCard() {
+			scoreCard.UpdateScoreCard(currentRound);
+			scoreCard.gameObject.SetActive(true);
+
+			//might need to turn of some sort of input or components here.
+			//switch some sort of input to ui thing-y here...
+			//also, disable the vikingController I think?
+
+			vikingController.gameObject.SetActive(false);
+
+		}
+
+		private void HandleOnNextRound() {
+			vikingController.gameObject.SetActive(true);
+
+			SetUpNextRound();
+			//turn on components input etc again.
+		}
+		
 		private void SetUpNextRound() {
 			currentRound++;
 			SendNextDifficulty();
 			roundTimer = roundDuration;
-		}
-
-		private void SetUpScoreCard() {
-			roundNumberText.text = (currentRound -1).ToString();
-			
-			scoreCardUI.SetActive(true);
 		}
 
 		private void HandleOnTavernDestroyed() {
