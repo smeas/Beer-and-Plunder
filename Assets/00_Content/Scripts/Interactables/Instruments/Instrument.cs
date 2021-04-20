@@ -4,11 +4,12 @@ using UnityEngine;
 using Vikings;
 
 namespace Interactables.Instruments {
-	[RequireComponent(typeof(AudioSource))]
+	[RequireComponent(typeof(AudioSource), typeof(SphereCollider))]
 	public class Instrument : PickUp, IUseable {
 		[SerializeField] private InstrumentData instrumentData;
 
 		private AudioSource musicSource;
+		private SphereCollider sphereCollider;
 
 		private bool isPlaying;
 		private GameObject usingPlayer;
@@ -17,16 +18,9 @@ namespace Interactables.Instruments {
 		private void Awake() {
 			musicSource = GetComponent<AudioSource>();
 			musicSource.loop = true;
-		}
 
-		private void FixedUpdate() {
-			if (!isPlaying) return;
-
-			UpdateVikingsInRange();
-			print($"Music affecting {vikingsInRange.Count} vikings...");
-			foreach (Viking viking in vikingsInRange) {
-				// TODO: Affect viking
-			}
+			sphereCollider = GetComponent<SphereCollider>();
+			sphereCollider.radius = instrumentData.effectRadius;
 		}
 
 	#if UNITY_EDITOR
@@ -57,6 +51,10 @@ namespace Interactables.Instruments {
 			// TODO: Display some kind of visual that shows the area of effect.
 
 			isPlaying = true;
+
+			foreach (Viking viking in vikingsInRange) {
+				viking.Stats.AddModifier(instrumentData.modifier);
+			}
 		}
 
 		public void EndUse() {
@@ -66,19 +64,33 @@ namespace Interactables.Instruments {
 			usingPlayer.GetComponent<PlayerMovement>().CanMove = true;
 
 			musicSource.Stop();
+
+			foreach (Viking viking in vikingsInRange) {
+				viking.Stats.RemoveModifier(instrumentData.modifier);
+			}
 		}
 
-		private void UpdateVikingsInRange() {
-			vikingsInRange.Clear();
-			Collider[] colliders = Physics.OverlapSphere(usingPlayer.transform.position, instrumentData.effectRadius);
+		private void OnTriggerEnter(Collider other) {
+			if (other.attachedRigidbody == null) return;
 
-			foreach (Collider col in colliders) {
-				if (col.attachedRigidbody == null)
-					continue;
+			Viking viking = other.attachedRigidbody.GetComponent<Viking>();
 
-				Viking viking = col.attachedRigidbody.GetComponent<Viking>();
-				if (viking != null)
-					vikingsInRange.Add(viking);
+			if (viking != null) {
+				vikingsInRange.Add(viking);
+				if (isPlaying)
+					viking.Stats.AddModifier(instrumentData.modifier);
+			}
+		}
+
+		private void OnTriggerExit(Collider other) {
+			if (other.attachedRigidbody == null) return;
+
+			Viking viking = other.attachedRigidbody.GetComponent<Viking>();
+
+			if (viking != null) {
+				vikingsInRange.Remove(viking);
+				if (isPlaying)
+					viking.Stats.RemoveModifier(instrumentData.modifier);
 			}
 		}
 	}
