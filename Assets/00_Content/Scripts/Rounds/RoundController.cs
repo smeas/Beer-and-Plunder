@@ -58,8 +58,8 @@ namespace Rounds {
 			}
 
 			ScalingData difficulty = playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
-				                                            ? PlayerManager.Instance.NumPlayers - 1
-				                                            : 0];
+														? PlayerManager.Instance.NumPlayers - 1
+														: 0];
 
 			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
@@ -85,10 +85,6 @@ namespace Rounds {
 				playerInput.SwitchCurrentActionMap("Game");
 			}
 
-			SetUpNextRound();
-		}
-
-		private void SetUpNextRound() {
 			hasWon = false;
 			currentRound++;
 			SendNextDifficulty();

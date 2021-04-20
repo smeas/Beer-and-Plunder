@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 namespace Rounds {
@@ -16,10 +15,6 @@ namespace Rounds {
 		public int RoundNumber {
 			get => roundNumber;
 			set { roundNumber = Mathf.RoundToInt(roundNumber); }
-		}
-
-		private void Update() {
-
 		}
 
 		public void UpdateScoreCard(int round) {
