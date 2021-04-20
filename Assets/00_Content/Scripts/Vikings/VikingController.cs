@@ -1,12 +1,14 @@
 ﻿using System;
 using Rounds;
 using UnityEngine;
+using Utilities;
 using Random = UnityEngine.Random;
 
 namespace Vikings {
-	public class VikingController : MonoBehaviour {
+	public class VikingController : SingletonBehaviour<VikingController> {
 		[SerializeField] private Viking vikingPrefab;
 		[SerializeField] private Transform[] spawnPoints;
+		[SerializeField] private Transform exitPoint;
 
 		private Viking[] spawnedVikings;
 		private float spawnDelay = 1f;
@@ -15,6 +17,7 @@ namespace Vikings {
 
 		public bool CanSpawn { get; set; } = true;
 		public VikingScaling StatScaling { get; set; } = new VikingScaling();
+		public Transform ExitPoint => exitPoint;
 
 		private void Start() {
 			spawnedVikings = new Viking[spawnPoints.Length];

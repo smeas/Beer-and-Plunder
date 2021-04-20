@@ -1,10 +1,12 @@
+using System;
 using Player;
-using UnityEngine;
 using Taverns;
+using UnityEngine;
+using Utilities;
 using Vikings;
 
 namespace Rounds {
-	public class RoundController : MonoBehaviour {
+	public class RoundController : SingletonBehaviour<RoundController> {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private Tavern tavern;
 		[SerializeField] private VikingController vikingController;
@@ -13,6 +15,8 @@ namespace Rounds {
 
 		private float roundTimer;
 		private int currentRound = 1;
+
+		public event Action OnRoundOver;
 
 		private void Start() {
 			tavern.onBankrupcy += HandleOnTavernBankrupt;
@@ -27,6 +31,9 @@ namespace Rounds {
 
 			if (roundTimer <= 0) {
 				currentRound++;
+				OnRoundOver?.Invoke();
+
+				// TODO: Wait for all vikings to leave before starting next round.
 				SendNextDifficulty();
 				roundTimer = roundDuration;
 			}

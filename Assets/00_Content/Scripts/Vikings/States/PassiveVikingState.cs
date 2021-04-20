@@ -1,4 +1,4 @@
-﻿namespace Vikings {
+﻿namespace Vikings.States {
 	public class PassiveVikingState : VikingState {
 		public PassiveVikingState(Viking viking) : base(viking) {
 		}

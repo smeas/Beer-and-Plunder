@@ -15,7 +15,7 @@ TagManager:
   - PickUp
   - Interactable
   - PickUp and Interactable
-  - 
+  - ItemSlot
   - 
   - 
   - 
@@ -39,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI
+    uniqueID: 1965997467
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
