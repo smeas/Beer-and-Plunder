@@ -59,6 +59,7 @@ namespace Menu {
 			foreach (PlayerSlotObject playerSlot in playerSlots) {
 				if (playerSlot.IsTaken) {
 					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
+					playerInputHandler.transform.position = Vector3.zero;
 					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 				}
 			}
