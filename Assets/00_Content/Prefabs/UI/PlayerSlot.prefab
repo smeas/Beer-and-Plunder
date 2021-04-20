@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 6902408826227887857}
   - component: {fileID: 6760187956223335454}
   m_Layer: 5
-  m_Name: PlayerJoinedText
+  m_Name: ReadyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 6414486514593295958}
   - component: {fileID: 6563367843382934241}
   - component: {fileID: 8961926667878127185}
+  - component: {fileID: 1533906272838967899}
   m_Layer: 5
   m_Name: PlayerSlot
   m_TagString: Untagged
@@ -345,3 +346,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1533906272838967899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8442291659818479475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d936ac842bcebeb4d8750f4b89613fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joinText: {fileID: 744070363157170118}
+  readyText: {fileID: 6760187956223335454}
