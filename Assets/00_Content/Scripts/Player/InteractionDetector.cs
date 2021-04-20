@@ -45,8 +45,9 @@ namespace Player {
 
 		private void OnTriggerEnter(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-
-				pickUpsInRange.Add(other.GetComponentInParent<PickUp>());
+				PickUp pickUp = other.GetComponentInParent<PickUp>();
+				pickUpsInRange.Add(pickUp);
+				pickUp.PickedUp += OnPickedUp;
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
 				interactablesInRange.Add(other.GetComponentInParent<Interactable>());
@@ -55,12 +56,16 @@ namespace Player {
 
 		private void OnTriggerExit(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Remove(other.GetComponentInParent<PickUp>());
+				PickUp pickUp = other.GetComponentInParent<PickUp>();
+				pickUpsInRange.Remove(pickUp);
+				pickUp.PickedUp -= OnPickedUp;
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
 				interactablesInRange.Remove(other.GetComponentInParent<Interactable>());
 			}
 		}
+
+		private void OnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
 
 		private void UpdateClosestPickup() {
 			PickUp newClosestPickUp = null;
