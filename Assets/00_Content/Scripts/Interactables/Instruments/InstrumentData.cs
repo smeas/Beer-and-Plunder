@@ -1,4 +1,5 @@
 using UnityEngine;
+using Vikings;
 
 namespace Interactables.Instruments {
 	[CreateAssetMenu(fileName = "Instrument", menuName = "Game/Instrument", order = 0)]
@@ -6,5 +7,6 @@ namespace Interactables.Instruments {
 		public AudioClip music;
 		public float effectRadius = 10f;
 		public bool playerCanMoveWhileUsing;
+		public StatModifier modifier;
 	}
 }
