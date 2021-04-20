@@ -9,18 +9,15 @@ namespace Menu {
 
     public class PlayerSlotObject : MonoBehaviour
     {
-
-        public int Id;
-
-        private bool isTaken;
-        public bool IsTaken => isTaken;
-
-        private PlayerComponent playerComponent;
-        public PlayerComponent PlayerComponent => playerComponent;
-
         [SerializeField] TextMeshProUGUI joinText;
         [SerializeField] TextMeshProUGUI readyText;
 
+        public int Id;
+        public bool IsTaken => isTaken;
+        public PlayerComponent PlayerComponent => playerComponent;
+
+        private bool isTaken;
+        private PlayerComponent playerComponent;
         private Image background;
 
 	    private void Start() {

@@ -10,11 +10,10 @@ namespace Menu {
     public class Lobby : MonoBehaviour
     {
 		[SerializeField] List<PlayerSlotObject> playerSlots;
-		
-        private PlayerManager playerManager;
 
 		private void Start() {
-			playerManager = PlayerManager.Instance;
+
+			PlayerManager playerManager = PlayerManager.Instance;
 			playerManager.PlayerJoined += HandleOnPlayerJoined;
 			playerManager.PlayerLeft += HandleOnPlayerLeft;
 		}
@@ -28,8 +27,8 @@ namespace Menu {
 
 					slot.JoinPlayer(player);
 
-					var playerInput = player.GetComponent<PlayerInputHandler>();
-					playerInput.OnStart.AddListener(HandleOnStartGame);
+					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
+					playerInputHandler.OnStart.AddListener(HandleOnStartGame);
 
 					break;
 				}
@@ -38,15 +37,15 @@ namespace Menu {
 
 		private void HandleOnPlayerLeft(PlayerComponent player) {
 
-			var playerSlot = playerSlots.FirstOrDefault(x => x.PlayerComponent.PlayerId == player.PlayerId);
+			PlayerSlotObject playerSlot = playerSlots.FirstOrDefault(x => x.PlayerComponent.PlayerId == player.PlayerId);
 
 			if (playerSlot == null)
 				return;
 
 			playerSlot.LeavePlayer();
 
-			var playerInput = player.GetComponent<PlayerInputHandler>();
-			playerInput.OnStart.RemoveListener(HandleOnStartGame);
+			PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
+			playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 		}
 
 		private void HandleOnStartGame() {
