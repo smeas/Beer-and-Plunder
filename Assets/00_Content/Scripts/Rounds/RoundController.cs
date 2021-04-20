@@ -1,7 +1,7 @@
-using System;
 using Player;
-using UnityEngine;
 using Taverns;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using Vikings;
 
 namespace Rounds {
@@ -62,16 +62,18 @@ namespace Rounds {
 			//switch some sort of input to ui thing-y here...
 
 			vikingController.CanSpawn = false;
-			int i = 0;
 
-			PlayerManager.Instance.Players[i].GetComponent
+			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
+				PlayerInput playerInput = player.GetComponent<PlayerInput>();
+				playerInput.SwitchCurrentActionMap("UI");
+			}
 		}
 		//maybe I should put a comment here, seems like Jon felt that, to explain, so I can explain how this is accessed?
 		private void HandleOnNextRound() {
 			vikingController.CanSpawn = true;
 
-			//få tag spelaren, få tag på inputmanager, ge en sträng som heter UI.
-			//hämta från PlayerManager, alla spelare, sen, var för sig stäng av/sät på deras input, byt den, med strängar.
+			//fÃ¥ tag spelaren, fÃ¥ tag pÃ¥ inputmanager, ge en strÃ¤ng som heter UI.
+			//hÃ¤mta frÃ¥n PlayerManager, alla spelare, sen, var fÃ¶r sig stÃ¤ng av/sÃ¤t pÃ¥ deras input, byt den, med strÃ¤ngar.
 
 			SetUpNextRound();
 		}
