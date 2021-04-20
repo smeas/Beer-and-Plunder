@@ -4,9 +4,11 @@ using Vikings;
 namespace Interactables {
 	public class Chair : MonoBehaviour {
 		[SerializeField] private Transform sitPoint;
+		[SerializeField] private Transform dismountPoint;
 
-		public Viking SittingViking { get; set; }
+		public Viking SittingViking { get; private set; }
 		public Transform SitPivot => sitPoint != null ? sitPoint : transform;
+		public Transform DismountPoint => dismountPoint;
 
 		public void OnVikingTakeChair(Viking viking) {
 			if (SittingViking != null)
