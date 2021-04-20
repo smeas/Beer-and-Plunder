@@ -65,6 +65,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
   beingSeatedHighlightPrefab: {fileID: 5559515752884507063, guid: fdb61ac553e38354c8810b736ec885b0, type: 3}
+  bodyMeshRenderer: {fileID: 308958180780834383}
+  normalMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  desiringMaterial: {fileID: 2100000, guid: c56b477978f37814e9cd75e7203e36ac, type: 2}
 --- !u!195 &4565282245141147248
 NavMeshAgent:
   m_ObjectHideFlags: 0

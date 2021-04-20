@@ -14,5 +14,7 @@ namespace Interactables.Beers {
 		}
 
 		public void EndUse() { }
+
+		
 	}
 }
