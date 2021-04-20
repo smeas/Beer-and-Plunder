@@ -51,11 +51,17 @@ namespace Menu {
 			playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 		}
 
-		private void HandleOnStartGame(PlayerInputHandler playerInputHandler) {
+		private void HandleOnStartGame() {
 
 			playerManager.PlayerJoined -= HandleOnPlayerJoined;
 			playerManager.PlayerLeft -= HandleOnPlayerLeft;
-			playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
+
+			foreach (PlayerSlotObject playerSlot in playerSlots) {
+				if (playerSlot.IsTaken) {
+					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
+					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
+				}
+			}
 
 			Scenes.SceneLoadManager.Instance.LoadGame();
 		}
