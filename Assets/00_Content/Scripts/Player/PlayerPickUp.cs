@@ -18,7 +18,7 @@ namespace Player {
 
 		public PickUp PickedUpItem => pickedUpItem;
 
-		private void Start() {
+		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
 		}
 

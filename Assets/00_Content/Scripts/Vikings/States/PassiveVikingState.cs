@@ -6,7 +6,7 @@
 		public override VikingState Update() {
 			viking.Stats.Decline();
 
-			if (viking.Stats.Mood < 50)
+			if (viking.Stats.Mood < viking.Data.desiringMoodThreshold)
 				return new DesiringVikingState(viking);
 
 			return this;

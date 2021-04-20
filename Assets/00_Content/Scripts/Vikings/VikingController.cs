@@ -1,16 +1,16 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Rounds;
 using UnityEngine;
 using Utilities;
-using Random = UnityEngine.Random;
 
 namespace Vikings {
 	public class VikingController : SingletonBehaviour<VikingController> {
 		[SerializeField] private Viking vikingPrefab;
-		[SerializeField] private Transform[] spawnPoints;
+		[SerializeField] private int maxVikings = 10;
 		[SerializeField] private Transform exitPoint;
+		[SerializeField] private QueueController queueController;
 
-		private Viking[] spawnedVikings;
+		private List<Viking> vikings = new List<Viking>();
 		private float spawnDelay = 1f;
 		private float spawnVariance;
 		private float spawnTimer;
@@ -18,10 +18,6 @@ namespace Vikings {
 		public bool CanSpawn { get; set; } = true;
 		public VikingScaling StatScaling { get; set; } = new VikingScaling();
 		public Transform ExitPoint => exitPoint;
-
-		private void Start() {
-			spawnedVikings = new Viking[spawnPoints.Length];
-		}
 
 		private void Update() {
 			if (!CanSpawn) return;
@@ -35,32 +31,23 @@ namespace Vikings {
 		}
 
 		private void SpawnViking() {
-			int index = GetSpawnIndex();
+			if (vikings.Count >= maxVikings) return;
+			if (queueController != null && queueController.QueueSize >= queueController.QueueCapacity) return;
 
-			if (index == -1) return;
-
-			Vector3 position = spawnPoints[index].position;
-			Viking viking = Instantiate(vikingPrefab, position, Quaternion.identity, transform);
+			Viking viking = Instantiate(vikingPrefab, transform);
 			viking.SetScaling(StatScaling);
-			spawnedVikings[index] = viking;
-
 			viking.LeaveTavern += OnLeaveTavern;
-		}
 
-		private int GetSpawnIndex() {
-			for (int i = 0; i < spawnedVikings.Length; i++) {
-				if (spawnedVikings[i] == null)
-					return i;
-			}
+			vikings.Add(viking);
 
-			return -1;
+			if (queueController != null)
+				queueController.AddToQueue(viking);
 		}
 
 		private void OnLeaveTavern(Viking sender) {
-			int index = Array.IndexOf(spawnedVikings, sender);
-			if (index == -1) return;
+			bool removed = vikings.Remove(sender);
+			Debug.Assert(removed, "Known viking left");
 
-			spawnedVikings[index] = null;
 			Destroy(sender.gameObject);
 		}
 

@@ -11,7 +11,7 @@ namespace Player {
 
 		private Interactable currentInteractable;
 
-		private void Start() {
+		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
 			playerPickUp = GetComponent<PlayerPickUp>();
 			playerSteward = playerRoot.GetComponent<PlayerSteward>();
