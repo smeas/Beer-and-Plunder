@@ -18,6 +18,7 @@ namespace Rounds {
 		private ScoreCard scoreCard;
 		private float roundTimer;
 		private int currentRound = 1;
+		private bool hasWon;
 
 		public event Action OnRoundOver;
 
@@ -35,12 +36,15 @@ namespace Rounds {
 		}
 
 		private void Update() {
+			if (hasWon) return;
+
 			roundTimer = Mathf.Max(0, roundTimer - Time.deltaTime);
 
 			if (roundTimer <= 0) RoundWon();
 		}
 
 		private void RoundWon() {
+			hasWon = true;
 			OnRoundOver?.Invoke();
 
 			// TODO: Wait for all vikings to leave before continuing.
@@ -54,8 +58,8 @@ namespace Rounds {
 			}
 
 			ScalingData difficulty = playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
-				? PlayerManager.Instance.NumPlayers - 1
-				: 0];
+				                                            ? PlayerManager.Instance.NumPlayers - 1
+				                                            : 0];
 
 			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
@@ -76,7 +80,7 @@ namespace Rounds {
 		private void HandleOnNextRound() {
 			vikingController.CanSpawn = true;
 
-			foreach ( PlayerComponent player in PlayerManager.Instance.Players) {
+			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
 				playerInput.SwitchCurrentActionMap("Game");
 			}
@@ -85,17 +89,18 @@ namespace Rounds {
 		}
 
 		private void SetUpNextRound() {
-		currentRound++;
-		SendNextDifficulty();
-		roundTimer = roundDuration;
+			hasWon = false;
+			currentRound++;
+			SendNextDifficulty();
+			roundTimer = roundDuration;
 		}
 
 		private void HandleOnTavernDestroyed() {
-		throw new System.NotImplementedException();
+			throw new System.NotImplementedException();
 		}
 
 		private void HandleOnTavernBankrupt() {
-		throw new System.NotImplementedException();
+			throw new System.NotImplementedException();
 		}
 	}
 }
