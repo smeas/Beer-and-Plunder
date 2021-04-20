@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6367915420586774654
 Transform:
   m_ObjectHideFlags: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vikingPrefab: {fileID: -1088289121635362696, guid: c9d8d008988bb01499961b80b5fc7950, type: 3}
-  tables: []
+  spawnPoints: []

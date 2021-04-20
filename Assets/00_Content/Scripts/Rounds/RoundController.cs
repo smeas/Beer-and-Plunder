@@ -60,31 +60,34 @@ namespace Rounds {
 
 			//might need to turn of some sort of input or components here.
 			//switch some sort of input to ui thing-y here...
-			//also, disable the vikingController I think?
 
-			vikingController.gameObject.SetActive(false);
+			vikingController.CanSpawn = false;
+			int i = 0;
 
+			PlayerManager.Instance.Players[i].GetComponent
 		}
-
+		//maybe I should put a comment here, seems like Jon felt that, to explain, so I can explain how this is accessed?
 		private void HandleOnNextRound() {
-			vikingController.gameObject.SetActive(true);
+			vikingController.CanSpawn = true;
+
+			//få tag spelaren, få tag på inputmanager, ge en sträng som heter UI.
+			//hämta från PlayerManager, alla spelare, sen, var för sig stäng av/sät på deras input, byt den, med strängar.
 
 			SetUpNextRound();
-			//turn on components input etc again.
 		}
-		
+
 		private void SetUpNextRound() {
-			currentRound++;
-			SendNextDifficulty();
-			roundTimer = roundDuration;
+		currentRound++;
+		SendNextDifficulty();
+		roundTimer = roundDuration;
 		}
 
 		private void HandleOnTavernDestroyed() {
-			throw new System.NotImplementedException();
+		throw new System.NotImplementedException();
 		}
 
 		private void HandleOnTavernBankrupt() {
-			throw new System.NotImplementedException();
+		throw new System.NotImplementedException();
 		}
 	}
 }
