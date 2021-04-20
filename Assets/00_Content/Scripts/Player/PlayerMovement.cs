@@ -36,6 +36,10 @@ namespace Player {
 		}
 
 		private (Vector3 forward, Vector3 right) GetCameraRelativeMovementDirections() {
+
+			if(mainCamera == null)
+				mainCamera = Camera.main;
+
 			Transform cameraTransform = mainCamera.transform;
 
 			Vector3 forward = cameraTransform.forward;

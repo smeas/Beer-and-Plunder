@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Menu {
 
@@ -11,9 +12,11 @@ namespace Menu {
     {
 		[SerializeField] List<PlayerSlotObject> playerSlots;
 
+		private PlayerManager playerManager;
+
 		private void Start() {
 
-			PlayerManager playerManager = PlayerManager.Instance;
+			playerManager = PlayerManager.Instance;
 			playerManager.PlayerJoined += HandleOnPlayerJoined;
 			playerManager.PlayerLeft += HandleOnPlayerLeft;
 		}
@@ -48,7 +51,12 @@ namespace Menu {
 			playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 		}
 
-		private void HandleOnStartGame() {
+		private void HandleOnStartGame(PlayerInputHandler playerInputHandler) {
+
+			playerManager.PlayerJoined -= HandleOnPlayerJoined;
+			playerManager.PlayerLeft -= HandleOnPlayerLeft;
+			playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
+
 			Scenes.SceneLoadManager.Instance.LoadGame();
 		}
 	}
