@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6574572872366122977, guid: c843c8887a75690418e50db5949b323a, type: 3}
+      propertyPath: m_AllowJoining
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c843c8887a75690418e50db5949b323a, type: 3}
 --- !u!1001 &437510847
@@ -192,6 +196,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1098889012932391060, guid: d0097f6e83ffbb14d9490ddb3ff9fc1b, type: 3}
     - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Id
+      value: e459f881-d5e2-4e1d-9f07-d254449993f8
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_Id
+      value: 11233055-3184-412c-99a1-b41b20564412
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputActionAsset
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: d0097f6e83ffbb14d9490ddb3ff9fc1b, type: 3}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Name
+      value: Input Action
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_Name
+      value: Input
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: pourTimeMultiplier
       value: 65
       objectReference: {fileID: 0}
@@ -199,6 +223,58 @@ PrefabInstance:
       propertyPath: inputActionInteract
       value: 
       objectReference: {fileID: 1098889012932391060, guid: d0097f6e83ffbb14d9490ddb3ff9fc1b, type: 3}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Actions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Bindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Actions.Array.data[0].m_Id
+      value: d67aebd1-6b8c-4dc4-902f-9df5ae0c5cbe
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Bindings.Array.data[0].m_Id
+      value: a82ef11a-6fff-4218-b9f7-a153e44a94bb
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Actions.Array.data[0].m_Name
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Actions.Array.data[0].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Bindings.Array.data[0].m_Action
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[0].m_Id
+      value: a41e915e-cf8f-4873-8c02-1da95d77c113
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[1].m_Id
+      value: a43fd249-db79-49c1-9009-c5c43e329a7d
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: InputAction.m_Actions.Array.data[0].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Input
+      objectReference: {fileID: 0}
+    - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Input
+      objectReference: {fileID: 0}
     - target: {fileID: 894439518, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: m_Camera
       value: 

@@ -10,12 +10,12 @@ namespace Interactables {
 
 		[SerializeField] private Transform itemGrabTransform;
 		[SerializeField] private LayerMask itemSlotLayer;
+		[SerializeField] private Collider objectCollider;
 
-		private Collider coll;
 		private MeshFilter meshFilter;
 
 		public void Start() {
-			coll = GetComponentInChildren<Collider>();
+			objectCollider = GetComponentInChildren<Collider>();
 			meshFilter = GetComponentInChildren<MeshFilter>();
 		}
 
@@ -40,7 +40,7 @@ namespace Interactables {
 			}
 
 			transform.rotation = Quaternion.identity;
-			coll.gameObject.SetActive(true);
+			objectCollider.gameObject.SetActive(true);
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
@@ -53,7 +53,7 @@ namespace Interactables {
 			transform.localPosition = offset;
 			transform.localRotation = Quaternion.identity;
 
-			coll.gameObject.SetActive(false);
+			objectCollider.gameObject.SetActive(false);
 		}
 	}
 }
