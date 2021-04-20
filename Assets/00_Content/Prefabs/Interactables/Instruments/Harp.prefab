@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2575186446914779540}
   - component: {fileID: 7775090042101796330}
   - component: {fileID: 8083289329983677875}
+  - component: {fileID: 25422734938162740}
   m_Layer: 0
   m_Name: Harp
   m_TagString: Untagged
@@ -159,8 +160,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemGrabTransform: {fileID: 0}
-  collider: {fileID: 3271895145173820117}
+  itemSlotLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  objectCollider: {fileID: 3271895145173820117}
   instrumentData: {fileID: 11400000, guid: 6e0387dac9e4ae3409052a5d2dc8043c, type: 2}
+--- !u!135 &25422734938162740
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421677980036665821}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6088990898338463569
 GameObject:
   m_ObjectHideFlags: 0
