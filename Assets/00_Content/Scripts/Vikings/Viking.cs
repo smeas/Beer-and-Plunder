@@ -18,6 +18,7 @@ namespace Vikings {
 		private VikingState state;
 		private VikingScaling statScaling;
 
+		public VikingData Data => vikingData;
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
 		public int Desires { get; set; }

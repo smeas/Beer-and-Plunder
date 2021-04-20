@@ -7,6 +7,7 @@ namespace Interactables {
 		[SerializeField] private Transform dismountPoint;
 
 		public Viking SittingViking { get; private set; }
+		public bool IsOccupied => SittingViking != null;
 		public Transform SitPivot => sitPoint != null ? sitPoint : transform;
 		public Transform DismountPoint => dismountPoint;
 
