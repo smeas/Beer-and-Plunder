@@ -30,12 +30,6 @@ namespace Player {
 			interactableHighlight = Instantiate(interactableHighlightPrefab);
 			pickUpHighlight.SetActive(false);
 			interactableHighlight.SetActive(false);
-
-			playerPickUp.OnItemPickedUp += HandleOnItemPickedUp;
-		}
-
-		private void HandleOnItemPickedUp(PickUp item) {
-			pickUpsInRange.Remove(item);
 		}
 
 		private void FixedUpdate() {
