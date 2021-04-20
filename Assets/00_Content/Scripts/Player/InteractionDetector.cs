@@ -16,8 +16,8 @@ namespace Player {
 		private GameObject pickUpHighlight;
 		private GameObject interactableHighlight;
 
-		private readonly List<PickUp> pickUpsInRange = new List<PickUp>();
-		private readonly List<Interactable> interactablesInRange = new List<Interactable>();
+		private List<PickUp> pickUpsInRange = new List<PickUp>();
+		private List<Interactable> interactablesInRange = new List<Interactable>();
 
 		public PickUp ClosestPickUp { get; private set; }
 		public Interactable ClosestInteractable { get; private set; }
@@ -30,6 +30,12 @@ namespace Player {
 			interactableHighlight = Instantiate(interactableHighlightPrefab);
 			pickUpHighlight.SetActive(false);
 			interactableHighlight.SetActive(false);
+
+			playerPickUp.OnItemPickedUp += HandleOnItemPickedUp;
+		}
+
+		private void HandleOnItemPickedUp(PickUp item) {
+			pickUpsInRange.Remove(item);
 		}
 
 		private void FixedUpdate() {
@@ -39,19 +45,20 @@ namespace Player {
 
 		private void OnTriggerEnter(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Add(FindComponent<PickUp>(other));
+
+				pickUpsInRange.Add(other.GetComponentInParent<PickUp>());
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Add(FindComponent<Interactable>(other));
+				interactablesInRange.Add(other.GetComponentInParent<Interactable>());
 			}
 		}
 
 		private void OnTriggerExit(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
-				pickUpsInRange.Remove(FindComponent<PickUp>(other));
+				pickUpsInRange.Remove(other.GetComponentInParent<PickUp>());
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Remove(FindComponent<Interactable>(other));
+				interactablesInRange.Remove(other.GetComponentInParent<Interactable>());
 			}
 		}
 
@@ -109,13 +116,6 @@ namespace Player {
 
 		private void ClearInteractableHighlight() {
 			interactableHighlight.SetActive(false);
-		}
-
-		private static T FindComponent<T>(Collider other) where T : Component {
-			if (other.attachedRigidbody != null)
-				return other.attachedRigidbody.GetComponent<T>();
-
-			return other.GetComponent<T>();
 		}
 	}
 }
