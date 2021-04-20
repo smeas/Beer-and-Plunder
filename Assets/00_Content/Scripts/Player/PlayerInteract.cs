@@ -9,7 +9,7 @@ namespace Player {
 		private PlayerPickUp playerPickUp;
 		private PlayerSteward playerSteward;
 
-		private void Start() {
+		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
 			playerPickUp = GetComponent<PlayerPickUp>();
 			playerSteward = playerRoot.GetComponent<PlayerSteward>();
