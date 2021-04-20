@@ -58,9 +58,6 @@ namespace Rounds {
 			scoreCard.UpdateScoreCard(currentRound);
 			scoreCard.gameObject.SetActive(true);
 
-			//might need to turn of some sort of input or components here.
-			//switch some sort of input to ui thing-y here...
-
 			vikingController.CanSpawn = false;
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
@@ -68,12 +65,14 @@ namespace Rounds {
 				playerInput.SwitchCurrentActionMap("UI");
 			}
 		}
-		//maybe I should put a comment here, seems like Jon felt that, to explain, so I can explain how this is accessed?
+
 		private void HandleOnNextRound() {
 			vikingController.CanSpawn = true;
 
-			//få tag spelaren, få tag på inputmanager, ge en sträng som heter UI.
-			//hämta från PlayerManager, alla spelare, sen, var för sig stäng av/sät på deras input, byt den, med strängar.
+			foreach ( PlayerComponent player in PlayerManager.Instance.Players) {
+				PlayerInput playerInput = player.GetComponent<PlayerInput>();
+				playerInput.SwitchCurrentActionMap("Game");
+			}
 
 			SetUpNextRound();
 		}
