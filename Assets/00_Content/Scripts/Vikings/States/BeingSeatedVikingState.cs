@@ -3,7 +3,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Vikings {
+namespace Vikings.States {
 	/// <summary>
 	/// State for when the viking is being seated by a player - the player is leading the viking to their chair.
 	/// </summary>

@@ -2,7 +2,7 @@ using Interactables;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Vikings {
+namespace Vikings.States {
 	/// <summary>
 	/// State for when the viking has been assigned a chair and is going to sit on it.
 	/// </summary>

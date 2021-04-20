@@ -1,7 +1,7 @@
 ﻿using Interactables;
 using UnityEngine;
 
-namespace Vikings {
+namespace Vikings.States {
 	public class DesiringVikingState : VikingState {
 		public DesiringVikingState(Viking viking) : base(viking) {
 			viking.bodyMeshRenderer.material = viking.desiringMaterial;
@@ -23,6 +23,11 @@ namespace Vikings {
 
 		public override VikingState Interact(GameObject player, PickUp item) {
 			viking.Stats.Reset();
+			viking.Desires--;
+
+			if (viking.Desires <= 0)
+				return new LeavingVikingState(viking);
+
 			return new PassiveVikingState(viking);
 		}
 	}
