@@ -1,11 +1,13 @@
+using System;
 using Player;
 using Taverns;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utilities;
 using Vikings;
 
 namespace Rounds {
-	public class RoundController : MonoBehaviour {
+	public class RoundController : SingletonBehaviour<RoundController> {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private Tavern tavern;
 		[SerializeField] private VikingController vikingController;
@@ -16,6 +18,8 @@ namespace Rounds {
 		private ScoreCard scoreCard;
 		private float roundTimer;
 		private int currentRound = 1;
+
+		public event Action OnRoundOver;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
@@ -37,6 +41,9 @@ namespace Rounds {
 		}
 
 		private void RoundWon() {
+			OnRoundOver?.Invoke();
+
+			// TODO: Wait for all vikings to leave before continuing.
 			ShowScoreCard();
 		}
 
@@ -50,7 +57,7 @@ namespace Rounds {
 				? PlayerManager.Instance.NumPlayers - 1
 				: 0];
 
-			vikingController.SpawnDelay = difficulty.ScaledSpawnDelay(currentRound);
+			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
 

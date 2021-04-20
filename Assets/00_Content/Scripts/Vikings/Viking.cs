@@ -1,53 +1,88 @@
-﻿using Rounds;
+using Interactables;
+using Rounds;
 using UnityEngine;
+using Vikings.States;
 
 namespace Vikings {
 	public delegate void VikingLeaving(Viking sender);
 
-	public class Viking : MonoBehaviour {
+	public class Viking : Interactable {
 		[SerializeField] private VikingData vikingData;
+		[SerializeField] public GameObject beingSeatedHighlightPrefab;
+		[SerializeField] public MeshRenderer bodyMeshRenderer;
+		[SerializeField] public Material normalMaterial;
+		[SerializeField] public Material desiringMaterial;
 
 		private VikingState state;
 		private VikingScaling statScaling;
-		private int desires;
 
 		public VikingStats Stats { get; private set; }
+		public Chair CurrentChair { get; set; }
+		public int Desires { get; set; }
+
 		public event VikingLeaving LeaveTavern;
 
 		private void Start() {
 			// statScaling is normally provided by the viking manager
 			statScaling ??= new VikingScaling();
 
-			state = new PassiveVikingState(this);
+			ChangeState(new WaitingForSeatVikingState(this));
 			Stats = new VikingStats(vikingData, statScaling);
-			desires = 2;
+			Desires = 2;
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
 		}
 
 		private void Update() {
-			state = state.Update();
+			ChangeState(state.Update());
+		}
 
-			if (desires > 0 && Stats.Mood < 25) {
-				if (TryGiveItem()) {
-					desires--;
-					Stats.Reset();
-				}
-			}
-			
-			if (desires <= 0)
-				Leave();
+		private bool ChangeState(VikingState newState) {
+			if (newState == state)
+				return false;
+
+			do {
+				state?.Exit();
+				state = newState;
+				newState = state.Enter();
+			} while (newState != state);
+
+			return true;
+		}
+
+		private void HandleOnRoundOver() {
+			// Leave when the round is over.
+			if (!(state is LeavingVikingState))
+				ChangeState(new LeavingVikingState(this));
 		}
 
 		public void SetScaling(VikingScaling scaling) {
 			statScaling = scaling;
 		}
 
-		public bool TryGiveItem() {
-			// Returns true if the given item changes the state
-			return state != (state = state.GiveItem());
+		public bool TryTakeSeat(Chair chair) {
+			return ChangeState(state.TakeSeat(chair));
 		}
 
-		public void Leave() {
+		public void FinishLeaving() {
 			LeaveTavern?.Invoke(this);
+
+			if (CurrentChair != null) {
+				CurrentChair.OnVikingLeaveChair(this);
+				CurrentChair = null;
+			}
+
+			if (VikingController.Instance == null)
+				Destroy(gameObject);
+		}
+
+		public override void Interact(GameObject player, PickUp item) {
+			ChangeState(state.Interact(player, item));
+		}
+
+		public override bool CanInteract(GameObject player, PickUp item) {
+			return state.CanInteract(player, item);
 		}
 	}
 }

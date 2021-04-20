@@ -12,6 +12,9 @@ namespace Rounds {
 		[SerializeField, Min(0), Tooltip("Should be lower than InitialSpawnDelay")]
 		private float minimumSpawnDelay = 0f;
 
+		[SerializeField, Min(0), Tooltip("Excluded from initial and minimum spawnDelay")]
+		public float spawnDelayVariance;
+
 		[SerializeField, Min(0), Header("StartingMood")]
 		private float initialStartingMoodMultiplier = 1f;
 
