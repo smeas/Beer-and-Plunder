@@ -9,12 +9,13 @@ namespace Vikings.States {
 	public class WaitingForSeatVikingState : VikingState {
 		public WaitingForSeatVikingState(Viking viking) : base(viking) { }
 
-		public override VikingState Update() {
-			return this;
+		public override void Exit() {
+			viking.FinishQueueing();
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return player.GetComponent<PlayerSteward>().Follower == null;
+			return viking.QueuePosition == 0
+				&& player.GetComponent<PlayerSteward>().Follower == null;
 		}
 
 		public override VikingState Interact(GameObject player, PickUp item) {

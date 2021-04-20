@@ -6,6 +6,8 @@ using Vikings.States;
 namespace Vikings {
 	public delegate void VikingLeaving(Viking sender);
 
+	public delegate void VikingLeavingQueue(Viking sender);
+
 	public class Viking : Interactable {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
@@ -19,8 +21,10 @@ namespace Vikings {
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
 		public int Desires { get; set; }
+		public int QueuePosition { get; set; }
 
 		public event VikingLeaving LeaveTavern;
+		public event VikingLeavingQueue LeaveQueue;
 
 		private void Start() {
 			// statScaling is normally provided by the viking manager
@@ -75,6 +79,10 @@ namespace Vikings {
 
 			if (VikingController.Instance == null)
 				Destroy(gameObject);
+		}
+
+		public void FinishQueueing() {
+			LeaveQueue?.Invoke(this);
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
