@@ -101,20 +101,32 @@ namespace Player {
 		}
 
 		private void HighlightPickUp(PickUp pickUp) {
+			if (pickUpHighlight == null)
+				pickUpHighlight = Instantiate(pickUpHighlightPrefab);
+
 			pickUpHighlight.transform.position = pickUp.transform.position + Vector3.up * 2;
 			pickUpHighlight.SetActive(true);
 		}
 
 		private void HighlightInteractable(Interactable interactable) {
+			if (interactableHighlight == null)
+				interactableHighlight = Instantiate(interactableHighlightPrefab);
+
 			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 2;
 			interactableHighlight.SetActive(true);
 		}
 
 		private void ClearPickUpHighlight() {
+			if (pickUpHighlight == null)
+				pickUpHighlight = Instantiate(pickUpHighlightPrefab);
+
 			pickUpHighlight.SetActive(false);
 		}
 
 		private void ClearInteractableHighlight() {
+			if (interactableHighlight == null)
+				interactableHighlight = Instantiate(interactableHighlightPrefab);
+
 			interactableHighlight.SetActive(false);
 		}
 	}

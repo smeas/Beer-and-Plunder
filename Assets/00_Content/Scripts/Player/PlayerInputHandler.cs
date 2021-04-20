@@ -11,6 +11,7 @@ namespace Player {
 		[SerializeField] private UnityEvent onDrop;
 		[SerializeField] private UnityEvent onInteract;
 		[SerializeField] private UnityEvent onEndInteract;
+		[SerializeField] private UnityEvent onStart;
 
 		public UnityEvent<Vector2> OnMove => onMove;
 		public UnityEvent OnUse => onUse;
@@ -19,6 +20,7 @@ namespace Player {
 		public UnityEvent OnDrop => onDrop;
 		public UnityEvent OnInteract => onInteract;
 		public UnityEvent OnEndInteract => onEndInteract;
+		public UnityEvent OnStart => onStart;
 
 		private PlayerInput playerInput;
 
@@ -70,6 +72,12 @@ namespace Player {
 				onInteract.Invoke();
 			else if (ctx.canceled)
 				onEndInteract.Invoke();
+		}
+
+		public void OnStartInput(InputAction.CallbackContext ctx) {
+			if (!ShouldExecuteEvents) return;
+			if (ctx.performed)
+				onStart.Invoke();
 		}
 
 		#endregion
