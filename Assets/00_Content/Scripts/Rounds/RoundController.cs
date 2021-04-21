@@ -18,7 +18,7 @@ namespace Rounds {
 		private ScoreCard scoreCard;
 		private float roundTimer;
 		private int currentRound = 1;
-		private bool hasWon;
+		private bool isRoundActive;
 
 		public event Action OnRoundOver;
 
@@ -36,7 +36,7 @@ namespace Rounds {
 		}
 
 		private void Update() {
-			if (hasWon) return;
+			if (isRoundActive) return;
 
 			roundTimer = Mathf.Max(0, roundTimer - Time.deltaTime);
 
@@ -44,7 +44,7 @@ namespace Rounds {
 		}
 
 		private void RoundWon() {
-			hasWon = true;
+			isRoundActive = true;
 			OnRoundOver?.Invoke();
 
 			// TODO: Wait for all vikings to leave before continuing.
@@ -85,7 +85,7 @@ namespace Rounds {
 				playerInput.SwitchCurrentActionMap("Game");
 			}
 
-			hasWon = false;
+			isRoundActive = false;
 			currentRound++;
 			SendNextDifficulty();
 			roundTimer = roundDuration;
