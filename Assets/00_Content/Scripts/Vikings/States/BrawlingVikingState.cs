@@ -1,4 +1,5 @@
-﻿using Interactables;
+﻿using System.Linq;
+using Interactables;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,21 +11,14 @@ namespace Vikings.States {
 		private Table targetTable;
 		private NavMeshAgent navMeshAgent;
 
-		private const float AttackTableDuration = 5f;
-		private float attackTableTimer;
+		private float attackTimer;
 
 		private bool IsMoving => navMeshAgent.desiredVelocity.sqrMagnitude != 0;
 
-		public BrawlingVikingState(Viking viking, Table target = null) : base(viking) {
+		public BrawlingVikingState(Viking viking, Table targetTable) : base(viking) {
+			this.targetTable = targetTable;
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();
 			navMeshAgent.enabled = true;
-
-			if (target != null)
-				this.targetTable = target;
-			else
-				SetNewTarget();
-
-			attackTableTimer = AttackTableDuration;
 		}
 
 		public override VikingState Enter() {
@@ -44,11 +38,25 @@ namespace Vikings.States {
 
 			if (IsMoving) return this;
 
-			// TODO: Damage and break table instead of timer
-			attackTableTimer -= Time.deltaTime;
-			if (attackTableTimer <= 0) {
+			attackTimer -= Time.deltaTime;
+			if (attackTimer <= 0) {
+				targetTable.Damage(viking.Data.damage);
+				attackTimer = viking.Data.attackRate;
+			}
+
+			if (targetTable.IsDestroyed) {
 				MakeTableBrawl(targetTable);
-				SetNewTarget();
+
+				Table[] possibleTargets = Table.AllTables.Where(x => !x.IsDestroyed).ToArray();
+
+				// The viking leaves if there are no intact tables, this should trigger a game over
+				if (possibleTargets.Length == 0) return new LeavingVikingState(viking);
+
+				int index = Random.Range(0, possibleTargets.Length);
+				targetTable = possibleTargets[index];
+
+				navMeshAgent.SetDestination(targetTable.transform.position);
+				attackTimer = viking.Data.attackRate;
 			}
 
 			return this;
@@ -59,17 +67,6 @@ namespace Vikings.States {
 				if (chair.SittingViking != null)
 					chair.SittingViking.JoinBrawl();
 			}
-		}
-
-		private void SetNewTarget() {
-			if (Table.AllTables.Count < 1) return;
-
-			// Check if table is already destroyed??
-			int index = Random.Range(0, Table.AllTables.Count);
-			targetTable = Table.AllTables[index];
-
-			navMeshAgent.SetDestination(targetTable.transform.position);
-			attackTableTimer = AttackTableDuration;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {

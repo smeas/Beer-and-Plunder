@@ -81,7 +81,7 @@ namespace Vikings {
 		}
 
 		public void JoinBrawl() {
-			ChangeState(new BrawlingVikingState(this));
+			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
 		}
 
 		public void FinishLeaving() {
@@ -107,6 +107,5 @@ namespace Vikings {
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return state.CanInteract(player, item);
 		}
-
 	}
 }
