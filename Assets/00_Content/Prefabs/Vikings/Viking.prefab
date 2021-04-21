@@ -69,6 +69,7 @@ MonoBehaviour:
   bodyMeshRenderer: {fileID: 308958180780834383}
   normalMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   desiringMaterial: {fileID: 2100000, guid: c56b477978f37814e9cd75e7203e36ac, type: 2}
+  brawlingMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
 --- !u!195 &4565282245141147248
 NavMeshAgent:
   m_ObjectHideFlags: 0

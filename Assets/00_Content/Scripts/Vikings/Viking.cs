@@ -15,6 +15,7 @@ namespace Vikings {
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
 		[SerializeField] public Material desiringMaterial;
+		[SerializeField] public Material brawlingMaterial;
 
 		private VikingState state;
 		private VikingScaling statScaling;
