@@ -20,6 +20,11 @@ namespace Rounds {
 		private int currentRound = 1;
 		private bool isRoundActive = true;
 
+		public ScalingData CurrentDifficulty =>
+			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
+			? PlayerManager.Instance.NumPlayers - 1
+			: 0];
+
 		public event Action OnRoundOver;
 
 		private void Start() {
@@ -57,9 +62,7 @@ namespace Rounds {
 				return;
 			}
 
-			ScalingData difficulty = playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
-														? PlayerManager.Instance.NumPlayers - 1
-														: 0];
+			ScalingData difficulty = CurrentDifficulty;
 
 			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
