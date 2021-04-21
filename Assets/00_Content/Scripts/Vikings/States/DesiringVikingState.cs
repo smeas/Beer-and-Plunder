@@ -19,7 +19,7 @@ namespace Vikings.States {
 			viking.Stats.Decline();
 
 			if (viking.Stats.Mood < viking.Data.brawlMoodThreshold && viking.Data.canStartBrawl)
-				return new BrawlingVikingState(viking);
+				return new BrawlingVikingState(viking, viking.CurrentChair.Table);
 
 			return this;
 		}
