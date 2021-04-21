@@ -1,4 +1,5 @@
 using System;
+using Interactables;
 using Player;
 using Taverns;
 using UnityEngine;
@@ -92,6 +93,10 @@ namespace Rounds {
 			currentRound++;
 			SendNextDifficulty();
 			roundTimer = roundDuration;
+
+			foreach (Table table in Table.AllTables) {
+				table.Repair();
+			}
 		}
 
 		private void HandleOnTavernDestroyed() {
