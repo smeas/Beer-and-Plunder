@@ -27,14 +27,22 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
-			if (!navMeshAgent.hasPath) {
-				Debug.LogWarning("Viking has no exit path!", viking);
+			if (navMeshAgent.pathPending)
+				return this;
+
+			Debug.Assert(navMeshAgent.hasPath);
+
+			if (navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete) {
+				Debug.LogWarning("Viking has no exit path or is blocked!", viking);
 				// What should we do here? Forcing a leave for now to avoid a softlock.
 				viking.FinishLeaving();
+				return new NullVikingState(viking);
 			}
 
-			if (navMeshAgent.desiredVelocity.sqrMagnitude == 0f)
+			if (navMeshAgent.desiredVelocity.sqrMagnitude == 0f) {
 				viking.FinishLeaving();
+				return new NullVikingState(viking);
+			}
 
 			return this;
 		}
