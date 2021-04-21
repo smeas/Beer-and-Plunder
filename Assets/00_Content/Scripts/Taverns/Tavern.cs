@@ -17,8 +17,8 @@ namespace Taverns {
 		private float health;
 		private float money;
 
-		public event Action onBankrupcy;
-		public event Action onDestroyed;
+		public event Action OnBankrupcy;
+		public event Action OnDestroyed;
 
 		public float Health {
 			get => health;
@@ -44,7 +44,7 @@ namespace Taverns {
 			if (IsBankrupt) {
 				Debug.Log("game over, you are bankrupt!");
 
-				onBankrupcy?.Invoke();
+				OnBankrupcy?.Invoke();
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Taverns {
 			if (IsDestroyed) {
 				Debug.Log("game over, your tavern is destroyed!");
 
-				onDestroyed?.Invoke();
+				OnDestroyed?.Invoke();
 			}
 		}
 
