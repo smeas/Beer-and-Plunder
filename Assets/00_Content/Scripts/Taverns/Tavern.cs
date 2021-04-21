@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 
 namespace Taverns {
-	public class Tavern : MonoBehaviour {
+	public class Tavern : SingletonBehaviour<Tavern> {
 
 		[SerializeField] private int maxSittingGuests;
 		[SerializeField] private float maxHealth = 100;

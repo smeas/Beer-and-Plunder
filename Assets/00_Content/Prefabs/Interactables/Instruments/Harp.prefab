@@ -159,6 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemGrabTransform: {fileID: 0}
+  collider: {fileID: 3271895145173820117}
   instrumentData: {fileID: 11400000, guid: 6e0387dac9e4ae3409052a5d2dc8043c, type: 2}
 --- !u!1 &6088990898338463569
 GameObject:

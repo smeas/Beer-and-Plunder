@@ -9,7 +9,9 @@ namespace Player {
 		private PlayerPickUp playerPickUp;
 		private PlayerSteward playerSteward;
 
-		private void Start() {
+		private Interactable currentInteractable;
+
+		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
 			playerPickUp = GetComponent<PlayerPickUp>();
 			playerSteward = playerRoot.GetComponent<PlayerSteward>();
@@ -22,8 +24,17 @@ namespace Player {
 
 			if (playerSteward.Follower != null && detector.ClosestInteractable is Table table)
 				TryTakeSeatForViking(table);
-			else
+			else {
+
 				detector.ClosestInteractable.Interact(playerRoot, playerPickUp.PickedUpItem);
+				currentInteractable = detector.ClosestInteractable;
+			}
+		}
+
+		public void EndInteract() {
+			if (currentInteractable != null) {
+				currentInteractable.CancelInteraction();
+			}
 		}
 
 		private void TryTakeSeatForViking(Table table) {

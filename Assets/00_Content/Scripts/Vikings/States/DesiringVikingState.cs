@@ -25,6 +25,8 @@ namespace Vikings.States {
 			viking.Stats.Reset();
 			viking.Desires--;
 
+			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+
 			if (viking.Desires <= 0)
 				return new LeavingVikingState(viking);
 
