@@ -37,7 +37,7 @@ namespace Vikings.States {
 			if (Table.AllTables.Count == 0)
 				return this;
 
-			Table[] freeTables = Table.AllTables.Where(tbl => !tbl.IsFull).ToArray();
+			Table[] freeTables = Table.AllTables.Where(tbl => !tbl.IsFull && !tbl.IsDestroyed).ToArray();
 			if (freeTables.Length == 0)
 				return this;
 
