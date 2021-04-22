@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSittingGuests: 0
-  maxHealth: 100
-  startingHealth: 100
+  maxHealth: 20
+  startingHealth: 20
   startingMoney: 50
   maxMoney: 100

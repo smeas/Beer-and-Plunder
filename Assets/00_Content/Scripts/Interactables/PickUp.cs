@@ -1,6 +1,6 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Linq;
+using Extensions;
 using UnityEngine;
 
 namespace Interactables {
@@ -33,17 +33,17 @@ namespace Interactables {
 				if(slots.Length > 0) {
 					Collider closestSlot = slots.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).First();
 					var itemSlot = closestSlot.gameObject.GetComponent<ItemSlot>();
-					
+
 					if(!itemSlot.HasItemInSlot)
 						transform.position = closestSlot.transform.position;
 				}
 			}
 
-			transform.rotation = Quaternion.identity;
 			objectCollider.enabled = true;
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
+			transform.rotation = Quaternion.identity;
 			transform.SetParent(playerGrabTransform);
 
 			Vector3 offset = Vector3.zero;
