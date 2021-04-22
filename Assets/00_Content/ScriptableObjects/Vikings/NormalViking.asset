@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMood: 65
   moodDeclineRate: 10
+  desiringMoodThreshold: 50
+  impatientMoodThreshold: 45
+  desires:
+  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}

@@ -20,9 +20,10 @@ namespace Vikings {
 		private VikingScaling statScaling;
 
 		public VikingData Data => vikingData;
+		public DesireData[] Desires => vikingData.desires;
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
-		public int Desires { get; set; }
+		public int CurrentDesire { get; set; }
 		public int QueuePosition { get; set; }
 
 		public event VikingLeaving LeaveTavern;
@@ -34,7 +35,6 @@ namespace Vikings {
 
 			ChangeState(new WaitingForSeatVikingState(this));
 			Stats = new VikingStats(vikingData, statScaling);
-			Desires = 2;
 
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
