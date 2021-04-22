@@ -70,6 +70,13 @@ namespace Player {
 			return pickedUpItem == null;
 		}
 
+		public void ConsumeItem() {
+			if (pickedUpItem == null) return;
+
+			Destroy(pickedUpItem.gameObject);
+			pickedUpItem = null;
+		}
+
 		public void OnClosestPickUpChange(PickUp pickUp) { }
 	}
 }

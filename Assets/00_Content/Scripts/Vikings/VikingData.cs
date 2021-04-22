@@ -15,6 +15,9 @@ namespace Vikings {
 		[Tooltip("Threshold for when the viking just takes a table on its own, without waiting for a player to lead them.")]
 		public float impatientMoodThreshold = 45;
 
+		[Tooltip("What desires does this viking have")]
+		public DesireData[] desires;
+
 		[Tooltip("Will this viking be able to start a brawl")]
 		public bool canStartBrawl = true;
 

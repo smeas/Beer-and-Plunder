@@ -1,4 +1,5 @@
 ﻿using Interactables;
+using Player;
 using UnityEngine;
 
 namespace Vikings.States {
@@ -25,16 +26,22 @@ namespace Vikings.States {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return true;
+			if (!(item is IDesirable givenItem)) return false;
+
+			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
+
+			return givenItem.DesireType == viking.Desires[viking.CurrentDesireIndex].type;
 		}
 
 		public override VikingState Interact(GameObject player, PickUp item) {
 			viking.Stats.Reset();
-			viking.Desires--;
+			viking.CurrentDesireIndex++;
+
+			player.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
 
 			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
 
-			if (viking.Desires <= 0)
+			if (viking.CurrentDesireIndex >= viking.Desires.Length)
 				return new LeavingVikingState(viking);
 
 			return new PassiveVikingState(viking);
