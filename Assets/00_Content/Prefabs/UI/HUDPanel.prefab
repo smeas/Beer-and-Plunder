@@ -94,7 +94,6 @@ MonoBehaviour:
   tavernHealthSlider: {fileID: 7352710896936202223}
   tavernMoneyText: {fileID: 7352710896930257508}
   roundTimerText: {fileID: 7352710896079453629}
-  roundController: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
 --- !u!1 &7352710895957610329
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +129,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7352710895957610330
 CanvasRenderer:
@@ -474,7 +473,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -75}
-  m_SizeDelta: {x: 160, y: 20}
+  m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7352710896936202223
 MonoBehaviour:
@@ -635,6 +634,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

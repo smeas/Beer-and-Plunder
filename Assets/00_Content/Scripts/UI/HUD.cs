@@ -4,7 +4,7 @@ using Rounds;
 using Taverns;
 using TMPro;
 
-public class HUDScript : MonoBehaviour {
+public class HUD : MonoBehaviour {
 	[SerializeField] private Slider tavernHealthSlider;
 	[SerializeField] private TMP_Text tavernMoneyText;
 	[SerializeField] private TMP_Text roundTimerText;

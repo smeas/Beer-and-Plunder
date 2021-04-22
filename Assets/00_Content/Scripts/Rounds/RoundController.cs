@@ -10,7 +10,7 @@ namespace Rounds {
 	public class RoundController : SingletonBehaviour<RoundController> {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
-		[SerializeField] private GameObject hUDPrefab;
+		[SerializeField] private GameObject HUDPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 
@@ -21,10 +21,7 @@ namespace Rounds {
 
 		public event Action OnRoundOver;
 
-		public float RoundTimer {
-			get => roundTimer;
-			set { RoundTimer = roundTimer; }
-		}
+		public float RoundTimer => roundTimer;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
