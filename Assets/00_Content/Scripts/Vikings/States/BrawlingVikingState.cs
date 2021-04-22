@@ -16,12 +16,14 @@ namespace Vikings.States {
 		private bool IsMoving => navMeshAgent.desiredVelocity.sqrMagnitude != 0;
 
 		public BrawlingVikingState(Viking viking, Table targetTable) : base(viking) {
+			Debug.Assert(targetTable != null, "Viking is entering a brawl with no target");
 			this.targetTable = targetTable;
-			navMeshAgent = viking.GetComponent<NavMeshAgent>();
-			navMeshAgent.enabled = true;
 		}
 
 		public override VikingState Enter() {
+			navMeshAgent = viking.GetComponent<NavMeshAgent>();
+			navMeshAgent.enabled = true;
+
 			viking.bodyMeshRenderer.material = viking.brawlingMaterial;
 			viking.DismountChair();
 

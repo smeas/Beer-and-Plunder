@@ -24,7 +24,7 @@ namespace Vikings {
 		[Tooltip("How much damage does the viking deal with a single attack")]
 		public float damage = 10f;
 
-		[Tooltip("How long does it take to perform one attack")]
+		[Tooltip("How long does it take to perform one attack, s/attack")]
 		public float attackRate = 1;
 	}
 }
