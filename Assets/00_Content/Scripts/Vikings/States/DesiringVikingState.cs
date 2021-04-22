@@ -1,4 +1,5 @@
 ﻿using Interactables;
+using Player;
 using UnityEngine;
 
 namespace Vikings.States {
@@ -29,6 +30,7 @@ namespace Vikings.States {
 			viking.Stats.Reset();
 			viking.CurrentDesire++;
 
+			player.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
 
 			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
 
