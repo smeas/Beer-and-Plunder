@@ -33,6 +33,9 @@ namespace Rounds {
 		[SerializeField, Min(0), Tooltip("Should be higher than InitialMoodDeclineMultiplier")]
 		private float maximumMoodDeclineMultiplier = 2f;
 
+		[Min(0)]
+		public float tableHealth = 100f;
+
 		#region ScalingCalculations
 
 		/// <summary>

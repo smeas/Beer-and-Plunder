@@ -1,4 +1,5 @@
 using System;
+using Interactables;
 using Player;
 using Taverns;
 using UnityEngine;
@@ -19,6 +20,11 @@ namespace Rounds {
 		private float roundTimer;
 		private int currentRound = 1;
 		private bool isRoundActive = true;
+
+		public ScalingData CurrentDifficulty =>
+			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
+			? PlayerManager.Instance.NumPlayers - 1
+			: 0];
 
 		public event Action OnRoundOver;
 
@@ -57,9 +63,7 @@ namespace Rounds {
 				return;
 			}
 
-			ScalingData difficulty = playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
-														? PlayerManager.Instance.NumPlayers - 1
-														: 0];
+			ScalingData difficulty = CurrentDifficulty;
 
 			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
@@ -89,6 +93,10 @@ namespace Rounds {
 			currentRound++;
 			SendNextDifficulty();
 			roundTimer = roundDuration;
+
+			foreach (Table table in Table.AllTables) {
+				table.Repair();
+			}
 		}
 
 		private void HandleOnTavernDestroyed() {
