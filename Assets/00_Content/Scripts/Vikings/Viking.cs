@@ -72,6 +72,14 @@ namespace Vikings {
 			return ChangeState(state.TakeSeat(chair));
 		}
 
+		public void DismountChair() {
+			if (CurrentChair == null) return;
+
+			transform.position = CurrentChair.DismountPoint.position;
+			CurrentChair.OnVikingLeaveChair(this);
+			CurrentChair = null;
+		}
+
 		public void JoinBrawl() {
 			ChangeState(new BrawlingVikingState(this));
 		}

@@ -29,17 +29,14 @@ namespace Vikings.States {
 
 		public override VikingState Enter() {
 			viking.bodyMeshRenderer.material = viking.brawlingMaterial;
-
-			if (viking.CurrentChair != null) {
-				viking.CurrentChair.OnVikingLeaveChair(viking);
-				viking.CurrentChair = null;
-			}
+			viking.DismountChair();
 
 			return this;
 		}
 
 		public override void Exit() {
 			viking.bodyMeshRenderer.material = viking.normalMaterial;
+			navMeshAgent.enabled = false;
 		}
 
 		public override VikingState Update() {
