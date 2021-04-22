@@ -20,6 +20,10 @@ namespace Cameras {
 			initialPosition = transform.position;
 
 			if (PlayerManager.Instance != null) {
+				foreach (PlayerComponent player in PlayerManager.Instance.Players) {
+					targets.Add(player.transform);
+				}
+
 				PlayerManager.Instance.PlayerJoined += OnPlayerJoined;
 				PlayerManager.Instance.PlayerLeft += OnPlayerLeft;
 			}
