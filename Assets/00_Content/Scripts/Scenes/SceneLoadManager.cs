@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
 
@@ -6,6 +6,7 @@ namespace Scenes {
 	public class SceneLoadManager : SingletonBehaviour<SceneLoadManager> {
 		[SerializeField] private SceneInfo mainMenu;
 		[SerializeField] private SceneInfo game;
+		[SerializeField] private SceneInfo lobby;
 
 		public SceneInfo CurrentScene {
 			get {
@@ -14,6 +15,8 @@ namespace Scenes {
 					return mainMenu;
 				if (currentIndex == game.scene.BuildIndex)
 					return game;
+				if (currentIndex == game.scene.BuildIndex)
+					return lobby;
 
 				return null;
 			}
@@ -23,6 +26,10 @@ namespace Scenes {
 			base.Awake();
 
 			DontDestroyOnLoad(gameObject);
+		}
+
+		public void LoadLobby() {
+			lobby.Load();
 		}
 
 		public void LoadMainMenu() {
