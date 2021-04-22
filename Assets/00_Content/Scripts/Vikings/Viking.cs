@@ -15,6 +15,7 @@ namespace Vikings {
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
 		[SerializeField] public Material desiringMaterial;
+		[SerializeField] public Material brawlingMaterial;
 
 		private VikingState state;
 		private VikingScaling statScaling;
@@ -71,6 +72,18 @@ namespace Vikings {
 			return ChangeState(state.TakeSeat(chair));
 		}
 
+		public void DismountChair() {
+			if (CurrentChair == null) return;
+
+			transform.position = CurrentChair.DismountPoint.position;
+			CurrentChair.OnVikingLeaveChair(this);
+			CurrentChair = null;
+		}
+
+		public void JoinBrawl() {
+			ChangeState(new BrawlingVikingState(this));
+		}
+
 		public void FinishLeaving() {
 			LeaveTavern?.Invoke(this);
 
@@ -94,5 +107,6 @@ namespace Vikings {
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return state.CanInteract(player, item);
 		}
+
 	}
 }

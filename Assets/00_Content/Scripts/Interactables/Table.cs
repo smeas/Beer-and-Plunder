@@ -23,6 +23,10 @@ namespace Interactables {
 
 			if (Chairs.Length == 0)
 				Debug.LogWarning("Table has no chairs!", this);
+
+			foreach (Chair chair in Chairs) {
+				chair.Table = this;
+			}
 		}
 
 		public bool TryFindEmptyChairForViking(Viking viking, out Chair closest) {
