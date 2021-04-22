@@ -24,6 +24,7 @@ namespace Vikings {
 			// Put the viking one step behind the last spot in the queue
 			Vector3 desiredPosition = transform.position + vikingSpacing * queueCapacity * queueDirection;
 			viking.transform.position = desiredPosition;
+			viking.transform.rotation = Quaternion.LookRotation(-queueDirection);
 		}
 
 		private void HandleOnVikingLeaveQueue(Viking sender) {
