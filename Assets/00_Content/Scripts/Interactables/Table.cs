@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Player;
+using Rounds;
+using Taverns;
 using UnityEngine;
 using Vikings;
 
@@ -7,8 +10,11 @@ namespace Interactables {
 	public class Table : Interactable {
 		public static List<Table> AllTables { get; } = new List<Table>();
 
+		private float health;
+
 		public Chair[] Chairs { get; private set; }
 		public bool IsFull => Chairs.All(chair => chair.IsOccupied);
+		public bool IsDestroyed => health <= 0;
 
 		private void OnEnable() {
 			AllTables.Add(this);
@@ -27,6 +33,13 @@ namespace Interactables {
 			foreach (Chair chair in Chairs) {
 				chair.Table = this;
 			}
+
+			if (RoundController.Instance != null)
+				health = RoundController.Instance.CurrentDifficulty.tableHealth;
+		}
+
+		public override bool CanInteract(GameObject player, PickUp item) {
+			return !IsDestroyed && player.GetComponent<PlayerSteward>().Follower != null;
 		}
 
 		public bool TryFindEmptyChairForViking(Viking viking, out Chair closest) {
@@ -47,6 +60,27 @@ namespace Interactables {
 			}
 
 			return closest != null;
+		}
+
+		public void Damage(float damage) {
+			if (IsDestroyed) return;
+
+			health = Mathf.Max(0, health - damage);
+			if (IsDestroyed) {
+				GetComponentInChildren<MeshRenderer>().enabled = false;
+				if (Tavern.Instance != null)
+					Tavern.Instance.TakesDamage(1);
+			}
+		}
+
+		public void Repair() {
+			if (RoundController.Instance != null)
+				health = RoundController.Instance.CurrentDifficulty.tableHealth;
+
+			if (Tavern.Instance != null)
+				Tavern.Instance.RepairsDamage(1);
+
+			GetComponentInChildren<MeshRenderer>().enabled = true;
 		}
 	}
 }

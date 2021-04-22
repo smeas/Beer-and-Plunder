@@ -20,5 +20,11 @@ namespace Vikings {
 
 		[EnableIf(nameof(canStartBrawl)), Tooltip("Threshold for when the viking will start brawling with other vikings")]
 		public float brawlMoodThreshold = 15;
+
+		[Tooltip("How much damage does the viking deal with a single attack")]
+		public float damage = 10f;
+
+		[Tooltip("How long does it take to perform one attack, s/attack")]
+		public float attackRate = 1;
 	}
 }
