@@ -34,6 +34,7 @@ namespace Vikings.States {
 		public override void Exit() {
 			Object.Destroy(highlight);
 			navMeshAgent.enabled = false;
+			player.GetComponent<PlayerSteward>().EndSeatingViking(viking);
 		}
 
 		public override VikingState Update() {
@@ -47,8 +48,6 @@ namespace Vikings.States {
 		}
 
 		public override VikingState TakeSeat(Chair chair) {
-			player.GetComponent<PlayerSteward>().EndSeatingViking(viking);
-
 			// Reserve the chair
 			viking.CurrentChair = chair;
 			chair.OnVikingTakeChair(viking);

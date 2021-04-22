@@ -45,6 +45,11 @@ namespace Vikings {
 			ChangeState(state.Update());
 		}
 
+		private void OnDestroy() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
+		}
+
 		private bool ChangeState(VikingState newState) {
 			if (newState == state)
 				return false;

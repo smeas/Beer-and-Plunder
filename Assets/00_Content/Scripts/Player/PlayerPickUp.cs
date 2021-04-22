@@ -22,6 +22,13 @@ namespace Player {
 			detector = GetComponent<InteractionDetector>();
 		}
 
+		public void ToggleCarrying() {
+			if (pickedUpItem == null)
+				PickUpClosestItem();
+			else
+				DropItem();
+		}
+
 		public void PickUpClosestItem() {
 
 			if (detector.ClosestPickUp == null)

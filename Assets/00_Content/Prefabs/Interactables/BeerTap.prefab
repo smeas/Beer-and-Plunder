@@ -253,8 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2023de8ca2be4624da4417c102558f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pourTimeMultiplier: 0.6
-  InputActions: {fileID: -944628639613478452, guid: d0097f6e83ffbb14d9490ddb3ff9fc1b, type: 3}
+  pourTimeMultiplier: 66
   beerPrefab: {fileID: 1262854382656651558, guid: 2bca4258fea479844a6ec986919d6c67, type: 3}
   beerSpawnpoint: {fileID: 1118051861831636839}
   progressBarImage: {fileID: 403496785}

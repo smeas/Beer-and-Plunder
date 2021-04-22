@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a10e0a233a3431ba60a6b628a62c061, type: 3}
   m_Name: Quadplayer
   m_EditorClassIdentifier: 
-  <InitialSpawnDelay>k__BackingField: 2
-  <SpawnDelayMultiplier>k__BackingField: 0.95
-  <StartingMoodMultiplier>k__BackingField: 0.99
-  <MoodDeclineMultiplier>k__BackingField: 1.05
+  initialSpawnDelay: 12
+  spawnDelayRate: 0.5
+  minimumSpawnDelay: 6
+  spawnDelayVariance: 4
+  initialStartingMoodMultiplier: 1
+  startingMoodMultiplierRate: 0.5
+  minimumStartingMoodMultiplier: 0.85
+  initialMoodDeclineMultiplier: 1
+  moodDeclineMultiplierRate: 1.1
+  maximumMoodDeclineMultiplier: 2
+  tableHealth: 100

@@ -45,13 +45,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDifficulties:
-  - {fileID: 11400000, guid: 0501e3bafdb4bdd4ea5dfb14a45e3b3d, type: 2}
+  - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   scoreCardPrefab: {fileID: 1623649542527638751, guid: da4dd4cf3f4df0046ad59bf395637676, type: 3}
   HUDPrefab: {fileID: 1436725447203490082, guid: 8fb4d26552804384d92abfe16ff6330a, type: 3}
-  roundDuration: 2
+  roundDuration: 150
 --- !u!114 &8733019525744738231
 MonoBehaviour:
   m_ObjectHideFlags: 0

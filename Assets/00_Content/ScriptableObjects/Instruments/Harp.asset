@@ -17,4 +17,4 @@ MonoBehaviour:
   playerCanMoveWhileUsing: 0
   modifier:
     statType: 0
-    value: -0.1
+    value: -1

@@ -135,7 +135,7 @@
                 {
                     "name": "",
                     "id": "6e907afa-c144-454d-b31f-d9581fe8cf4a",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -168,7 +168,7 @@
                 {
                     "name": "",
                     "id": "e31795ab-08d7-4d7d-b43e-8ce64d6e07b7",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
@@ -179,7 +179,7 @@
                 {
                     "name": "",
                     "id": "d35b3193-1f16-4750-b2b3-e0cb358ee5f1",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -190,7 +190,7 @@
                 {
                     "name": "",
                     "id": "4ebe344e-7f81-4b09-8bf6-942090c17958",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
@@ -201,10 +201,21 @@
                 {
                     "name": "",
                     "id": "6e9f22d4-9ba4-483f-9798-3e8c714826fe",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e88f945-9058-4f71-a887-766c3ff00778",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false

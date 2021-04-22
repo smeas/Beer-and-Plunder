@@ -38,7 +38,7 @@ namespace Interactables.Beers {
 			}
 
 			if (itemSlot.HasItemInSlot) {
-				Debug.Log("Can´t pour, has full beer in slot");
+				Debug.Log("Can't pour, has full beer in slot");
 				return;
 			}
 
@@ -53,8 +53,8 @@ namespace Interactables.Beers {
 		private IEnumerator PourBeer() {
 
 			while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
-				
-				pouringProgress += pourTimeMultiplier * Time.deltaTime; 
+
+				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
 				if(!progressBar.activeInHierarchy)
 					progressBar.SetActive(true);
