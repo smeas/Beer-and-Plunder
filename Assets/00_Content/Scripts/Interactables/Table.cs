@@ -77,6 +77,9 @@ namespace Interactables {
 			if (RoundController.Instance != null)
 				health = RoundController.Instance.CurrentDifficulty.tableHealth;
 
+			if (Tavern.Instance != null)
+				Tavern.Instance.RepairsDamage(1);
+
 			GetComponentInChildren<MeshRenderer>().enabled = true;
 		}
 	}
