@@ -28,20 +28,20 @@ namespace Vikings.States {
 		public override bool CanInteract(GameObject player, PickUp item) {
 			if (!(item is IDesirable givenItem)) return false;
 
-			Debug.Assert(viking.CurrentDesire < viking.Desires.Length, "Viking is desiring more than it can");
+			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
-			return givenItem.DesireType == viking.Desires[viking.CurrentDesire].type;
+			return givenItem.DesireType == viking.Desires[viking.CurrentDesireIndex].type;
 		}
 
 		public override VikingState Interact(GameObject player, PickUp item) {
 			viking.Stats.Reset();
-			viking.CurrentDesire++;
+			viking.CurrentDesireIndex++;
 
 			player.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
 
 			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
 
-			if (viking.CurrentDesire >= viking.Desires.Length)
+			if (viking.CurrentDesireIndex >= viking.Desires.Length)
 				return new LeavingVikingState(viking);
 
 			return new PassiveVikingState(viking);
