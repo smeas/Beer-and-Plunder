@@ -51,7 +51,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   tavern: {fileID: 8733019525744738231}
   vikingController: {fileID: 3533185723031067887, guid: cae821057f76de24fa9ec96856889c72, type: 3}
-  playerManager: {fileID: 3913674227645014384, guid: c843c8887a75690418e50db5949b323a, type: 3}
   scoreCardPrefab: {fileID: 1623649542527638751, guid: da4dd4cf3f4df0046ad59bf395637676, type: 3}
   roundDuration: 2
 --- !u!114 &8733019525744738231

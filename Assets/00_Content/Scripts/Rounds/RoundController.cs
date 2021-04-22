@@ -9,9 +9,8 @@ using Vikings;
 namespace Rounds {
 	public class RoundController : SingletonBehaviour<RoundController> {
 		[SerializeField] private ScalingData[] playerDifficulties;
-		[SerializeField] private Tavern tavern;
-		[SerializeField] private VikingController vikingController;
 		[SerializeField] private ScoreCard scoreCardPrefab;
+		[SerializeField] private GameObject hUDPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 
@@ -22,12 +21,17 @@ namespace Rounds {
 
 		public event Action OnRoundOver;
 
+		public float RoundTimer {
+			get => roundTimer;
+			set { RoundTimer = roundTimer; }
+		}
+
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
 			scoreCard.gameObject.SetActive(false);
 
-			tavern.OnBankrupcy += HandleOnTavernBankrupt;
-			tavern.OnDestroyed += HandleOnTavernDestroyed;
+			Tavern.Instance.OnBankrupcy += HandleOnTavernBankrupt;
+			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
 			scoreCard.OnNextRound += HandleOnNextRound;
 
 			roundTimer = roundDuration;
@@ -52,7 +56,7 @@ namespace Rounds {
 		}
 
 		private void SendNextDifficulty() {
-			if (vikingController == null) {
+			if (VikingController.Instance == null) {
 				Debug.Assert(false, "Roundcontroller have access to a vikingController");
 				return;
 			}
@@ -61,15 +65,15 @@ namespace Rounds {
 														? PlayerManager.Instance.NumPlayers - 1
 														: 0];
 
-			vikingController.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
-			vikingController.StatScaling = new VikingScaling(difficulty, currentRound);
+			VikingController.Instance.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
+			VikingController.Instance.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
 
 		private void ShowScoreCard() {
 			scoreCard.UpdateScoreCard(currentRound);
 			scoreCard.gameObject.SetActive(true);
 
-			vikingController.CanSpawn = false;
+			VikingController.Instance.CanSpawn = false;
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
@@ -78,7 +82,7 @@ namespace Rounds {
 		}
 
 		private void HandleOnNextRound() {
-			vikingController.CanSpawn = true;
+			VikingController.Instance.CanSpawn = true;
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();

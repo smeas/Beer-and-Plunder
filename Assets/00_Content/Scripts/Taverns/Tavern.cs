@@ -19,6 +19,13 @@ namespace Taverns {
 
 		public event Action OnBankrupcy;
 		public event Action OnDestroyed;
+		public event Action OnMoneyChanges;
+		public event Action OnHealthChanges;
+
+		public float MaxHealth => maxHealth;
+		public float StartingHealth => startingHealth;
+		public float StartingMoney => startingMoney;
+		public float MaxMoney => maxMoney;
 
 		public float Health {
 			get => health;
@@ -37,10 +44,13 @@ namespace Taverns {
 
 		public void EarnsMoney(float moneyEarned) {
 			Money += moneyEarned;
+			OnMoneyChanges?.Invoke();
 		}
 
 		public void SpendsMoney(float moneySpent) {
 			Money -= moneySpent;
+			OnMoneyChanges?.Invoke();
+
 			if (IsBankrupt) {
 				Debug.Log("game over, you are bankrupt!");
 
@@ -50,6 +60,7 @@ namespace Taverns {
 
 		public void TakesDamage(float damage) {
 			Health -= damage;
+			OnHealthChanges?.Invoke();
 
 			if (IsDestroyed) {
 				Debug.Log("game over, your tavern is destroyed!");
@@ -60,6 +71,7 @@ namespace Taverns {
 
 		public void RepairsDamage(float repair) {
 			Health += repair;
+			OnHealthChanges?.Invoke();
 		}
 	}
 }
