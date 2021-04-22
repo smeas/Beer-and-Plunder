@@ -44,10 +44,7 @@ namespace Cameras {
 			Matrix4x4 worldToCameraRotation = cameraToWorldRotation.transpose;
 
 			foreach (Transform target in targets) {
-				Renderer targetRenderer = target.GetComponentInChildren<Renderer>();
-				Vector3 targetPosition = targetRenderer != null ? targetRenderer.bounds.center : target.position;
-
-				Vector3 localPosition = worldToCameraRotation * targetPosition; // derotate around origin
+				Vector3 localPosition = worldToCameraRotation * target.position; // derotate around origin
 				Vector2 j = new Vector2(localPosition.z, localPosition.z) / slope - margins;
 				max = Vector2.Max(max, (Vector2)localPosition - j);
 				min = Vector2.Min(min, (Vector2)localPosition + j);
