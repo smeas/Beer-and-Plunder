@@ -1,12 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Rounds {
 	public class ScoreCard : MonoBehaviour {
 		[SerializeField] private TMP_Text roundNumberText;
+		[SerializeField] private Button startButton;
 
 		private int roundNumber;
 
@@ -15,6 +16,11 @@ namespace Rounds {
 		public int RoundNumber {
 			get => roundNumber;
 			set { roundNumber = Mathf.RoundToInt(roundNumber); }
+		}
+
+		private void OnEnable() {
+			if (EventSystem.current != null)
+				EventSystem.current.SetSelectedGameObject(startButton.gameObject);
 		}
 
 		public void UpdateScoreCard(int round) {

@@ -1,9 +1,5 @@
-using Extensions;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 namespace Interactables.Beers {
@@ -26,27 +22,22 @@ namespace Interactables.Beers {
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
+
+			if (beerSpawnpoint == null)
+				Debug.LogError("No spawnpoint for beer on beerTap");
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
 
 			isHolding = true;
 
-			if (beerSpawnpoint == null) {
-				Debug.LogError("No spawnpoint for beer on beerTap");
+			if (itemSlot.HasItemInSlot)
 				return;
-			}
-
-			if (itemSlot.HasItemInSlot) {
-				Debug.Log("Can't pour, has full beer in slot");
-				return;
-			}
 
 			StartCoroutine(PourBeer());
 		}
 
 		public override void CancelInteraction() {
-			Debug.Log("Cancel interaction!");
 			isHolding = false;
 		}
 

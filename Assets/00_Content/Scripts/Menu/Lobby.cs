@@ -1,15 +1,11 @@
-using Player;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Player;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Menu {
 
-    public class Lobby : MonoBehaviour
-    {
+    public class Lobby : MonoBehaviour {
 		[SerializeField] List<PlayerSlotObject> playerSlots;
 
 		private PlayerManager playerManager;
@@ -23,9 +19,9 @@ namespace Menu {
 
 		private void HandleOnPlayerJoined(PlayerComponent player) {
 
-			var slots = playerSlots.OrderBy(x => x.Id).ToList();
+			List<PlayerSlotObject> slots = playerSlots.OrderBy(x => x.Id).ToList();
 
-			foreach (var slot in slots) {
+			foreach (PlayerSlotObject slot in slots) {
 				if (!slot.IsTaken) {
 
 					slot.JoinPlayer(player);
@@ -63,6 +59,8 @@ namespace Menu {
 					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 				}
 			}
+
+			playerManager.AllowJoining = false;
 
 			Scenes.SceneLoadManager.Instance.LoadGame();
 		}

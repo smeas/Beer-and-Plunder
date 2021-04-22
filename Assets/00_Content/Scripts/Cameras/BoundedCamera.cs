@@ -19,14 +19,31 @@ namespace Cameras {
 
 			initialPosition = transform.position;
 
-			PlayerManager.Instance.PlayerJoined += plr => targets.Add(plr.transform);
-			PlayerManager.Instance.PlayerLeft += plr => targets.Remove(plr.transform);
+			if (PlayerManager.Instance != null) {
+				PlayerManager.Instance.PlayerJoined += OnPlayerJoined;
+				PlayerManager.Instance.PlayerLeft += OnPlayerLeft;
+			}
 		}
 
 		private void FixedUpdate() {
 			Vector3 targetPosition = CalculateTargetPosition();
 			transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity,
 			                                        smoothTime, maxSpeed, Time.fixedDeltaTime);
+		}
+
+		private void OnDestroy() {
+			if (PlayerManager.Instance != null) {
+				PlayerManager.Instance.PlayerJoined -= OnPlayerJoined;
+				PlayerManager.Instance.PlayerLeft -= OnPlayerLeft;
+			}
+		}
+
+		private void OnPlayerJoined(PlayerComponent plr) {
+			targets.Add(plr.transform);
+		}
+
+		private void OnPlayerLeft(PlayerComponent plr) {
+			targets.Remove(plr.transform);
 		}
 
 		private Vector3 CalculateTargetPosition() {
