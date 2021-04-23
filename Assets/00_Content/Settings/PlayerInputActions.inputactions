@@ -30,14 +30,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Drop",
-                    "type": "Button",
-                    "id": "cad766f6-cfba-4315-846d-53d50c5d0300",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "0937b9b4-695c-41a9-b440-0d01345bde57",
@@ -162,28 +154,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pickup",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e31795ab-08d7-4d7d-b43e-8ce64d6e07b7",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Drop",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d35b3193-1f16-4750-b2b3-e0cb358ee5f1",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

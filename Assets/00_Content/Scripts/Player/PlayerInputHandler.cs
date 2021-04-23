@@ -8,7 +8,6 @@ namespace Player {
 		[SerializeField] private UnityEvent onUse;
 		[SerializeField] private UnityEvent onEndUse;
 		[SerializeField] private UnityEvent onPickup;
-		[SerializeField] private UnityEvent onDrop;
 		[SerializeField] private UnityEvent onInteract;
 		[SerializeField] private UnityEvent onEndInteract;
 		[SerializeField] private UnityEvent onStart;
@@ -17,7 +16,6 @@ namespace Player {
 		public UnityEvent OnUse => onUse;
 		public UnityEvent OnEndUse => onEndUse;
 		public UnityEvent OnPickup => onPickup;
-		public UnityEvent OnDrop => onDrop;
 		public UnityEvent OnInteract => onInteract;
 		public UnityEvent OnEndInteract => onEndInteract;
 		public UnityEvent OnStart => onStart;
@@ -58,12 +56,6 @@ namespace Player {
 			if (!ShouldExecuteEvents) return;
 			if (ctx.performed)
 				onPickup.Invoke();
-		}
-
-		public void OnDropInput(InputAction.CallbackContext ctx) {
-			if (!ShouldExecuteEvents) return;
-			if (ctx.performed)
-				onDrop.Invoke();
 		}
 
 		public void OnInteractInput(InputAction.CallbackContext ctx) {

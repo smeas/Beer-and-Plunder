@@ -161,22 +161,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2187889529978375782}
         m_TargetAssemblyTypeName: Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnDropInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: cad766f6-cfba-4315-846d-53d50c5d0300
-    m_ActionName: Game/Drop[/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2187889529978375782}
-        m_TargetAssemblyTypeName: Player.PlayerInputHandler, Assembly-CSharp
         m_MethodName: OnInteractInput
         m_Mode: 0
         m_Arguments:
