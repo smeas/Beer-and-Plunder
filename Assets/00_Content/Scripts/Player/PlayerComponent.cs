@@ -8,8 +8,6 @@ namespace Player {
 		private void Awake() {
 			PlayerInput playerInput = GetComponent<PlayerInput>();
 			PlayerId = playerInput.playerIndex;
-
-			DontDestroyOnLoad(gameObject);
 		}
 	}
 }

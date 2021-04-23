@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
@@ -26,18 +27,36 @@ namespace Scenes {
 			base.Awake();
 
 			DontDestroyOnLoad(gameObject);
+
+			SceneManager.sceneLoaded += OnSceneLoaded;
 		}
 
-		public void LoadLobby() {
-			lobby.Load();
+		protected override void OnDestroy() {
+			base.OnDestroy();
+
+			SceneManager.sceneLoaded -= OnSceneLoaded;
 		}
 
-		public void LoadMainMenu() {
-			mainMenu.Load();
+		private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+			// Move the players back out of the DDOL scene
+			if (mode == LoadSceneMode.Single && PlayerManager.Instance != null) {
+				foreach (PlayerComponent player in PlayerManager.Instance.Players)
+					SceneManager.MoveGameObjectToScene(player.gameObject, scene);
+			}
 		}
 
-		public void LoadGame() {
-			game.Load();
+		public void LoadLobby() => Load(lobby);
+		public void LoadMainMenu() => Load(mainMenu);
+		public void LoadGame() => Load(game);
+
+		private static void Load(SceneInfo sceneInfo) {
+			// Make sure player are carried over
+			if (PlayerManager.Instance != null) {
+				foreach (PlayerComponent player in PlayerManager.Instance.Players)
+					DontDestroyOnLoad(player.gameObject);
+			}
+
+			sceneInfo.Load();
 		}
 	}
 }
