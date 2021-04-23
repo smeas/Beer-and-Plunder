@@ -6,7 +6,9 @@ using Vikings;
 namespace Interactables.Instruments {
 	[RequireComponent(typeof(AudioSource), typeof(SphereCollider))]
 	public class Instrument : PickUp, IUseable {
+		[Space]
 		[SerializeField] private InstrumentData instrumentData;
+		[SerializeField] private GameObject areaField;
 
 		private AudioSource musicSource;
 		private SphereCollider sphereCollider;
@@ -21,6 +23,10 @@ namespace Interactables.Instruments {
 
 			sphereCollider = GetComponent<SphereCollider>();
 			sphereCollider.radius = instrumentData.effectRadius;
+
+			float diameter = instrumentData.effectRadius * 2f;
+			areaField.SetActive(false);
+			areaField.transform.localScale = new Vector3(diameter, diameter, diameter);
 		}
 
 	#if UNITY_EDITOR
@@ -48,7 +54,7 @@ namespace Interactables.Instruments {
 			musicSource.clip = instrumentData.music;
 			musicSource.Play();
 
-			// TODO: Display some kind of visual that shows the area of effect.
+			areaField.SetActive(true);
 
 			isPlaying = true;
 
@@ -64,6 +70,8 @@ namespace Interactables.Instruments {
 			usingPlayer.GetComponent<PlayerMovement>().CanMove = true;
 
 			musicSource.Stop();
+
+			areaField.SetActive(false);
 
 			foreach (Viking viking in vikingsInRange) {
 				viking.Stats.RemoveModifier(instrumentData.modifier);
