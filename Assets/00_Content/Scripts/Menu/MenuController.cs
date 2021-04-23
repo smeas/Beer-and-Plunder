@@ -5,10 +5,8 @@ using TMPro;
 
 namespace Menu {
 	public class MenuController : MonoBehaviour {
-
 		public GameObject mainMenuPanel;
 		public GameObject settingsPanel;
-		//So, this will later on have some way of turning on and of what input to be using yeah?
 
 		private void Start() {
 			settingsPanel.SetActive(false);
