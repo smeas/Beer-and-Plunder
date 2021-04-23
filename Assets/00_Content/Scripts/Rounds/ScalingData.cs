@@ -1,66 +1,60 @@
 ﻿using UnityEngine;
 
 namespace Rounds {
-	[CreateAssetMenu(fileName = "new ScalingData", menuName = "Game/ScalingData", order = 0)]
+	[CreateAssetMenu(fileName = "new Scaling", menuName = "Game/Scaling", order = 0)]
 	public class ScalingData : ScriptableObject {
-		[SerializeField, Min(0), Header("SpawnDelay")]
-		private float initialSpawnDelay = 1f;
+		[Header("SpawnDelay")]
+		[SerializeField, Tooltip("Delay between viking spawns in seconds")]
+		private AnimationCurve spawnDelayCurve;
 
-		[SerializeField, Range(0, 1), Tooltip("A lower value decreases the time to get to minimum")]
-		private float spawnDelayRate = 0.5f;
-
-		[SerializeField, Min(0), Tooltip("Should be lower than InitialSpawnDelay")]
-		private float minimumSpawnDelay = 0f;
-
-		[SerializeField, Min(0), Tooltip("Excluded from initial and minimum spawnDelay")]
+		[SerializeField, Min(0), Tooltip("Excluded from the value in the Spawn Delay Curve")]
 		public float spawnDelayVariance;
 
-		[SerializeField, Min(0), Header("StartingMood")]
-		private float initialStartingMoodMultiplier = 1f;
+		[Header("StartingMood")]
+		[SerializeField, Tooltip("Multiplier controlling how much mood vikings start to")]
+		private AnimationCurve startingMoodMultiplierCurve;
 
-		[SerializeField, Range(0, 1), Tooltip("A lower value decreases the time to get to minimum")]
-		private float startingMoodMultiplierRate = 0.5f;
+		[Header("MoodDecline")]
+		[SerializeField, Tooltip("Multiplier controlling how fast mood decline")]
+		private AnimationCurve moodDeclineMultiplier;
 
-		[SerializeField, Min(0), Tooltip("Should be lower than InitialStartingMoodMultiplier")]
-		private float minimumStartingMoodMultiplier = 0f;
-
-		[SerializeField, Min(0), Header("MoodDecline")]
-		private float initialMoodDeclineMultiplier = 1f;
-
-		[SerializeField, Min(1), Tooltip("A higher value decreases the time to get to maximum")]
-		private float moodDeclineMultiplierRate = 1.1f;
-
-		[SerializeField, Min(0), Tooltip("Should be higher than InitialMoodDeclineMultiplier")]
-		private float maximumMoodDeclineMultiplier = 2f;
-
+		[Header("Other")]
 		[Min(0)]
 		public float tableHealth = 100f;
 
-		#region ScalingCalculations
+	#region ScalingCalculations
 
 		/// <summary>
-		/// Scales the spawn delay exponentially in relation to <paramref name="round"/>
+		/// Calculates the spawn delay in relation to <paramref name="round"/>
 		/// </summary>
 		public float ScaledSpawnDelay(int round) {
-			return CalcExponential(initialSpawnDelay - minimumSpawnDelay, spawnDelayRate,
-				round - 1, minimumSpawnDelay);
+			return EvalPointOnCurve(spawnDelayCurve, round - 1);
 		}
 
 		/// <summary>
-		/// Scales the starting mood linearly in relation to <paramref name="round"/>
+		/// Calculates the starting mood in relation to <paramref name="round"/>
 		/// </summary>
 		public float ScaledStartingMood(int round) {
-			return CalcExponential(initialStartingMoodMultiplier - minimumStartingMoodMultiplier,
-				startingMoodMultiplierRate, round - 1, minimumStartingMoodMultiplier);
+			return EvalPointOnCurve(startingMoodMultiplierCurve, round - 1);
 		}
 
 		/// <summary>
-		/// Scales the mood decline multiplier linearly in relation to <paramref name="round"/>
+		/// Calculates the mood decline multiplier in relation to <paramref name="round"/>
 		/// </summary>
 		public float ScaledMoodDeclineMultiplier(int round) {
-			return Mathf.Clamp(
-				CalcExponential(initialMoodDeclineMultiplier, moodDeclineMultiplierRate, round - 1, 0),
-				initialMoodDeclineMultiplier, maximumMoodDeclineMultiplier);
+			return EvalPointOnCurve(moodDeclineMultiplier, round - 1);
+		}
+
+		/// <summary>
+		/// Calculates the value of a point clamped to a curve
+		/// </summary>
+		public static float EvalPointOnCurve(AnimationCurve curve, float point) {
+			if (curve.length == 0) {
+				Debug.LogError($"Curve does not have any keys");
+				return 0;
+			}
+
+			return curve.Evaluate(point);
 		}
 
 		/// <summary>
@@ -77,6 +71,6 @@ namespace Rounds {
 			return a * Mathf.Pow(b, x) + c;
 		}
 
-		#endregion
+	#endregion
 	}
 }
