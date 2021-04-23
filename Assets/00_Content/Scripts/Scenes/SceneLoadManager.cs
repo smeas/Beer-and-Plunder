@@ -15,7 +15,7 @@ namespace Scenes {
 					return mainMenu;
 				if (currentIndex == game.scene.BuildIndex)
 					return game;
-				if (currentIndex == game.scene.BuildIndex)
+				if (currentIndex == lobby.scene.BuildIndex)
 					return lobby;
 
 				return null;
