@@ -6,10 +6,9 @@ namespace Interactables {
 
 	public class PickUp : MonoBehaviour {
 		[SerializeField] private Transform itemGrabTransform;
-		[SerializeField] private LayerMask itemSlotLayer;
+		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
 		[SerializeField] private Collider objectCollider;
 
-		private MeshFilter meshFilter;
 		private new Rigidbody rigidbody;
 
 		public ItemSlot CurrentItemSlot { get; set; }
@@ -17,7 +16,6 @@ namespace Interactables {
 		public event Action<PickUp> PickedUp;
 
 		public void Start() {
-			meshFilter = GetComponentInChildren<MeshFilter>();
 			rigidbody = GetComponent<Rigidbody>();
 		}
 
@@ -60,9 +58,9 @@ namespace Interactables {
 		}
 
 		private void TryPutInClosestItemSlot() {
+			Bounds bounds = objectCollider.bounds;
 			Collider[] collisions =
-				Physics.OverlapBox(meshFilter.transform.TransformPoint(meshFilter.mesh.bounds.center),
-				                   meshFilter.mesh.bounds.extents, Quaternion.identity, itemSlotLayer);
+				Physics.OverlapBox(bounds.center, bounds.extents, Quaternion.identity, itemSlotLayer);
 
 			if (collisions.Length > 0) {
 				ItemSlot closestFreeSlot = collisions
