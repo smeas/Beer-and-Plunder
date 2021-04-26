@@ -10,6 +10,7 @@ namespace Interactables {
 		[SerializeField] private Collider objectCollider;
 
 		private MeshFilter meshFilter;
+		private new Rigidbody rigidbody;
 
 		public ItemSlot CurrentItemSlot { get; set; }
 
@@ -17,6 +18,7 @@ namespace Interactables {
 
 		public void Start() {
 			meshFilter = GetComponentInChildren<MeshFilter>();
+			rigidbody = GetComponent<Rigidbody>();
 		}
 
 		private void OnDestroy() {
@@ -29,19 +31,9 @@ namespace Interactables {
 		//Drop item on floor or snap to slot if close
 		public void DropItem() {
 			transform.SetParent(null);
-			Collider[] collisions =
-				Physics.OverlapBox(meshFilter.transform.TransformPoint(meshFilter.mesh.bounds.center),
-				                   meshFilter.mesh.bounds.extents, Quaternion.identity, itemSlotLayer);
+			rigidbody.isKinematic = false;
 
-			if (collisions.Length > 0) {
-				ItemSlot closestFreeSlot = collisions
-					.Select(col => col.GetComponent<ItemSlot>())
-					.Where(slot => !slot.HasItemInSlot)
-					.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
-
-				if (closestFreeSlot != null)
-					closestFreeSlot.PutItem(this);
-			}
+			TryPutInClosestItemSlot();
 
 			objectCollider.enabled = true;
 		}
@@ -49,6 +41,7 @@ namespace Interactables {
 		public void PickUpItem(Transform playerGrabTransform) {
 			transform.rotation = Quaternion.identity;
 			transform.SetParent(playerGrabTransform);
+			rigidbody.isKinematic = true;
 
 			Vector3 offset = Vector3.zero;
 			if (itemGrabTransform != null)
@@ -64,6 +57,22 @@ namespace Interactables {
 
 			objectCollider.enabled = false;
 			PickedUp?.Invoke(this);
+		}
+
+		private void TryPutInClosestItemSlot() {
+			Collider[] collisions =
+				Physics.OverlapBox(meshFilter.transform.TransformPoint(meshFilter.mesh.bounds.center),
+				                   meshFilter.mesh.bounds.extents, Quaternion.identity, itemSlotLayer);
+
+			if (collisions.Length > 0) {
+				ItemSlot closestFreeSlot = collisions
+					.Select(col => col.GetComponent<ItemSlot>())
+					.Where(slot => !slot.HasItemInSlot)
+					.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+
+				if (closestFreeSlot != null)
+					closestFreeSlot.PutItem(this);
+			}
 		}
 	}
 }

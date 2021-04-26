@@ -20,6 +20,9 @@ namespace Interactables {
 			item.transform.position = transform.position;
 			item.CurrentItemSlot = this;
 			HasItemInSlot = true;
+
+			item.GetComponent<Rigidbody>().isKinematic = true;
+
 			return true;
 		}
 
