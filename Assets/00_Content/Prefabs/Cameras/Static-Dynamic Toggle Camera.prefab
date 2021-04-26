@@ -132,8 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targets: []
   margins: {x: 6, y: 6}
-  minY: 10
-  smoothTime: 0.1
+  minY: 12
+  smoothTime: 0.3
   maxSpeed: 50
 --- !u!114 &8614323515788097655
 MonoBehaviour:
