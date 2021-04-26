@@ -1,22 +1,29 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using World;
 
 namespace Interactables {
 
-	public class PickUp : MonoBehaviour {
+	public class PickUp : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform itemGrabTransform;
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
 		[SerializeField] private Collider objectCollider;
 
 		private new Rigidbody rigidbody;
+		private Vector3 startPosition;
+		private Quaternion startRotation;
 
+		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 
 		public event Action<PickUp> PickedUp;
 
 		public void Start() {
 			rigidbody = GetComponent<Rigidbody>();
+
+			startPosition = transform.position;
+			startRotation = transform.rotation;
 		}
 
 		private void OnDestroy() {
@@ -71,6 +78,14 @@ namespace Interactables {
 				if (closestFreeSlot != null)
 					closestFreeSlot.PutItem(this);
 			}
+		}
+
+		public void Respawn() {
+			transform.SetPositionAndRotation(startPosition, startRotation);
+
+			// Put the item back into its original slot if possible
+			if (StartItemSlot != null && !StartItemSlot.HasItemInSlot)
+				StartItemSlot.PutItem(this);
 		}
 	}
 }

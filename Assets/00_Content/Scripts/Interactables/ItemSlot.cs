@@ -8,6 +8,7 @@ namespace Interactables {
 			PickUp currentPickup = GetComponentInChildren<PickUp>();
 			if (currentPickup != null) {
 				currentPickup.transform.SetParent(null);
+				currentPickup.StartItemSlot = this;
 				currentPickup.CurrentItemSlot = this;
 				PutItem(currentPickup);
 			}
