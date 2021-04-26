@@ -36,7 +36,8 @@ namespace Interactables {
 		//Drop item on floor or snap to slot if close
 		public void DropItem() {
 			transform.SetParent(null);
-			rigidbody.isKinematic = false;
+			if (rigidbody != null)
+				rigidbody.isKinematic = false;
 
 			TryPutInClosestItemSlot();
 
@@ -46,7 +47,8 @@ namespace Interactables {
 		public void PickUpItem(Transform playerGrabTransform) {
 			transform.rotation = Quaternion.identity;
 			transform.SetParent(playerGrabTransform);
-			rigidbody.isKinematic = true;
+			if (rigidbody != null)
+				rigidbody.isKinematic = true;
 
 			Vector3 offset = Vector3.zero;
 			if (itemGrabTransform != null)

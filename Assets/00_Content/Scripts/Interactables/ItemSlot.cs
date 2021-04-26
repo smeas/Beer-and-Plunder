@@ -22,7 +22,9 @@ namespace Interactables {
 			item.CurrentItemSlot = this;
 			HasItemInSlot = true;
 
-			item.GetComponent<Rigidbody>().isKinematic = true;
+			Rigidbody body = item.GetComponent<Rigidbody>();
+			if (body != null)
+				body.isKinematic = true;
 
 			return true;
 		}
