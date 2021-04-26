@@ -9,9 +9,16 @@ using Vikings;
 
 namespace Rounds {
 	public class RoundController : SingletonBehaviour<RoundController> {
+		//right, so, I will need to have a reference here to the canvas/panel that I should use for game over.
+		// it has a certain advantage since I already have "stop & pause" somewhere here, and could possibly make all of that into one function to use more than once.
+		//So, this has a game over state, but it can, infact, only let you restart OR send you to main menu, which is a scene handled by the SceneLoadManager correct?
+		//so Create up the MainMenu from the prefab. Have buttons on the prefab. Have functions on the button that taks you to other states.
+		//So you will need to investigate what will remain if you go between scenes like this. Will singletons or such remain? What will need to be set-up again?
+		//In some way it is perhaps strange to have a menuController and not let that handle this no?
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
 		[SerializeField] private GameObject HUDPrefab;
+		[SerializeField] private GameObject gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 
@@ -32,6 +39,8 @@ namespace Rounds {
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
 			scoreCard.gameObject.SetActive(false);
+			gameOverPanelPrefab = Instantiate(gameOverPanelPrefab);
+			gameOverPanelPrefab.gameObject.SetActive(false);
 
 			Tavern.Instance.OnBankrupcy += HandleOnTavernBankrupt;
 			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
@@ -55,6 +64,7 @@ namespace Rounds {
 			OnRoundOver?.Invoke();
 
 			// TODO: Wait for all vikings to leave before continuing.
+			DisableGamePlay();
 			ShowScoreCard();
 		}
 
@@ -70,10 +80,7 @@ namespace Rounds {
 			VikingController.Instance.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
 
-		private void ShowScoreCard() {
-			scoreCard.UpdateScoreCard(currentRound);
-			scoreCard.gameObject.SetActive(true);
-
+		private void DisableGamePlay() {
 			VikingController.Instance.CanSpawn = false;
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
@@ -82,14 +89,21 @@ namespace Rounds {
 			}
 		}
 
-		private void HandleOnNextRound() {
+		private void EnableGamePlay() {
 			VikingController.Instance.CanSpawn = true;
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
 				playerInput.SwitchCurrentActionMap("Game");
 			}
+		}
+		private void ShowScoreCard() {
+			scoreCard.UpdateScoreCard(currentRound);
+			scoreCard.gameObject.SetActive(true);
+		}
 
+		private void HandleOnNextRound() {
+			EnableGamePlay();
 			isRoundActive = true;
 			currentRound++;
 			SendNextDifficulty();
@@ -101,11 +115,19 @@ namespace Rounds {
 		}
 
 		private void HandleOnTavernDestroyed() {
-			throw new System.NotImplementedException();
+			isRoundActive = false;
+			DisableGamePlay();
+
+			Debug.Log("the tavern was destroyed.");
+			gameOverPanelPrefab.gameObject.SetActive(true);
 		}
 
 		private void HandleOnTavernBankrupt() {
-			throw new System.NotImplementedException();
+			isRoundActive = false;
+			DisableGamePlay();
+
+			Debug.Log("the tavern went bankrupt.");
+			gameOverPanelPrefab.gameObject.SetActive(true);
 		}
 	}
 }
