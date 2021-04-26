@@ -31,10 +31,8 @@ namespace Interactables.Beers {
 
 			isHolding = true;
 
-			if (itemSlot.HasItemInSlot)
-				return;
-
-			StartCoroutine(PourBeer());
+			if (!itemSlot.HasItemInSlot)
+				StartCoroutine(PourBeer());
 		}
 
 		public override void CancelInteraction() {
@@ -53,7 +51,9 @@ namespace Interactables.Beers {
 				progressBarImage.fillAmount = pouringProgress * 0.01f;
 
 				if(pouringProgress > 100) {
-					Instantiate(beerPrefab, beerSpawnpoint.position, Quaternion.identity);
+					GameObject beer = Instantiate(beerPrefab, beerSpawnpoint.position, Quaternion.identity);
+					itemSlot.PutItem(beer.GetComponent<PickUp>());
+
 					pouringProgress = 0;
 					progressBar.SetActive(false);
 					break;

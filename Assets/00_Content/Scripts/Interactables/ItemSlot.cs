@@ -1,29 +1,31 @@
-﻿using Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Interactables {
 	public class ItemSlot : MonoBehaviour {
+		public bool HasItemInSlot { get; private set; }
 
-		[SerializeField] private LayerMask pickUpLayer;
+		private void Start() {
+			PickUp currentPickup = GetComponentInChildren<PickUp>();
+			if (currentPickup != null) {
+				currentPickup.transform.SetParent(null);
+				currentPickup.CurrentItemSlot = this;
+				PutItem(currentPickup);
+			}
+		}
 
-		private bool hasItemInSlot = false;
+		public bool PutItem(PickUp item) {
+			if (HasItemInSlot)
+				return false;
 
-		public bool HasItemInSlot => hasItemInSlot;
+			item.transform.position = transform.position;
+			item.CurrentItemSlot = this;
+			HasItemInSlot = true;
+			return true;
+		}
 
-		private void FixedUpdate() {
-
-			var collisions = Physics.OverlapBox(transform.position, transform.localScale / 2 * 0.9f, Quaternion.identity);
-			var pickUps = collisions.Where(x => pickUpLayer.ContainsLayer(x.gameObject.layer)).ToList();
-
-			if (pickUps.Count > 0)
-				hasItemInSlot = true;
-			else
-				hasItemInSlot = false;
+		public void TakeItem() {
+			Debug.Assert(HasItemInSlot, "TakeItem() called with no item in slot", this);
+			HasItemInSlot = false;
 		}
 	}
 }
