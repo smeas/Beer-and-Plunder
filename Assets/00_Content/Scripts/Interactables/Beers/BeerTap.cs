@@ -35,7 +35,7 @@ namespace Interactables.Beers {
 			StartCoroutine(PourBeer());
 		}
 
-		public override void CancelInteraction() {
+		public override void CancelInteraction(GameObject player, PickUp item) {
 			isHolding = false;
 		}
 
