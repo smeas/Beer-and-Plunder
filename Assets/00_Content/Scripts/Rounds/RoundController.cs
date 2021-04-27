@@ -14,6 +14,7 @@ namespace Rounds {
 		[SerializeField] private GameObject HUDPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
+		[SerializeField] private int requiredMoney = 250;
 
 		private ScoreCard scoreCard;
 		private float roundTimer;
@@ -28,12 +29,12 @@ namespace Rounds {
 		public event Action OnRoundOver;
 
 		public float RoundTimer => roundTimer;
+		public int RequiredMoney => requiredMoney;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
 			scoreCard.gameObject.SetActive(false);
 
-			Tavern.Instance.OnBankrupcy += HandleOnTavernBankrupt;
 			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
 			scoreCard.OnNextRound += HandleOnNextRound;
 
@@ -71,6 +72,13 @@ namespace Rounds {
 		}
 
 		private void ShowScoreCard() {
+			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+				Debug.Log("Required money goal was not reached.");
+				// TODO: Maybe show the score card first?
+				GameOver();
+				//return;
+			}
+
 			scoreCard.UpdateScoreCard(currentRound);
 			scoreCard.gameObject.SetActive(true);
 
@@ -95,16 +103,19 @@ namespace Rounds {
 			SendNextDifficulty();
 			roundTimer = roundDuration;
 
+			if (Tavern.Instance != null)
+				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
+
 			foreach (Table table in Table.AllTables) {
 				table.Repair();
 			}
 		}
 
-		private void HandleOnTavernDestroyed() {
-			throw new System.NotImplementedException();
+		private void GameOver() {
+			// TODO
 		}
 
-		private void HandleOnTavernBankrupt() {
+		private void HandleOnTavernDestroyed() {
 			throw new System.NotImplementedException();
 		}
 	}
