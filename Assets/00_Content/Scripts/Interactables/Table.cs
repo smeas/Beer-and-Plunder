@@ -58,10 +58,6 @@ namespace Interactables {
 			return false;
 		}
 
-		private void Update() {
-			UpdateRepairing();
-		}
-
 		public override void Interact(GameObject player, PickUp item) {
 			if (IsDestroyed && item is RepairTool tool) {
 				StartRepairing(player, tool);
@@ -69,50 +65,37 @@ namespace Interactables {
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
-			EndRepairing(player);
+			if (item is RepairTool tool)
+				EndRepairing(player, tool);
 		}
 
 		private void StartRepairing(GameObject player, RepairTool tool) {
 			if (Tavern.Instance != null && RoundController.Instance != null)
 				Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
 
-			isRepairing = true;
-			repairTool = tool;
-			repairTimer = repairDuration = RoundController.Instance != null
+			float repairTime = RoundController.Instance != null
 				? RoundController.Instance.CurrentDifficulty.tableRepairTime
 				: 5f;
-			tool.RepairProgressImage.fillAmount = 0f;
-			tool.RepairProgressCanvas.SetActive(true);
-			tool.RepairProgressCanvas.transform.SetPositionAndRotation(
-				transform.position + new Vector3(0, 3f, 0), Quaternion.identity);
+			tool.BeginRepairing(repairTime, transform.position + new Vector3(0, 3f, 0));//event
+			tool.RepairDone += HandleRepairDone;
+
 			player.GetComponent<PlayerMovement>().CanMove = false;
 		}
 
-		private void EndRepairing(GameObject player) {
-			if (isRepairing) {
+		private void EndRepairing(GameObject player, RepairTool tool) {
+			if (tool.IsRepairing) {
 				if (Tavern.Instance != null && RoundController.Instance != null)
 					Tavern.Instance.EarnsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
 			}
 
-			isRepairing = false;
-			repairTool.RepairProgressCanvas.SetActive(false);
+			tool.EndRepairing();
+			tool.RepairDone -= HandleRepairDone;
+
 			player.GetComponent<PlayerMovement>().CanMove = true;
 		}
 
-		private void UpdateRepairing() {
-			if (isRepairing) {
-				repairTimer -= Time.deltaTime;
-
-				if (repairTimer <= 0) {
-					isRepairing = false;
-					repairTool.RepairProgressCanvas.SetActive(false);
-
-					Repair();
-				}
-				else {
-					repairTool.RepairProgressImage.fillAmount = 1f - repairTimer / repairDuration;
-				}
-			}
+		private void HandleRepairDone() {
+			Repair();
 		}
 
 		public bool TryFindEmptyChairForViking(Viking viking, out Chair closest) {

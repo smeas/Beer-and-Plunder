@@ -19,7 +19,7 @@ namespace Interactables {
 
 		public event Action<PickUp> PickedUp;
 
-		public void Start() {
+		protected virtual void Start() {
 			rigidbody = GetComponent<Rigidbody>();
 
 			startPosition = transform.position;
