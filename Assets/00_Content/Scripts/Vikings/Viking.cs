@@ -12,9 +12,9 @@ namespace Vikings {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
+		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
-		[SerializeField] public Material desiringMaterial;
 		[SerializeField] public Material brawlingMaterial;
 
 		private VikingState state;
@@ -22,6 +22,7 @@ namespace Vikings {
 
 		public VikingData Data => vikingData;
 		public DesireData[] Desires => vikingData.desires;
+		public DesireData CurrentDesire => vikingData.desires[CurrentDesireIndex];
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
