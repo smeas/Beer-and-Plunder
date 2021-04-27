@@ -1,8 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
 using Rounds;
 using Taverns;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : MonoBehaviour {
 	[SerializeField] private Slider tavernHealthSlider;
@@ -12,8 +12,8 @@ public class HUD : MonoBehaviour {
 	void Start() {
 		if (Tavern.Instance) {
 			tavernHealthSlider.maxValue = Tavern.Instance.MaxHealth;
-			tavernMoneyText.text = Tavern.Instance.StartingMoney.ToString();
-			tavernHealthSlider.value = Tavern.Instance.StartingHealth;
+			HandleOnMoneyChanges();
+			HandleOnHealthChanges();
 
 			Tavern.Instance.OnHealthChanges += HandleOnHealthChanges;
 			Tavern.Instance.OnMoneyChanges += HandleOnMoneyChanges;
@@ -33,6 +33,7 @@ public class HUD : MonoBehaviour {
 	}
 
 	private void HandleOnMoneyChanges() {
-		tavernMoneyText.text = Mathf.RoundToInt(Tavern.Instance.Money).ToString();
+		int requiredMoney = RoundController.Instance != null ? RoundController.Instance.RequiredMoney : 0;
+		tavernMoneyText.text = $"{Mathf.RoundToInt(Tavern.Instance.Money)}/{requiredMoney}";
 	}
 }
