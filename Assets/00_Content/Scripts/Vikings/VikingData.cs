@@ -18,7 +18,14 @@ namespace Vikings {
 		public DesireData[] desires;
 
 		[MinMaxRange(0, 100), Tooltip("How long does it take for the viking to start desiring something")]
-		public Vector2 desireInterval;
+		public Vector2 desireIntervalMinMax;
+
+		[MinMaxRange(0, 100), Tooltip("How long does the viking stay satisfied upon fulfilling a desire")]
+		public Vector2 satisfiedDurationMinMax;
+
+		[MinMaxRange(0, 100), Tooltip("How many coins does the viking drop when a desire is fulfilled")]
+		public Vector2 coinsDroppedMinMax;
+
 
 		[Header("Combat")]
 		[Tooltip("Will this viking be able to start a brawl")]

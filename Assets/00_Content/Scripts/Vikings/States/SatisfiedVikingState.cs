@@ -1,0 +1,81 @@
+﻿using System.Linq;
+using UnityEngine;
+using Utilities;
+
+namespace Vikings.States {
+	public class SatisfiedVikingState : VikingState {
+		private const float DropDelay = 0.15f;
+
+		private float satisfiedDuration;
+		private float satisfiedTimer;
+
+		private int coinsToDrop;
+		private float dropTimer;
+
+		private bool IsDroppingCoins => coinsToDrop > 0;
+
+		public SatisfiedVikingState(Viking viking) : base(viking) { }
+
+		public override VikingState Enter() {
+			satisfiedDuration =
+				Random.Range(viking.Data.satisfiedDurationMinMax.x, viking.Data.satisfiedDurationMinMax.y);
+			satisfiedTimer = satisfiedDuration;
+
+			return this;
+		}
+
+		public override VikingState Update() {
+			VikingState nextState = this;
+			satisfiedTimer -= Time.deltaTime;
+
+			if (satisfiedTimer <= 0 && !IsDroppingCoins)
+				SetupDroppingCoins();
+
+			if (IsDroppingCoins)
+				nextState = DropCoins();
+
+			return nextState;
+		}
+
+		private void SetupDroppingCoins() {
+				coinsToDrop = CalculateCoinsToDrop(viking.Stats.Mood);
+
+			dropTimer = DropDelay;
+		}
+
+		private int CalculateCoinsToDrop(float value) {
+			return Mathf.RoundToInt(MathX.Remap(value, viking.Data.brawlMoodThreshold,
+				viking.Stats.StartMood, viking.Data.coinsDroppedMinMax.x, viking.Data.coinsDroppedMinMax.y));
+		}
+
+		private VikingState DropCoins() {
+			dropTimer -= Time.deltaTime;
+
+			if (dropTimer <= 0) {
+				DropCoin();
+
+				if (coinsToDrop <= 0) {
+					viking.Stats.Reset();
+					return SelectNextState();
+				}
+
+				dropTimer = DropDelay;
+			}
+
+			return this;
+		}
+
+		private void DropCoin() {
+			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+
+			coinsToDrop--;
+		}
+
+		private VikingState SelectNextState() {
+			if (viking.CurrentDesireIndex >= viking.Desires.Length)
+				return new LeavingVikingState(viking);
+
+			return new PassiveVikingState(viking);
+		}
+	}
+}

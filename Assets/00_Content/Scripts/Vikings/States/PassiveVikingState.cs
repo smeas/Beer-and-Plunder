@@ -9,7 +9,7 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Enter() {
-			intervalDuration = Random.Range(viking.Data.desireInterval.x, viking.Data.desireInterval.y);
+			intervalDuration = Random.Range(viking.Data.desireIntervalMinMax.x, viking.Data.desireIntervalMinMax.y);
 			intervalTimer = intervalDuration;
 
 			return this;
