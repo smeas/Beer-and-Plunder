@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Taverns;
 
 namespace Interactables.Beers {
 
@@ -15,6 +16,8 @@ namespace Interactables.Beers {
 		[SerializeField] private Transform beerSpawnpoint;
 		[SerializeField] private Image progressBarImage;
 		[SerializeField] private GameObject progressBar;
+		//I added a field here for the beerData SO, so that I could get the cost from it.
+		[SerializeField] private BeerData beerData;
 
 		private ItemSlot itemSlot;
 		private float pouringProgress = 0;
@@ -43,24 +46,31 @@ namespace Interactables.Beers {
 
 		private IEnumerator PourBeer() {
 
-			while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
+			if (Tavern.Instance.Money >= beerData.cost) {
+				//I added that the tavern singleton must contain more money than the cost of the beer in order for the player to be able to pour the beer at all.
+				while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100 && Tavern.Instance.Money >= beerData.cost) {
 
-				pouringProgress += pourTimeMultiplier * Time.deltaTime;
+					pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
-				if(!progressBar.activeInHierarchy)
-					progressBar.SetActive(true);
+					if (!progressBar.activeInHierarchy)
+						progressBar.SetActive(true);
 
-				progressBarImage.fillAmount = pouringProgress * 0.01f;
+					progressBarImage.fillAmount = pouringProgress * 0.01f;
 
-				if(pouringProgress > 100) {
-					Instantiate(beerPrefab, beerSpawnpoint.position, Quaternion.identity);
-					pouringProgress = 0;
-					progressBar.SetActive(false);
-					break;
+					if (pouringProgress > 100) {
+						Instantiate(beerPrefab, beerSpawnpoint.position, Quaternion.identity);
+						//Added a line of code so that the player draws the cost just as the beer is done.
+						Tavern.Instance.SpendsMoney(beerData.cost);
+						pouringProgress = 0;
+						progressBar.SetActive(false);
+						break;
+
+					}
+					yield return null;
+
 				}
+			} else Debug.Log("You don't have enough money to pour a beer!");
 
-				yield return null;
-			}
 		}
 	}
 }
