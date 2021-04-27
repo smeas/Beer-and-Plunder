@@ -11,6 +11,10 @@ namespace Interactables {
 		public static List<Table> AllTables { get; } = new List<Table>();
 
 		private float health;
+		private bool isRepairing;
+		private float repairTimer;
+		private float repairDuration;
+		private RepairTool repairTool;
 
 		public Chair[] Chairs { get; private set; }
 		public bool IsFull => Chairs.All(chair => chair.IsOccupied);
@@ -54,12 +58,55 @@ namespace Interactables {
 			return false;
 		}
 
-		public override void Interact(GameObject player, PickUp item) {
-			if (IsDestroyed && item is RepairTool) {
-				if (Tavern.Instance != null && RoundController.Instance != null)
-					Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
+		private void Update() {
+			UpdateRepairing();
+		}
 
-				Repair();
+		public override void Interact(GameObject player, PickUp item) {
+			if (IsDestroyed && item is RepairTool tool) {
+				StartRepairing(player, tool);
+			}
+		}
+
+		public override void CancelInteraction(GameObject player, PickUp item) {
+			EndRepairing(player);
+		}
+
+		private void StartRepairing(GameObject player, RepairTool tool) {
+			isRepairing = true;
+			repairTool = tool;
+			repairTimer = repairDuration = RoundController.Instance != null
+				? RoundController.Instance.CurrentDifficulty.tableRepairTime
+				: 5f;
+			tool.RepairProgressImage.fillAmount = 0f;
+			tool.RepairProgressCanvas.SetActive(true);
+			tool.RepairProgressCanvas.transform.SetPositionAndRotation(
+				transform.position + new Vector3(0, 3f, 0), Quaternion.identity);
+			player.GetComponent<PlayerMovement>().CanMove = false;
+		}
+
+		private void EndRepairing(GameObject player) {
+			isRepairing = false;
+			repairTool.RepairProgressCanvas.SetActive(false);
+			player.GetComponent<PlayerMovement>().CanMove = true;
+		}
+
+		private void UpdateRepairing() {
+			if (isRepairing) {
+				repairTimer -= Time.deltaTime;
+
+				if (repairTimer <= 0) {
+					isRepairing = false;
+					repairTool.RepairProgressCanvas.SetActive(false);
+
+					if (Tavern.Instance != null && RoundController.Instance != null)
+						Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
+
+					Repair();
+				}
+				else {
+					repairTool.RepairProgressImage.fillAmount = 1f - repairTimer / repairDuration;
+				}
 			}
 		}
 
