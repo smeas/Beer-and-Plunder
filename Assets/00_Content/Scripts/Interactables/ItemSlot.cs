@@ -1,29 +1,37 @@
-﻿using Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Interactables {
 	public class ItemSlot : MonoBehaviour {
+		public bool HasItemInSlot { get; private set; }
 
-		[SerializeField] private LayerMask pickUpLayer;
+		private void Start() {
+			PickUp currentPickup = GetComponentInChildren<PickUp>();
+			if (currentPickup != null) {
+				currentPickup.transform.SetParent(null);
+				currentPickup.StartItemSlot = this;
+				currentPickup.CurrentItemSlot = this;
+				PlaceItem(currentPickup);
+			}
+		}
 
-		private bool hasItemInSlot = false;
+		public bool PlaceItem(PickUp item) {
+			if (HasItemInSlot)
+				return false;
 
-		public bool HasItemInSlot => hasItemInSlot;
+			item.transform.position = transform.position;
+			item.CurrentItemSlot = this;
+			HasItemInSlot = true;
 
-		private void FixedUpdate() {
+			Rigidbody body = item.GetComponent<Rigidbody>();
+			if (body != null)
+				body.isKinematic = true;
 
-			var collisions = Physics.OverlapBox(transform.position, transform.localScale / 2 * 0.9f, Quaternion.identity);
-			var pickUps = collisions.Where(x => pickUpLayer.ContainsLayer(x.gameObject.layer)).ToList();
+			return true;
+		}
 
-			if (pickUps.Count > 0)
-				hasItemInSlot = true;
-			else
-				hasItemInSlot = false;
+		public void ReleaseItem() {
+			Debug.Assert(HasItemInSlot, "ReleaseItem() called with no item in slot", this);
+			HasItemInSlot = false;
 		}
 	}
 }

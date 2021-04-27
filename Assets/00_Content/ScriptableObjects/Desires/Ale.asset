@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Ale
   m_EditorClassIdentifier: 
   type: 2
+  visualisationPrefab: {fileID: 919132149155446097, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
