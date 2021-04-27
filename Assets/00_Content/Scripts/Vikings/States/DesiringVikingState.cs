@@ -36,6 +36,7 @@ namespace Vikings.States {
 		public override VikingState Interact(GameObject player, PickUp item) {
 			player.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
 			viking.CurrentDesireIndex++;
+			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
 
 			return new SatisfiedVikingState(viking);
 		}

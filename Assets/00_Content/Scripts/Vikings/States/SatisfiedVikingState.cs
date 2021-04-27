@@ -38,7 +38,16 @@ namespace Vikings.States {
 		}
 
 		private void SetupDroppingCoins() {
+			if (viking.CurrentDesireIndex < viking.Desires.Length) {
 				coinsToDrop = CalculateCoinsToDrop(viking.Stats.Mood);
+			}
+			else {
+				float avgMood = viking.MoodWhenDesireFulfilled.Sum(x => x) /
+				              viking.MoodWhenDesireFulfilled.Count;
+
+				coinsToDrop = CalculateCoinsToDrop(avgMood);
+				coinsToDrop = Mathf.RoundToInt(coinsToDrop * viking.Data.coinsWhenLeavingMultiplier);
+			}
 
 			dropTimer = DropDelay;
 		}

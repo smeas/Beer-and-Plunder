@@ -22,6 +22,7 @@ MonoBehaviour:
   desireIntervalMinMax: {x: 10, y: 15}
   satisfiedDurationMinMax: {x: 5, y: 10}
   coinsDroppedMinMax: {x: 1, y: 18}
+  coinsWhenLeavingMultiplier: 1.5
   canStartBrawl: 1
   brawlMoodThreshold: 15
   damage: 10
