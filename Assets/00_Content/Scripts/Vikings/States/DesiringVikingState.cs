@@ -7,13 +7,13 @@ namespace Vikings.States {
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-			viking.bodyMeshRenderer.material = viking.desiringMaterial;
+			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationPrefab);
 
 			return this;
 		}
 
 		public override void Exit() {
-			viking.bodyMeshRenderer.material = viking.normalMaterial;
+			viking.desireVisualiser.HideDesire();
 		}
 
 		public override VikingState Update() {
@@ -30,21 +30,15 @@ namespace Vikings.States {
 
 			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
-			return givenItem.DesireType == viking.Desires[viking.CurrentDesireIndex].type;
+			return givenItem.DesireType == viking.CurrentDesire.type;
 		}
 
 		public override VikingState Interact(GameObject player, PickUp item) {
-			viking.Stats.Reset();
-			viking.CurrentDesireIndex++;
-
 			player.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
+			viking.CurrentDesireIndex++;
+			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
 
-			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-
-			if (viking.CurrentDesireIndex >= viking.Desires.Length)
-				return new LeavingVikingState(viking);
-
-			return new PassiveVikingState(viking);
+			return new SatisfiedVikingState(viking);
 		}
 	}
 }

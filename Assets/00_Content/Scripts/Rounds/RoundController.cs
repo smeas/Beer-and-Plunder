@@ -116,7 +116,7 @@ namespace Rounds {
 		}
 
 		private void HandleOnTavernDestroyed() {
-			throw new System.NotImplementedException();
+			Debug.Log("Tavern was destroyed!");
 		}
 	}
 }

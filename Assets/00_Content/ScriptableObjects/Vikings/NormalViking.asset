@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMood: 75
   moodDeclineRate: 1.5
-  desiringMoodThreshold: 50
   impatientMoodThreshold: 45
   desires:
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
+  desireIntervalMinMax: {x: 10, y: 15}
+  satisfiedDurationMinMax: {x: 5, y: 10}
+  coinsDroppedMinMax: {x: 1, y: 18}
+  coinsWhenLeavingMultiplier: 1.5
   canStartBrawl: 1
   brawlMoodThreshold: 15
   damage: 10

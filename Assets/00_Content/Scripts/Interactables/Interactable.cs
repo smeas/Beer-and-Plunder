@@ -3,7 +3,7 @@
 namespace Interactables {
 	public class Interactable : MonoBehaviour {
 
-		public virtual void CancelInteraction() {
+		public virtual void CancelInteraction(GameObject player, PickUp item) {
 		}
 		public virtual void Interact(GameObject player, PickUp item) {
 		}
