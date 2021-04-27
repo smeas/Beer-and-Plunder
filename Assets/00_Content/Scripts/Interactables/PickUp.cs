@@ -39,9 +39,10 @@ namespace Interactables {
 			if (rigidbody != null)
 				rigidbody.isKinematic = false;
 
-			TryPutInClosestItemSlot();
-
+			// Need to enable the collider fist because otherwise it will have zero sized bounds.
 			objectCollider.enabled = true;
+
+			TryPutInClosestItemSlot();
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
@@ -88,6 +89,10 @@ namespace Interactables {
 			// Put the item back into its original slot if possible
 			if (StartItemSlot != null && !StartItemSlot.HasItemInSlot)
 				StartItemSlot.PlaceItem(this);
+		}
+
+		private void OnDrawGizmosSelected() {
+			Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
 		}
 	}
 }
