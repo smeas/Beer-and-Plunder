@@ -73,6 +73,9 @@ namespace Interactables {
 		}
 
 		private void StartRepairing(GameObject player, RepairTool tool) {
+			if (Tavern.Instance != null && RoundController.Instance != null)
+				Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
+
 			isRepairing = true;
 			repairTool = tool;
 			repairTimer = repairDuration = RoundController.Instance != null
@@ -86,6 +89,11 @@ namespace Interactables {
 		}
 
 		private void EndRepairing(GameObject player) {
+			if (isRepairing) {
+				if (Tavern.Instance != null && RoundController.Instance != null)
+					Tavern.Instance.EarnsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
+			}
+
 			isRepairing = false;
 			repairTool.RepairProgressCanvas.SetActive(false);
 			player.GetComponent<PlayerMovement>().CanMove = true;
@@ -98,9 +106,6 @@ namespace Interactables {
 				if (repairTimer <= 0) {
 					isRepairing = false;
 					repairTool.RepairProgressCanvas.SetActive(false);
-
-					if (Tavern.Instance != null && RoundController.Instance != null)
-						Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
 
 					Repair();
 				}
