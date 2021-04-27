@@ -260,6 +260,7 @@ MonoBehaviour:
   beerSpawnpoint: {fileID: 1118051861831636839}
   progressBarImage: {fileID: 403496785}
   progressBar: {fileID: 890795911}
+  beerData: {fileID: 11400000, guid: 1edea882df6ee684ea9f25370d7a98cf, type: 2}
 --- !u!1 &8436749001366662095
 GameObject:
   m_ObjectHideFlags: 0
