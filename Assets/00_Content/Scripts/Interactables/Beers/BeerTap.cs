@@ -56,7 +56,7 @@ namespace Interactables.Beers {
 
 				if (pouringProgress > 100) {
 					GameObject beer = Instantiate(beerPrefab);
-					itemSlot.PutItem(beer.GetComponent<PickUp>());
+					itemSlot.PlaceItem(beer.GetComponent<PickUp>());
 
 					if (Tavern.Instance != null)
 						Tavern.Instance.SpendsMoney(beerData.cost);

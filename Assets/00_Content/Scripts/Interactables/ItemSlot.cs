@@ -10,11 +10,11 @@ namespace Interactables {
 				currentPickup.transform.SetParent(null);
 				currentPickup.StartItemSlot = this;
 				currentPickup.CurrentItemSlot = this;
-				PutItem(currentPickup);
+				PlaceItem(currentPickup);
 			}
 		}
 
-		public bool PutItem(PickUp item) {
+		public bool PlaceItem(PickUp item) {
 			if (HasItemInSlot)
 				return false;
 
@@ -29,8 +29,8 @@ namespace Interactables {
 			return true;
 		}
 
-		public void TakeItem() {
-			Debug.Assert(HasItemInSlot, "TakeItem() called with no item in slot", this);
+		public void ReleaseItem() {
+			Debug.Assert(HasItemInSlot, "ReleaseItem() called with no item in slot", this);
 			HasItemInSlot = false;
 		}
 	}

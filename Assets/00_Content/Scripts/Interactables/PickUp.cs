@@ -28,7 +28,7 @@ namespace Interactables {
 
 		private void OnDestroy() {
 			if (CurrentItemSlot != null) {
-				CurrentItemSlot.TakeItem();
+				CurrentItemSlot.ReleaseItem();
 				CurrentItemSlot = null;
 			}
 		}
@@ -58,7 +58,7 @@ namespace Interactables {
 			transform.localRotation = Quaternion.identity;
 
 			if (CurrentItemSlot != null) {
-				CurrentItemSlot.TakeItem();
+				CurrentItemSlot.ReleaseItem();
 				CurrentItemSlot = null;
 			}
 
@@ -78,7 +78,7 @@ namespace Interactables {
 					.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
 
 				if (closestFreeSlot != null)
-					closestFreeSlot.PutItem(this);
+					closestFreeSlot.PlaceItem(this);
 			}
 		}
 
@@ -87,7 +87,7 @@ namespace Interactables {
 
 			// Put the item back into its original slot if possible
 			if (StartItemSlot != null && !StartItemSlot.HasItemInSlot)
-				StartItemSlot.PutItem(this);
+				StartItemSlot.PlaceItem(this);
 		}
 	}
 }
