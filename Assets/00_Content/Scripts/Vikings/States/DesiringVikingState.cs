@@ -34,17 +34,11 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Interact(GameObject player, PickUp item) {
-			viking.Stats.Reset();
-			viking.CurrentDesireIndex++;
-
 			player.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
+			viking.CurrentDesireIndex++;
+			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
 
-			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-
-			if (viking.CurrentDesireIndex >= viking.Desires.Length)
-				return new LeavingVikingState(viking);
-
-			return new PassiveVikingState(viking);
+			return new SatisfiedVikingState(viking);
 		}
 	}
 }

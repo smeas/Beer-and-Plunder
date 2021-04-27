@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Interactables;
 using Rounds;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Vikings {
 		public VikingData Data => vikingData;
 		public DesireData[] Desires => vikingData.desires;
 		public DesireData CurrentDesire => vikingData.desires[CurrentDesireIndex];
+		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
