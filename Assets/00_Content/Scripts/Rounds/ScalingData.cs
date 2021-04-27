@@ -22,6 +22,9 @@ namespace Rounds {
 		[Min(0)]
 		public float tableHealth = 100f;
 
+		[Min(0)]
+		public int tableRepairCost = 25;
+
 	#region ScalingCalculations
 
 		/// <summary>

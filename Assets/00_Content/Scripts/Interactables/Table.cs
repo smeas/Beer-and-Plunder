@@ -39,7 +39,28 @@ namespace Interactables {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return !IsDestroyed && player.GetComponent<PlayerSteward>().Follower != null;
+			if (!IsDestroyed && player.GetComponent<PlayerSteward>().Follower != null)
+				return true;
+
+			if (IsDestroyed && item is RepairTool) {
+				if (Tavern.Instance != null && RoundController.Instance != null &&
+					Tavern.Instance.Money < RoundController.Instance.CurrentDifficulty.tableRepairCost) {
+					return false;
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public override void Interact(GameObject player, PickUp item) {
+			if (IsDestroyed && item is RepairTool) {
+				if (Tavern.Instance != null && RoundController.Instance != null)
+					Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
+
+				Repair();
+			}
 		}
 
 		public bool TryFindEmptyChairForViking(Viking viking, out Chair closest) {
@@ -76,9 +97,6 @@ namespace Interactables {
 		public void Repair() {
 			if (RoundController.Instance != null)
 				health = RoundController.Instance.CurrentDifficulty.tableHealth;
-
-			if (Tavern.Instance != null)
-				Tavern.Instance.RepairsDamage(1);
 
 			GetComponentInChildren<MeshRenderer>().enabled = true;
 		}
