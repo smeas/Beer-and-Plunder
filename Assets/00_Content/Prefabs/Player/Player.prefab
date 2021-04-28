@@ -227,8 +227,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 56217479-4441-4dc3-b5b8-32503f17b1fc
-    m_ActionName: Game/Start[/XInputControllerWindows/start,/Keyboard/enter]
+    m_ActionId: c00bc4d1-5cf8-47f0-99aa-a458e920e2bb
+    m_ActionName: UI/Start[/XInputControllerWindows/start,/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game
@@ -318,9 +318,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onDrop:
-    m_PersistentCalls:
-      m_Calls: []
   onInteract:
     m_PersistentCalls:
       m_Calls:

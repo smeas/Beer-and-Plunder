@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Menu {
 
@@ -28,6 +29,7 @@ namespace Menu {
 
 					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
 					playerInputHandler.OnStart.AddListener(HandleOnStartGame);
+					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
 
 					break;
 				}
@@ -57,6 +59,7 @@ namespace Menu {
 					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
 					playerInputHandler.transform.position = Vector3.zero;
 					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
+					playerSlot.PlayerComponent.GetComponent<PlayerInput>().SwitchCurrentActionMap("Game");
 				}
 			}
 

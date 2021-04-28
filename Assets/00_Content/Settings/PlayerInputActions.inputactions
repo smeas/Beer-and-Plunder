@@ -36,14 +36,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
-                },
-                {
-                    "name": "Start",
-                    "type": "Button",
-                    "id": "56217479-4441-4dc3-b5b8-32503f17b1fc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -189,28 +181,6 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ed1c9e71-67fd-43ab-8c0c-1bd9a49b827c",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Start",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ae20de40-6c7e-459e-b37d-1ec998199b77",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Start",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -295,6 +265,14 @@
                     "type": "PassThrough",
                     "id": "63b5a651-2203-42d8-b752-5f79b95a8198",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Start",
+                    "type": "Button",
+                    "id": "c00bc4d1-5cf8-47f0-99aa-a458e920e2bb",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -605,6 +583,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse;KeyboardMouse",
                     "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "933adc35-960a-45d2-b693-362e40b04533",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7346e04e-1e28-4dfe-a55e-e37ebbc24252",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Start",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

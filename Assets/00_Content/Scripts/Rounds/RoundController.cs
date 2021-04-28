@@ -80,7 +80,7 @@ namespace Rounds {
 			}
 
 			scoreCard.UpdateScoreCard(currentRound);
-			scoreCard.gameObject.SetActive(true);
+			scoreCard.Show();
 
 			VikingController.Instance.CanSpawn = false;
 
