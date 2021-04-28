@@ -108,12 +108,24 @@ namespace Vikings {
 			LeaveQueue?.Invoke(this);
 		}
 
-		public override void Interact(GameObject player, PickUp item) {
-			ChangeState(state.Interact(player, item));
+		public void Affect(GameObject player, PickUp item) {
+			state.Affect(player, item);
+		}
+
+		public void CancelAffect(GameObject player, PickUp item) {
+			state.CancelAffect(player, item);
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return state.CanInteract(player, item);
+		}
+
+		public override void Interact(GameObject player, PickUp item) {
+			ChangeState(state.Interact(player, item));
+		}
+
+		public override void CancelInteraction(GameObject player, PickUp item) {
+			state.CancelInteraction(player, item);
 		}
 	}
 }

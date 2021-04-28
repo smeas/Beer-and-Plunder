@@ -19,6 +19,9 @@ namespace Vikings.States {
 
 		public virtual void Exit() { }
 
+		public virtual void Affect(GameObject player, PickUp item) { }
+
+		public virtual void CancelAffect(GameObject player, PickUp item) { }
 
 		public virtual bool CanInteract(GameObject player, PickUp item) {
 			return false;
@@ -31,5 +34,7 @@ namespace Vikings.States {
 		public virtual VikingState TakeSeat(Chair chair) {
 			return this;
 		}
+
+		public virtual void CancelInteraction(GameObject player, PickUp item) { }
 	}
 }
