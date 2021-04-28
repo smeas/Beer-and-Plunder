@@ -1,3 +1,4 @@
+using Player;
 using System;
 using UnityEngine;
 using Vikings;
@@ -40,7 +41,9 @@ namespace Interactables.Weapons {
 		}
 
 		public void Use(GameObject user) {
-			Attack();
+			PlayerComponent player = user.GetComponent<PlayerComponent>();
+			if(!player.IsStunned)
+				Attack();
 		}
 
 		public void EndUse() { }

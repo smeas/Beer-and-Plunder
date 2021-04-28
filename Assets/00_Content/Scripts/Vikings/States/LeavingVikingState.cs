@@ -10,7 +10,6 @@ namespace Vikings.States {
 		public override VikingState Enter() {
 
 			if (viking.IsSeated) {
-				Debug.Log("Test");
 				viking.DismountChair();
 			}
 
@@ -28,8 +27,6 @@ namespace Vikings.States {
 		public override VikingState Update() {
 			if (navMeshAgent.pathPending)
 				return this;
-
-			Debug.Assert(navMeshAgent.hasPath);
 
 			if (navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete) {
 				Debug.LogWarning("Viking has no exit path or is blocked!", viking);

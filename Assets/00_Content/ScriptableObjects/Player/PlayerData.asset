@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   brawlHealth: 3
-  RegenerationDelay: 3
+  RegenerationDelay: 6
   stunDuration: 3
-  invulnerableDuration: 0.5
+  invulnerableDuration: 2
