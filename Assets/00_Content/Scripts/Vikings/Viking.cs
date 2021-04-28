@@ -169,49 +169,53 @@ namespace Vikings {
 		}
 
 		private void OnTriggerEnter(Collider other) {
-
 			if (weaponLayer.ContainsLayer(other.gameObject.layer)) {
+				RegisterHitFromPlayer(other);
+			}
+		}
 
-				if (state is LeavingVikingState)
-					return;
+		private void RegisterHitFromPlayer(Collider other) {
 
-				Axe axe = other.gameObject.GetComponent<Axe>();
-				if (axe.IsAttacking && !isAttacked) {
-					isAttacked = true;
+			if (state is LeavingVikingState)
+				return;
 
-					foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
-						hitHighlightMeshRenderer.material = brawlingMaterial;
-					}
+			//TODO - Probably get some more generic type of weapon instead of axe. Make an interface for all weapons?
+			Axe axe = other.gameObject.GetComponent<Axe>();
+			if (axe.IsAttacking && !isAttacked) {
+				isAttacked = true;
 
-					if (!IsSeated) {
-						PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
-						Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
-						navMeshAgent.enabled = false;
-						rb.isKinematic = false;
-						rb.AddForce(direction * axe.WeaponData.knockBackStrength * -1, ForceMode.Impulse);
-					}
+				foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
+					hitHighlightMeshRenderer.material = brawlingMaterial;
+				}
 
-					StartCoroutine(ResetHitHighLight());
+				if (!IsSeated) {
+					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
+					Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
+					navMeshAgent.enabled = false;
+					rb.isKinematic = false;
+					rb.AddForce(direction * axe.WeaponData.knockBackStrength * -1, ForceMode.Impulse);
+				}
 
-					if(state is BrawlingVikingState) {
-						Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
-						if(Stats.BrawlHealth <= 0) {
+				StartCoroutine(ResetHitHighLight());
 
-							ChangeState(new LeavingVikingState(this));
-							return;
-						}
-					}
+				if (state is BrawlingVikingState) {
+					Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
+					if (Stats.BrawlHealth <= 0) {
 
-					if (state is WaitingForSeatVikingState) {
 						ChangeState(new LeavingVikingState(this));
 						return;
 					}
+				}
 
-					Stats.TakeMoodDamage(axe.WeaponData.moodDamage);
+				if (state is WaitingForSeatVikingState) {
+					ChangeState(new LeavingVikingState(this));
+					return;
+				}
 
-					if(Stats.Mood <= 15f) {
-						ChangeState(new BrawlingVikingState(this, axe.GetComponentInParent<PlayerComponent>()));
-					}
+				Stats.TakeMoodDamage(axe.WeaponData.moodDamage);
+
+				if (Stats.Mood <= 15f) {
+					ChangeState(new BrawlingVikingState(this, axe.GetComponentInParent<PlayerComponent>()));
 				}
 			}
 		}
