@@ -54,10 +54,7 @@ namespace Vikings {
 			rb = GetComponent<Rigidbody>();
 			navMeshAgent = GetComponent<NavMeshAgent>();
 
-
 			Stats = new VikingStats(vikingData, statScaling);
-
-			
 
 			ChangeState(new WaitingForSeatVikingState(this));
 
@@ -135,20 +132,25 @@ namespace Vikings {
 		public void MakeSpinAttack() {
 			IsAttacking = true;
 			StartCoroutine(SpinAttack());
-
 			Invoke("FinishAttack", vikingData.spinAttackDuration);
 		}
 
 		private IEnumerator SpinAttack() {
-
 			while(IsAttacking) {
 				yield return null;
-				transform.Rotate(Vector3.up * vikingData.spinAttackSpeed);
+				Debug.Log(transform.eulerAngles.y);
+				transform.Rotate(Vector3.up, vikingData.spinAttackSpeed * Time.deltaTime);
 			}
 		}
 
 		private void FinishAttack() {
+			StopAllCoroutines();
 			IsAttacking = false;
+			isAttacked = false;
+
+			foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
+				hitHighlightMeshRenderer.material = normalMaterial;
+			}
 		}
 
 		public void FinishLeaving() {

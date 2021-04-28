@@ -39,6 +39,8 @@ namespace Vikings {
 
 		public float spinAttackDuration = 2f;
 
+		public float attackDamage = 1f;
+
 
 		[Header("Debug")]
 		public bool defaultAttackPlayer;
