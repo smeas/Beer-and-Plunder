@@ -18,6 +18,7 @@ namespace Vikings.States {
 
 		public override void Exit() {
 			viking.desireVisualiser.HideDesire();
+			viking.progressBar.Hide();
 		}
 
 		public override VikingState Update() {
@@ -27,6 +28,7 @@ namespace Vikings.States {
 				if (fulfillmentTimer >= viking.CurrentDesire.desireFulfillTime)
 					return DesireFulfilled();
 
+				viking.progressBar.UpdateProgress(fulfillmentTimer / viking.CurrentDesire.desireFulfillTime);
 
 				return this;
 			}
@@ -49,10 +51,13 @@ namespace Vikings.States {
 			hasActiveFulfillment = true;
 			fulfillingPlayer = player;
 
+			if (viking.CurrentDesire.desireFulfillTime != 0)
+				viking.progressBar.Show();
 		}
 
 		public override void CancelAffect(GameObject player, PickUp item) {
 			hasActiveFulfillment = false;
+			viking.progressBar.Hide();
 			fulfillingPlayer = null;
 		}
 
@@ -73,6 +78,7 @@ namespace Vikings.States {
 
 			hasActiveFulfillment = true;
 			fulfillmentTimer = 0;
+			viking.progressBar.Show();
 			fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = false;
 
 			return this;
@@ -83,6 +89,7 @@ namespace Vikings.States {
 
 			hasActiveFulfillment = false;
 			fulfillingPlayer = null;
+			viking.progressBar.Hide();
 		}
 
 		private VikingState DesireFulfilled() {

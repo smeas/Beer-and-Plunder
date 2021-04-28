@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Interactables;
 using Rounds;
+using UI;
 using UnityEngine;
 using Vikings.States;
 
@@ -14,6 +15,7 @@ namespace Vikings {
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
+		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
 		[SerializeField] public Material brawlingMaterial;
@@ -42,6 +44,8 @@ namespace Vikings {
 
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
+
+			progressBar.Hide();
 		}
 
 		private void Update() {
