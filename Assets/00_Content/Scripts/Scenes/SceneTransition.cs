@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
 
 namespace Scenes {
 	public class SceneTransition : MonoBehaviour {
@@ -36,8 +37,8 @@ namespace Scenes {
 		private IEnumerator CoExitScene() {
 			float exitDuration = transitionDuration / 2;
 
-			for (float i = exitDuration; i > 0; i -= Time.deltaTime) {
-				overlayMaterial.SetFloat(radiusID, i / exitDuration);
+			for (float time = exitDuration; time > 0; time -= Time.deltaTime) {
+				overlayMaterial.SetFloat(radiusID, MathX.EaseInQuad(time / exitDuration));
 				yield return null;
 			}
 
@@ -53,8 +54,8 @@ namespace Scenes {
 
 			float enterDuration = transitionDuration / 2;
 
-			for (float i = 0; i < enterDuration; i += Time.deltaTime) {
-				overlayMaterial.SetFloat(radiusID, i / enterDuration);
+			for (float time = 0; time < enterDuration; time += Time.deltaTime) {
+				overlayMaterial.SetFloat(radiusID, MathX.EaseInQuad(time / enterDuration));
 				yield return null;
 			}
 
