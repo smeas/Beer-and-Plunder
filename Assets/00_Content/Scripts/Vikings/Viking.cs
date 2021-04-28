@@ -121,24 +121,15 @@ namespace Vikings {
 			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
 		}
 
-		public void TriggerDuel(Viking viking) {
-			ChangeState(new BrawlingVikingState(this, viking));
-		}
-
-		public void TriggerDuel(PlayerComponent playerComponent) {
-			ChangeState(new BrawlingVikingState(this, playerComponent));
-		}
-
 		public void MakeSpinAttack() {
 			IsAttacking = true;
 			StartCoroutine(SpinAttack());
-			Invoke("FinishAttack", vikingData.spinAttackDuration);
+			Invoke(nameof(FinishAttack), vikingData.spinAttackDuration);
 		}
 
 		private IEnumerator SpinAttack() {
 			while(IsAttacking) {
 				yield return null;
-				Debug.Log(transform.eulerAngles.y);
 				transform.Rotate(Vector3.up, vikingData.spinAttackSpeed * Time.deltaTime);
 			}
 		}
