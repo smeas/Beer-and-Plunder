@@ -4,8 +4,11 @@ using World;
 
 namespace Player {
 	public class PlayerComponent : MonoBehaviour, IRespawnable {
+		[SerializeField] private Transform modelRoot;
+
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
+		public Transform ModelRoot => modelRoot;
 
 		public void Initialize() {
 			PlayerInput playerInput = GetComponent<PlayerInput>();

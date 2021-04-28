@@ -2953,6 +2953,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7298744250660269485, guid: 7e242a7999b035c4b93685e170e8605a, type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7737646158517328097, guid: 7e242a7999b035c4b93685e170e8605a, type: 3}
       propertyPath: m_Name
       value: Table For 4 (1)
