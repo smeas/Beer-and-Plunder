@@ -78,6 +78,7 @@ namespace Vikings.States {
 
 			attackTimer -= Time.deltaTime;
 			if (attackTimer <= 0) {
+				viking.MakeSpinAttack();
 				targetTable.Damage(viking.Data.damage);
 				attackTimer = viking.Data.attackRate;
 			}
@@ -108,7 +109,7 @@ namespace Vikings.States {
 		private VikingState DoPlayerBrawl() {
 
 			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude < viking.Data.attackTriggerDistance && !viking.IsAttacking) {
-				viking.MakePlayerAttack(playerTarget);
+				viking.MakeSpinAttack();
 				return this;
 			}
 

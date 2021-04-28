@@ -132,14 +132,14 @@ namespace Vikings {
 			ChangeState(new BrawlingVikingState(this, playerComponent));
 		}
 
-		public void MakePlayerAttack(PlayerComponent playerTarget) {
+		public void MakeSpinAttack() {
 			IsAttacking = true;
-			StartCoroutine(MakeAttack(playerTarget.transform));
+			StartCoroutine(SpinAttack());
 
 			Invoke("FinishAttack", vikingData.spinAttackDuration);
 		}
 
-		private IEnumerator MakeAttack(Transform target) {
+		private IEnumerator SpinAttack() {
 
 			while(IsAttacking) {
 				yield return null;
