@@ -64,6 +64,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2187889530449677918}
+  - {fileID: 4120172581204064570}
   - {fileID: 4223223547760060935}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -227,8 +228,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 56217479-4441-4dc3-b5b8-32503f17b1fc
-    m_ActionName: Game/Start[/XInputControllerWindows/start,/Keyboard/enter]
+    m_ActionId: c00bc4d1-5cf8-47f0-99aa-a458e920e2bb
+    m_ActionName: UI/Start[/XInputControllerWindows/start,/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game
@@ -246,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9503ac454f4c9dbd22d0685d21daee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelRoot: {fileID: 4120172581204064570}
 --- !u!114 &2187889529978375782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,9 +320,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onDrop:
-    m_PersistentCalls:
-      m_Calls: []
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -392,7 +391,7 @@ GameObject:
   - component: {fileID: 2187889530449677919}
   - component: {fileID: 7784603821437393855}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,8 +407,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4120172581204064570}
+  m_Children: []
   m_Father: {fileID: 2187889529978375779}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -466,13 +464,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3729980699867549186}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8606, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8554284429786074372}
-  m_Father: {fileID: 2187889530449677918}
-  m_RootOrder: 0
+  m_Father: {fileID: 2187889529978375779}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8117381662335087885
 GameObject:
@@ -507,7 +505,7 @@ Transform:
   m_Children:
   - {fileID: 807718991}
   m_Father: {fileID: 2187889529978375779}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &3382940680453500590
 SphereCollider:
