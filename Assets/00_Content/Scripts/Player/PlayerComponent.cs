@@ -28,6 +28,7 @@ namespace Player {
 		private List<MeshRenderer> bodyParts;
 
 		private void Awake() {
+
 			PlayerInput playerInput = GetComponent<PlayerInput>();
 			PlayerId = playerInput.playerIndex;
 
@@ -44,6 +45,7 @@ namespace Player {
 		}
 
 		private void FixedUpdate() {
+
 			if(brawlHealth < 3 && !isGeneratingHealth) {
 				StartCoroutine(GenerateBrawlHealth());
 				isGeneratingHealth = true;
@@ -108,7 +110,9 @@ namespace Player {
 			bodyParts.ForEach(x => x.material = yellowMaterial);
 			var blinkRoutine = StartCoroutine(BlinkBody());
 			isStunned = true;
+
 			yield return new WaitForSeconds(playerData.stunDuration);
+
 			isStunned = false;
 			playerMovement.CanMove = true;
 			isInvulnerable = false;
@@ -120,8 +124,8 @@ namespace Player {
 
 		private void OnCollisionEnter(Collision collision) {
 			if (vikingLayer.ContainsLayer(collision.gameObject.layer)) {
-				var viking = collision.gameObject.GetComponent<Viking>();
 
+				var viking = collision.gameObject.GetComponent<Viking>();
 				if(viking.IsAttacking)
 					TakeBrawlDamage(viking.Data.attackDamage);
 			}
