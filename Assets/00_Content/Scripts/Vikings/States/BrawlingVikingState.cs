@@ -16,7 +16,6 @@ namespace Vikings.States {
 		private NavMeshAgent navMeshAgent;
 		private BrawlType brawlType;
 
-		private bool isAttacking;
 		private float attackTimer;
 
 		private bool IsMoving => navMeshAgent.desiredVelocity.sqrMagnitude != 0;
@@ -102,7 +101,7 @@ namespace Vikings.States {
 		}
 
 		private VikingState DoVikingBrawl() {
-			Debug.Log("Fighting other viking...");
+			Debug.Log("Fighting another viking...");
 			return this;
 		}
 

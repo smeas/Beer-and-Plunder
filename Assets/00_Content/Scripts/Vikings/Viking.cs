@@ -122,9 +122,11 @@ namespace Vikings {
 		}
 
 		public void MakeSpinAttack() {
-			IsAttacking = true;
-			StartCoroutine(SpinAttack());
-			Invoke(nameof(FinishAttack), vikingData.spinAttackDuration);
+			if (!IsAttacking) {
+				IsAttacking = true;
+				StartCoroutine(SpinAttack());
+				Invoke(nameof(FinishAttack), vikingData.spinAttackDuration);
+			}
 		}
 
 		private IEnumerator SpinAttack() {
@@ -181,7 +183,9 @@ namespace Vikings {
 
 			//TODO - Probably get some more generic type of weapon instead of axe. Make an interface for all weapons?
 			Axe axe = other.gameObject.GetComponent<Axe>();
+
 			if (axe.IsAttacking && !isAttacked) {
+
 				isAttacked = true;
 
 				foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
@@ -196,7 +200,7 @@ namespace Vikings {
 					rb.AddForce(direction * axe.WeaponData.knockBackStrength * -1, ForceMode.Impulse);
 				}
 
-				StartCoroutine(ResetHitHighLight());
+				StartCoroutine(ResetHitSimulation());
 
 				if (state is BrawlingVikingState) {
 					Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
@@ -220,7 +224,7 @@ namespace Vikings {
 			}
 		}
 
-		private IEnumerator ResetHitHighLight() {
+		private IEnumerator ResetHitSimulation() {
 
 			yield return new WaitForSeconds(0.5f);
 
