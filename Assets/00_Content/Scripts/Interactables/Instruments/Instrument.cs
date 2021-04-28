@@ -5,7 +5,7 @@ using Vikings;
 
 namespace Interactables.Instruments {
 	[RequireComponent(typeof(AudioSource), typeof(SphereCollider))]
-	public class Instrument : PickUp, IUseable {
+	public class Instrument : PickUp, IUseable, IDesirable {
 		[Space]
 		[SerializeField] private InstrumentData instrumentData;
 		[SerializeField] private GameObject areaField;
@@ -16,6 +16,8 @@ namespace Interactables.Instruments {
 		private bool isPlaying;
 		private GameObject usingPlayer;
 		private readonly List<Viking> vikingsInRange = new List<Viking>();
+
+		public DesireType DesireType => instrumentData.desireType;
 
 		private void Awake() {
 			musicSource = GetComponent<AudioSource>();
