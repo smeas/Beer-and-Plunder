@@ -22,3 +22,7 @@ MonoBehaviour:
   damage: 10
   attackRate: 1
   brawlHealth: 3
+  attackTriggerDistance: 5
+  spinAttackSpeed: 2
+  spinAttackDuration: 2
+  defaultAttackPlayer: 1

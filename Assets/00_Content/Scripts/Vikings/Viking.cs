@@ -6,6 +6,7 @@ using Rounds;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using Vikings.States;
@@ -26,6 +27,7 @@ namespace Vikings {
 		[SerializeField] public Material desiringMaterial;
 		[SerializeField] public Material brawlingMaterial;
 
+		private bool debugModeStarted;
 		private VikingState state;
 		private VikingScaling statScaling;
 		private Rigidbody rb;
@@ -52,14 +54,29 @@ namespace Vikings {
 			rb = GetComponent<Rigidbody>();
 			navMeshAgent = GetComponent<NavMeshAgent>();
 
-			ChangeState(new WaitingForSeatVikingState(this));
+
 			Stats = new VikingStats(vikingData, statScaling);
+
+			
+
+			ChangeState(new WaitingForSeatVikingState(this));
 
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
 		}
 
 		private void Update() {
+
+			if (Data.defaultAttackPlayer && !debugModeStarted) {
+				var player = PlayerManager.Instance.Players.FirstOrDefault();
+
+				if (player == null)
+					return;
+
+				ChangeState(new BrawlingVikingState(this, player));
+				debugModeStarted = true;
+			}
+
 			ChangeState(state.Update());
 		}
 

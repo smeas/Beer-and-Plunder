@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moodDamage: 25
   brawlDamage: 1
-  knockBackStrength: 30
+  knockBackStrength: 50
