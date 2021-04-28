@@ -8,21 +8,45 @@ namespace Interactables.Beers {
 		[SerializeField] private Image progressBarImage;
 		[SerializeField] private GameObject progressBar;
 		[SerializeField] private BeerTap beerTap;
+		[Tooltip("Timespan in s it takes to switch beerbarrels.")]
+		[SerializeField] private float switchTime = 2f;
+
+		private float switchingProgress = 0f;
+		private bool isHolding;
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return item is BeerBarrel && beerTap.BeerAmount < 1;
+			return item is BeerBarrel && beerTap.BeerAmount < beerTap.MaxBeerAmount;
 		}
 
-		public override void Interact(GameObject player, PickUp item) {
-			base.Interact(player, item);
+		public override void Interact(GameObject player, PickUp barrel) {
+			isHolding = true;
+			StartCoroutine(SwitchBeerTapBarrel(barrel));
 		}
 
-		//Look at cancel interact override
+		public override void CancelInteraction(GameObject player, PickUp item) {
+			isHolding = false;
+		}
 
-		//Okay so, code here will need to set the BeerTap to its maximum, but also turn of the fillBar,
-		//seeing as it will be above the threshold value, otherwise I will need to move the set active/inactive on the fillBar in BeerTap to LateUpdate().
+		private IEnumerator SwitchBeerTapBarrel(PickUp barrel) {
 
-		//Also, some way here to destroy barrel, and also some way here to tell the BeerCellar to spawn a new Barrel(when this one is destroyed).
+			while (switchingProgress <= switchTime && isHolding) {
+
+				switchingProgress += Time.deltaTime;
+
+				if (!progressBar.activeInHierarchy) progressBar.SetActive(true);
+
+				progressBarImage.fillAmount = switchingProgress / switchTime;
+
+				if (switchingProgress > switchTime) {
+					beerTap.BeerAmount = beerTap.MaxBeerAmount;
+					Destroy(barrel.gameObject);
+					switchingProgress = 0;
+					progressBar.SetActive(false);
+					break;
+				}
+
+				yield return null;
+			}
+		}
 	}
 }
-

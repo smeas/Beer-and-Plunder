@@ -9,7 +9,8 @@ namespace Interactables.Beers {
 		[Header("Settings")]
 		[Range(1, 100f)]
 		[SerializeField] private float pourTimeMultiplier = 10f;
-		[SerializeField] private int maxBeerAmount = 25;
+		[SerializeField] private int maxBeerAmount = 5;
+		[Tooltip("When the amount of beer left in the barrel goes below this amount the fillbar shows continually.")]
 		[SerializeField] private int showFillThreshold = 3;
 
 		[Header("GameObjects")]
@@ -24,17 +25,26 @@ namespace Interactables.Beers {
 		private float pouringProgress = 0;
 		private bool isHolding = false;
 		private int beerAmount;
+		private float fillPortion;
 
 		public int MaxBeerAmount => maxBeerAmount;
 
 		public int BeerAmount {
 			get { return beerAmount; }
-			set { beerAmount = Mathf.Clamp(beerAmount, 0, maxBeerAmount); }
+			set { beerAmount = Mathf.Clamp(value, 0, MaxBeerAmount); }
 		}
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
-			beerAmount = maxBeerAmount;
+
+			beerAmount = MaxBeerAmount;
+			fillPortion = 1f / MaxBeerAmount;
+		}
+
+		private void Update() {
+			fillBarImage.fillAmount = fillPortion * beerAmount;
+			if (beerAmount < showFillThreshold || pouringProgress > 0) fillBar.SetActive(true);
+			else fillBar.SetActive(false);
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
@@ -52,11 +62,11 @@ namespace Interactables.Beers {
 		}
 
 		private IEnumerator PourBeer() {
-			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost && beerAmount > 0)
+			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
 				yield break;
 
 			while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
-				if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
+				if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost || BeerAmount < 1)
 					break;
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
@@ -69,15 +79,10 @@ namespace Interactables.Beers {
 				if (pouringProgress > 100) {
 					GameObject beer = Instantiate(beerPrefab);
 					itemSlot.PlaceItem(beer.GetComponent<PickUp>());
-					BeerAmount--;
-					//Need 2 ask J or J about this line of code later
-					if (BeerAmount <= showFillThreshold && !fillBar.activeInHierarchy) {
-						fillBar.SetActive(true);
-						//TODO: I think I need 2 check/set the maximum of the progressbar someway here. So that it is set to maxBeerAmount?
-						fillBarImage.fillAmount = BeerAmount * 0.01f;
-					}
-					if (Tavern.Instance != null)
-						Tavern.Instance.SpendsMoney(beerData.cost);
+
+					BeerAmount -= 1;
+
+					if (Tavern.Instance != null) Tavern.Instance.SpendsMoney(beerData.cost);
 
 					pouringProgress = 0;
 					progressBar.SetActive(false);
