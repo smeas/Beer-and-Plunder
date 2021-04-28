@@ -6,7 +6,7 @@ namespace UI {
 		[SerializeField] private Image progressImage;
 
 		private void OnEnable() {
-			transform.forward = Vector3.forward;
+			transform.rotation = Quaternion.identity;
 		}
 
 		public void Show() {
