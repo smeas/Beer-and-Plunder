@@ -1,11 +1,14 @@
+using Extensions;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Vikings;
 
 namespace Player {
 	public class PlayerComponent : MonoBehaviour {
 		[SerializeField] private PlayerData playerData;
+		[SerializeField] private LayerMask vikingLayer;
 		public int PlayerId { get; private set; }
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
 		public float BrawlHealth { get => brawlHealth; set => brawlHealth = value; }
@@ -43,8 +46,10 @@ namespace Player {
 
 		public void TakeBrawlDamage(float brawlDamage) {
 
-			if (isInvulnerable)
+			if (isInvulnerable) {
+				Debug.Log("Player is invulnerable");
 				return;
+			}
 			
 			brawlHealth -= brawlDamage;
 			Debug.Log("Player taking damage");
@@ -70,6 +75,15 @@ namespace Player {
 
 			playerMovement.CanMove = true;
 			brawlHealth = 3;
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (vikingLayer.ContainsLayer(collision.gameObject.layer)) {
+				var viking = collision.gameObject.GetComponent<Viking>();
+
+				if(viking.IsAttacking)
+					TakeBrawlDamage(viking.Data.attackDamage);
+			}
 		}
 	}
 }
