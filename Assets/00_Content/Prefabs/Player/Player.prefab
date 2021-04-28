@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9503ac454f4c9dbd22d0685d21daee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: eb23b75a6fc61cd41aebf4ffc2affd10, type: 2}
 --- !u!114 &2187889529978375782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,9 +319,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onDrop:
-    m_PersistentCalls:
-      m_Calls: []
   onInteract:
     m_PersistentCalls:
       m_Calls:

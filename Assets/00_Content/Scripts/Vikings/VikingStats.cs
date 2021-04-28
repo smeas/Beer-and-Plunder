@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Rounds;
@@ -7,9 +7,10 @@ using UnityEngine;
 namespace Vikings {
 	public class VikingStats {
 		private float startMood;
-
+		private float brawlHealth;
 		private float mood;
 		public float Mood => mood;
+		public float BrawlHealth => brawlHealth;
 
 		private List<StatModifier> modifiers = new List<StatModifier>();
 
@@ -19,6 +20,7 @@ namespace Vikings {
 		public VikingStats(VikingData data, VikingScaling scaling) {
 			startMood = data.startMood * scaling.startMoodMultiplier;
 			mood = startMood;
+			brawlHealth = data.brawlHealth;
 			moodDeclineRate = data.moodDeclineRate * scaling.moodDeclineMultiplier;
 		}
 
@@ -36,6 +38,14 @@ namespace Vikings {
 
 			Debug.Assert(success, "Successfully removed modifier");
 			RecalculateModifier(modifier.statType);
+		}
+
+		public void TakeMoodDamage(float moodDamage) {
+			mood -= moodDamage;
+		}
+
+		public void TakeBrawlDamage(float brawlDamage) {
+			brawlHealth -= brawlDamage;
 		}
 
 		private void RecalculateModifier(StatType type) {

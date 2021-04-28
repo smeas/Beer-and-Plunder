@@ -41,7 +41,7 @@ namespace Player {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
 				PickUp pickUp = other.GetComponentInParent<PickUp>();
 				pickUpsInRange.Add(pickUp);
-				pickUp.PickedUp += OnPickedUp;
+				pickUp.OnPickedUp += HandleOnPickedUp;
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
 				interactablesInRange.Add(other.GetComponentInParent<Interactable>());
@@ -52,14 +52,14 @@ namespace Player {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
 				PickUp pickUp = other.GetComponentInParent<PickUp>();
 				pickUpsInRange.Remove(pickUp);
-				pickUp.PickedUp -= OnPickedUp;
+				pickUp.OnPickedUp -= HandleOnPickedUp;
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
 				interactablesInRange.Remove(other.GetComponentInParent<Interactable>());
 			}
 		}
 
-		private void OnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
+		private void HandleOnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
 
 		private void UpdateClosestPickup() {
 			PickUp newClosestPickUp = null;

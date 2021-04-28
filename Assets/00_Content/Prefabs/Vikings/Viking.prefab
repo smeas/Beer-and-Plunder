@@ -64,9 +64,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
+  weaponLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   beingSeatedHighlightPrefab: {fileID: 5559515752884507063, guid: fdb61ac553e38354c8810b736ec885b0, type: 3}
   coinPrefab: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
   bodyMeshRenderer: {fileID: 1931527602067924265}
+  hitHighlightMeshRenderers:
+  - {fileID: 3632276563461388629}
+  - {fileID: 5190211560214276221}
+  - {fileID: 2936367336986622782}
   normalMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   desiringMaterial: {fileID: 2100000, guid: c56b477978f37814e9cd75e7203e36ac, type: 2}
   brawlingMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
@@ -279,5 +286,20 @@ Transform:
 --- !u!23 &1931527602067924265 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -1407648696446720749, guid: 641b072970d410a449cf093575e52c03, type: 3}
+  m_PrefabInstance: {fileID: 8554918347024531514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2936367336986622782 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2415831142130566396, guid: 641b072970d410a449cf093575e52c03, type: 3}
+  m_PrefabInstance: {fileID: 8554918347024531514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5190211560214276221 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4702187905401214905, guid: 641b072970d410a449cf093575e52c03, type: 3}
+  m_PrefabInstance: {fileID: 8554918347024531514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3632276563461388629 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4264525516594661009, guid: 641b072970d410a449cf093575e52c03, type: 3}
   m_PrefabInstance: {fileID: 8554918347024531514}
   m_PrefabAsset: {fileID: 0}

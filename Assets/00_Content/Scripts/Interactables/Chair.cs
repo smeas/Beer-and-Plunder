@@ -17,6 +17,7 @@ namespace Interactables {
 				Debug.LogError("A viking is attempting to take an already taken chair", this);
 
 			SittingViking = viking;
+			viking.IsSeated = true;
 		}
 
 		public void OnVikingLeaveChair(Viking viking) {
@@ -26,6 +27,7 @@ namespace Interactables {
 			}
 
 			SittingViking = null;
+			viking.IsSeated = false;
 		}
 	}
 }

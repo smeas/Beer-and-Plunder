@@ -9,16 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
-  m_Name: ContentViking
+  m_Script: {fileID: 11500000, guid: 3cac0d42d8455c74cbb048e06a512ac4, type: 3}
+  m_Name: PlayerData
   m_EditorClassIdentifier: 
-  startMood: 6
-  moodDeclineRate: 0
-  desiringMoodThreshold: 50
-  impatientMoodThreshold: 45
-  desires: []
-  canStartBrawl: 0
-  brawlMoodThreshold: 15
-  damage: 10
-  attackRate: 1
   brawlHealth: 3

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Extensions;
 using UnityEngine;
@@ -13,9 +13,12 @@ namespace Interactables {
 
 		private MeshFilter meshFilter;
 
-		public event Action<PickUp> PickedUp;
+		public Collider ObjectCollider => objectCollider;
+		public event Action<PickUp> OnPickedUp;
+		public event Action<PickUp> OnDropped;
 
-		public void Start() {
+
+		public virtual void Start() {
 			meshFilter = GetComponentInChildren<MeshFilter>();
 		}
 
@@ -40,6 +43,7 @@ namespace Interactables {
 			}
 
 			objectCollider.enabled = true;
+			OnDropped?.Invoke(this);
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
@@ -54,7 +58,7 @@ namespace Interactables {
 			transform.localRotation = Quaternion.identity;
 
 			objectCollider.enabled = false;
-			PickedUp?.Invoke(this);
+			OnPickedUp?.Invoke(this);
 		}
 	}
 }

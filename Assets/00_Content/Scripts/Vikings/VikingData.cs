@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vikings {
 	[CreateAssetMenu(fileName = "new Viking", menuName = "Game/VikingData", order = 0)]
@@ -29,5 +29,14 @@ namespace Vikings {
 
 		[Tooltip("How long does it take to perform one attack, s/attack")]
 		public float attackRate = 1;
+
+		[Tooltip("How many hits can be taken when brawling")]
+		public float brawlHealth = 3;
+
+		public float attackTriggerDistance = 4f;
+
+		public float spinAttackSpeed = 8f;
+
+		public float spinAttackDuration = 2f;
 	}
 }
