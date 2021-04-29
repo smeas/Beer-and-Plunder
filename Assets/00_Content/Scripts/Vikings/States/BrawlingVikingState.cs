@@ -117,7 +117,9 @@ namespace Vikings.States {
 
 		private VikingState DoPlayerBrawl() {
 
-			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude < Mathf.Pow(viking.Data.attackTriggerDistance, 2) && !viking.IsAttacking) {
+			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude <
+				viking.Data.attackTriggerDistance * viking.Data.attackTriggerDistance
+				&& !viking.IsAttacking) {
 				viking.MakeSpinAttack();
 				return this;
 			}

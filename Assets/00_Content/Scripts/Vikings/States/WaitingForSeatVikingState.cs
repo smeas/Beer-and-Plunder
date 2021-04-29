@@ -11,10 +11,6 @@ namespace Vikings.States {
 	public class WaitingForSeatVikingState : VikingState {
 		public WaitingForSeatVikingState(Viking viking) : base(viking) { }
 
-		public override VikingState Enter() {
-			return this;
-		}
-
 		public override VikingState HandleOnHit(Axe axe, Viking viking) {
 			return new LeavingVikingState(viking);
 		}
