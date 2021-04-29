@@ -15,7 +15,6 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Enter() {
-			base.Enter();
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();
 			navMeshAgent.enabled = true;
 
@@ -25,7 +24,6 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
-			base.Exit();
 			navMeshAgent.enabled = false;
 			viking.GetComponent<Rigidbody>().isKinematic = true;
 		}

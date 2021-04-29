@@ -12,16 +12,17 @@ namespace Vikings.States {
 		}
 
 		public virtual VikingState Enter() {
-			OnPlayerHit += HandleOnPlayerHit;
 			return this;
 		}
 
-		private void HandleOnPlayerHit(Axe axe, Viking viking) {
+		public virtual VikingState HandleOnHit(Axe axe, Viking viking) {
 			viking.Stats.TakeMoodDamage(axe.WeaponData.moodDamage);
 
 			if (viking.Stats.Mood <= viking.Data.brawlMoodThreshold) {
-				viking.ChangeState(new BrawlingVikingState(viking, axe.GetComponentInParent<Player.PlayerComponent>()));
+				return new BrawlingVikingState(viking, axe.GetComponentInParent<Player.PlayerComponent>());
 			}
+			return this;
+
 		}
 
 		public virtual VikingState Update() {
@@ -29,9 +30,7 @@ namespace Vikings.States {
 		}
 
 		public virtual void Exit() {
-			OnPlayerHit -= HandleOnPlayerHit;
 		}
-
 
 		public virtual bool CanInteract(GameObject player, PickUp item) {
 			return false;
@@ -44,7 +43,5 @@ namespace Vikings.States {
 		public virtual VikingState TakeSeat(Chair chair) {
 			return this;
 		}
-
-		public Action<Axe, Viking> OnPlayerHit; 
 	}
 }

@@ -12,13 +12,11 @@ namespace Vikings.States {
 		public WaitingForSeatVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-
-			OnPlayerHit += HandleOnPlayerHit;
 			return this;
 		}
 
-		private void HandleOnPlayerHit(Axe axe, Viking viking) {
-			viking.ChangeState(new LeavingVikingState(viking));
+		public override VikingState HandleOnHit(Axe axe, Viking viking) {
+			return new LeavingVikingState(viking);
 		}
 
 		public override void Exit() {

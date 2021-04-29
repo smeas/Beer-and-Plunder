@@ -3,15 +3,6 @@ namespace Vikings.States {
 		public PassiveVikingState(Viking viking) : base(viking) {
 		}
 
-		public override VikingState Enter() {
-			base.Enter();
-			return this;
-		}
-
-		public override void Exit() {
-			base.Exit();
-		}
-
 		public override VikingState Update() {
 			viking.Stats.Decline();
 

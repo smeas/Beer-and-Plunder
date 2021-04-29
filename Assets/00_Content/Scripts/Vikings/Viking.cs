@@ -27,7 +27,7 @@ namespace Vikings {
 		[SerializeField] public Material desiringMaterial;
 		[SerializeField] public Material brawlingMaterial;
 
-		private bool debugModeStarted;
+		private bool hasStartedAttackingPlayer;
 		private VikingState state;
 		private VikingScaling statScaling;
 		private Rigidbody rb;
@@ -65,14 +65,14 @@ namespace Vikings {
 
 		private void Update() {
 
-			if (Data.attackPlayerAtStartUp && !debugModeStarted) {
+			if (Data.attackPlayerAtStartUp && !hasStartedAttackingPlayer) {
 				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();
 
 				if (player == null)
 					return;
 
 				ChangeState(new BrawlingVikingState(this, player));
-				debugModeStarted = true;
+				hasStartedAttackingPlayer = true;
 			}
 
 			ChangeState(state.Update());
@@ -83,7 +83,7 @@ namespace Vikings {
 				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
 		}
 
-		public bool ChangeState(VikingState newState) {
+		private bool ChangeState(VikingState newState) {
 			if (newState == state)
 				return false;
 
@@ -205,7 +205,8 @@ namespace Vikings {
 				}
 
 				StartCoroutine(ResetHitSimulation());
-				state.OnPlayerHit?.Invoke(axe, this);
+				VikingState vikingState = state.HandleOnHit(axe, this);
+				ChangeState(vikingState);
 			}
 		}
 

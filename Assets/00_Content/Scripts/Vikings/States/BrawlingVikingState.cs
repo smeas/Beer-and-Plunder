@@ -49,8 +49,6 @@ namespace Vikings.States {
 			if(viking.IsSeated)
 				viking.DismountChair();
 
-			OnPlayerHit += HandleOnPlayerHit;
-
 			return this;
 		}
 
@@ -58,16 +56,15 @@ namespace Vikings.States {
 			viking.bodyMeshRenderer.material = viking.normalMaterial;
 			navMeshAgent.enabled = false;
 			viking.IsAttacking = false;
-			OnPlayerHit -= HandleOnPlayerHit;
 		}
 
-		private void HandleOnPlayerHit(Axe axe, Viking viking) {
+		public override VikingState HandleOnHit(Axe axe, Viking viking) {
 			viking.Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
 			if (viking.Stats.BrawlHealth <= 0) {
 
-				viking.ChangeState(new LeavingVikingState(viking));
-				return;
+				return new LeavingVikingState(viking);
 			}
+			return this;
 		}
 
 		public override VikingState Update() {
