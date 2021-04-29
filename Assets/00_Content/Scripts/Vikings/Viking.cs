@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Extensions;
 using Interactables;
@@ -24,7 +24,6 @@ namespace Vikings {
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
-		[SerializeField] public List<MeshRenderer> hitHighlightMeshRenderers;
 		[SerializeField] public Material normalMaterial;
 		[SerializeField] public Material brawlingMaterial;
 
@@ -148,9 +147,8 @@ namespace Vikings {
 			IsAttacking = false;
 			IsAttacked = false;
 
-			foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
-				hitHighlightMeshRenderer.material = normalMaterial;
-			}
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(normalMaterial, materialCount).ToArray();
 		}
 
 		public void FinishLeaving() {
@@ -207,9 +205,8 @@ namespace Vikings {
 
 				isAttacked = true;
 
-				foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
-					hitHighlightMeshRenderer.material = brawlingMaterial;
-				}
+				int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+				bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(brawlingMaterial, materialCount).ToArray();
 
 				if (CurrentChair == null) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
@@ -229,9 +226,8 @@ namespace Vikings {
 
 			yield return new WaitForSeconds(vikingData.iFrameAfterGettingHit);
 
-			foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
-				hitHighlightMeshRenderer.material = normalMaterial;
-			}
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(normalMaterial, materialCount).ToArray();
 
 			if (CurrentChair == null) {
 				rb.isKinematic = true;

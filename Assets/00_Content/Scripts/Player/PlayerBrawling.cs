@@ -1,10 +1,6 @@
-using Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Extensions;
 using UnityEngine;
 using Vikings;
 
@@ -23,12 +19,12 @@ namespace Player {
 		private float brawlHealth;
 		private bool isRegeneratingHealth;
 		private bool isInvulnerable;
-		private List<MeshRenderer> bodyParts;
+		private MeshRenderer bodyMeshRenderer;
 		private PlayerData playerData;
 
 		private void Start() {
 
-			bodyParts = GetComponentsInChildren<MeshRenderer>().ToList();
+			bodyMeshRenderer = GetComponentInChildren<MeshRenderer>();
 			playerData = GetComponent<PlayerComponent>().PlayerData;
 			brawlHealth = playerData.brawlHealth;
 		}
@@ -56,7 +52,8 @@ namespace Player {
 			}
 
 			brawlHealth -= brawlDamage;
-			bodyParts.ForEach(x => x.material = redMaterial);
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(redMaterial, materialCount).ToArray();
 
 
 			if (brawlHealth <= 0) {
@@ -73,7 +70,8 @@ namespace Player {
 
 			yield return new WaitForSeconds(1f);
 
-			bodyParts.ForEach(x => x.material = defaultMaterial);
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
 		}
 
 		private IEnumerator MakeInvulnerable() {
@@ -85,13 +83,13 @@ namespace Player {
 
 			isInvulnerable = false;
 			StopCoroutine(blinkRoutine);
-			bodyParts.ForEach(x => x.enabled = true);
+			bodyMeshRenderer.enabled = true;
 		}
 
 		private IEnumerator BlinkBody() {
 
 			while (true) {
-				bodyParts.ForEach(x => x.enabled = !x.enabled);
+				bodyMeshRenderer.enabled = !bodyMeshRenderer.enabled;
 				yield return new WaitForSeconds(0.2f);
 			}
 		}
@@ -100,7 +98,10 @@ namespace Player {
 
 			PlayerMovement playerMovement = GetComponent<PlayerMovement>();
 			playerMovement.CanMove = false;
-			bodyParts.ForEach(x => x.material = yellowMaterial);
+
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(yellowMaterial, materialCount).ToArray();
+
 			Coroutine blinkRoutine = StartCoroutine(BlinkBody());
 			isStunned = true;
 
@@ -110,7 +111,9 @@ namespace Player {
 			playerMovement.CanMove = true;
 			isInvulnerable = false;
 			brawlHealth = 3;
-			bodyParts.ForEach(x => x.material = defaultMaterial);
+
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
+
 			StopCoroutine(blinkRoutine);
 		}
 
