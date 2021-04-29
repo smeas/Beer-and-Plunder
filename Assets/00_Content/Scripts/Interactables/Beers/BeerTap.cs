@@ -1,7 +1,7 @@
 using System.Collections;
 using Taverns;
+using UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Interactables.Beers {
 	public class BeerTap : Interactable {
@@ -15,10 +15,8 @@ namespace Interactables.Beers {
 
 		[Header("GameObjects")]
 		[SerializeField] private GameObject beerPrefab;
-		[SerializeField] private Image progressBarImage;
-		[SerializeField] private GameObject progressBar;
-		[SerializeField] private Image fillBarImage;
-		[SerializeField] private GameObject fillBar;
+		[SerializeField] private ProgressBar pourProgressBar;
+		[SerializeField] private ProgressBar fillProgressBar;
 		[SerializeField] private BeerData beerData;
 
 		private ItemSlot itemSlot;
@@ -35,7 +33,7 @@ namespace Interactables.Beers {
 
 			beerAmount = MaxBeerAmount;
 			fillPortion = 1f / MaxBeerAmount;
-			fillBarImage.fillAmount = 1;
+			fillProgressBar.UpdateProgress(1);
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
@@ -60,16 +58,14 @@ namespace Interactables.Beers {
 				Tavern.Instance.SpendsMoney(beerData.cost);
 			}
 
-			fillBar.SetActive(true);
+			fillProgressBar.Show();
+			pourProgressBar.Show();
 
 			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= 100) {
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
-				if (!progressBar.activeInHierarchy)
-					progressBar.SetActive(true);
-
-				progressBarImage.fillAmount = pouringProgress * 0.01f;
+				pourProgressBar.UpdateProgress(pouringProgress * 0.01f);
 
 				if (pouringProgress > 100) {
 					GameObject beer = Instantiate(beerPrefab);
@@ -78,12 +74,12 @@ namespace Interactables.Beers {
 					beerAmount -= 1;
 					pouringProgress = 0;
 
-					fillBarImage.fillAmount = fillPortion * beerAmount;
-					progressBar.SetActive(false);
+					fillProgressBar.UpdateProgress(fillPortion * beerAmount);
+					pourProgressBar.Hide();
 
 					isPouring = false;
 
-					if (beerAmount > showFillThreshold) fillBar.SetActive(false);
+					if (beerAmount > showFillThreshold) fillProgressBar.Hide();
 					break;
 				}
 
@@ -93,8 +89,8 @@ namespace Interactables.Beers {
 
 		public void Refill() {
 			beerAmount = maxBeerAmount;
-			fillBar.SetActive(false);
-			fillBarImage.fillAmount = 1;
+			fillProgressBar.Hide();
+			fillProgressBar.UpdateProgress(1);
 		}
 	}
 }

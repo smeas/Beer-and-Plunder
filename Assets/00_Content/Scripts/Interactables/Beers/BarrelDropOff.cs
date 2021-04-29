@@ -1,11 +1,10 @@
 using System.Collections;
+using UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Interactables.Beers {
 	public class BarrelDropOff : Interactable {
-		[SerializeField] private Image progressBarImage;
-		[SerializeField] private GameObject progressBar;
+		[SerializeField] private ProgressBar progressBar;
 		[SerializeField] private BeerTap beerTap;
 		[Tooltip("Timespan in s it takes to switch beerbarrels.")]
 		[SerializeField] private float switchTime = 2f;
@@ -27,21 +26,20 @@ namespace Interactables.Beers {
 		}
 
 		private IEnumerator SwitchBeerTapBarrel(PickUp barrel) {
+			progressBar.Show();
 
 			while (switchingProgress <= switchTime && isHolding) {
 
 				switchingProgress += Time.deltaTime;
 
-				if (!progressBar.activeInHierarchy) progressBar.SetActive(true);
-
-				progressBarImage.fillAmount = switchingProgress / switchTime;
+				progressBar.UpdateProgress(switchingProgress / switchTime);
 
 				if (switchingProgress > switchTime) {
 					beerTap.Refill();
 					Destroy(barrel.gameObject);
 
 					switchingProgress = 0;
-					progressBar.SetActive(false);
+					progressBar.Hide();
 
 					break;
 				}
