@@ -9,6 +9,7 @@ namespace Menu {
     public class Lobby : MonoBehaviour {
 		[SerializeField] List<PlayerSlotObject> playerSlots;
 		[SerializeField] private GameObject[] playerModels;
+		[SerializeField] private Color[] playerColors;
 
 		private PlayerManager playerManager;
 
@@ -20,6 +21,9 @@ namespace Menu {
 
 			if (playerModels.Length < PlayerManager.MaxPlayers)
 				Debug.LogError("Not enough player models for everyone!", this);
+
+			if (playerColors.Length < PlayerManager.MaxPlayers)
+				Debug.LogError("Not enough player colors", this);
 		}
 
 		private void HandleOnPlayerJoined(PlayerComponent player) {
@@ -38,6 +42,9 @@ namespace Menu {
 					Debug.Assert(player.ModelRoot.childCount == 1, "Model root does not have exactly one child", player.ModelRoot);
 					Destroy(player.ModelRoot.GetChild(0).gameObject);
 					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponent<MeshRenderer>();
+
+					foreach (Material material in player.BodyMeshRenderer.materials)
+						material.color = playerColors[i];
 
 					break;
 				}
