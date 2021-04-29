@@ -46,6 +46,8 @@ namespace Interactables.Weapons {
 		public void EndUse() { }
 
 		private void Attack() {
+			if (isAttacking) return;
+
 			animator.SetTrigger("attack");
 			isAttacking = true;
 		}

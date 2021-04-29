@@ -25,6 +25,10 @@ namespace Player {
 			playerComponent = GetComponent<PlayerComponent>();
 			playerData = playerComponent.PlayerData;
 			brawlHealth = playerData.brawlHealth;
+
+			defaultMaterial = new Material(defaultMaterial) {
+				color = playerComponent.PlayerColor
+			};
 		}
 
 		private void FixedUpdate() {

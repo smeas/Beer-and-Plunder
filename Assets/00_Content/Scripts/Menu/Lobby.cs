@@ -43,6 +43,7 @@ namespace Menu {
 					Destroy(player.ModelRoot.GetChild(0).gameObject);
 					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponent<MeshRenderer>();
 
+					player.PlayerColor = playerColors[i];
 					foreach (Material material in player.BodyMeshRenderer.materials)
 						material.color = playerColors[i];
 

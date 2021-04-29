@@ -29,7 +29,7 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
-			if (navMeshAgent.enabled && navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001) {
+			if (navMeshAgent.enabled && navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001f) {
 
 				// Arrived at destination (mostly)
 				Transform transform = viking.transform;
