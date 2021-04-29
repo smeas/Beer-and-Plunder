@@ -60,6 +60,11 @@ namespace Vikings.States {
 
 		public override VikingState HandleOnHit(Axe axe, Viking viking) {
 			viking.Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
+
+			if(brawlType == BrawlType.TableBrawl) {
+				return new BrawlingVikingState(viking, axe.GetComponentInParent<PlayerComponent>());
+			}
+
 			if (viking.Stats.BrawlHealth <= 0) {
 
 				return new LeavingVikingState(viking);
