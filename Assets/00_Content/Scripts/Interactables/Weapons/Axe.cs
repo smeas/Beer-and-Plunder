@@ -1,7 +1,5 @@
 using Player;
-using System;
 using UnityEngine;
-using Vikings;
 
 namespace Interactables.Weapons {
 	public class Axe : PickUp, IUseable {
@@ -20,7 +18,7 @@ namespace Interactables.Weapons {
 		private Animator animator;
 		private bool isAttacking;
 
-		public override void Start() {
+		protected override void Start() {
 			base.Start();
 
 			OnPickedUp += HandleOnPickedUp;
@@ -52,7 +50,7 @@ namespace Interactables.Weapons {
 			isAttacking = true;
 		}
 
-		//Run from AnimationEvent 
+		//Run from AnimationEvent
 		public void EndAttack() {
 			isAttacking = false;
 		}
