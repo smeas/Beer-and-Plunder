@@ -9,7 +9,7 @@ namespace Vikings.States {
 
 		public override VikingState Enter() {
 
-			if(viking.IsSeated)
+			if(viking.CurrentChair != null)
 				viking.DismountChair();
 
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();

@@ -41,8 +41,6 @@ namespace Vikings {
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
-
-		public bool IsSeated { get; set; }
 		public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
 		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
 
@@ -196,7 +194,7 @@ namespace Vikings {
 					hitHighlightMeshRenderer.material = brawlingMaterial;
 				}
 
-				if (!IsSeated) {
+				if (CurrentChair == null) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
 					Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
 					navMeshAgent.enabled = false;
@@ -218,7 +216,7 @@ namespace Vikings {
 				hitHighlightMeshRenderer.material = normalMaterial;
 			}
 
-			if (!IsSeated) {
+			if (CurrentChair == null) {
 				rb.isKinematic = true;
 				navMeshAgent.Warp(rb.position);
 				state.Enter();

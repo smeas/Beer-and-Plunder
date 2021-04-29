@@ -36,7 +36,7 @@ namespace Vikings.States {
 		public BrawlingVikingState(Viking viking, PlayerComponent playerTarget) : base(viking) {
 			Debug.Assert(playerTarget != null, "Viking is entering a playerBrawl with no target");
 			this.playerTarget = playerTarget;
-			viking.IsSeated = false;
+			viking.DismountChair();
 			brawlType = BrawlType.PlayerBrawl;
 		}
 
@@ -46,7 +46,7 @@ namespace Vikings.States {
 
 			viking.bodyMeshRenderer.material = viking.brawlingMaterial;
 
-			if(viking.IsSeated)
+			if(viking.CurrentChair != null)
 				viking.DismountChair();
 
 			return this;
