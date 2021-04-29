@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vikings.States {
 	public class PassiveVikingState : VikingState {

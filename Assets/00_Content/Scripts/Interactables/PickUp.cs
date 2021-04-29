@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using UnityEngine;
 using World;
@@ -17,7 +17,9 @@ namespace Interactables {
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 
-		public event Action<PickUp> PickedUp;
+		protected Collider ObjectCollider => objectCollider;
+		public event Action<PickUp> OnPickedUp;
+		public event Action<PickUp> OnDropped;
 
 		protected virtual void Start() {
 			rigidbody = GetComponent<Rigidbody>();
@@ -43,6 +45,7 @@ namespace Interactables {
 			objectCollider.enabled = true;
 
 			TryPutInClosestItemSlot();
+			OnDropped?.Invoke(this);
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
@@ -64,7 +67,7 @@ namespace Interactables {
 			}
 
 			objectCollider.enabled = false;
-			PickedUp?.Invoke(this);
+			OnPickedUp?.Invoke(this);
 		}
 
 		private void TryPutInClosestItemSlot() {

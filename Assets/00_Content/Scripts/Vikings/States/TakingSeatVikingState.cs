@@ -29,7 +29,8 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
-			if (navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001) {
+			if (navMeshAgent.enabled && navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001) {
+
 				// Arrived at destination (mostly)
 				Transform transform = viking.transform;
 				transform.position = chair.SitPivot.position;

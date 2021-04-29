@@ -27,3 +27,9 @@ MonoBehaviour:
   brawlMoodThreshold: 15
   damage: 10
   attackRate: 1
+  brawlHealth: 3
+  attackTriggerDistance: 5
+  spinAttackSpeed: 800
+  spinAttackDuration: 2
+  attackDamage: 1
+  defaultAttackPlayer: 0

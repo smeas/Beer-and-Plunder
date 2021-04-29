@@ -1,4 +1,4 @@
-﻿using Interactables;
+using Interactables;
 using Player;
 using UnityEngine;
 

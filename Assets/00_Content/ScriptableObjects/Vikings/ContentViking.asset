@@ -12,9 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
   m_Name: ContentViking
   m_EditorClassIdentifier: 
-  startMood: 65
+  startMood: 6
   moodDeclineRate: 0
   desiringMoodThreshold: 50
   impatientMoodThreshold: 45
+  desires: []
   canStartBrawl: 0
   brawlMoodThreshold: 15
+  damage: 10
+  attackRate: 1
+  brawlHealth: 3
+  attackTriggerDistance: 5
+  spinAttackSpeed: 800
+  spinAttackDuration: 2
+  attackDamage: 1
+  defaultAttackPlayer: 1

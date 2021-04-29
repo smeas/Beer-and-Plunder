@@ -10,13 +10,16 @@ namespace Vikings {
 
 		private float moodDeclineRate;
 		private float moodDeclineModifier = 1f;
+		private float brawlHealth;
 
 		public float Mood { get; private set; }
 		public float StartMood { get; private set; }
+		public float BrawlHealth => brawlHealth;
 
 		public VikingStats(VikingData data, VikingScaling scaling) {
 			StartMood = data.startMood * scaling.startMoodMultiplier;
 			Mood = StartMood;
+			brawlHealth = data.brawlHealth;
 			moodDeclineRate = data.moodDeclineRate * scaling.moodDeclineMultiplier;
 		}
 
@@ -34,6 +37,14 @@ namespace Vikings {
 
 			Debug.Assert(success, "Successfully removed modifier");
 			RecalculateModifier(modifier.statType);
+		}
+
+		public void TakeMoodDamage(float moodDamage) {
+			Mood -= moodDamage;
+		}
+
+		public void TakeBrawlDamage(float brawlDamage) {
+			brawlHealth -= brawlDamage;
 		}
 
 		private void RecalculateModifier(StatType type) {

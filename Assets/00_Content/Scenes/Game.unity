@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 349818097}
   - component: {fileID: 349818096}
   - component: {fileID: 349818095}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 418289698}
   - component: {fileID: 418289697}
   - component: {fileID: 418289696}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1107,6 +1107,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &571937472
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.948
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983163692256703326, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118839621052462725, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
+      propertyPath: m_Name
+      value: WeaponAxe
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0a8804f3d364a724aa84fe1c5642df80, type: 3}
 --- !u!1001 &640019607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1614,7 +1671,7 @@ GameObject:
   - component: {fileID: 869839705}
   - component: {fileID: 869839704}
   - component: {fileID: 869839703}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Entrance Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2980,7 +3037,7 @@ GameObject:
   - component: {fileID: 1820730689}
   - component: {fileID: 1820730688}
   - component: {fileID: 1820730687}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
