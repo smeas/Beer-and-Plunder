@@ -24,7 +24,7 @@ namespace Interactables.Beers {
 
 		private ItemSlot itemSlot;
 		private float pouringProgress = 0;
-		private bool isHolding = false;
+		private bool isPouring = false;
 		private int beerAmount;
 		private float fillPortion;
 
@@ -42,39 +42,33 @@ namespace Interactables.Beers {
 			fillPortion = 1f / MaxBeerAmount;
 		}
 
-		private void Update() {
-			fillBarImage.fillAmount = fillPortion * beerAmount;
-			if (beerAmount < showFillThreshold || pouringProgress > 0) fillBar.SetActive(true);
-			else fillBar.SetActive(false);
-		}
-
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return Tavern.Instance.Money >= beerData.cost && BeerAmount >= 1 && !isHolding;
+			return Tavern.Instance.Money >= beerData.cost && BeerAmount >= 1 && !isPouring;
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
+			isPouring = true;
+			if (itemSlot.HasItemInSlot) return;
 
-			isHolding = true;
-
-			if (itemSlot.HasItemInSlot)
-				return;
-
-			StartCoroutine(StartPouringBeer());
+			StartCoroutine(PouringBeer());
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
-			if (isHolding && Tavern.Instance != null) Tavern.Instance.EarnsMoney(beerData.cost);
+			if (isPouring && Tavern.Instance != null) Tavern.Instance.EarnsMoney(beerData.cost);
 
-			isHolding = false;
+			isPouring = false;
 		}
 
-		private IEnumerator StartPouringBeer() {
+		private IEnumerator PouringBeer() {
 
 			if (Tavern.Instance != null) {
 				Tavern.Instance.SpendsMoney(beerData.cost);
 			}
 
-				while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
+			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= 100) {
+
+				fillBarImage.fillAmount = fillPortion * beerAmount;
+				fillBar.SetActive(true);
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
@@ -89,12 +83,21 @@ namespace Interactables.Beers {
 					BeerAmount -= 1;
 					pouringProgress = 0;
 					progressBar.SetActive(false);
-					isHolding = false;
+					isPouring = false;
+
+					if (BeerAmount > showFillThreshold) fillBar.SetActive(false);
 					break;
 				}
 
 				yield return null;
 			}
+		}
+		/// <summary>
+		/// Function calculates the fillBars value and deactivates fillBar.
+		/// </summary>
+		public void BeerTapFilledUp() {
+			fillBarImage.fillAmount = fillPortion * beerAmount;
+			fillBar.SetActive(false);
 		}
 	}
 }

@@ -240,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 1106705218}
     - target: {fileID: -6982187098682690909, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: maxBeerAmount
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 403496787, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: m_StaticEditorFlags

@@ -42,6 +42,8 @@ namespace Interactables.Beers {
 					Destroy(barrel.gameObject);
 					switchingProgress = 0;
 					progressBar.SetActive(false);
+
+					beerTap.BeerTapFilledUp();
 					break;
 				}
 
