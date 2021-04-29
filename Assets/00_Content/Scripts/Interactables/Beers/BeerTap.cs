@@ -1,66 +1,96 @@
 using System.Collections;
+using Taverns;
+using UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Interactables.Beers {
-
 	public class BeerTap : Interactable {
 
 		[Header("Settings")]
 		[Range(1, 100f)]
 		[SerializeField] private float pourTimeMultiplier = 10f;
+		[SerializeField] private int maxBeerAmount = 5;
+		[Tooltip("When the amount of beer left in the barrel goes below this amount the fillbar shows continually.")]
+		[SerializeField] private int showFillThreshold = 3;
 
 		[Header("GameObjects")]
 		[SerializeField] private GameObject beerPrefab;
-		[SerializeField] private Transform beerSpawnpoint;
-		[SerializeField] private Image progressBarImage;
-		[SerializeField] private GameObject progressBar;
+		[SerializeField] private ProgressBar pourProgressBar;
+		[SerializeField] private ProgressBar fillProgressBar;
+		[SerializeField] private BeerData beerData;
 
 		private ItemSlot itemSlot;
 		private float pouringProgress = 0;
-		private bool isHolding = false;
+		private bool isPouring = false;
+		private int beerAmount;
+		private float fillPortion;
+
+		public int MaxBeerAmount => maxBeerAmount;
+		public bool IsFull => beerAmount == maxBeerAmount;
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
 
-			if (beerSpawnpoint == null)
-				Debug.LogError("No spawnpoint for beer on beerTap");
+			beerAmount = MaxBeerAmount;
+			fillPortion = 1f / MaxBeerAmount;
+			fillProgressBar.UpdateProgress(1);
+		}
+
+		public override bool CanInteract(GameObject player, PickUp item) {
+			return Tavern.Instance.Money >= beerData.cost && beerAmount > 0 && !isPouring;
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
-
-			isHolding = true;
-
-			if (itemSlot.HasItemInSlot)
-				return;
-
-			StartCoroutine(PourBeer());
+			if (itemSlot.HasItemInSlot) return;
+			isPouring = true;
+			StartCoroutine(PouringBeer());
 		}
 
-		public override void CancelInteraction() {
-			isHolding = false;
+		public override void CancelInteraction(GameObject player, PickUp item) {
+			if (isPouring && Tavern.Instance != null) Tavern.Instance.EarnsMoney(beerData.cost);
+
+			isPouring = false;
 		}
 
-		private IEnumerator PourBeer() {
+		private IEnumerator PouringBeer() {
 
-			while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
+			if (Tavern.Instance != null) {
+				Tavern.Instance.SpendsMoney(beerData.cost);
+			}
+
+			fillProgressBar.Show();
+			pourProgressBar.Show();
+
+			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= 100) {
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
-				if(!progressBar.activeInHierarchy)
-					progressBar.SetActive(true);
+				pourProgressBar.UpdateProgress(pouringProgress * 0.01f);
 
-				progressBarImage.fillAmount = pouringProgress * 0.01f;
+				if (pouringProgress > 100) {
+					GameObject beer = Instantiate(beerPrefab);
+					itemSlot.PlaceItem(beer.GetComponent<PickUp>());
 
-				if(pouringProgress > 100) {
-					Instantiate(beerPrefab, beerSpawnpoint.position, Quaternion.identity);
+					beerAmount -= 1;
 					pouringProgress = 0;
-					progressBar.SetActive(false);
+
+					fillProgressBar.UpdateProgress(fillPortion * beerAmount);
+					pourProgressBar.Hide();
+
+					isPouring = false;
+
+					if (beerAmount > showFillThreshold) fillProgressBar.Hide();
 					break;
 				}
 
 				yield return null;
 			}
+		}
+
+		public void Refill() {
+			beerAmount = maxBeerAmount;
+			fillProgressBar.Hide();
+			fillProgressBar.UpdateProgress(1);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Rounds;
@@ -6,26 +6,25 @@ using UnityEngine;
 
 namespace Vikings {
 	public class VikingStats {
-		private float startMood;
-		private float brawlHealth;
-		private float mood;
-		public float Mood => mood;
-		public float BrawlHealth => brawlHealth;
-
 		private List<StatModifier> modifiers = new List<StatModifier>();
 
 		private float moodDeclineRate;
 		private float moodDeclineModifier = 1f;
+		private float brawlHealth;
+
+		public float Mood { get; private set; }
+		public float StartMood { get; private set; }
+		public float BrawlHealth => brawlHealth;
 
 		public VikingStats(VikingData data, VikingScaling scaling) {
-			startMood = data.startMood * scaling.startMoodMultiplier;
-			mood = startMood;
+			StartMood = data.startMood * scaling.startMoodMultiplier;
+			Mood = StartMood;
 			brawlHealth = data.brawlHealth;
 			moodDeclineRate = data.moodDeclineRate * scaling.moodDeclineMultiplier;
 		}
 
 		public void Decline() {
-			mood -= moodDeclineRate * moodDeclineModifier * Time.deltaTime;
+			Mood -= moodDeclineRate * moodDeclineModifier * Time.deltaTime;
 		}
 
 		public void AddModifier(StatModifier modifier) {
@@ -41,7 +40,7 @@ namespace Vikings {
 		}
 
 		public void TakeMoodDamage(float moodDamage) {
-			mood -= moodDamage;
+			Mood -= moodDamage;
 		}
 
 		public void TakeBrawlDamage(float brawlDamage) {
@@ -61,7 +60,7 @@ namespace Vikings {
 		}
 
 		public void Reset() {
-			mood = startMood;
+			Mood = StartMood;
 		}
 	}
 }
