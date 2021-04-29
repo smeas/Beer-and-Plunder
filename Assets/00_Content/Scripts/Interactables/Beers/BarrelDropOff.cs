@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +14,7 @@ namespace Interactables.Beers {
 		private bool isHolding;
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return item is BeerBarrel && beerTap.BeerAmount < beerTap.MaxBeerAmount;
+			return item is BeerBarrel && !beerTap.IsFull;
 		}
 
 		public override void Interact(GameObject player, PickUp barrel) {
@@ -38,12 +37,12 @@ namespace Interactables.Beers {
 				progressBarImage.fillAmount = switchingProgress / switchTime;
 
 				if (switchingProgress > switchTime) {
-					beerTap.BeerAmount = beerTap.MaxBeerAmount;
+					beerTap.Refill();
 					Destroy(barrel.gameObject);
+
 					switchingProgress = 0;
 					progressBar.SetActive(false);
 
-					beerTap.BeerTapFilledUp();
 					break;
 				}
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Taverns;
 using UnityEngine;
@@ -29,21 +28,18 @@ namespace Interactables.Beers {
 		private float fillPortion;
 
 		public int MaxBeerAmount => maxBeerAmount;
-
-		public int BeerAmount {
-			get { return beerAmount; }
-			set { beerAmount = Mathf.Clamp(value, 0, MaxBeerAmount); }
-		}
+		public bool IsFull => beerAmount == maxBeerAmount;
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
 
 			beerAmount = MaxBeerAmount;
 			fillPortion = 1f / MaxBeerAmount;
+			fillBarImage.fillAmount = 1;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return Tavern.Instance.Money >= beerData.cost && BeerAmount >= 1 && !isPouring;
+			return Tavern.Instance.Money >= beerData.cost && beerAmount > 0 && !isPouring;
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
@@ -64,10 +60,9 @@ namespace Interactables.Beers {
 				Tavern.Instance.SpendsMoney(beerData.cost);
 			}
 
-			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= 100) {
+			fillBar.SetActive(true);
 
-				fillBarImage.fillAmount = fillPortion * beerAmount;
-				fillBar.SetActive(true);
+			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= 100) {
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
@@ -79,24 +74,27 @@ namespace Interactables.Beers {
 				if (pouringProgress > 100) {
 					GameObject beer = Instantiate(beerPrefab);
 					itemSlot.PlaceItem(beer.GetComponent<PickUp>());
-					BeerAmount -= 1;
+
+					beerAmount -= 1;
 					pouringProgress = 0;
+
+					fillBarImage.fillAmount = fillPortion * beerAmount;
 					progressBar.SetActive(false);
+
 					isPouring = false;
 
-					if (BeerAmount > showFillThreshold) fillBar.SetActive(false);
+					if (beerAmount > showFillThreshold) fillBar.SetActive(false);
 					break;
 				}
 
 				yield return null;
 			}
 		}
-		/// <summary>
-		/// Function calculates the fillBars value and deactivates fillBar.
-		/// </summary>
-		public void BeerTapFilledUp() {
-			fillBarImage.fillAmount = fillPortion * beerAmount;
+
+		public void Refill() {
+			beerAmount = maxBeerAmount;
 			fillBar.SetActive(false);
+			fillBarImage.fillAmount = 1;
 		}
 	}
 }
