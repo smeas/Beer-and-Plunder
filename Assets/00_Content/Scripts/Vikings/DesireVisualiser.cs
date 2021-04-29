@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Vikings {
 	public class DesireVisualiser : MonoBehaviour {
+		[SerializeField] private Color color = Color.green;
+
 		private GameObject visualisation;
 
 		public void ShowNewDesire(GameObject desireVisualisationPrefab) {
@@ -13,6 +16,10 @@ namespace Vikings {
 			}
 
 			visualisation = Instantiate(desireVisualisationPrefab, transform);
+
+			// TODO: Delete this
+			foreach (Material material in visualisation.GetComponentsInChildren<MeshRenderer>().SelectMany(x => x.materials))
+				material.color = color;
 		}
 
 		public void HideDesire() {
