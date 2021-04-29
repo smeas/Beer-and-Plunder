@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Taverns;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace Interactables.Beers {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return Tavern.Instance.Money >= beerData.cost && BeerAmount >= 1;
+			return Tavern.Instance.Money >= beerData.cost && BeerAmount >= 1 && !isHolding;
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
@@ -58,16 +59,22 @@ namespace Interactables.Beers {
 			if (itemSlot.HasItemInSlot)
 				return;
 
-			StartCoroutine(PourBeer());
+			StartCoroutine(StartPouringBeer());
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
+			if (isHolding && Tavern.Instance != null) Tavern.Instance.EarnsMoney(beerData.cost);
+
 			isHolding = false;
 		}
 
-		private IEnumerator PourBeer() {
+		private IEnumerator StartPouringBeer() {
 
-			while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
+			if (Tavern.Instance != null) {
+				Tavern.Instance.SpendsMoney(beerData.cost);
+			}
+
+				while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
@@ -79,13 +86,10 @@ namespace Interactables.Beers {
 				if (pouringProgress > 100) {
 					GameObject beer = Instantiate(beerPrefab);
 					itemSlot.PlaceItem(beer.GetComponent<PickUp>());
-
 					BeerAmount -= 1;
-
-					if (Tavern.Instance != null) Tavern.Instance.SpendsMoney(beerData.cost);
-
 					pouringProgress = 0;
 					progressBar.SetActive(false);
+					isHolding = false;
 					break;
 				}
 
