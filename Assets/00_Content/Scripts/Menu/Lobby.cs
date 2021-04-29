@@ -37,7 +37,7 @@ namespace Menu {
 					// Give the player a unique model
 					Debug.Assert(player.ModelRoot.childCount == 1, "Model root does not have exactly one child", player.ModelRoot);
 					Destroy(player.ModelRoot.GetChild(0).gameObject);
-					Instantiate(playerModels[i], player.ModelRoot);
+					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponent<MeshRenderer>();
 
 					break;
 				}

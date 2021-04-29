@@ -16,8 +16,8 @@ MonoBehaviour:
   moodDeclineRate: 1.5
   impatientMoodThreshold: 45
   desires:
-  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
   - {fileID: 11400000, guid: d08e6b7397edbc948a861ec7fd901a71, type: 2}
+  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
   desireIntervalMinMax: {x: 10, y: 15}
   satisfiedDurationMinMax: {x: 5, y: 10}
@@ -31,5 +31,6 @@ MonoBehaviour:
   attackTriggerDistance: 5
   spinAttackSpeed: 800
   spinAttackDuration: 2
-  attackDamage: 1
-  defaultAttackPlayer: 0
+  spinAttackDamage: 1
+  iFrameAfterGettingHit: 0.5
+  attackPlayerAtStartUp: 0

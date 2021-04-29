@@ -10,11 +10,14 @@ namespace Player {
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
 		public Transform ModelRoot => modelRoot;
+		public MeshRenderer BodyMeshRenderer { get; set; }
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
 
 		public void Initialize() {
 			PlayerInput playerInput = GetComponent<PlayerInput>();
 			PlayerId = playerInput.playerIndex;
+
+			BodyMeshRenderer = GetComponentInChildren<MeshRenderer>();
 
 			if (playerData == null)
 				Debug.LogWarning("PlayerData is not set in PlayerComponent");

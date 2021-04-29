@@ -18,13 +18,12 @@ namespace Player {
 		private float brawlHealth;
 		private bool isRegeneratingHealth;
 		private bool isInvulnerable;
-		private MeshRenderer bodyMeshRenderer;
 		private PlayerData playerData;
+		private PlayerComponent playerComponent;
 
 		private void Start() {
-
-			bodyMeshRenderer = GetComponentInChildren<MeshRenderer>();
-			playerData = GetComponent<PlayerComponent>().PlayerData;
+			playerComponent = GetComponent<PlayerComponent>();
+			playerData = playerComponent.PlayerData;
 			brawlHealth = playerData.brawlHealth;
 		}
 
@@ -55,8 +54,8 @@ namespace Player {
 			}
 
 			brawlHealth -= brawlDamage;
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(redMaterial, materialCount).ToArray();
+			int materialCount = playerComponent.BodyMeshRenderer.sharedMaterials.Length;
+			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(redMaterial, materialCount).ToArray();
 
 
 			if (brawlHealth <= 0) {
@@ -73,8 +72,8 @@ namespace Player {
 
 			yield return new WaitForSeconds(1f);
 
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
+			int materialCount = playerComponent.BodyMeshRenderer.sharedMaterials.Length;
+			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
 		}
 
 		private IEnumerator MakeInvulnerable() {
@@ -86,13 +85,13 @@ namespace Player {
 
 			isInvulnerable = false;
 			StopCoroutine(blinkRoutine);
-			bodyMeshRenderer.enabled = true;
+			playerComponent.BodyMeshRenderer.enabled = true;
 		}
 
 		private IEnumerator BlinkBody() {
 
 			while (true) {
-				bodyMeshRenderer.enabled = !bodyMeshRenderer.enabled;
+				playerComponent.BodyMeshRenderer.enabled = !playerComponent.BodyMeshRenderer.enabled;
 				yield return new WaitForSeconds(0.2f);
 			}
 		}
@@ -102,8 +101,8 @@ namespace Player {
 			PlayerMovement playerMovement = GetComponent<PlayerMovement>();
 			playerMovement.CanMove = false;
 
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(yellowMaterial, materialCount).ToArray();
+			int materialCount = playerComponent.BodyMeshRenderer.sharedMaterials.Length;
+			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(yellowMaterial, materialCount).ToArray();
 
 			Coroutine blinkRoutine = StartCoroutine(BlinkBody());
 			isStunned = true;
@@ -117,10 +116,10 @@ namespace Player {
 			brawlHealth = 3;
 			isRegeneratingHealth = false;
 
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
+			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
 
 			StopCoroutine(blinkRoutine);
-			bodyMeshRenderer.enabled = true;
+			playerComponent.BodyMeshRenderer.enabled = true;
 		}
 
 		private void OnCollisionEnter(Collision collision) {
