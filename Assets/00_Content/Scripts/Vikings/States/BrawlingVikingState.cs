@@ -125,8 +125,10 @@ namespace Vikings.States {
 				return this;
 			}
 
-			if(!viking.IsAttacked)
+			if (!viking.IsAttacked) {
+				navMeshAgent.enabled = true;
 				navMeshAgent.SetDestination(playerTarget.transform.position);
+			}
 			
 			return this;
 		}

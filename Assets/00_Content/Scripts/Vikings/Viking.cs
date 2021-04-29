@@ -219,6 +219,7 @@ namespace Vikings {
 
 			if (!IsSeated) {
 				rb.isKinematic = true;
+				navMeshAgent.Warp(rb.position);
 				state.Enter();
 			}
 
