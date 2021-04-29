@@ -4,15 +4,22 @@ using World;
 
 namespace Player {
 	public class PlayerComponent : MonoBehaviour, IRespawnable {
-		public int PlayerId { get; private set; }
+		[SerializeField] private Transform modelRoot;
 
-		private void Awake() {
+		public int PlayerId { get; private set; }
+		public Transform SpawnPoint { get; set; }
+		public Transform ModelRoot => modelRoot;
+
+		public void Initialize() {
 			PlayerInput playerInput = GetComponent<PlayerInput>();
 			PlayerId = playerInput.playerIndex;
 		}
 
 		public void Respawn() {
-			transform.position = Vector3.zero;
+			if (SpawnPoint != null)
+				transform.SetPositionAndRotation(SpawnPoint.position, SpawnPoint.rotation);
+			else
+				transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 		}
 	}
 }

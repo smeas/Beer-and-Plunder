@@ -37,7 +37,8 @@ namespace Taverns {
 			set => money = Mathf.Round(Mathf.Clamp(value, 0, maxMoney));
 		}
 
-		void Start() {
+		protected override void Awake() {
+			base.Awake();
 			Health = startingHealth;
 			Money = startingMoney;
 		}

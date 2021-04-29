@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Menu {
 
     public class Lobby : MonoBehaviour {
 		[SerializeField] List<PlayerSlotObject> playerSlots;
+		[SerializeField] private GameObject[] playerModels;
 
 		private PlayerManager playerManager;
 
@@ -15,19 +17,27 @@ namespace Menu {
 			playerManager = PlayerManager.Instance;
 			playerManager.PlayerJoined += HandleOnPlayerJoined;
 			playerManager.PlayerLeft += HandleOnPlayerLeft;
+
+			if (playerModels.Length < PlayerManager.MaxPlayers)
+				Debug.LogError("Not enough player models for everyone!", this);
 		}
 
 		private void HandleOnPlayerJoined(PlayerComponent player) {
-
 			List<PlayerSlotObject> slots = playerSlots.OrderBy(x => x.Id).ToList();
 
-			foreach (PlayerSlotObject slot in slots) {
+			for (int i = 0; i < slots.Count; i++) {
+				PlayerSlotObject slot = slots[i];
 				if (!slot.IsTaken) {
-
 					slot.JoinPlayer(player);
 
 					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
 					playerInputHandler.OnStart.AddListener(HandleOnStartGame);
+					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
+
+					// Give the player a unique model
+					Debug.Assert(player.ModelRoot.childCount == 1, "Model root does not have exactly one child", player.ModelRoot);
+					Destroy(player.ModelRoot.GetChild(0).gameObject);
+					Instantiate(playerModels[i], player.ModelRoot);
 
 					break;
 				}
@@ -57,6 +67,7 @@ namespace Menu {
 					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
 					playerInputHandler.transform.position = Vector3.zero;
 					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
+					playerSlot.PlayerComponent.GetComponent<PlayerInput>().SwitchCurrentActionMap("Game");
 				}
 			}
 

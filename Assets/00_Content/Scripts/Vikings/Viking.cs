@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Interactables;
 using Rounds;
+using UI;
 using UnityEngine;
 using Vikings.States;
 
@@ -12,9 +14,10 @@ namespace Vikings {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
+		[SerializeField] public DesireVisualiser desireVisualiser;
+		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
-		[SerializeField] public Material desiringMaterial;
 		[SerializeField] public Material brawlingMaterial;
 
 		private VikingState state;
@@ -22,6 +25,8 @@ namespace Vikings {
 
 		public VikingData Data => vikingData;
 		public DesireData[] Desires => vikingData.desires;
+		public DesireData CurrentDesire => vikingData.desires[CurrentDesireIndex];
+		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
@@ -39,6 +44,8 @@ namespace Vikings {
 
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
+
+			progressBar.Hide();
 		}
 
 		private void Update() {
@@ -105,12 +112,24 @@ namespace Vikings {
 			LeaveQueue?.Invoke(this);
 		}
 
-		public override void Interact(GameObject player, PickUp item) {
-			ChangeState(state.Interact(player, item));
+		public void Affect(GameObject player, PickUp item) {
+			state.Affect(player, item);
+		}
+
+		public void CancelAffect(GameObject player, PickUp item) {
+			state.CancelAffect(player, item);
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return state.CanInteract(player, item);
+		}
+
+		public override void Interact(GameObject player, PickUp item) {
+			ChangeState(state.Interact(player, item));
+		}
+
+		public override void CancelInteraction(GameObject player, PickUp item) {
+			state.CancelInteraction(player, item);
 		}
 	}
 }
