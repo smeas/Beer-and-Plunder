@@ -4,9 +4,16 @@ using UnityEngine.UI;
 namespace UI {
 	public class ProgressBar : MonoBehaviour {
 		[SerializeField] private Image progressImage;
+		[SerializeField] private Vector3 rotation;
+
+	#if UNITY_EDITOR
+		private void OnValidate() {
+			transform.eulerAngles = rotation;
+		}
+	#endif
 
 		private void OnEnable() {
-			transform.rotation = Quaternion.identity;
+			transform.eulerAngles = rotation;
 		}
 
 		public void Show() {
