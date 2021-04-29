@@ -41,10 +41,6 @@ namespace Taverns {
 			Health = startingHealth;
 			Money = startingMoney;
 		}
-		//TODO: Remember to remove this later if you end up not using it for your testings.
-		public void RemovesMoney() {
-			SpendsMoney(10);
-		}
 
 		public void EarnsMoney(float moneyEarned) {
 			Money += moneyEarned;
@@ -56,7 +52,7 @@ namespace Taverns {
 			OnMoneyChanges?.Invoke();
 
 			if (IsBankrupt) {
-				Debug.Log("game over, you are bankrupt!");
+				Debug.Log("Tavern says: Game over, you are bankrupt!");
 
 				OnBankrupcy?.Invoke();
 			}
@@ -67,7 +63,7 @@ namespace Taverns {
 			OnHealthChanges?.Invoke();
 
 			if (IsDestroyed) {
-				Debug.Log("game over, your tavern is destroyed!");
+				Debug.Log("Tavern says: Game over, your tavern is destroyed!");
 
 				OnDestroyed?.Invoke();
 			}

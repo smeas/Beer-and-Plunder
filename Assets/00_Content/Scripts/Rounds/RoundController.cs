@@ -118,7 +118,7 @@ namespace Rounds {
 			isRoundActive = false;
 			DisableGamePlay();
 
-			Debug.Log("the tavern was destroyed.");
+			Debug.Log("RoundController notices that the tavern was destroyed.");
 			gameOverPanelPrefab.gameObject.SetActive(true);
 		}
 
@@ -126,7 +126,7 @@ namespace Rounds {
 			isRoundActive = false;
 			DisableGamePlay();
 
-			Debug.Log("the tavern went bankrupt.");
+			Debug.Log("RoundController notices that the tavern went bankrupt.");
 			gameOverPanelPrefab.gameObject.SetActive(true);
 		}
 	}

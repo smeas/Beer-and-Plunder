@@ -1,5 +1,7 @@
 using Scenes;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Player;
 using UnityEngine.UI;
 using TMPro;
 
@@ -9,8 +11,18 @@ namespace Menu {
 		public GameObject settingsPanel;
 
 		private void Start() {
+
+			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
+				PlayerInput playerInput = player.GetComponent<PlayerInput>();
+				playerInput.SwitchCurrentActionMap("UI");
+			}
+
 			settingsPanel.SetActive(false);
 			mainMenuPanel.SetActive(true);
+		}
+
+		private void Update() {
+			
 		}
 
 		public void GoToLobby() {

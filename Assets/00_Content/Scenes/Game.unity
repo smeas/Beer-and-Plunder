@@ -2475,6 +2475,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoundController
       objectReference: {fileID: 0}
+    - target: {fileID: 8733019525744738231, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
+      propertyPath: maxHealth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8733019525744738231, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
+      propertyPath: startingMoney
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8733019525744738231, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
+      propertyPath: startingHealth
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8929937810978380358, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
       propertyPath: m_RootOrder
       value: 3
