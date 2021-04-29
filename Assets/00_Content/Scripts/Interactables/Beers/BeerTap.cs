@@ -47,6 +47,10 @@ namespace Interactables.Beers {
 			else fillBar.SetActive(false);
 		}
 
+		public override bool CanInteract(GameObject player, PickUp item) {
+			return Tavern.Instance.Money >= beerData.cost && BeerAmount >= 1;
+		}
+
 		public override void Interact(GameObject player, PickUp item) {
 
 			isHolding = true;
@@ -62,12 +66,8 @@ namespace Interactables.Beers {
 		}
 
 		private IEnumerator PourBeer() {
-			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
-				yield break;
 
 			while (!itemSlot.HasItemInSlot && isHolding && pouringProgress <= 100) {
-				if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost || BeerAmount < 1)
-					break;
 
 				pouringProgress += pourTimeMultiplier * Time.deltaTime;
 
