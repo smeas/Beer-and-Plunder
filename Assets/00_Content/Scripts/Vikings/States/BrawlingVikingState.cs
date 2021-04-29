@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Linq;
 using Interactables;
 using Interactables.Weapons;
@@ -44,7 +43,7 @@ namespace Vikings.States {
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();
 			navMeshAgent.enabled = true;
 
-			viking.bodyMeshRenderer.material = viking.brawlingMaterial;
+			viking.SetMaterial(viking.brawlingMaterial);
 
 			if(viking.CurrentChair != null)
 				viking.DismountChair();
@@ -53,7 +52,8 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
-			viking.bodyMeshRenderer.material = viking.normalMaterial;
+			viking.SetMaterial(viking.normalMaterial);
+
 			navMeshAgent.enabled = false;
 			viking.IsAttacking = false;
 		}
@@ -133,7 +133,7 @@ namespace Vikings.States {
 				navMeshAgent.enabled = true;
 				navMeshAgent.SetDestination(playerTarget.transform.position);
 			}
-			
+
 			return this;
 		}
 

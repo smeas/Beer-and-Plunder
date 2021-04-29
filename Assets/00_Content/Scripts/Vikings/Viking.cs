@@ -146,9 +146,6 @@ namespace Vikings {
 			StopAllCoroutines();
 			IsAttacking = false;
 			IsAttacked = false;
-
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(normalMaterial, materialCount).ToArray();
 		}
 
 		public void FinishLeaving() {
@@ -205,8 +202,7 @@ namespace Vikings {
 
 				isAttacked = true;
 
-				int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-				bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(brawlingMaterial, materialCount).ToArray();
+				SetMaterial(brawlingMaterial);
 
 				if (CurrentChair == null) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
@@ -226,8 +222,7 @@ namespace Vikings {
 
 			yield return new WaitForSeconds(vikingData.iFrameAfterGettingHit);
 
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(normalMaterial, materialCount).ToArray();
+			SetMaterial(normalMaterial);
 
 			if (CurrentChair == null) {
 				rb.isKinematic = true;
@@ -236,6 +231,12 @@ namespace Vikings {
 			}
 
 			isAttacked = false;
+		}
+
+		// TODO: Delete this
+		public void SetMaterial(Material newMaterial) {
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(newMaterial, materialCount).ToArray();
 		}
 	}
 }
