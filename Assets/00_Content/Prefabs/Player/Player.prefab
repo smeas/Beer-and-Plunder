@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 2187889529978375782}
   - component: {fileID: 2187889529978375781}
   - component: {fileID: 4711298765348120590}
+  - component: {fileID: -3073392600206878360}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -247,12 +248,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: eb23b75a6fc61cd41aebf4ffc2affd10, type: 2}
-  vikingLayer:
-    serializedVersion: 2
-    m_Bits: 8192
-  defaultMaterial: {fileID: 4068867137122852801, guid: 641b072970d410a449cf093575e52c03, type: 3}
-  redMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: c56b477978f37814e9cd75e7203e36ac, type: 2}
 --- !u!114 &2187889529978375782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +379,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded64c3930b040c4890ccb8c0903a8cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3073392600206878360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2187889529978375777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76890c6c3e9e0f342bf6eb35dca9ca40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: -8500604556084231599, guid: de9dfc13a34a2fb4f9bdda39b2b42026, type: 3}
+  redMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: c56b477978f37814e9cd75e7203e36ac, type: 2}
+  vikingLayer:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!1 &2187889530449677917
 GameObject:
   m_ObjectHideFlags: 0

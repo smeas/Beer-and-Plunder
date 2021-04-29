@@ -44,6 +44,7 @@ namespace Vikings {
 
 		public bool IsSeated { get; set; }
 		public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
@@ -64,8 +65,8 @@ namespace Vikings {
 
 		private void Update() {
 
-			if (Data.defaultAttackPlayer && !debugModeStarted) {
-				var player = PlayerManager.Instance.Players.FirstOrDefault();
+			if (Data.attackPlayerAtStartUp && !debugModeStarted) {
+				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();
 
 				if (player == null)
 					return;
@@ -82,7 +83,7 @@ namespace Vikings {
 				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
 		}
 
-		private bool ChangeState(VikingState newState) {
+		public bool ChangeState(VikingState newState) {
 			if (newState == state)
 				return false;
 
@@ -125,7 +126,7 @@ namespace Vikings {
 			if (!IsAttacking) {
 				IsAttacking = true;
 				StartCoroutine(SpinAttack());
-				Invoke(nameof(FinishAttack), vikingData.spinAttackDuration);
+				StartCoroutine(FinishAttack());
 			}
 		}
 
@@ -136,10 +137,13 @@ namespace Vikings {
 			}
 		}
 
-		private void FinishAttack() {
+		private IEnumerator FinishAttack() {
+
+			yield return new WaitForSeconds(vikingData.spinAttackDuration);
+
 			StopAllCoroutines();
 			IsAttacking = false;
-			isAttacked = false;
+			IsAttacked = false;
 
 			foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
 				hitHighlightMeshRenderer.material = normalMaterial;
@@ -201,32 +205,13 @@ namespace Vikings {
 				}
 
 				StartCoroutine(ResetHitSimulation());
-
-				if (state is BrawlingVikingState) {
-					Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
-					if (Stats.BrawlHealth <= 0) {
-
-						ChangeState(new LeavingVikingState(this));
-						return;
-					}
-				}
-
-				if (state is WaitingForSeatVikingState) {
-					ChangeState(new LeavingVikingState(this));
-					return;
-				}
-
-				Stats.TakeMoodDamage(axe.WeaponData.moodDamage);
-
-				if (Stats.Mood <= 15f) {
-					ChangeState(new BrawlingVikingState(this, axe.GetComponentInParent<PlayerComponent>()));
-				}
+				state.OnPlayerHit?.Invoke(axe, this);
 			}
 		}
 
 		private IEnumerator ResetHitSimulation() {
 
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(vikingData.iFrameAfterGettingHit);
 
 			foreach (MeshRenderer hitHighlightMeshRenderer in hitHighlightMeshRenderers) {
 				hitHighlightMeshRenderer.material = normalMaterial;
@@ -234,7 +219,6 @@ namespace Vikings {
 
 			if (!IsSeated) {
 				rb.isKinematic = true;
-				navMeshAgent.enabled = true;
 				state.Enter();
 			}
 

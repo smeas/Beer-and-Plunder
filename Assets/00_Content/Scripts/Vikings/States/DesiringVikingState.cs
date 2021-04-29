@@ -1,4 +1,4 @@
-﻿using Interactables;
+using Interactables;
 using Player;
 using UnityEngine;
 
@@ -7,12 +7,14 @@ namespace Vikings.States {
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
+			base.Enter();
 			viking.bodyMeshRenderer.material = viking.desiringMaterial;
 
 			return this;
 		}
 
 		public override void Exit() {
+			base.Exit();
 			viking.bodyMeshRenderer.material = viking.normalMaterial;
 		}
 

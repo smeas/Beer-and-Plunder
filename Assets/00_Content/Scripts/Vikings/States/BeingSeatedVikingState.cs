@@ -20,6 +20,8 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Enter() {
+			base.Enter();
+
 			highlight = Object.Instantiate(viking.beingSeatedHighlightPrefab, viking.transform);
 			highlight.transform.localPosition = Vector3.up * 2;
 
@@ -32,6 +34,7 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
+			base.Exit();
 			Object.Destroy(highlight);
 			navMeshAgent.enabled = false;
 			player.GetComponent<PlayerSteward>().EndSeatingViking(viking);
@@ -39,7 +42,7 @@ namespace Vikings.States {
 
 		public override VikingState Update() {
 			pathTimer -= Time.deltaTime;
-			if (pathTimer <= 0) {
+			if (pathTimer <= 0 && navMeshAgent.hasPath) {
 				pathTimer = RecalculatePathDelay;
 				_ = navMeshAgent.SetDestination(player.transform.position);
 			}

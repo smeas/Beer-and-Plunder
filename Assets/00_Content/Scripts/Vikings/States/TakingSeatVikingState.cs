@@ -15,6 +15,7 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Enter() {
+			base.Enter();
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();
 			navMeshAgent.enabled = true;
 
@@ -24,6 +25,7 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
+			base.Exit();
 			navMeshAgent.enabled = false;
 			viking.GetComponent<Rigidbody>().isKinematic = true;
 		}
@@ -31,15 +33,12 @@ namespace Vikings.States {
 		public override VikingState Update() {
 			if (navMeshAgent.enabled && navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001) {
 
-				if(Vector3.Distance(viking.transform.position, chair.SitPivot.position) <  10f) {
-
 				// Arrived at destination (mostly)
 				Transform transform = viking.transform;
 				transform.position = chair.SitPivot.position;
 				transform.rotation = chair.SitPivot.rotation;
 
 				return new PassiveVikingState(viking);
-				}
 			}
 
 			return this;

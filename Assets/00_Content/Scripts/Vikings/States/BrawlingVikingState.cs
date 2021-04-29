@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using Interactables;
+using Interactables.Weapons;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -45,8 +46,10 @@ namespace Vikings.States {
 
 			viking.bodyMeshRenderer.material = viking.brawlingMaterial;
 
-			if(brawlType == BrawlType.TableBrawl)
+			if(viking.IsSeated)
 				viking.DismountChair();
+
+			OnPlayerHit += HandleOnPlayerHit;
 
 			return this;
 		}
@@ -55,6 +58,16 @@ namespace Vikings.States {
 			viking.bodyMeshRenderer.material = viking.normalMaterial;
 			navMeshAgent.enabled = false;
 			viking.IsAttacking = false;
+			OnPlayerHit -= HandleOnPlayerHit;
+		}
+
+		private void HandleOnPlayerHit(Axe axe, Viking viking) {
+			viking.Stats.TakeBrawlDamage(axe.WeaponData.brawlDamage);
+			if (viking.Stats.BrawlHealth <= 0) {
+
+				viking.ChangeState(new LeavingVikingState(viking));
+				return;
+			}
 		}
 
 		public override VikingState Update() {
@@ -107,12 +120,13 @@ namespace Vikings.States {
 
 		private VikingState DoPlayerBrawl() {
 
-			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude < viking.Data.attackTriggerDistance && !viking.IsAttacking) {
+			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude < Mathf.Pow(viking.Data.attackTriggerDistance, 2) && !viking.IsAttacking) {
 				viking.MakeSpinAttack();
 				return this;
 			}
 
-			navMeshAgent.SetDestination(playerTarget.transform.position);
+			if(!viking.IsAttacked)
+				navMeshAgent.SetDestination(playerTarget.transform.position);
 			
 			return this;
 		}

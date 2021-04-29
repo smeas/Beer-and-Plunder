@@ -13,7 +13,7 @@ namespace Interactables {
 
 		private MeshFilter meshFilter;
 
-		public Collider ObjectCollider => objectCollider;
+		protected Collider ObjectCollider => objectCollider;
 		public event Action<PickUp> OnPickedUp;
 		public event Action<PickUp> OnDropped;
 

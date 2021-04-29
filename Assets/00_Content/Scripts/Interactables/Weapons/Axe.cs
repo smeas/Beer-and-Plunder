@@ -18,7 +18,6 @@ namespace Interactables.Weapons {
 		public WeaponData WeaponData => weaponData;
 
 		private Animator animator;
-		private Rigidbody rb;
 		private bool isAttacking;
 
 		public override void Start() {
@@ -41,7 +40,7 @@ namespace Interactables.Weapons {
 		}
 
 		public void Use(GameObject user) {
-			PlayerComponent player = user.GetComponent<PlayerComponent>();
+			PlayerBrawling player = user.GetComponent<PlayerBrawling>();
 			if(!player.IsStunned)
 				Attack();
 		}
@@ -53,6 +52,7 @@ namespace Interactables.Weapons {
 			isAttacking = true;
 		}
 
+		//Run from AnimationEvent 
 		public void EndAttack() {
 			isAttacking = false;
 		}

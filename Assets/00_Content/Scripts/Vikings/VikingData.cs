@@ -33,16 +33,20 @@ namespace Vikings {
 		[Tooltip("How many hits can be taken when brawling")]
 		public float brawlHealth = 3;
 
+		[Tooltip("How far the viking is from the player before starting to attack")]
 		public float attackTriggerDistance = 4f;
 
 		public float spinAttackSpeed = 8f;
 
 		public float spinAttackDuration = 2f;
 
-		public float attackDamage = 1f;
+		public float spinAttackDamage = 1f;
 
+		[Tooltip("The time it takes for the rigidbody to take in colissions again after getting hit")]
+		public float iFrameAfterGettingHit = 0.5f;
 
+		[Tooltip("Make the vikings attack the player as a default behaviour (for debugging purpose)")]
 		[Header("Debug")]
-		public bool defaultAttackPlayer;
+		public bool attackPlayerAtStartUp;
 	}
 }
