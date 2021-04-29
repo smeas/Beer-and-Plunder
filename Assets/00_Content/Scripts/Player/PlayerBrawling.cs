@@ -12,7 +12,6 @@ namespace Player {
 		[SerializeField] private Material yellowMaterial;
 		[SerializeField] private LayerMask vikingLayer;
 
-		public float BrawlHealth { get => brawlHealth; set => brawlHealth = value; }
 		public bool IsStunned { get => isStunned; set => isStunned = value; }
 
 		private bool isStunned;
@@ -31,17 +30,21 @@ namespace Player {
 
 		private void FixedUpdate() {
 
-			if (brawlHealth < 3 && !isRegeneratingHealth) {
-				StartCoroutine(GenerateBrawlHealth());
+			if (brawlHealth < 3 && !isRegeneratingHealth && !isStunned && !isInvulnerable) {
+				StartCoroutine(RegenerateBrawlHealth());
 			}
 		}
 
-		private IEnumerator GenerateBrawlHealth() {
+		private IEnumerator RegenerateBrawlHealth() {
 
 			isRegeneratingHealth = true;
 			yield return new WaitForSeconds(playerData.regenerationDelay);
-			brawlHealth++;
-			brawlHealth = Mathf.Min(brawlHealth, playerData.brawlHealth);
+
+			if (!isStunned) {
+				brawlHealth++;
+				brawlHealth = Mathf.Min(brawlHealth, playerData.brawlHealth);
+			}
+
 			isRegeneratingHealth = false;
 		}
 
@@ -104,6 +107,7 @@ namespace Player {
 
 			Coroutine blinkRoutine = StartCoroutine(BlinkBody());
 			isStunned = true;
+			isInvulnerable = true;
 
 			yield return new WaitForSeconds(playerData.stunDuration);
 
@@ -111,10 +115,12 @@ namespace Player {
 			playerMovement.CanMove = true;
 			isInvulnerable = false;
 			brawlHealth = 3;
+			isRegeneratingHealth = false;
 
 			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
 
 			StopCoroutine(blinkRoutine);
+			bodyMeshRenderer.enabled = true;
 		}
 
 		private void OnCollisionEnter(Collision collision) {
