@@ -47,9 +47,8 @@ namespace Interactables.Beers {
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
-			isPouring = true;
 			if (itemSlot.HasItemInSlot) return;
-
+			isPouring = true;
 			StartCoroutine(PouringBeer());
 		}
 
