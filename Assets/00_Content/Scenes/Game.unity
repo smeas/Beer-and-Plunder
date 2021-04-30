@@ -3359,6 +3359,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chair (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 458366974437968782, guid: 16fa964833390f94d8d9abd4943c4dda, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458366974437968782, guid: 16fa964833390f94d8d9abd4943c4dda, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 983932983279657075, guid: 16fa964833390f94d8d9abd4943c4dda, type: 3}
       propertyPath: m_RootOrder
       value: 3
