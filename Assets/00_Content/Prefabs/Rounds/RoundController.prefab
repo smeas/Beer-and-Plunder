@@ -69,4 +69,4 @@ MonoBehaviour:
   maxHealth: 20
   startingHealth: 20
   startingMoney: 50
-  maxMoney: 100
+  maxMoney: 999999

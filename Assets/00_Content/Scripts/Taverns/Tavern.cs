@@ -34,7 +34,14 @@ namespace Taverns {
 
 		public float Money {
 			get => money;
-			set => money = Mathf.Round(Mathf.Clamp(value, 0, maxMoney));
+			set {
+				float newMoney = Mathf.Round(Mathf.Clamp(value, 0, maxMoney));
+				if (money == newMoney)
+					return;
+
+				money = newMoney;
+				OnMoneyChanges?.Invoke();
+			}
 		}
 
 		protected override void Awake() {
@@ -45,12 +52,10 @@ namespace Taverns {
 
 		public void EarnsMoney(float moneyEarned) {
 			Money += moneyEarned;
-			OnMoneyChanges?.Invoke();
 		}
 
 		public void SpendsMoney(float moneySpent) {
 			Money -= moneySpent;
-			OnMoneyChanges?.Invoke();
 
 			if (IsBankrupt) {
 				Debug.Log("game over, you are bankrupt!");
