@@ -4,8 +4,7 @@ using UnityEngine;
 namespace Interactables.Weapons {
 	public class Axe : PickUp, IUseable {
 
-		[SerializeField] private LayerMask pickUpLayer;
-		[SerializeField] private LayerMask weaponLayer;
+		[SerializeField] private Collider weaponCollider;
 		[SerializeField] private WeaponData weaponData;
 
 		public bool IsAttacking {
@@ -29,12 +28,11 @@ namespace Interactables.Weapons {
 
 		private void HandleOnPickedUp(PickUp obj) {
 			animator.enabled = true;
-			gameObject.layer = (int)Mathf.Log(weaponLayer.value, 2);
-			ObjectCollider.enabled = true;
+			weaponCollider.enabled = true;
 		}
 		private void HandleOnDropped(PickUp obj) {
 			animator.enabled = false;
-			gameObject.layer = (int)Mathf.Log(pickUpLayer.value, 2);
+			weaponCollider.enabled = false;
 		}
 
 		public void Use(GameObject user) {

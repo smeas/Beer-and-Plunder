@@ -196,7 +196,7 @@ namespace Vikings {
 				return;
 
 			//TODO - Probably get some more generic type of weapon instead of axe. Make an interface for all weapons?
-			Axe axe = other.gameObject.GetComponent<Axe>();
+			Axe axe = other.gameObject.GetComponentInParent<Axe>();
 
 			if (axe.IsAttacking && !isAttacked) {
 
