@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Interactables.Beers {
@@ -9,12 +7,14 @@ namespace Interactables.Beers {
 
 		private BeerBarrel beerBarrel;
 
-		private void Start() { barrelSpawnSlot = GetComponentInChildren<ItemSlot>(); }
+		private void Start() {
+			barrelSpawnSlot = GetComponentInChildren<ItemSlot>();
+		}
 
 		private void Update() {
 			if (beerBarrel == null) {
 				beerBarrel = Instantiate(beerBarrelPrefab);
-				barrelSpawnSlot.PlaceItem(beerBarrelPrefab.GetComponent<PickUp>());
+				barrelSpawnSlot.PlaceItem(beerBarrel);
 			}
 		}
 	}
