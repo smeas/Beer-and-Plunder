@@ -143,15 +143,5 @@ namespace Vikings.States {
 					chair.SittingViking.JoinBrawl();
 			}
 		}
-
-		public override bool CanInteract(GameObject player, PickUp item) {
-			return true;
-		}
-
-		public override VikingState Interact(GameObject player, PickUp item) {
-			viking.Stats.Reset();
-
-			return new LeavingVikingState(viking);
-		}
 	}
 }
