@@ -56,6 +56,8 @@ namespace Vikings.States {
 		}
 
 		public override void CancelAffect(GameObject player, PickUp item) {
+			if (player != fulfillingPlayer) return;
+
 			hasActiveFulfillment = false;
 			viking.progressBar.Hide();
 			fulfillingPlayer = null;
@@ -64,6 +66,7 @@ namespace Vikings.States {
 		public override bool CanInteract(GameObject player, PickUp item) {
 			if (!(item is IDesirable givenItem)) return false;
 			if (!viking.CurrentDesire.isMaterialDesire) return false;
+			if (hasActiveFulfillment) return false;
 
 			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
@@ -85,6 +88,8 @@ namespace Vikings.States {
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
+			if (player != fulfillingPlayer) return;
+
 			fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
 
 			hasActiveFulfillment = false;
