@@ -28,7 +28,7 @@ namespace Rounds {
 		private void Awake() {
 			for (int i = 0; i < readyCards.Length; i++) {
 				readyCards[i] = Instantiate(readyCardPrefab, readyCardRoot);
-				readyCards[i].Name = "Player " + i;
+				readyCards[i].Name = "Player " + (i + 1);
 				readyCards[i].gameObject.SetActive(false);
 			}
 		}
