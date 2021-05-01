@@ -28,7 +28,7 @@ namespace Interactables.Instruments {
 
 			float diameter = instrumentData.effectRadius * 2f;
 			areaField.SetActive(false);
-			areaField.transform.localScale = new Vector3(diameter, diameter, diameter);
+			areaField.transform.localScale = new Vector3(diameter, areaField.transform.localScale.y, diameter);
 		}
 
 	#if UNITY_EDITOR
