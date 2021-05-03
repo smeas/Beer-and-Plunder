@@ -75,10 +75,15 @@ namespace Interactables.Beers {
 			if (!isPouring) return;
 			float progress = pouringProgress / pourTime;
 
-			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y)
+			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y) {
 				FillBeer();
-			else
+			}
+			else {
+				if (Tavern.Instance != null)
+					Tavern.Instance.EarnsMoney(beerData.cost);
+
 				ResetPouring();
+			}
 		}
 
 		private IEnumerator PouringBeer() {
@@ -119,9 +124,6 @@ namespace Interactables.Beers {
 
 		private void ResetPouring() {
 			if (!isPouring) return;
-
-			if (Tavern.Instance != null)
-				Tavern.Instance.EarnsMoney(beerData.cost);
 
 			pouringProgress = 0;
 			isPouring = false;
