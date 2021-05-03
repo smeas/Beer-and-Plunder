@@ -367,6 +367,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403ff2252e9f4dbbab2c5829d3081927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 48
+  deceleration: 48
+  maxVelocity: 6
   walkingSpeed: 6
   speedMultiplier: 1
   canMove: 1

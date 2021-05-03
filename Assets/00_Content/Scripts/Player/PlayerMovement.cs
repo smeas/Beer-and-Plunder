@@ -3,7 +3,9 @@ using UnityEngine;
 namespace Player {
 	[RequireComponent(typeof(Rigidbody))]
 	public class PlayerMovement : MonoBehaviour {
-		[SerializeField] private float walkingSpeed = 10f;
+		[SerializeField] private float acceleration = 48f;
+		[SerializeField] private float deceleration = 48f;
+		[SerializeField] private float maxVelocity = 6f;
 		[SerializeField] private float speedMultiplier = 1f;
 		[SerializeField] private bool canMove = true;
 
@@ -11,6 +13,8 @@ namespace Player {
 		private Camera mainCamera;
 
 		private Vector2 moveInput;
+		private Vector2 movementDirection;
+		private float velocity;
 
 		public float SpeedMultiplier {
 			get => speedMultiplier;
@@ -31,27 +35,42 @@ namespace Player {
 		}
 
 		private void FixedUpdate() {
-			if (!canMove || moveInput == Vector2.zero)
-				return;
+			float accelerationDelta = acceleration * speedMultiplier * Time.deltaTime;
 
-			(Vector3 forward, Vector3 right) = GetCameraRelativeMovementDirections();
+			if (canMove && moveInput != Vector2.zero && accelerationDelta != 0) {
+				Vector2 accelerationInput = MakeCameraRelative(moveInput) * accelerationDelta;
+				float accelerationMagnitude = accelerationInput.magnitude;
+				movementDirection = accelerationInput * (1f / accelerationMagnitude);
+				velocity = Mathf.Min(maxVelocity * moveInput.magnitude, velocity + accelerationMagnitude);
+			}
+			else {
+				velocity = Mathf.Max(0, velocity - deceleration * Time.deltaTime);
+			}
 
-			Vector3 movement = (forward * moveInput.y + right * moveInput.x) * (walkingSpeed * speedMultiplier * Time.deltaTime);
-			if (movement == Vector3.zero)
-				return;
-
-			rigidbody.MovePosition(transform.position + movement);
-			transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
+			ApplyMovement();
 		}
 
-		private (Vector3 forward, Vector3 right) GetCameraRelativeMovementDirections() {
+		private void ApplyMovement() {
+			if (velocity == 0 || movementDirection == Vector2.zero) return;
+
+			Vector2 movement2 = movementDirection * (velocity * speedMultiplier * Time.deltaTime);
+			if (movement2 == Vector2.zero)
+				return;
+
+			Vector3 movement3 = new Vector3(movement2.x, 0, movement2.y);
+
+			rigidbody.MovePosition(transform.position + movement3);
+			transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
+		}
+
+		private Vector2 MakeCameraRelative(Vector2 movement) {
 			// This is needed because the main camera changes between scenes.
 			if (mainCamera == null) {
 				mainCamera = Camera.main;
 
 				if (mainCamera == null) {
 					Debug.LogError("No main camera found", this);
-					return (Vector3.forward, Vector3.right);
+					return movement;
 				}
 			}
 
@@ -67,7 +86,8 @@ namespace Player {
 			forward.y = 0;
 			forward.Normalize();
 
-			return (forward, cameraTransform.right);
+			Vector3 cameraRelativeMovement = forward * movement.y + cameraTransform.right * movement.x;
+			return new Vector2(cameraRelativeMovement.x, cameraRelativeMovement.z);
 		}
 
 		public void Move(Vector2 input) {
