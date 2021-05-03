@@ -1,4 +1,5 @@
 using System.Collections;
+using Rounds;
 using Taverns;
 using UI;
 using UnityEngine;
@@ -46,6 +47,14 @@ namespace Interactables.Beers {
 				(perfectPourMinMax.y - perfectPourMinMax.x) * pourSizeDelta.x,
 				perfectProgressIndicator.sizeDelta.y
 			);
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += Refill;
+		}
+
+		private void OnDestroy() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= Refill;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {

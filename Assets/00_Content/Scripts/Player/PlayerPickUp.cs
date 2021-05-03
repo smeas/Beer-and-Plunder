@@ -1,5 +1,6 @@
-using Interactables;
 using System;
+using Interactables;
+using Rounds;
 using UnityEngine;
 
 namespace Player {
@@ -20,6 +21,14 @@ namespace Player {
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += RespawnHeldItem;
+		}
+
+		private void OnDestroy() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= RespawnHeldItem;
 		}
 
 		public void ToggleCarrying() {
@@ -82,6 +91,15 @@ namespace Player {
 
 			Destroy(pickedUpItem.gameObject);
 			pickedUpItem = null;
+		}
+
+		private void RespawnHeldItem() {
+			if (pickedUpItem == null) return;
+
+			PickUp item = pickedUpItem;
+
+			DropItem();
+			item.Respawn();
 		}
 
 		public void OnClosestPickUpChange(PickUp pickUp) { }
