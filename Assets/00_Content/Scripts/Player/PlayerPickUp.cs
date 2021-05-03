@@ -1,5 +1,5 @@
-using Interactables;
 using System;
+using Interactables;
 using UnityEngine;
 
 namespace Player {
@@ -22,13 +22,6 @@ namespace Player {
 			detector = GetComponent<InteractionDetector>();
 		}
 
-		public void ToggleCarrying() {
-			if (pickedUpItem == null)
-				PickUpClosestItem();
-			else
-				DropItem();
-		}
-
 		public void PickUpClosestItem() {
 
 			if (detector.ClosestPickUp == null)
@@ -40,6 +33,7 @@ namespace Player {
 			OnItemPickedUp?.Invoke(pickedUpItem);
 		}
 
+		// Run from unity event
 		public void DropItem() {
 
 			if (pickedUpItem == null)
@@ -60,14 +54,18 @@ namespace Player {
 		}
 
 		public void UseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
-				usable.Use(playerRoot);
-				isUsingItem = true;
+			if (!(pickedUpItem is IUseable usable)) return;
+
+			if (pickedUpItem != null) {
+					usable.Use(playerRoot);
+					isUsingItem = true;
 			}
 		}
 
 		public void EndUseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
+			if (!(pickedUpItem is IUseable usable) || !isUsingItem) return;
+
+			if (pickedUpItem != null) {
 				usable.EndUse();
 				isUsingItem = false;
 			}

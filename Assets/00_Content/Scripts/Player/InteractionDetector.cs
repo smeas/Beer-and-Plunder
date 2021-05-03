@@ -13,6 +13,7 @@ namespace Player {
 
 		private PlayerPickUp playerPickUp;
 		private PlayerInteract playerInteract;
+		private MonoBehaviour closestObject;
 		private GameObject pickUpHighlight;
 		private GameObject interactableHighlight;
 
@@ -105,6 +106,7 @@ namespace Player {
 
 			pickUpHighlight.transform.position = pickUp.transform.position + Vector3.up * 2;
 			pickUpHighlight.SetActive(true);
+			closestObject = pickUp;
 		}
 
 		private void HighlightInteractable(Interactable interactable) {
@@ -113,6 +115,7 @@ namespace Player {
 
 			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 2;
 			interactableHighlight.SetActive(true);
+			closestObject = interactable;
 		}
 
 		private void ClearPickUpHighlight() {
@@ -127,6 +130,24 @@ namespace Player {
 				interactableHighlight = Instantiate(interactableHighlightPrefab);
 
 			interactableHighlight.SetActive(false);
+		}
+
+		// Run from unity event
+		public void HandleStartInput() {
+			if (closestObject is PickUp && playerPickUp.PickedUpItem == null)
+				playerPickUp.PickUpClosestItem();
+			else if (playerPickUp.PickedUpItem is IUseable)
+				playerPickUp.UseItem();
+			else
+				playerInteract.Interact();
+		}
+
+		// Run from unity event
+		public void HandleEndInput() {
+			if (playerPickUp.PickedUpItem is IUseable)
+				playerPickUp.EndUseItem();
+			else
+				playerInteract.EndInteract();
 		}
 	}
 }

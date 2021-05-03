@@ -17,7 +17,6 @@ namespace Player {
 			playerSteward = playerRoot.GetComponent<PlayerSteward>();
 		}
 
-		// Called by unity event
 		public void Interact() {
 			if (detector.ClosestInteractable == null)
 				return;
