@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
   m_Name: NormalViking
   m_EditorClassIdentifier: 
-  startMood: 50
-  moodDeclineRate: 1.25
+  startMood: 75
+  moodDeclineRate: 1.5
   impatientMoodThreshold: 45
   desires:
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
