@@ -99,17 +99,6 @@
                 },
                 {
                     "name": "",
-                    "id": "cba7ed1a-914c-42a4-b242-b312bb4db0a9",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Drop",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "07a52866-692b-4875-aec7-2226af597f50",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
@@ -121,23 +110,23 @@
                 },
                 {
                     "name": "",
-                    "id": "7e0af4bb-241f-4c56-ba6e-a4f07046b86d",
-                    "path": "<Keyboard>/k",
+                    "id": "cba7ed1a-914c-42a4-b242-b312bb4db0a9",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KeyboardMouse",
                     "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "4ebe344e-7f81-4b09-8bf6-942090c17958",
-                    "path": "<Keyboard>/space",
+                    "id": "7e0af4bb-241f-4c56-ba6e-a4f07046b86d",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Interact",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -148,6 +137,28 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "091be671-c550-4f81-904b-f0146a8e21d6",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ebe344e-7f81-4b09-8bf6-942090c17958",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
