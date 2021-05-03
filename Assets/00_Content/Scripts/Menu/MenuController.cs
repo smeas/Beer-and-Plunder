@@ -12,17 +12,15 @@ namespace Menu {
 
 		private void Start() {
 
-			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
-				PlayerInput playerInput = player.GetComponent<PlayerInput>();
-				playerInput.SwitchCurrentActionMap("UI");
-			}
+			if (PlayerManager.Instance != null) {
 
+				foreach (PlayerComponent player in PlayerManager.Instance.Players) {
+					PlayerInput playerInput = player.GetComponent<PlayerInput>();
+					playerInput.SwitchCurrentActionMap("UI");
+				}
+			}
 			settingsPanel.SetActive(false);
 			mainMenuPanel.SetActive(true);
-		}
-
-		private void Update() {
-			
 		}
 
 		public void GoToLobby() {

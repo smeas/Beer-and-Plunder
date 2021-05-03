@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3019935325143960262, guid: f98ec9931447a564ba4635281e88bd58, type: 3}
       propertyPath: lobby.scene.buildIndex
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3019935325143960262, guid: f98ec9931447a564ba4635281e88bd58, type: 3}
       propertyPath: lobby.scene.sceneAsset

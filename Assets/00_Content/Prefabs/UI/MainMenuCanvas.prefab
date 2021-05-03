@@ -215,6 +215,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4654448940200308294, guid: da134851cd5b5d64b90a232821623ca3, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4654448940200308312, guid: da134851cd5b5d64b90a232821623ca3, type: 3}
       propertyPath: settingsPanel
       value: 
@@ -717,6 +721,10 @@ PrefabInstance:
     - target: {fileID: 4654448940200308293, guid: da134851cd5b5d64b90a232821623ca3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654448940200308294, guid: da134851cd5b5d64b90a232821623ca3, type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4654448940200308312, guid: da134851cd5b5d64b90a232821623ca3, type: 3}
