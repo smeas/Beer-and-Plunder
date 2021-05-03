@@ -36,6 +36,7 @@ namespace Player {
 		private void FixedUpdate() {
 			UpdateClosestPickup();
 			UpdateClosestInteractable();
+			UpdateClosestObject();
 		}
 
 		private void OnTriggerEnter(Collider other) {
@@ -98,6 +99,32 @@ namespace Player {
 				HighlightInteractable(ClosestInteractable);
 			else
 				ClearInteractableHighlight();
+		}
+
+		private void UpdateClosestObject() {
+			ClearInteractableHighlight();
+			ClearPickUpHighlight();
+
+			bool havePickup = ClosestPickUp != null;
+			bool haveInteractable = ClosestInteractable != null;
+
+			if (!havePickup || !haveInteractable) {
+				if (haveInteractable) {
+					HighlightInteractable(ClosestInteractable);
+				}
+				else if (havePickup) {
+					HighlightPickUp(ClosestPickUp);
+				}
+				return;
+			}
+
+			if ((transform.position - ClosestInteractable.transform.position).sqrMagnitude <
+			    (transform.position - ClosestPickUp.transform.position).sqrMagnitude) {
+				HighlightInteractable(ClosestInteractable);
+			}
+			else {
+				HighlightPickUp(ClosestPickUp);
+			}
 		}
 
 		private void HighlightPickUp(PickUp pickUp) {
