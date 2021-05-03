@@ -1,14 +1,25 @@
 using System.Collections.Generic;
 using Player;
 using UnityEngine;
+using Vikings;
 
 namespace Cameras {
 	public class FollowingCamera : MonoBehaviour {
 		[SerializeField] private List<Transform> targets = new List<Transform>();
+		[SerializeField] private bool targetVikings;
+
+		[Space]
 		[SerializeField] private Vector2 margins = new Vector2(1f, 1f);
 		[SerializeField] private float minY = 10f;
 		[SerializeField] private float smoothTime = 0.2f;
 		[SerializeField] private float maxSpeed = 50f;
+
+		[Space]
+		[SerializeField] private bool useBounds;
+		[SerializeField, EnableIf(nameof(useBounds))]
+		private Vector2 horizontalBounds;
+		[SerializeField, EnableIf(nameof(useBounds))]
+		private Vector2 verticalBounds;
 
 		private Vector3 initialPosition;
 		private Vector3 currentVelocity;
@@ -25,11 +36,22 @@ namespace Cameras {
 				PlayerManager.Instance.PlayerJoined += OnPlayerJoined;
 				PlayerManager.Instance.PlayerLeft += OnPlayerLeft;
 			}
+
+			if (targetVikings && VikingController.Instance != null) {
+				VikingController.Instance.VikingSpawned += OnVikingSpawned;
+			}
 		}
 
 		private void FixedUpdate() {
-			transform.position = Vector3.SmoothDamp(transform.position, CalculateTargetPosition(),
+			Vector3 position = Vector3.SmoothDamp(transform.position, CalculateTargetPosition(),
 			                                        ref currentVelocity, smoothTime, maxSpeed);
+
+			if (useBounds) {
+				position.x = Mathf.Clamp(position.x, horizontalBounds.x, horizontalBounds.y);
+				position.z = Mathf.Clamp(position.z, verticalBounds.x, verticalBounds.y);
+			}
+
+			transform.position = position;
 		}
 
 		private void OnDestroy() {
@@ -45,6 +67,11 @@ namespace Cameras {
 
 		private void OnPlayerLeft(PlayerComponent plr) {
 			targets.Remove(plr.transform);
+		}
+
+		private void OnVikingSpawned(Viking viking) {
+			targets.Add(viking.transform);
+			viking.LeaveTavern += vik => targets.Remove(vik.transform);
 		}
 
 		// https://www.desmos.com/calculator/9gb8rpm4z1
