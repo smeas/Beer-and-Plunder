@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BeerAle
   m_EditorClassIdentifier: 
   type: 2
-  cost: 12
+  cost: 6

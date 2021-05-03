@@ -5,7 +5,7 @@ using Vikings;
 
 namespace Interactables.Instruments {
 	[RequireComponent(typeof(AudioSource), typeof(SphereCollider))]
-	public class Instrument : PickUp, IUseable {
+	public class Instrument : PickUp, IUseable, IDesirable {
 		[Space]
 		[SerializeField] private InstrumentData instrumentData;
 		[SerializeField] private GameObject areaField;
@@ -16,6 +16,8 @@ namespace Interactables.Instruments {
 		private bool isPlaying;
 		private GameObject usingPlayer;
 		private readonly List<Viking> vikingsInRange = new List<Viking>();
+
+		public DesireType DesireType => instrumentData.desireType;
 
 		private void Awake() {
 			musicSource = GetComponent<AudioSource>();
@@ -59,7 +61,7 @@ namespace Interactables.Instruments {
 			isPlaying = true;
 
 			foreach (Viking viking in vikingsInRange) {
-				viking.Stats.AddModifier(instrumentData.modifier);
+				viking.Affect(usingPlayer, this);
 			}
 		}
 
@@ -74,7 +76,7 @@ namespace Interactables.Instruments {
 			areaField.SetActive(false);
 
 			foreach (Viking viking in vikingsInRange) {
-				viking.Stats.RemoveModifier(instrumentData.modifier);
+				viking.CancelAffect(usingPlayer, this);
 			}
 		}
 
@@ -86,7 +88,7 @@ namespace Interactables.Instruments {
 			if (viking != null) {
 				vikingsInRange.Add(viking);
 				if (isPlaying)
-					viking.Stats.AddModifier(instrumentData.modifier);
+					viking.Affect(usingPlayer, this);
 			}
 		}
 
@@ -98,7 +100,7 @@ namespace Interactables.Instruments {
 			if (viking != null) {
 				vikingsInRange.Remove(viking);
 				if (isPlaying)
-					viking.Stats.RemoveModifier(instrumentData.modifier);
+					viking.CancelAffect(usingPlayer, this);
 			}
 		}
 	}

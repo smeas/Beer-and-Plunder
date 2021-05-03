@@ -43,13 +43,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01bb55e5e964017b7d88f53da756a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneTransitionPrefab: {fileID: 4426077772160664469, guid: da38b33c25825fd448a15c72006b9f2f, type: 3}
   mainMenu:
     scene:
-      buildIndex: 0
+      buildIndex: 1
       sceneAsset: {fileID: 102900000, guid: 4e18cc035f00a3d408e8e12f6e3b6cc2, type: 3}
     music: {fileID: 0}
   game:
     scene:
-      buildIndex: 1
+      buildIndex: 2
       sceneAsset: {fileID: 102900000, guid: 01df2298a2bc7614b990eaac6873ce2d, type: 3}
+    music: {fileID: 0}
+  lobby:
+    scene:
+      buildIndex: 0
+      sceneAsset: {fileID: 102900000, guid: b1c7e61f79fc86141b8e7c5704b866e6, type: 3}
     music: {fileID: 0}

@@ -4,8 +4,6 @@
 //
 
 using System;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +14,9 @@ public class TagAttribute : PropertyAttribute { }
 
 #if UNITY_EDITOR
 namespace PropertyDrawers {
+	using UnityEditor;
+	using UnityEditorInternal;
+
 	[CustomPropertyDrawer(typeof(TagAttribute))]
 	public class TagPropertyDrawer : PropertyDrawer {
 		private readonly GUIContent editStringText = new GUIContent("Edit String" ,"Edit the raw tag string");

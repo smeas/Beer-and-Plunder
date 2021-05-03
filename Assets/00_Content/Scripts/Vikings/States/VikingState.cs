@@ -1,4 +1,5 @@
-﻿using Interactables;
+using Interactables;
+using Interactables.Weapons;
 using UnityEngine;
 
 namespace Vikings.States {
@@ -13,12 +14,24 @@ namespace Vikings.States {
 			return this;
 		}
 
+		public virtual VikingState HandleOnHit(Axe axe, Viking viking) {
+			viking.Stats.TakeMoodDamage(axe.WeaponData.moodDamage);
+
+			if (viking.Stats.Mood <= viking.Data.brawlMoodThreshold) {
+				return new BrawlingVikingState(viking, axe.GetComponentInParent<Player.PlayerComponent>());
+			}
+			return this;
+		}
+
 		public virtual VikingState Update() {
 			return this;
 		}
 
 		public virtual void Exit() { }
 
+		public virtual void Affect(GameObject player, PickUp item) { }
+
+		public virtual void CancelAffect(GameObject player, PickUp item) { }
 
 		public virtual bool CanInteract(GameObject player, PickUp item) {
 			return false;
@@ -31,5 +44,7 @@ namespace Vikings.States {
 		public virtual VikingState TakeSeat(Chair chair) {
 			return this;
 		}
+
+		public virtual void CancelInteraction(GameObject player, PickUp item) { }
 	}
 }

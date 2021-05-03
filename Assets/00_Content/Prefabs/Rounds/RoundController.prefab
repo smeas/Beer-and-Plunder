@@ -53,6 +53,7 @@ MonoBehaviour:
   HUDPrefab: {fileID: 1436725447203490082, guid: 8fb4d26552804384d92abfe16ff6330a, type: 3}
   gameOverPanelPrefab: {fileID: 6184672732920426918, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
   roundDuration: 150
+  requiredMoney: 150
 --- !u!114 &8733019525744738231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,4 +70,4 @@ MonoBehaviour:
   maxHealth: 20
   startingHealth: 20
   startingMoney: 50
-  maxMoney: 100
+  maxMoney: 999999

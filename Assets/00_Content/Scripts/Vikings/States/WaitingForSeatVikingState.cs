@@ -1,5 +1,6 @@
 using System.Linq;
 using Interactables;
+using Interactables.Weapons;
 using Player;
 using UnityEngine;
 
@@ -9,6 +10,10 @@ namespace Vikings.States {
 	/// </summary>
 	public class WaitingForSeatVikingState : VikingState {
 		public WaitingForSeatVikingState(Viking viking) : base(viking) { }
+
+		public override VikingState HandleOnHit(Axe axe, Viking viking) {
+			return new LeavingVikingState(viking);
+		}
 
 		public override void Exit() {
 			viking.FinishQueueing();

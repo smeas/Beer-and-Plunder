@@ -7,6 +7,6 @@ namespace Interactables.Instruments {
 		public AudioClip music;
 		public float effectRadius = 10f;
 		public bool playerCanMoveWhileUsing;
-		public StatModifier modifier;
+		public DesireType desireType;
 	}
 }

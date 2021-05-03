@@ -65,6 +65,7 @@ namespace Player {
 				return;
 			}
 
+			player.Initialize();
 			Players.Add(player);
 			PlayerJoined?.Invoke(player);
 		}

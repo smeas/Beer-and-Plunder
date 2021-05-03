@@ -21,6 +21,7 @@ namespace Rounds {
 		[SerializeField] private GameObject gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
+		[SerializeField] private int requiredMoney = 250;
 
 		private ScoreCard scoreCard;
 		private float roundTimer;
@@ -35,6 +36,7 @@ namespace Rounds {
 		public event Action OnRoundOver;
 
 		public float RoundTimer => roundTimer;
+		public int RequiredMoney => requiredMoney;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
@@ -42,7 +44,6 @@ namespace Rounds {
 			gameOverPanelPrefab = Instantiate(gameOverPanelPrefab);
 			gameOverPanelPrefab.gameObject.SetActive(false);
 
-			Tavern.Instance.OnBankrupcy += HandleOnTavernBankrupt;
 			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
 			scoreCard.OnNextRound += HandleOnNextRound;
 
@@ -79,7 +80,7 @@ namespace Rounds {
 			VikingController.Instance.SetSpawnSettings(difficulty.ScaledSpawnDelay(currentRound), difficulty.spawnDelayVariance);
 			VikingController.Instance.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
-
+			
 		private void DisableGamePlay() {
 			VikingController.Instance.CanSpawn = false;
 
@@ -87,6 +88,18 @@ namespace Rounds {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
 				playerInput.SwitchCurrentActionMap("UI");
 			}
+		}
+
+		private void ShowScoreCard() {
+			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+				Debug.Log("Required money goal was not reached.");
+				// TODO: Maybe show the score card first?
+				GameOver();
+				//return;
+			}
+
+			scoreCard.UpdateScoreCard(currentRound);
+			scoreCard.Show();
 		}
 
 		private void EnableGamePlay() {
@@ -109,9 +122,16 @@ namespace Rounds {
 			SendNextDifficulty();
 			roundTimer = roundDuration;
 
+			if (Tavern.Instance != null)
+				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
+
 			foreach (Table table in Table.AllTables) {
 				table.Repair();
 			}
+		}
+
+		private void GameOver() {
+			// TODO
 		}
 
 		private void HandleOnTavernDestroyed() {
@@ -119,14 +139,6 @@ namespace Rounds {
 			DisableGamePlay();
 
 			Debug.Log("RoundController notices that the tavern was destroyed.");
-			gameOverPanelPrefab.gameObject.SetActive(true);
-		}
-
-		private void HandleOnTavernBankrupt() {
-			isRoundActive = false;
-			DisableGamePlay();
-
-			Debug.Log("RoundController notices that the tavern went bankrupt.");
 			gameOverPanelPrefab.gameObject.SetActive(true);
 		}
 	}

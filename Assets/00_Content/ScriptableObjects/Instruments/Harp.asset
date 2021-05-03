@@ -15,6 +15,4 @@ MonoBehaviour:
   music: {fileID: 0}
   effectRadius: 6
   playerCanMoveWhileUsing: 0
-  modifier:
-    statType: 0
-    value: -1
+  desireType: 3

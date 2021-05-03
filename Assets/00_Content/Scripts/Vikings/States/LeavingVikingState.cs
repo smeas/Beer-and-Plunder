@@ -8,7 +8,9 @@ namespace Vikings.States {
 		public LeavingVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-			viking.DismountChair();
+
+			if(viking.CurrentChair != null)
+				viking.DismountChair();
 
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();
 			navMeshAgent.enabled = true;

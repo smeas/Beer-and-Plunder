@@ -15,7 +15,7 @@ namespace Cameras {
 		}
 
 		private void ToggleCameraMode(InputAction.CallbackContext ctx) {
-			BoundedCamera boundedCamera = GetComponent<BoundedCamera>();
+			FollowingCamera boundedCamera = GetComponent<FollowingCamera>();
 			if (boundedCamera.enabled) {
 				transform.position = initialPosition;
 				boundedCamera.enabled = false;

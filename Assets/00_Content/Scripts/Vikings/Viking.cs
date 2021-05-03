@@ -1,6 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Extensions;
 using Interactables;
+using Interactables.Weapons;
+using Player;
 using Rounds;
+using UI;
 using UnityEngine;
+using UnityEngine.AI;
 using Vikings.States;
 
 namespace Vikings {
@@ -10,22 +18,33 @@ namespace Vikings {
 
 	public class Viking : Interactable {
 		[SerializeField] private VikingData vikingData;
+		[SerializeField] private LayerMask weaponLayer;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
+		[SerializeField] public DesireVisualiser desireVisualiser;
+		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
-		[SerializeField] public Material desiringMaterial;
 		[SerializeField] public Material brawlingMaterial;
 
+		private bool hasStartedAttackingPlayer;
 		private VikingState state;
 		private VikingScaling statScaling;
+		private Rigidbody rb;
+		private NavMeshAgent navMeshAgent;
+		private bool isAttacked;
+		private bool isAttacking;
 
 		public VikingData Data => vikingData;
 		public DesireData[] Desires => vikingData.desires;
+		public DesireData CurrentDesire => vikingData.desires[CurrentDesireIndex];
+		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
+		public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
@@ -33,15 +52,31 @@ namespace Vikings {
 		private void Start() {
 			// statScaling is normally provided by the viking manager
 			statScaling ??= new VikingScaling();
+			rb = GetComponent<Rigidbody>();
+			navMeshAgent = GetComponent<NavMeshAgent>();
+
+			Stats = new VikingStats(vikingData, statScaling);
 
 			ChangeState(new WaitingForSeatVikingState(this));
-			Stats = new VikingStats(vikingData, statScaling);
 
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
+
+			progressBar.Hide();
 		}
 
 		private void Update() {
+
+			if (Data.attackPlayerAtStartUp && !hasStartedAttackingPlayer) {
+				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();
+
+				if (player == null)
+					return;
+
+				ChangeState(new BrawlingVikingState(this, player));
+				hasStartedAttackingPlayer = true;
+			}
+
 			ChangeState(state.Update());
 		}
 
@@ -89,6 +124,30 @@ namespace Vikings {
 			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
 		}
 
+		public void MakeSpinAttack() {
+			if (!IsAttacking) {
+				IsAttacking = true;
+				StartCoroutine(SpinAttack());
+				StartCoroutine(FinishAttack());
+			}
+		}
+
+		private IEnumerator SpinAttack() {
+			while(IsAttacking) {
+				yield return null;
+				transform.Rotate(Vector3.up, vikingData.spinAttackSpeed * Time.deltaTime);
+			}
+		}
+
+		private IEnumerator FinishAttack() {
+
+			yield return new WaitForSeconds(vikingData.spinAttackDuration);
+
+			StopAllCoroutines();
+			IsAttacking = false;
+			IsAttacked = false;
+		}
+
 		public void FinishLeaving() {
 			LeaveTavern?.Invoke(this);
 
@@ -105,12 +164,79 @@ namespace Vikings {
 			LeaveQueue?.Invoke(this);
 		}
 
-		public override void Interact(GameObject player, PickUp item) {
-			ChangeState(state.Interact(player, item));
+		public void Affect(GameObject player, PickUp item) {
+			state.Affect(player, item);
+		}
+
+		public void CancelAffect(GameObject player, PickUp item) {
+			state.CancelAffect(player, item);
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return state.CanInteract(player, item);
+		}
+
+		public override void Interact(GameObject player, PickUp item) {
+			ChangeState(state.Interact(player, item));
+		}
+
+		public override void CancelInteraction(GameObject player, PickUp item) {
+			state.CancelInteraction(player, item);
+		}
+
+		private void OnTriggerEnter(Collider other) {
+			if (weaponLayer.ContainsLayer(other.gameObject.layer)) {
+				RegisterHitFromPlayer(other);
+			}
+		}
+
+		private void RegisterHitFromPlayer(Collider other) {
+
+			if (state is LeavingVikingState)
+				return;
+
+			//TODO - Probably get some more generic type of weapon instead of axe. Make an interface for all weapons?
+			Axe axe = other.gameObject.GetComponentInParent<Axe>();
+
+			if (axe.IsAttacking && !isAttacked) {
+
+				isAttacked = true;
+
+				SetMaterial(brawlingMaterial);
+
+				if (CurrentChair == null) {
+					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
+					Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
+					navMeshAgent.enabled = false;
+					rb.isKinematic = false;
+					rb.AddForce(direction * axe.WeaponData.knockBackStrength * -1, ForceMode.Impulse);
+				}
+
+				StartCoroutine(ResetHitSimulation());
+				VikingState vikingState = state.HandleOnHit(axe, this);
+				ChangeState(vikingState);
+			}
+		}
+
+		private IEnumerator ResetHitSimulation() {
+
+			yield return new WaitForSeconds(vikingData.iFrameAfterGettingHit);
+
+			SetMaterial(normalMaterial);
+
+			if (CurrentChair == null) {
+				rb.isKinematic = true;
+				navMeshAgent.Warp(rb.position);
+				state.Enter();
+			}
+
+			isAttacked = false;
+		}
+
+		// TODO: Delete this
+		public void SetMaterial(Material newMaterial) {
+			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
+			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(newMaterial, materialCount).ToArray();
 		}
 	}
 }

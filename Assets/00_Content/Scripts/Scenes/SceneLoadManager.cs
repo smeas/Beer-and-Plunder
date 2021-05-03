@@ -5,9 +5,14 @@ using Utilities;
 
 namespace Scenes {
 	public class SceneLoadManager : SingletonBehaviour<SceneLoadManager> {
+		[SerializeField] private SceneTransition sceneTransitionPrefab;
+
+		[Header("Scenes")]
 		[SerializeField] private SceneInfo mainMenu;
 		[SerializeField] private SceneInfo game;
 		[SerializeField] private SceneInfo lobby;
+
+		private SceneTransition transition;
 
 		public SceneInfo CurrentScene {
 			get {
@@ -25,6 +30,9 @@ namespace Scenes {
 
 		protected override void Awake() {
 			base.Awake();
+
+			transition = Instantiate(sceneTransitionPrefab, transform);
+			transition.gameObject.SetActive(false);
 
 			DontDestroyOnLoad(gameObject);
 
@@ -45,18 +53,21 @@ namespace Scenes {
 			}
 		}
 
-		public void LoadLobby() => Load(lobby);
-		public void LoadMainMenu() => Load(mainMenu);
-		public void LoadGame() => Load(game);
+		public void LoadLobby() => Load(lobby, false);
+		public void LoadMainMenu() => Load(mainMenu, true);
+		public void LoadGame() => Load(game, true);
 
-		private static void Load(SceneInfo sceneInfo) {
-			// Make sure player are carried over
+		private void Load(SceneInfo sceneInfo, bool doTransition) {
+			// Make sure players are carried over
 			if (PlayerManager.Instance != null) {
 				foreach (PlayerComponent player in PlayerManager.Instance.Players)
 					DontDestroyOnLoad(player.gameObject);
 			}
 
-			sceneInfo.Load();
+			if (doTransition)
+				transition.Play(sceneInfo);
+			else
+				sceneInfo.Load();
 		}
 	}
 }

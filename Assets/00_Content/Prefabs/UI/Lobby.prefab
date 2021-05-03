@@ -49,6 +49,16 @@ MonoBehaviour:
   - {fileID: 3122670899443327157}
   - {fileID: 3122670899509015987}
   - {fileID: 3122670897674089638}
+  playerModels:
+  - {fileID: 919132149155446097, guid: 641b072970d410a449cf093575e52c03, type: 3}
+  - {fileID: 919132149155446097, guid: 13de1d3e8bb95ee4cb2d2f135c9f6fb8, type: 3}
+  - {fileID: 919132149155446097, guid: 53aff7128f17a8242998ac0d47b418cb, type: 3}
+  - {fileID: 919132149155446097, guid: 2c4cbe57479000b4d86ad56726ade299, type: 3}
+  playerColors:
+  - {r: 1, g: 0.504, b: 0.504, a: 1}
+  - {r: 0.5428693, g: 1, b: 0.504, a: 1}
+  - {r: 0.496, g: 0.49964753, b: 1, a: 1}
+  - {r: 1, g: 0.9660482, b: 0.496, a: 1}
 --- !u!1 &4475578589298035207
 GameObject:
   m_ObjectHideFlags: 0

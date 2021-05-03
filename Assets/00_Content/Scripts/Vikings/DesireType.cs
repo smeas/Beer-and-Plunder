@@ -3,5 +3,6 @@
 		Lager,
 		Stout,
 		Ale,
+		Harp,
 	}
 }
