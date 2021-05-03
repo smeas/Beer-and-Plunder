@@ -23,10 +23,12 @@ namespace Player {
 		public PickUp ClosestPickUp { get; private set; }
 		public Interactable ClosestInteractable { get; private set; }
 
-		private void Start() {
+		private void Awake() {
 			playerPickUp = GetComponent<PlayerPickUp>();
 			playerInteract = GetComponent<PlayerInteract>();
+		}
 
+		private void Start() {
 			pickUpHighlight = Instantiate(pickUpHighlightPrefab);
 			interactableHighlight = Instantiate(interactableHighlightPrefab);
 			pickUpHighlight.SetActive(false);
