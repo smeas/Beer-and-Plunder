@@ -12,15 +12,19 @@ namespace Rounds {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
 		[SerializeField] private GameObject HUDPrefab;
-		[SerializeField] private GameObject gameOverPanelPrefab;
+		[SerializeField] private GameOver gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 		[SerializeField] private int requiredMoney = 250;
+
+		private GameOver gameOverPanel;
 
 		private ScoreCard scoreCard;
 		private float roundTimer;
 		private int currentRound = 1;
 		private bool isRoundActive = true;
+
+		private LoseCondition loseCondition;
 
 		public ScalingData CurrentDifficulty =>
 			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
@@ -35,8 +39,8 @@ namespace Rounds {
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
 			scoreCard.gameObject.SetActive(false);
-			gameOverPanelPrefab = Instantiate(gameOverPanelPrefab);
-			gameOverPanelPrefab.gameObject.SetActive(false);
+			gameOverPanel = Instantiate(gameOverPanelPrefab);
+			gameOverPanel.gameObject.SetActive(false);
 
 			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
 			scoreCard.OnNextRound += HandleOnNextRound;
@@ -86,10 +90,8 @@ namespace Rounds {
 
 		private void ShowScoreCard() {
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+				TavernBankrupt();
 				Debug.Log("Required money goal was not reached.");
-				// TODO: Maybe show the score card first?
-				GameOver();
-				//return;
 			}
 
 			scoreCard.UpdateScoreCard(currentRound);
@@ -121,15 +123,19 @@ namespace Rounds {
 		}
 
 		private void HandleOnTavernDestroyed() {
+			loseCondition = LoseCondition.Destruction;
 			isRoundActive = false;
 			DisableGamePlay();
 
-			gameOverPanelPrefab.gameObject.SetActive(true);
+			gameOverPanel.Show(loseCondition);
 		}
 
-		private void GameOver() {
-			Debug.Log("Steps into GameOverFunction on rounds end.");
-			gameOverPanelPrefab.gameObject.SetActive(true);
+		private void TavernBankrupt() {
+			loseCondition = LoseCondition.Bankrupcy;
+			isRoundActive = false;
+			DisableGamePlay();
+
+			gameOverPanel.Show(loseCondition);
 		}
 	}
 }
