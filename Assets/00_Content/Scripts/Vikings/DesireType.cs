@@ -1,8 +1,6 @@
 ﻿namespace Vikings {
 	public enum DesireType {
-		Lager,
-		Stout,
-		Ale,
+		Beer = 2,
 		Harp,
 	}
 }
