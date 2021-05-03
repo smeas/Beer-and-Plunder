@@ -1,4 +1,5 @@
 using Interactables;
+using Interactables.Beers;
 using Player;
 using UnityEngine;
 
@@ -70,7 +71,11 @@ namespace Vikings.States {
 
 			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
-			return givenItem.DesireType == viking.CurrentDesire.type;
+			if (givenItem.DesireType != viking.CurrentDesire.type) return false;
+			if (item is Beer {IsFull: false})
+				return false;
+
+			return true;
 		}
 
 		public override VikingState Interact(GameObject player, PickUp item) {
@@ -98,7 +103,8 @@ namespace Vikings.States {
 		}
 
 		private VikingState DesireFulfilled() {
-			if (viking.CurrentDesire.isMaterialDesire) {
+			DesireData desire = viking.CurrentDesire;
+			if (desire.isMaterialDesire) {
 				fulfillingPlayer.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
 				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
 			}
@@ -106,7 +112,7 @@ namespace Vikings.States {
 			viking.CurrentDesireIndex++;
 			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
 
-			return new SatisfiedVikingState(viking);
+			return new SatisfiedVikingState(viking, desire.type);
 		}
 	}
 }

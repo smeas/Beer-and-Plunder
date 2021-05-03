@@ -1,22 +1,31 @@
+using System.Linq;
 using UnityEngine;
 using Vikings;
 
 namespace Interactables.Beers {
-	public class Beer : PickUp, IUseable, IDesirable {
-
+	public class Beer : PickUp, IDesirable {
 		[SerializeField] private BeerData beerData;
+		[SerializeField] private Color emptyColor = Color.red;
+		[SerializeField] private Color fullColor = new Color(1f, 0.6f, 0f);
+
+		private bool isFull;
 
 		public DesireType DesireType => beerData.type;
 
-		public void Use(GameObject user) {
-			//Drink it? Temporary fighting buff lulz xD
+		public bool IsFull {
+			get => isFull;
+			set {
+				isFull = value;
 
-			//Give to customer
-
-			Debug.Log("Using item beer...");
+				// TODO: Replace this with something more efficient.
+				foreach (Material material in GetComponentsInChildren<MeshRenderer>().SelectMany(x => x.materials))
+					material.color = isFull ? fullColor : emptyColor;
+			}
 		}
 
-		public void EndUse() { }
-
+		protected override void Start() {
+			base.Start();
+			IsFull = IsFull;
+		}
 	}
 }

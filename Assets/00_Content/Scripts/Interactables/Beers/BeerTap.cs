@@ -26,6 +26,7 @@ namespace Interactables.Beers {
 		private bool isPouring = false;
 		private int beerAmount;
 		private float fillPortion;
+		private Beer fillingTankard;
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
@@ -48,12 +49,25 @@ namespace Interactables.Beers {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return (Tavern.Instance == null || Tavern.Instance.Money >= beerData.cost) && beerAmount > 0 && !isPouring;
+			if (isPouring || beerAmount <= 0)
+				return false;
+
+			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
+				return false;
+
+			if (!(item is Beer tankard) || tankard.IsFull)
+				return false;
+
+			return true;
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
 			if (itemSlot.HasItemInSlot) return;
+
 			isPouring = true;
+			fillingTankard = item as Beer;
+			Debug.Assert(fillingTankard != null);
+
 			StartCoroutine(PouringBeer());
 		}
 
@@ -62,7 +76,7 @@ namespace Interactables.Beers {
 			float progress = pouringProgress / pourTime;
 
 			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y)
-				SpawnBeer();
+				FillBeer();
 			else
 				ResetPouring();
 		}
@@ -84,7 +98,7 @@ namespace Interactables.Beers {
 				pourProgressBar.UpdateProgress(pouringProgress / pourTime);
 
 				if (pouringProgress > pourTime) {
-					SpawnBeer();
+					FillBeer();
 					break;
 				}
 
@@ -92,9 +106,8 @@ namespace Interactables.Beers {
 			}
 		}
 
-		private void SpawnBeer() {
-			GameObject beer = Instantiate(beerPrefab);
-			itemSlot.PlaceItem(beer.GetComponent<PickUp>());
+		private void FillBeer() {
+			fillingTankard.IsFull = true;
 
 			beerAmount -= 1;
 
@@ -112,6 +125,7 @@ namespace Interactables.Beers {
 
 			pouringProgress = 0;
 			isPouring = false;
+			fillingTankard = null;
 
 			fillProgressBar.UpdateProgress(fillPortion * beerAmount);
 			pourProgressBar.Hide();

@@ -17,5 +17,16 @@ namespace Utilities {
 		public static float Remap(float value, float low1, float high1, float low2, float high2) {
 			return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 		}
+
+		/// <summary>
+		/// Get a random direction within a cone.
+		/// </summary>
+		/// <param name="direction">The direction of the cone.</param>
+		/// <param name="halfAngle">Half the angle of the cone measured in radians.</param>
+		public static Vector3 RandomDirectionInCone(Vector3 direction, float halfAngle) {
+			float radius = Mathf.Tan(halfAngle);
+			Vector2 pointInCircle = Random.insideUnitCircle * radius;
+			return (Quaternion.LookRotation(direction) * new Vector3(pointInCircle.x, pointInCircle.y, 1f)).normalized;
+		}
 	}
 }

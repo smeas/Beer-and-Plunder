@@ -72,6 +72,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   beingSeatedHighlightPrefab: {fileID: 5559515752884507063, guid: fdb61ac553e38354c8810b736ec885b0, type: 3}
+  beerPrefab: {fileID: 1262854382656651557, guid: 2bca4258fea479844a6ec986919d6c67, type: 3}
   coinPrefab: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
   desireVisualiser: {fileID: 2110882707906954946}
   progressBar: {fileID: 1725203097003537118}
