@@ -28,7 +28,7 @@ namespace Interactables {
 			startPosition = transform.position;
 			startRotation = transform.rotation;
 
-			if (StartItemSlot != null)
+			if (StartItemSlot == null)
 				StartItemSlot = CurrentItemSlot;
 
 			if (RoundController.Instance != null)
