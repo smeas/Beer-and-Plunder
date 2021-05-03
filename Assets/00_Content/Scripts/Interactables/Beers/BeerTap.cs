@@ -26,7 +26,7 @@ namespace Interactables.Beers {
 		private bool isPouring = false;
 		private int beerAmount;
 		private float fillPortion;
-		private Beer fillingTankard;
+		private Tankard fillingTankard;
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
@@ -55,7 +55,7 @@ namespace Interactables.Beers {
 			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
 				return false;
 
-			if (!(item is Beer tankard) || tankard.IsFull)
+			if (!(item is Tankard tankard) || tankard.IsFull)
 				return false;
 
 			return true;
@@ -65,7 +65,7 @@ namespace Interactables.Beers {
 			if (itemSlot.HasItemInSlot) return;
 
 			isPouring = true;
-			fillingTankard = item as Beer;
+			fillingTankard = item as Tankard;
 			Debug.Assert(fillingTankard != null);
 
 			StartCoroutine(PouringBeer());

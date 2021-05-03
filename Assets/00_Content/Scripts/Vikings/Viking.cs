@@ -22,7 +22,7 @@ namespace Vikings {
 		[SerializeField] private LayerMask weaponLayer;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
-		[SerializeField] public Beer beerPrefab;
+		[SerializeField] public Tankard tankardPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;

@@ -72,7 +72,7 @@ namespace Vikings.States {
 			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
 			if (givenItem.DesireType != viking.CurrentDesire.type) return false;
-			if (item is Beer {IsFull: false})
+			if (item is Tankard {IsFull: false})
 				return false;
 
 			return true;

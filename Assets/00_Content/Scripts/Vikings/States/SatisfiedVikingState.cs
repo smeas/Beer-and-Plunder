@@ -29,8 +29,8 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
-			if (previousDesire.IsBeer()) {
-				Rigidbody tankardBody = Object.Instantiate(viking.beerPrefab,
+			if (previousDesire == DesireType.Beer) {
+				Rigidbody tankardBody = Object.Instantiate(viking.tankardPrefab,
 				                                           viking.transform.position + new Vector3(0, 2.5f, 0),
 				                                           Quaternion.identity).GetComponent<Rigidbody>();
 

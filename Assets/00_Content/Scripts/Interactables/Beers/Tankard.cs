@@ -3,7 +3,7 @@ using UnityEngine;
 using Vikings;
 
 namespace Interactables.Beers {
-	public class Beer : PickUp, IDesirable {
+	public class Tankard : PickUp, IDesirable {
 		[SerializeField] private BeerData beerData;
 		[SerializeField] private Color emptyColor = Color.red;
 		[SerializeField] private Color fullColor = new Color(1f, 0.6f, 0f);
