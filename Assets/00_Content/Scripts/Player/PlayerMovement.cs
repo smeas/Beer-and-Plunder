@@ -4,12 +4,18 @@ namespace Player {
 	[RequireComponent(typeof(Rigidbody))]
 	public class PlayerMovement : MonoBehaviour {
 		[SerializeField] private float walkingSpeed = 10f;
+		[SerializeField] private float speedMultiplier = 1f;
 		[SerializeField] private bool canMove = true;
 
 		private new Rigidbody rigidbody;
 		private Camera mainCamera;
 
 		private Vector2 moveInput;
+
+		public float SpeedMultiplier {
+			get => speedMultiplier;
+			set => speedMultiplier = value;
+		}
 
 		/// <summary>
 		/// Should the player be allowed to move?
@@ -30,15 +36,24 @@ namespace Player {
 
 			(Vector3 forward, Vector3 right) = GetCameraRelativeMovementDirections();
 
-			Vector3 movement = (forward * moveInput.y + right * moveInput.x) * (walkingSpeed * Time.deltaTime);
+			Vector3 movement = (forward * moveInput.y + right * moveInput.x) * (walkingSpeed * speedMultiplier * Time.deltaTime);
+			if (movement == Vector3.zero)
+				return;
+
 			rigidbody.MovePosition(transform.position + movement);
 			transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
 		}
 
 		private (Vector3 forward, Vector3 right) GetCameraRelativeMovementDirections() {
-
-			if(mainCamera == null)
+			// This is needed because the main camera changes between scenes.
+			if (mainCamera == null) {
 				mainCamera = Camera.main;
+
+				if (mainCamera == null) {
+					Debug.LogError("No main camera found", this);
+					return (Vector3.forward, Vector3.right);
+				}
+			}
 
 			Transform cameraTransform = mainCamera.transform;
 
