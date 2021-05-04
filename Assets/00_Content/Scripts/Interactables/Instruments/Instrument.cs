@@ -15,7 +15,7 @@ namespace Interactables.Instruments {
 
 		private bool isPlaying;
 		private GameObject usingPlayer;
-		private readonly List<Viking> vikingsInRange = new List<Viking>();
+		private List<Viking> vikingsInRange = new List<Viking>();
 
 		public DesireType DesireType => instrumentData.desireType;
 
@@ -40,6 +40,17 @@ namespace Interactables.Instruments {
 			Gizmos.DrawWireSphere(position, instrumentData.effectRadius);
 		}
 	#endif
+
+		public override void SetParent(Transform newParent) {
+			// NOTE: There seem to be some kind of undocumented behaviour where if you reparent the rigidbody,
+			// it re-enters all collisions without exiting them first. To mitigate this, clear the list of vikings
+			// before reparenting.
+			//
+			// This means that when reparenting, Enter will be called again for every object that was in the list. This
+			// may cause issues if you are doing things in Enter/Exit, so keep this behaviour in mind.
+			vikingsInRange.Clear();
+			base.SetParent(newParent);
+		}
 
 		public void Use(GameObject user) {
 			if (isPlaying) return;
