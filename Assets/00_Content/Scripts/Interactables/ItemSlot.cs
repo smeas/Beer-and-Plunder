@@ -2,7 +2,8 @@
 
 namespace Interactables {
 	public class ItemSlot : MonoBehaviour {
-		public bool HasItemInSlot { get; private set; }
+		private PickUp itemInSlot;
+		public bool HasItemInSlot => itemInSlot != null;
 
 		private void Start() {
 			PickUp currentPickup = GetComponentInChildren<PickUp>();
@@ -20,7 +21,7 @@ namespace Interactables {
 
 			item.transform.position = transform.position;
 			item.CurrentItemSlot = this;
-			HasItemInSlot = true;
+			itemInSlot = item;
 
 			Rigidbody body = item.GetComponent<Rigidbody>();
 			if (body != null)
@@ -31,7 +32,8 @@ namespace Interactables {
 
 		public void ReleaseItem() {
 			Debug.Assert(HasItemInSlot, "ReleaseItem() called with no item in slot", this);
-			HasItemInSlot = false;
+			itemInSlot.CurrentItemSlot = null;
+			itemInSlot = null;
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using Rounds;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using World;
@@ -13,6 +14,16 @@ namespace Player {
 		public MeshRenderer BodyMeshRenderer { get; set; }
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
 		public Color PlayerColor { get; set; } = new Color(0.8828125f, 0.8828125f, 0.8828125f);
+
+		private void Start() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += Respawn;
+		}
+
+		private void OnDestroy() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= Respawn;
+		}
 
 		public void Initialize() {
 			PlayerInput playerInput = GetComponent<PlayerInput>();
