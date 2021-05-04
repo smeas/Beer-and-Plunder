@@ -45,9 +45,13 @@ namespace Interactables {
 				RoundController.Instance.OnRoundOver -= Respawn;
 		}
 
+		public virtual void SetParent(Transform newParent) {
+			transform.SetParent(newParent);
+		}
+
 		//Drop item on floor or snap to slot if close
 		public void DropItem() {
-			transform.SetParent(null);
+			SetParent(null);
 			if (rigidbody != null)
 				rigidbody.isKinematic = false;
 
@@ -61,7 +65,7 @@ namespace Interactables {
 
 		public void PickUpItem(Transform playerGrabTransform) {
 			transform.rotation = Quaternion.identity;
-			transform.SetParent(playerGrabTransform);
+			SetParent(playerGrabTransform);
 			if (rigidbody != null)
 				rigidbody.isKinematic = true;
 
