@@ -500,6 +500,17 @@
                 },
                 {
                     "name": "",
+                    "id": "7c243847-3e2a-4620-bdcc-df990dd0765a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ea202bd7-ddb3-4f6a-9b1e-6ba3f4c86a94",
                     "path": "*/{Cancel}",
                     "interactions": "",

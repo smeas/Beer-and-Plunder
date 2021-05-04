@@ -59,6 +59,14 @@ namespace Player {
 			}
 		}
 
+		private void OnDestroy() {
+			if (interactableHighlight != null)
+				Destroy(interactableHighlight);
+
+			if (pickUpHighlight != null)
+				Destroy(pickUpHighlight);
+		}
+
 		private void HandleOnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
 
 		private void UpdateClosestPickup() {
