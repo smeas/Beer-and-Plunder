@@ -131,23 +131,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2187889529978375782}
         m_TargetAssemblyTypeName: Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnUseInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: fff9bab9-7676-4629-8a61-236bdbafcd27
-    m_ActionName: Game/Use[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2187889529978375782}
-        m_TargetAssemblyTypeName: Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnPickupInput
+        m_MethodName: OnDropInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -279,40 +263,16 @@ MonoBehaviour:
         m_CallState: 2
   onUse:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1635980267}
-        m_TargetAssemblyTypeName: Player.PlayerPickUp, Assembly-CSharp
-        m_MethodName: UseItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onEndUse:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1635980267}
-        m_TargetAssemblyTypeName: Player.PlayerPickUp, Assembly-CSharp
-        m_MethodName: EndUseItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onPickup:
+      m_Calls: []
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1635980267}
         m_TargetAssemblyTypeName: Player.PlayerPickUp, Assembly-CSharp
-        m_MethodName: ToggleCarrying
+        m_MethodName: DropItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -325,9 +285,9 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4004794608759683555}
-        m_TargetAssemblyTypeName: Player.PlayerInteract, Assembly-CSharp
-        m_MethodName: Interact
+      - m_Target: {fileID: 6391018513655201212}
+        m_TargetAssemblyTypeName: Player.InteractionDetector, Assembly-CSharp
+        m_MethodName: HandleStartInput
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -340,9 +300,9 @@ MonoBehaviour:
   onEndInteract:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4004794608759683555}
-        m_TargetAssemblyTypeName: Player.PlayerInteract, Assembly-CSharp
-        m_MethodName: EndInteract
+      - m_Target: {fileID: 6391018513655201212}
+        m_TargetAssemblyTypeName: Player.InteractionDetector, Assembly-CSharp
+        m_MethodName: HandleEndInput
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
