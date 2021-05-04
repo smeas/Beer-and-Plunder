@@ -9,12 +9,14 @@ namespace Player {
 		[SerializeField] private UnityEvent onInteract;
 		[SerializeField] private UnityEvent onEndInteract;
 		[SerializeField] private UnityEvent onStart;
+		[SerializeField] private UnityEvent onSubmit;
 
 		public UnityEvent<Vector2> OnMove => onMove;
 		public UnityEvent OnDrop => onDrop;
 		public UnityEvent OnInteract => onInteract;
 		public UnityEvent OnEndInteract => onEndInteract;
 		public UnityEvent OnStart => onStart;
+		public UnityEvent OnSubmit => onSubmit;
 
 		private PlayerInput playerInput;
 
@@ -31,6 +33,8 @@ namespace Player {
 
 		// These methods are invoked by the UnityEvents on the PlayerInput component.
 		#region Input Action Handlers
+
+		// Game
 
 		public void OnMoveInput(InputAction.CallbackContext ctx) {
 			if (!ShouldExecuteEvents) return;
@@ -54,10 +58,18 @@ namespace Player {
 				onEndInteract.Invoke();
 		}
 
+		// UI
+
 		public void OnStartInput(InputAction.CallbackContext ctx) {
 			if (!ShouldExecuteEvents) return;
 			if (ctx.performed)
 				onStart.Invoke();
+		}
+
+		public void OnSubmitInput(InputAction.CallbackContext ctx) {
+			if (!ShouldExecuteEvents) return;
+			if (ctx.performed)
+				onSubmit.Invoke();
 		}
 
 		#endregion
