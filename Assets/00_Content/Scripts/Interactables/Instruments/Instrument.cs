@@ -15,7 +15,8 @@ namespace Interactables.Instruments {
 
 		private bool isPlaying;
 		private GameObject usingPlayer;
-		private List<Viking> vikingsInRange = new List<Viking>();
+		// Tracks all vikings that are in range. Key = the viking, Value = number of triggers in range.
+		private Dictionary<Viking, int> vikingsInRange = new Dictionary<Viking, int>();
 
 		public DesireType DesireType => instrumentData.desireType;
 
@@ -71,7 +72,7 @@ namespace Interactables.Instruments {
 
 			isPlaying = true;
 
-			foreach (Viking viking in vikingsInRange) {
+			foreach (Viking viking in vikingsInRange.Keys) {
 				viking.Affect(usingPlayer, this);
 			}
 		}
@@ -86,7 +87,7 @@ namespace Interactables.Instruments {
 
 			areaField.SetActive(false);
 
-			foreach (Viking viking in vikingsInRange) {
+			foreach (Viking viking in vikingsInRange.Keys) {
 				viking.CancelAffect(usingPlayer, this);
 			}
 		}
@@ -96,8 +97,16 @@ namespace Interactables.Instruments {
 
 			Viking viking = other.attachedRigidbody.GetComponent<Viking>();
 
-			if (viking != null) {
-				vikingsInRange.Add(viking);
+			if (viking == null) return;
+
+			if (vikingsInRange.ContainsKey(viking)) {
+				vikingsInRange[viking]++;
+			}
+			else {
+				vikingsInRange[viking] = 1;
+
+				// NOTE: Because of the reasons in the big comment above, this code will also execute when
+				// picking up/dropping the instrument. This does not seem to be a problem right now though (yet).
 				if (isPlaying)
 					viking.Affect(usingPlayer, this);
 			}
@@ -108,10 +117,19 @@ namespace Interactables.Instruments {
 
 			Viking viking = other.attachedRigidbody.GetComponent<Viking>();
 
-			if (viking != null) {
-				vikingsInRange.Remove(viking);
-				if (isPlaying)
-					viking.CancelAffect(usingPlayer, this);
+			if (viking == null) return;
+
+			if (vikingsInRange.ContainsKey(viking)) {
+				int value = --vikingsInRange[viking];
+				if (value <= 0) {
+					vikingsInRange.Remove(viking);
+
+					if (isPlaying)
+						viking.CancelAffect(usingPlayer, this);
+				}
+			}
+			else {
+				Debug.LogWarning("Unbalanced enter/exits", this);
 			}
 		}
 	}
