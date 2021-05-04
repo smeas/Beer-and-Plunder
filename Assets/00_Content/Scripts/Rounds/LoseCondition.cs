@@ -6,4 +6,5 @@ public enum LoseCondition {
 
 	Bankrupcy,
 	Destruction,
+	Undefined,
 }

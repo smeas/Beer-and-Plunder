@@ -24,8 +24,6 @@ namespace Rounds {
 		private int currentRound = 1;
 		private bool isRoundActive = true;
 
-		private LoseCondition loseCondition;
-
 		public ScalingData CurrentDifficulty =>
 			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
 			? PlayerManager.Instance.NumPlayers - 1
@@ -80,7 +78,12 @@ namespace Rounds {
 		}
 
 		private void DisableGamePlay() {
-			VikingController.Instance.CanSpawn = false;
+			if (VikingController.Instance != null) VikingController.Instance.CanSpawn = false;
+
+			if (PlayerManager.Instance == null) { 
+			Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
+			return;
+			}
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
@@ -99,7 +102,12 @@ namespace Rounds {
 		}
 
 		private void EnableGamePlay() {
-			VikingController.Instance.CanSpawn = true;
+			if (VikingController.Instance != null) VikingController.Instance.CanSpawn = true;
+
+			if (PlayerManager.Instance == null) {
+				Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
+				return;
+			}
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
@@ -123,19 +131,14 @@ namespace Rounds {
 		}
 
 		private void HandleOnTavernDestroyed() {
-			loseCondition = LoseCondition.Destruction;
 			isRoundActive = false;
 			DisableGamePlay();
-
-			gameOverPanel.Show(loseCondition);
+			gameOverPanel.Show(LoseCondition.Destruction);
 		}
 
 		private void TavernBankrupt() {
-			loseCondition = LoseCondition.Bankrupcy;
 			isRoundActive = false;
-			DisableGamePlay();
-
-			gameOverPanel.Show(loseCondition);
+			gameOverPanel.Show(LoseCondition.Bankrupcy);
 		}
 	}
 }
