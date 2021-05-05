@@ -26,11 +26,11 @@ namespace Interactables.Weapons {
 			animator = GetComponent<Animator>();
 		}
 
-		private void HandleOnPickedUp(PickUp obj) {
+		private void HandleOnPickedUp(PickUp obj, PlayerComponent playerComponent) {
 			animator.enabled = true;
 			weaponCollider.enabled = true;
 		}
-		private void HandleOnDropped(PickUp obj) {
+		private void HandleOnDropped(PickUp obj, PlayerComponent playerComponent) {
 			animator.enabled = false;
 			weaponCollider.enabled = false;
 		}

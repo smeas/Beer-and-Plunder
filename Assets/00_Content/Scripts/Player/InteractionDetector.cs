@@ -71,7 +71,7 @@ namespace Player {
 				Destroy(pickUpHighlight);
 		}
 
-		private void HandleOnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
+		private void HandleOnPickedUp(PickUp item, PlayerComponent playerComponent) => pickUpsInRange.Remove(item);
 
 		private void UpdateClosestPickup() {
 			PickUp newClosestPickUp = null;

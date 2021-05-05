@@ -55,7 +55,7 @@ namespace Player {
 				isUsingItem = false;
 			}
 
-			pickedUpItem.DropItem();
+			pickedUpItem.DropItem(playerGrabTransform);
 			OnItemDropped?.Invoke(pickedUpItem);
 
 			pickedUpItem = null;

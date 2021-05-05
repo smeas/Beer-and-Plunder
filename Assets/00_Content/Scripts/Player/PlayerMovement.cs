@@ -14,7 +14,11 @@ namespace Player {
 
 		private Vector2 moveInput;
 		private Vector2 movementDirection;
+		private Vector3 movement;
 		private float velocity;
+
+		public float Velocity => velocity;
+		public Vector3 Movement => movement;
 
 		public float SpeedMultiplier {
 			get => speedMultiplier;
@@ -51,16 +55,18 @@ namespace Player {
 		}
 
 		private void ApplyMovement() {
-			if (velocity == 0 || movementDirection == Vector2.zero) return;
+			//if (velocity == 0 || movementDirection == Vector2.zero) return;
 
 			Vector2 movement2 = movementDirection * (velocity * speedMultiplier * Time.deltaTime);
-			if (movement2 == Vector2.zero)
-				return;
+			//if (movement2 == Vector2.zero)
+			//	return;
 
-			Vector3 movement3 = new Vector3(movement2.x, 0, movement2.y);
+			movement = new Vector3(movement2.x, 0, movement2.y);
 
-			rigidbody.MovePosition(transform.position + movement3);
-			transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
+			rigidbody.MovePosition(transform.position + movement);
+
+			if (movement != Vector3.zero) 
+				transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
 		}
 
 		private Vector2 MakeCameraRelative(Vector2 movement) {
@@ -92,6 +98,14 @@ namespace Player {
 
 		public void Move(Vector2 input) {
 			moveInput = input;
+		}
+
+		public void SetMaxVelocity(float velocity) {
+			maxVelocity = velocity;
+		}
+
+		public void SetDefaultVelocity() {
+			maxVelocity = 6f;
 		}
 	}
 }
