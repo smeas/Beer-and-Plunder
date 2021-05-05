@@ -8,6 +8,8 @@ namespace Player {
 		[SerializeField] private float maxVelocity = 6f;
 		[SerializeField] private float speedMultiplier = 1f;
 		[SerializeField] private bool canMove = true;
+		[SerializeField] private bool canRotate = true;
+
 
 		private new Rigidbody rigidbody;
 		private Camera mainCamera;
@@ -33,6 +35,11 @@ namespace Player {
 			set => canMove = value;
 		}
 
+		public bool CanRotate {
+			get => canRotate;
+			set => canRotate = value;
+		}
+
 		private void Start() {
 			rigidbody = GetComponent<Rigidbody>();
 			mainCamera = Camera.main;
@@ -55,17 +62,12 @@ namespace Player {
 		}
 
 		private void ApplyMovement() {
-			//if (velocity == 0 || movementDirection == Vector2.zero) return;
-
 			Vector2 movement2 = movementDirection * (velocity * speedMultiplier * Time.deltaTime);
-			//if (movement2 == Vector2.zero)
-			//	return;
-
 			movement = new Vector3(movement2.x, 0, movement2.y);
 
 			rigidbody.MovePosition(transform.position + movement);
 
-			if (movement != Vector3.zero) 
+			if (movement != Vector3.zero && canRotate) 
 				transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
 		}
 

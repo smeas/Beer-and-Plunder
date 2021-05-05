@@ -11,20 +11,17 @@ namespace Interactables.Beers {
 
 		[SerializeField] private float soloCarryVelocity = 2f;
 		[SerializeField] private float carryForwardOffset = 0.2f;
-		[SerializeField] private float carryDistance = 1f;
+		[SerializeField] private float carryDistance = 2f;
 		
 		private Dictionary<int, PlayerMovement> carriers;
-
 		private Collider coll;
-		private Rigidbody rb;
 
 		protected override void Start() {
 			base.Start();
+
 			OnPickedUp += BeerBarrel_OnPickedUp;
 			OnDropped += BeerBarrel_OnDropped;
 			coll = GetComponentInChildren<Collider>();
-			rb = GetComponent<Rigidbody>();
-
 			carriers = new Dictionary<int, PlayerMovement>();
 		}
 
@@ -35,35 +32,36 @@ namespace Interactables.Beers {
 		}
 
 		private void FixedUpdate() {
-			if (IsMultiCarried) {
-				if (carriers[0].Movement.magnitude > 0f && carriers[1].Movement.magnitude > 0f) {
-					Vector3 combinedMovement = carriers[0].Movement + carriers[1].Movement;
-					combinedMovement = combinedMovement / 2;
-					rb.MovePosition(transform.position + combinedMovement);
+			if (!IsMultiCarried) 
+				return;
 
-					LimitMovement(carriers[0]);
-					LimitMovement(carriers[1]);
-				}
-				else if (carriers[0].Movement.magnitude > 0) {
-					LimitMovement(carriers[0]);
-				}
-				else if (carriers[1].Movement.magnitude > 0) {
-					LimitMovement(carriers[1]);
-				}
+			if (carriers[0].Movement.magnitude > 0f && carriers[1].Movement.magnitude > 0f) {
 
-				Debug.Log("p1: " + carriers[0].Movement.magnitude);
-				Debug.Log("p2: " + carriers[1].Movement.magnitude);
+				Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
+				transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
+
+				LimitMovement(carriers[0]);
+				LimitMovement(carriers[1]);
 			}
-			else {
-				foreach (PlayerMovement playerMove in carriers.Values) {
-					playerMove.CanMove = true;
-				}
+			else if (carriers[0].Movement.magnitude > 0f) {
+					Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
+					transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
+					LimitMovement(carriers[0]);
+			}
+			else if (carriers[1].Movement.magnitude > 0f) {
+					Vector3 newPos = (carriers[1].transform.position + carriers[0].transform.position) / 2;
+					transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
+					LimitMovement(carriers[1]);
+			}
+
+			foreach (PlayerMovement playerMove in carriers.Values) {
+				playerMove.transform.LookAt(new Vector3(transform.position.x, 0, transform.position.z));
 			}
 		}
 
 		private void LimitMovement(PlayerMovement playerMovement) {
 			float actualDistance = Vector3.Distance(transform.position, playerMovement.transform.position);
-
+				
 			if (actualDistance > carryDistance) {
 				Vector3 centerToPosition = playerMovement.transform.position - transform.position;
 				centerToPosition.Normalize();
@@ -78,12 +76,12 @@ namespace Interactables.Beers {
 			if (carriers.Count > 0) {
 
 				coll.enabled = true;
-
 				pickUp.SetParent(null);
 				carriers.Add(playerComponent.PlayerId, playerMovement);
 
 				foreach (PlayerMovement playerMove in carriers.Values) {
 					playerMove.SetDefaultVelocity();
+					playerMove.CanRotate = false;
 				}
 
 				IsMultiCarried = true;
@@ -100,6 +98,11 @@ namespace Interactables.Beers {
 			PlayerMovement playerMovement = playerComponent.GetComponent<PlayerMovement>();
 
 			if (IsMultiCarried) {
+
+				foreach (PlayerMovement playerMove in carriers.Values) {
+					playerMove.CanRotate = true;
+				}
+
 				carriers.Remove(playerComponent.PlayerId);
 				IsMultiCarried = false;
 				PlayerMovement remainingCarrier = carriers.First().Value;
