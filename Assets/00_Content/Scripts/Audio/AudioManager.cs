@@ -1,17 +1,35 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using Utilities;
 
 namespace Audio {
+	[DefaultExecutionOrder(-100)]
 	public class AudioManager : SingletonBehaviour<AudioManager> {
 		[SerializeField] private AudioSource effectSourcePrefab;
 		[SerializeField] private AudioSource musicSourcePrefab;
+		[SerializeField] private AudioMixer mixer;
 		[SerializeField] private int effectVoiceCount = 16;
 
 		private AudioSourcePool soundEffectPool;
 		private AudioSource musicSource;
 
 		private Dictionary<string, SoundCue> soundEffectCache = new Dictionary<string, SoundCue>();
+
+		public float Volume {
+			get => mixer.GetFloat("MasterVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
+			set => mixer.SetFloat("MasterVolume", MathX.LinearToDecibels(value));
+		}
+
+		public float MusicVolume {
+			get => mixer.GetFloat("MusicVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
+			set => mixer.SetFloat("MusicVolume", MathX.LinearToDecibels(value));
+		}
+
+		public float EffectsVolume {
+			get => mixer.GetFloat("EffectsVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
+			set => mixer.SetFloat("EffectsVolume", MathX.LinearToDecibels(value));
+		}
 
 		protected override void Awake() {
 			base.Awake();
@@ -22,29 +40,33 @@ namespace Audio {
 			musicSource.name = "Music Source";
 		}
 
-		public void PlayEffectOneShot(SoundEffect effect) {
-			SoundCue cue = LoadEffect(effect);
-			PlayEffectOneShot(cue.GetClip());
+		public SoundHandle PlayEffect(SoundEffect effect, bool loop = false) {
+			SoundCue cue = GetSoundEffect(effect);
+			return PlayEffect(cue.GetClip(), loop, cue.volume, cue.pitch);
 		}
 
-		public void PlayEffectOneShot(AudioClip clip) {
-			PlayEffectOneShot(clip, Vector3.zero);
+		public SoundHandle PlayEffect(AudioClip clip, bool loop = false, float volume = 1f, float pitch = 1f) {
+			return soundEffectPool.PlayOneShot(clip, loop, volume, pitch);
 		}
 
-		public void PlayEffectOneShot(AudioClip clip, Vector3 position) {
-			soundEffectPool.PlayOneShot(clip, position);
-		}
-
-		public void PlayMusic(AudioClip musicClip, bool restart = false, bool loop = true) {
+		/// <summary>
+		/// Play a music track.
+		/// </summary>
+		/// <param name="musicClip">The track to play.</param>
+		/// <param name="fade">The type of fade to use.</param>
+		/// <param name="restart">Whether to restart playback if the same track is already playing.</param>
+		/// <param name="loop">Whether to loop the track.</param>
+		public void PlayMusic(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, bool restart = false, bool loop = true) {
 			if (!restart && musicSource.clip == musicClip && musicSource.isPlaying)
 				return;
 
+			// TODO: Implement fade.
 			musicSource.clip = musicClip;
 			musicSource.loop = loop;
 			musicSource.Play();
 		}
 
-		private SoundCue LoadEffect(SoundEffect effect) {
+		public SoundCue GetSoundEffect(SoundEffect effect) {
 			string effectPath = AudioIndex.GetPath(effect);
 			SoundCue cue;
 
@@ -58,5 +80,9 @@ namespace Audio {
 				return cue;
 			}
 		}
+	}
+
+	public enum FadeKind {
+		NoFade,
 	}
 }

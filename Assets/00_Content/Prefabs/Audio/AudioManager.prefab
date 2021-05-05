@@ -45,4 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectSourcePrefab: {fileID: 3310873667750664767, guid: 83e93cb9591128247be732c432ee3c1f, type: 3}
   musicSourcePrefab: {fileID: 3414402290755068020, guid: a2fc53900b9cff946ace19624a70fe66, type: 3}
+  mixer: {fileID: 24100000, guid: 635d91509b6cb8c4285a57e3f852fd76, type: 2}
   effectVoiceCount: 16

@@ -7,6 +7,13 @@ namespace Audio {
 		public AudioClip singleClip;
 		public AudioClip[] randomClips;
 
+		[Space]
+		//public bool additionalSettings;
+		[Range(0, 1)]
+		public float volume = 1f;
+		[Range(-3, 3)]
+		public float pitch = 1f;
+
 		public AudioClip GetClip() {
 			if (mode == SoundCueMode.Single)
 				return singleClip;

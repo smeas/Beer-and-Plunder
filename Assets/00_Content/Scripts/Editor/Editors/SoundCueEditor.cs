@@ -1,26 +1,20 @@
 using Audio;
 using UnityEditor;
 using UnityEngine;
+using Utilities;
 
 namespace Editors {
 	[CustomEditor(typeof(SoundCue))]
-	public class SoundCueEditor : Editor {
-		public override void OnInspectorGUI() {
-			serializedObject.Update();
+	public class SoundCueEditor : ExtendedEditor {
+		protected override void DrawEditor() {
+			SoundCueMode mode = (SoundCueMode)DrawProperty(nameof(SoundCue.mode)).intValue;
 
-			SerializedProperty modeProperty = serializedObject.FindProperty(nameof(SoundCue.mode));
-			EditorGUILayout.PropertyField(modeProperty);
+			if (mode == SoundCueMode.Single)
+				DrawProperty(nameof(SoundCue.singleClip), new GUIContent("Audio Clip"));
+			else
+				DrawProperty(nameof(SoundCue.randomClips), new GUIContent("Audio Clips"));
 
-			if ((SoundCueMode)modeProperty.intValue == SoundCueMode.Single) {
-				SerializedProperty singleClipProperty = serializedObject.FindProperty(nameof(SoundCue.singleClip));
-				EditorGUILayout.PropertyField(singleClipProperty, new GUIContent("Audio Clip"));
-			}
-			else {
-				SerializedProperty randomClipsProperty = serializedObject.FindProperty(nameof(SoundCue.randomClips));
-				EditorGUILayout.PropertyField(randomClipsProperty, new GUIContent("Audio Clips"));
-			}
-
-			serializedObject.ApplyModifiedProperties();
+			DrawProperties(nameof(SoundCue.volume));
 		}
 	}
 }
