@@ -67,17 +67,17 @@ namespace Interactables.Beers {
 			if (actualDistance > carryDistance) {
 				Vector3 centerToPosition = playerMovement.transform.position - transform.position;
 				centerToPosition.Normalize();
-				playerMovement.transform.position = transform.position + centerToPosition * carryDistance;
+				Vector3 newPosition = transform.position + centerToPosition * carryDistance;
+				playerMovement.transform.position = new Vector3(newPosition.x, 0, newPosition.z);
 			}
 		}
 
 		private void BeerBarrel_OnPickedUp(PickUp pickUp, PlayerComponent playerComponent) {
-
 			PlayerMovement playerMovement = playerComponent.GetComponent<PlayerMovement>();
 
 			if (carriers.Count > 0) {
 
-				coll.enabled = false;
+				coll.enabled = true;
 
 				pickUp.SetParent(null);
 				carriers.Add(playerComponent.PlayerId, playerMovement);
@@ -102,7 +102,10 @@ namespace Interactables.Beers {
 			if (IsMultiCarried) {
 				carriers.Remove(playerComponent.PlayerId);
 				IsMultiCarried = false;
-				carriers.First().Value.SetDefaultVelocity();
+				PlayerMovement remainingCarrier = carriers.First().Value;
+				carriers.Clear();
+				remainingCarrier.SetMaxVelocity(soloCarryVelocity);
+				PickUpItem(remainingCarrier.GetComponentInChildren<PlayerPickUp>().PlayerGrabTransform);
 				return;
 			}
 

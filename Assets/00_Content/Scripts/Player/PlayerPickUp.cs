@@ -16,6 +16,7 @@ namespace Player {
 
 		public event Action<PickUp> OnItemPickedUp;
 		public event Action<PickUp> OnItemDropped;
+		public Transform PlayerGrabTransform => playerGrabTransform; 
 
 		public PickUp PickedUpItem => pickedUpItem;
 
