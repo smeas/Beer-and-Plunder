@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -15,6 +16,7 @@ namespace Audio {
 		private AudioSource musicSource;
 
 		private Dictionary<string, SoundCue> soundEffectCache = new Dictionary<string, SoundCue>();
+		private Coroutine musicFadeRoutine;
 
 		public float Volume {
 			get => mixer.GetFloat("MasterVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
@@ -54,16 +56,28 @@ namespace Audio {
 		/// </summary>
 		/// <param name="musicClip">The track to play.</param>
 		/// <param name="fade">The type of fade to use.</param>
+		/// <param name="fadeDuration">The duration of the fade.</param>
 		/// <param name="restart">Whether to restart playback if the same track is already playing.</param>
 		/// <param name="loop">Whether to loop the track.</param>
-		public void PlayMusic(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, bool restart = false, bool loop = true) {
+		public void PlayMusic(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f, bool restart = false, bool loop = true) {
 			if (!restart && musicSource.clip == musicClip && musicSource.isPlaying)
 				return;
 
-			// TODO: Implement fade.
-			musicSource.clip = musicClip;
-			musicSource.loop = loop;
-			musicSource.Play();
+			// If we're already fading, stop it.
+			if (musicFadeRoutine != null) {
+				StopCoroutine(musicFadeRoutine);
+				musicFadeRoutine = null;
+			}
+
+			if (fade == FadeKind.OutIn) {
+				musicFadeRoutine = StartCoroutine(CoFadeMusicOutIn(musicClip, fadeDuration, loop));
+			}
+			else {
+				musicSource.clip = musicClip;
+				musicSource.loop = loop;
+				musicSource.volume = 1f;
+				musicSource.Play();
+			}
 		}
 
 		public SoundCue GetSoundEffect(SoundEffect effect) {
@@ -80,9 +94,59 @@ namespace Audio {
 				return cue;
 			}
 		}
+
+		private IEnumerator CoFadeMusicOutIn(AudioClip newMusicClip, float duration, bool loop) {
+			float halfDuration = duration / 2f;
+
+			// Fade out if needed
+			if (musicSource.isPlaying) {
+				for (float time = halfDuration; time >= 0f; time -= Time.unscaledDeltaTime) {
+					musicSource.volume = time / halfDuration;
+					yield return null;
+				}
+			}
+
+			// Start new track
+			musicSource.clip = newMusicClip;
+			musicSource.loop = loop;
+			musicSource.volume = 0f;
+			musicSource.Play();
+
+			// Fade in
+			for (float time = 0f; time < halfDuration; time += Time.unscaledDeltaTime) {
+				musicSource.volume = time / halfDuration;
+				yield return null;
+			}
+
+			musicFadeRoutine = null;
+		}
+
+
+		// Static usefulness
+
+		public static SoundHandle PlayEffectSafe(SoundEffect effect, bool loop = false) {
+			if (Instance != null)
+				return Instance.PlayEffect(effect, loop);
+
+			return SoundHandle.NullHandle;
+		}
+
+		public static SoundHandle PlayEffectSafe(AudioClip clip, bool loop = false, float volume = 1f, float pitch = 1f) {
+			if (Instance != null)
+				return Instance.PlayEffect(clip, loop, volume, pitch);
+
+			return SoundHandle.NullHandle;
+		}
+
+		public static void PlayMusicSafe(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		                             bool restart = false, bool loop = true) {
+			if (Instance != null)
+				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop);
+		}
 	}
 
 	public enum FadeKind {
 		NoFade,
+		OutIn,
 	}
 }

@@ -12,8 +12,6 @@ namespace Audio {
 		private readonly Queue<AudioSource> freeSources = new Queue<AudioSource>();
 		private readonly LinkedList<(AudioSource source, SoundHandle handle)> usedSources = new LinkedList<(AudioSource, SoundHandle)>();
 
-		private static readonly SoundHandle nullSoundHandle = new SoundHandle();
-
 		public int Size => freeSources.Count + usedSources.Count;
 		public int MaxSize => maxSources;
 
@@ -27,7 +25,7 @@ namespace Audio {
 		public SoundHandle PlayOneShot(AudioClip clip, bool loop = false, float volume = 1f, float pitch = 1f) {
 			(AudioSource source, SoundHandle handle) = GetSource();
 			if (source == null)
-				return nullSoundHandle;
+				return SoundHandle.NullHandle;
 
 			source.clip = clip;
 			source.volume = volume;
@@ -58,7 +56,7 @@ namespace Audio {
 			}
 			else {
 				Debug.LogWarning("No more sources");
-				return (null, nullSoundHandle);
+				return (null, SoundHandle.NullHandle);
 			}
 		}
 
