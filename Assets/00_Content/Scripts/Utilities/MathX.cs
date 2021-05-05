@@ -22,9 +22,9 @@ namespace Utilities {
 		/// Get a random direction within a cone.
 		/// </summary>
 		/// <param name="direction">The direction of the cone.</param>
-		/// <param name="halfAngle">Half the angle of the cone measured in radians.</param>
+		/// <param name="halfAngle">Half the angle of the cone measured in degrees.</param>
 		public static Vector3 RandomDirectionInCone(Vector3 direction, float halfAngle) {
-			float radius = Mathf.Tan(halfAngle);
+			float radius = Mathf.Tan(halfAngle * Mathf.Deg2Rad);
 			Vector2 pointInCircle = Random.insideUnitCircle * radius;
 			return (Quaternion.LookRotation(direction) * new Vector3(pointInCircle.x, pointInCircle.y, 1f)).normalized;
 		}
