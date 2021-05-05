@@ -53,6 +53,7 @@ namespace Audio {
 			}
 			else {
 				cue = Resources.Load<SoundCue>(effectPath);
+				Debug.Assert(cue != null, "Loaded sound cue was null");
 				soundEffectCache.Add(effectPath, cue);
 				return cue;
 			}

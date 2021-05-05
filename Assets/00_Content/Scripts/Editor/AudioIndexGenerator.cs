@@ -42,6 +42,7 @@ namespace Audio {{
 		string assetPath = AssetDatabase.GetAssetPath(asset);
 		Debug.Assert(assetPath != null, "assetPath != null");
 		Debug.Assert(assetPath.StartsWith(ResourcePrefix));
+		assetPath = Path.ChangeExtension(assetPath, null);
 		return assetPath.Substring(ResourcePrefix.Length);
 	}
 
