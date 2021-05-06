@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Player;
@@ -20,6 +21,9 @@ namespace Interactables {
 		public bool IsFull => Chairs.All(chair => chair.IsOccupied);
 		public bool IsDestroyed => health <= 0;
 
+		public event Action Repaired;
+		public event Action Destroyed;
+
 		private void OnEnable() {
 			AllTables.Add(this);
 		}
@@ -40,6 +44,8 @@ namespace Interactables {
 
 			if (RoundController.Instance != null)
 				health = RoundController.Instance.CurrentDifficulty.tableHealth;
+			else
+				health = 100;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
@@ -124,8 +130,11 @@ namespace Interactables {
 			health = Mathf.Max(0, health - damage);
 			if (IsDestroyed) {
 				GetComponentInChildren<MeshRenderer>().enabled = false;
+
 				if (Tavern.Instance != null)
 					Tavern.Instance.TakesDamage(1);
+
+				Destroyed?.Invoke();
 			}
 		}
 
@@ -134,6 +143,7 @@ namespace Interactables {
 				health = RoundController.Instance.CurrentDifficulty.tableHealth;
 
 			GetComponentInChildren<MeshRenderer>().enabled = true;
+			Repaired?.Invoke();
 		}
 	}
 }

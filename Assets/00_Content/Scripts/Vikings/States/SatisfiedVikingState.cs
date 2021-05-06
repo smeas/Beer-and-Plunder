@@ -25,6 +25,8 @@ namespace Vikings.States {
 				Random.Range(viking.Data.satisfiedDurationMinMax.x, viking.Data.satisfiedDurationMinMax.y);
 			satisfiedTimer = satisfiedDuration;
 
+			viking.BecameSatisfied?.Invoke();
+
 			return this;
 		}
 
