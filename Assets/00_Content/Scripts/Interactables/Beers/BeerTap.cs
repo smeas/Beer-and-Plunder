@@ -23,7 +23,6 @@ namespace Interactables.Beers {
 		[SerializeField] private ProgressBar fillProgressBar;
 		[SerializeField] private BeerData beerData;
 
-		private ItemSlot itemSlot;
 		private float pouringProgress = 0;
 		private bool isPouring = false;
 		private int beerAmount;
@@ -107,7 +106,7 @@ namespace Interactables.Beers {
 			pourProgressBar.Show();
 			perfectProgressIndicator.gameObject.SetActive(true);
 
-			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= pourTime) {
+			while (isPouring && pouringProgress <= pourTime) {
 
 				pouringProgress += Time.deltaTime;
 

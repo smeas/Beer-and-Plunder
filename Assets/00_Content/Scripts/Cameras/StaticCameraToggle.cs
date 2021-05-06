@@ -14,6 +14,10 @@ namespace Cameras {
 			action.Enable();
 		}
 
+		private void OnDestroy() {
+			action.performed -= ToggleCameraMode;
+		}
+
 		private void ToggleCameraMode(InputAction.CallbackContext ctx) {
 			FollowingCamera boundedCamera = GetComponent<FollowingCamera>();
 			if (boundedCamera.enabled) {

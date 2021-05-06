@@ -12,10 +12,6 @@ namespace UI {
 
 		private bool isWriting;
 
-		private void Start() {
-			textArea.enabled = false;
-		}
-
 		public void TypeText(string text) {
 			if (isWriting)
 				StopAllCoroutines();

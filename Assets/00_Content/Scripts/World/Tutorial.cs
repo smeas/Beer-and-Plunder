@@ -117,7 +117,7 @@ namespace World {
 				dialogueText.TypeText(trimmedText);
 		}
 
-		#region EventFunctions
+		#region Unity Event Handlers
 
 		public void StartBrawl() {
 			viking.ForceChangeState(new BrawlingVikingState(viking, table));

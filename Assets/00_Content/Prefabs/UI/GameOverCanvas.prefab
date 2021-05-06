@@ -116,6 +116,7 @@ MonoBehaviour:
   gameOverMessage: {fileID: 6677956837184601327}
   destructionMessage: The tavern was destroyed!
   bankrupcyMessage: You went bankrupt!
+  firstSelected: {fileID: 4798687925561701807}
 --- !u!1001 &7510107607431044850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -254,6 +255,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6184672732920426919, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
   m_PrefabInstance: {fileID: 7510107607431044850}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4798687925561701807 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3071769587703704413, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+  m_PrefabInstance: {fileID: 7510107607431044850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6677956837184601327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3789107596550840861, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
