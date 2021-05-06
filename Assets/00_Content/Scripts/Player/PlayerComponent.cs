@@ -1,6 +1,7 @@
 using Rounds;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace Player {
@@ -16,13 +17,20 @@ namespace Player {
 		public Color PlayerColor { get; set; } = new Color(0.8828125f, 0.8828125f, 0.8828125f);
 
 		private void Start() {
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += Respawn;
+			SceneManager.sceneLoaded += HandleOnSceneLoaded;
+			HandleOnSceneLoaded(default, default);
 		}
 
 		private void OnDestroy() {
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver -= Respawn;
+
+			SceneManager.sceneLoaded -= HandleOnSceneLoaded;
+		}
+
+		private void HandleOnSceneLoaded(Scene _, LoadSceneMode __) {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += Respawn;
 		}
 
 		public void Initialize() {
@@ -40,6 +48,8 @@ namespace Player {
 				transform.SetPositionAndRotation(SpawnPoint.position, SpawnPoint.rotation);
 			else
 				transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+			GetComponentInChildren<PlayerPickUp>().RespawnHeldItem();
 		}
 	}
 }

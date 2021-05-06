@@ -38,8 +38,6 @@ namespace Interactables.Beers {
 		public event Action TapRefilled;
 
 		private void Start() {
-			itemSlot = GetComponentInChildren<ItemSlot>();
-
 			beerAmount = MaxBeerAmount;
 			fillPortion = 1f / MaxBeerAmount;
 			fillProgressBar.UpdateProgress(1);
@@ -76,8 +74,6 @@ namespace Interactables.Beers {
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
-			if (itemSlot.HasItemInSlot) return;
-
 			isPouring = true;
 			fillingTankard = item as Tankard;
 			Debug.Assert(fillingTankard != null);
