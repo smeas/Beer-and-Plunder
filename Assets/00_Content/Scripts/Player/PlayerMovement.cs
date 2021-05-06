@@ -10,7 +10,6 @@ namespace Player {
 		[SerializeField] private bool canMove = true;
 		[SerializeField] private bool canRotate = true;
 
-
 		private new Rigidbody rigidbody;
 		private Camera mainCamera;
 
@@ -18,10 +17,9 @@ namespace Player {
 		private Vector2 movementDirection;
 		private Vector3 movement;
 		private float velocity;
-		
 
 		public float Velocity => velocity;
-		public Vector3 Movement => moveInput;
+		public Vector2 MoveInput => moveInput;
 
 		public float SpeedMultiplier {
 			get => speedMultiplier;
@@ -72,7 +70,7 @@ namespace Player {
 
 			rigidbody.MovePosition(transform.position + movement);
 
-			if (movement != Vector3.zero && canRotate) 
+			if (movement != Vector3.zero && canRotate)
 				transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
 		}
 

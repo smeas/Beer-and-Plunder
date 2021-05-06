@@ -10,16 +10,14 @@ namespace Interactables {
 	public class PickUp : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform itemGrabTransform;
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
-		[SerializeField] private Collider objectCollider;
+		[SerializeField] protected Collider objectCollider;
 
-		private new Rigidbody rigidbody;
+		protected new Rigidbody rigidbody;
 		private Vector3 startPosition;
 		private Quaternion startRotation;
 		private bool isBeingCarried;
-		private bool isMultiCarried;
 
-		public bool IsMultiCarried { get => isMultiCarried; set => isMultiCarried = value; }
-
+		protected bool IsMultiCarried { get; set; }
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 
@@ -56,7 +54,7 @@ namespace Interactables {
 		//Drop item on floor or snap to slot if close
 		public void DropItem(Transform playerGrabTransform) {
 
-			if (isMultiCarried) {
+			if (IsMultiCarried) {
 				OnDropped?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
 				return;
 			}
