@@ -82,8 +82,8 @@ namespace Rounds {
 			if (VikingController.Instance != null) VikingController.Instance.CanSpawn = false;
 
 			if (PlayerManager.Instance == null) {
-			Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
-			return;
+				Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
+				return;
 			}
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
@@ -94,16 +94,14 @@ namespace Rounds {
 
 		private void ShowScoreCard() {
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
-				AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 				TavernBankrupt();
 				Debug.Log("Required money goal was not reached.");
-			}
-			else {
-				AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundWon);
+				return;
 			}
 
 			scoreCard.UpdateScoreCard(currentRound);
 			scoreCard.Show();
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundWon);
 		}
 
 		private void EnableGamePlay() {
@@ -137,13 +135,16 @@ namespace Rounds {
 
 		private void HandleOnTavernDestroyed() {
 			isRoundActive = false;
+			OnRoundOver?.Invoke();
 			DisableGamePlay();
 			gameOverPanel.Show(LoseCondition.Destruction);
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 		}
 
 		private void TavernBankrupt() {
 			isRoundActive = false;
 			gameOverPanel.Show(LoseCondition.Bankrupcy);
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 		}
 	}
 }

@@ -65,6 +65,8 @@ namespace Taverns {
 		}
 
 		public void TakesDamage(float damage) {
+			if (IsDestroyed) return;
+
 			Health -= damage;
 			OnHealthChanges?.Invoke();
 
