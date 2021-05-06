@@ -18,6 +18,9 @@ namespace Audio {
 			isValid = source != null;
 		}
 
+		/// <summary>
+		/// The volume of the audio source bound to this handle.
+		/// </summary>
 		public float Volume {
 			get => isValid ? source.volume : 1f;
 			set {
@@ -26,6 +29,9 @@ namespace Audio {
 			}
 		}
 
+		/// <summary>
+		/// Stop playing this sound.
+		/// </summary>
 		public void Stop() {
 			if (!isValid) return;
 
@@ -33,11 +39,18 @@ namespace Audio {
 			Invalidate();
 		}
 
+		/// <summary>
+		/// Fade out, then stop this sound.
+		/// </summary>
+		/// <param name="fadeDuration">The duration of the fade.</param>
 		public void FadeOutAndStop(float fadeDuration) {
 			if (!isValid || fadeRoutine != null) return;
 			fadeRoutine = AudioCoroutineHelper.Run(CoFadeOutAndStop(fadeDuration));
 		}
 
+		/// <summary>
+		/// Invalidate the handle. (For internal use only.)
+		/// </summary>
 		public void Invalidate() {
 			isValid = false;
 

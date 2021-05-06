@@ -14,6 +14,9 @@ namespace Audio {
 		[Range(-3, 3)]
 		public float pitch = 1f;
 
+		/// <summary>
+		/// Get a clip to play.
+		/// </summary>
 		public AudioClip GetClip() {
 			if (mode == SoundCueMode.Single)
 				return singleClip;

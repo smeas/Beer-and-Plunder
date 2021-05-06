@@ -16,18 +16,26 @@ namespace Audio {
 		private AudioSource musicSource;
 
 		private Dictionary<string, SoundCue> soundEffectCache = new Dictionary<string, SoundCue>();
-		private Coroutine musicFadeRoutine;
 
+		/// <summary>
+		/// Linear master volume.
+		/// </summary>
 		public float Volume {
 			get => mixer.GetFloat("MasterVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
 			set => mixer.SetFloat("MasterVolume", MathX.LinearToDecibels(value));
 		}
 
+		/// <summary>
+		/// Linear music volume.
+		/// </summary>
 		public float MusicVolume {
 			get => mixer.GetFloat("MusicVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
 			set => mixer.SetFloat("MusicVolume", MathX.LinearToDecibels(value));
 		}
 
+		/// <summary>
+		/// Linear effects volume.
+		/// </summary>
 		public float EffectsVolume {
 			get => mixer.GetFloat("EffectsVolume", out float value) ? MathX.DecibelsToLinear(value) : 1f;
 			set => mixer.SetFloat("EffectsVolume", MathX.LinearToDecibels(value));
@@ -63,21 +71,33 @@ namespace Audio {
 			if (!restart && musicSource.clip == musicClip && musicSource.isPlaying)
 				return;
 
-			// If we're already fading, stop it.
-			if (musicFadeRoutine != null) {
-				StopCoroutine(musicFadeRoutine);
-				musicFadeRoutine = null;
-			}
+			StopFadingMusic();
 
-			if (fade == FadeKind.OutIn) {
-				musicFadeRoutine = StartCoroutine(CoFadeMusicOutIn(musicClip, fadeDuration, loop));
+			switch (fade) {
+				case FadeKind.OutIn:
+					StartCoroutine(CoFadeMusicOutIn(musicClip, fadeDuration, loop));
+					break;
+				case FadeKind.In:
+					musicSource.Stop();
+					StartCoroutine(CoFadeMusicOutIn(musicClip, fadeDuration, loop));
+					break;
+				default:
+					musicSource.clip = musicClip;
+					musicSource.loop = loop;
+					musicSource.volume = 1f;
+					musicSource.Play();
+					break;
 			}
-			else {
-				musicSource.clip = musicClip;
-				musicSource.loop = loop;
-				musicSource.volume = 1f;
-				musicSource.Play();
-			}
+		}
+
+		public void StopMusic() {
+			StopFadingMusic();
+			musicSource.Stop();
+		}
+
+		public void FadeOutAndStopMusic(float duration) {
+			StopFadingMusic();
+			StartCoroutine(CoFadeMusicOut(duration));
 		}
 
 		public SoundCue GetSoundEffect(SoundEffect effect) {
@@ -95,15 +115,31 @@ namespace Audio {
 			}
 		}
 
-		private IEnumerator CoFadeMusicOutIn(AudioClip newMusicClip, float duration, bool loop) {
-			float halfDuration = duration / 2f;
+		private void StopFadingMusic() {
+			StopAllCoroutines();
+		}
 
-			// Fade out if needed
-			if (musicSource.isPlaying) {
-				for (float time = halfDuration; time >= 0f; time -= Time.unscaledDeltaTime) {
-					musicSource.volume = time / halfDuration;
-					yield return null;
-				}
+		private IEnumerator CoFadeMusicOut(float duration) {
+			for (float time = duration; time >= 0f; time -= Time.unscaledDeltaTime) {
+				musicSource.volume = time / duration;
+				yield return null;
+			}
+
+			musicSource.Stop();
+		}
+
+		private IEnumerator CoFadeMusicIn(float duration) {
+			for (float time = 0f; time < duration; time += Time.unscaledDeltaTime) {
+				musicSource.volume = time / duration;
+				yield return null;
+			}
+		}
+
+		private IEnumerator CoFadeMusicOutIn(AudioClip newMusicClip, float duration, bool loop) {
+			bool alreadyPlaying = musicSource.isPlaying;
+
+			if (alreadyPlaying) {
+				yield return CoFadeMusicOut(duration / 2f);
 			}
 
 			// Start new track
@@ -112,17 +148,11 @@ namespace Audio {
 			musicSource.volume = 0f;
 			musicSource.Play();
 
-			// Fade in
-			for (float time = 0f; time < halfDuration; time += Time.unscaledDeltaTime) {
-				musicSource.volume = time / halfDuration;
-				yield return null;
-			}
-
-			musicFadeRoutine = null;
+			yield return CoFadeMusicIn(alreadyPlaying ? duration / 2f : duration);
 		}
 
 
-		// Static usefulness
+		#region Static wrappers
 
 		public static SoundHandle PlayEffectSafe(SoundEffect effect, bool loop = false) {
 			if (Instance != null)
@@ -138,15 +168,29 @@ namespace Audio {
 			return SoundHandle.NullHandle;
 		}
 
+		/// <inheritdoc cref="PlayMusic"/>
 		public static void PlayMusicSafe(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
 		                                 bool restart = false, bool loop = true) {
 			if (Instance != null)
 				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop);
 		}
+
+		public static void StopMusicSafe() {
+			if (Instance != null)
+				Instance.StopMusic();
+		}
+
+		public static void FadeOutAndStopMusicSafe(float duration) {
+			if (Instance != null)
+				Instance.FadeOutAndStopMusic(duration);
+		}
+
+		#endregion
 	}
 
 	public enum FadeKind {
 		NoFade,
 		OutIn,
+		In,
 	}
 }
