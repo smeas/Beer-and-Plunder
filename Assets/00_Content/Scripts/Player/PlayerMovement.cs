@@ -18,9 +18,10 @@ namespace Player {
 		private Vector2 movementDirection;
 		private Vector3 movement;
 		private float velocity;
+		
 
 		public float Velocity => velocity;
-		public Vector3 Movement => movement;
+		public Vector3 Movement => moveInput;
 
 		public float SpeedMultiplier {
 			get => speedMultiplier;
@@ -39,6 +40,7 @@ namespace Player {
 			get => canRotate;
 			set => canRotate = value;
 		}
+		public bool CalculateMovementDirection { get; set; } = true;
 
 		private void Start() {
 			rigidbody = GetComponent<Rigidbody>();
@@ -51,7 +53,10 @@ namespace Player {
 			if (canMove && moveInput != Vector2.zero && accelerationDelta != 0) {
 				Vector2 accelerationInput = MakeCameraRelative(moveInput) * accelerationDelta;
 				float accelerationMagnitude = accelerationInput.magnitude;
-				movementDirection = accelerationInput * (1f / accelerationMagnitude);
+
+				if (CalculateMovementDirection)
+					movementDirection = accelerationInput * (1f / accelerationMagnitude);
+
 				velocity = Mathf.Min(maxVelocity * moveInput.magnitude, velocity + accelerationMagnitude);
 			}
 			else {
@@ -71,7 +76,7 @@ namespace Player {
 				transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
 		}
 
-		private Vector2 MakeCameraRelative(Vector2 movement) {
+		public Vector2 MakeCameraRelative(Vector2 movement) {
 			// This is needed because the main camera changes between scenes.
 			if (mainCamera == null) {
 				mainCamera = Camera.main;
@@ -96,6 +101,10 @@ namespace Player {
 
 			Vector3 cameraRelativeMovement = forward * movement.y + cameraTransform.right * movement.x;
 			return new Vector2(cameraRelativeMovement.x, cameraRelativeMovement.z);
+		}
+
+		public void MoveInDirection(Vector2 direction) {
+			movementDirection = direction;
 		}
 
 		public void Move(Vector2 input) {

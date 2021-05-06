@@ -35,39 +35,64 @@ namespace Interactables.Beers {
 			if (!IsMultiCarried) 
 				return;
 
-			if (carriers[0].Movement.magnitude > 0f && carriers[1].Movement.magnitude > 0f) {
+			if (carriers[0].Velocity > 0 && carriers[1].Velocity > 0) {
+
+				Vector2 combinedMovement =  Vector2.ClampMagnitude((carriers[0].Movement + carriers[1].Movement),1f);
+				foreach (PlayerMovement playerMovement in carriers.Values) {
+					playerMovement.MoveInDirection(combinedMovement);
+				}
 
 				Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
 				transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
-
-				LimitMovement(carriers[0]);
-				LimitMovement(carriers[1]);
 			}
-			else if (carriers[0].Movement.magnitude > 0f) {
+			else if (carriers[0].Velocity > 0) {
 					Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
 					transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
-					LimitMovement(carriers[0]);
+					Debug.Log(RotateAroundPlayer(carriers[0], carriers[1]));
+
 			}
-			else if (carriers[1].Movement.magnitude > 0f) {
+			else if (carriers[1].Velocity > 0) {
 					Vector3 newPos = (carriers[1].transform.position + carriers[0].transform.position) / 2;
 					transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
-					LimitMovement(carriers[1]);
+					RotateAroundPlayer(carriers[1], carriers[0]);
 			}
+			else {
+				foreach (PlayerMovement playerMovement in carriers.Values) {
+					playerMovement.MoveInDirection(Vector2.zero);
+				}
+			}
+
 
 			foreach (PlayerMovement playerMove in carriers.Values) {
 				playerMove.transform.LookAt(new Vector3(transform.position.x, 0, transform.position.z));
 			}
+
 		}
 
-		private void LimitMovement(PlayerMovement playerMovement) {
-			float actualDistance = Vector3.Distance(transform.position, playerMovement.transform.position);
-				
-			if (actualDistance > carryDistance) {
-				Vector3 centerToPosition = playerMovement.transform.position - transform.position;
-				centerToPosition.Normalize();
-				Vector3 newPosition = transform.position + centerToPosition * carryDistance;
-				playerMovement.transform.position = new Vector3(newPosition.x, 0, newPosition.z);
-			}
+		private void LimitMovement(PlayerMovement movingPlayer) {
+			Vector3 direction = movingPlayer.transform.position - transform.position;
+			direction = Vector3.ClampMagnitude(direction, carryDistance);
+			movingPlayer.transform.position = transform.position + direction;
+		}
+
+		private Vector2 RotateAroundPlayer(PlayerMovement movingPlayer, PlayerMovement stillPlayer) {
+
+			
+			var moveDirection = movingPlayer.MakeCameraRelative(movingPlayer.Movement.normalized) * movingPlayer.Velocity;
+			var movingPosition = new Vector2(movingPlayer.transform.position.x, movingPlayer.transform.position.z);
+
+			var nextPosition = movingPosition + moveDirection;
+			var stillPosition = new Vector2(stillPlayer.transform.position.x, stillPlayer.transform.position.z);
+
+			var clamped = (nextPosition - stillPosition).normalized * carryDistance;
+			var direction = Vector2.ClampMagnitude((clamped - movingPosition), 1f);
+			//var nextDirection = (nextPosition - stillPlayer.transform.position).normalized;
+			//var something = stillPlayer.transform.position + nextDirection * carryDistance;
+			//var x = (something - movingPlayer.transform.position).normalized;
+
+			movingPlayer.MoveInDirection(direction);
+
+			return direction;
 		}
 
 		private void BeerBarrel_OnPickedUp(PickUp pickUp, PlayerComponent playerComponent) {
@@ -82,6 +107,7 @@ namespace Interactables.Beers {
 				foreach (PlayerMovement playerMove in carriers.Values) {
 					playerMove.SetDefaultVelocity();
 					playerMove.CanRotate = false;
+					playerMove.CalculateMovementDirection = false;
 				}
 
 				IsMultiCarried = true;
@@ -101,6 +127,7 @@ namespace Interactables.Beers {
 
 				foreach (PlayerMovement playerMove in carriers.Values) {
 					playerMove.CanRotate = true;
+					playerMove.CalculateMovementDirection = true;
 				}
 
 				carriers.Remove(playerComponent.PlayerId);
