@@ -12,9 +12,12 @@ namespace Rounds {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
 		[SerializeField] private GameObject HUDPrefab;
+		[SerializeField] private GameOver gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 		[SerializeField] private int requiredMoney = 250;
+
+		private GameOver gameOverPanel;
 
 		private ScoreCard scoreCard;
 		private float roundTimer;
@@ -34,6 +37,8 @@ namespace Rounds {
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
 			scoreCard.gameObject.SetActive(false);
+			gameOverPanel = Instantiate(gameOverPanelPrefab);
+			gameOverPanel.gameObject.SetActive(false);
 
 			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
 			scoreCard.OnNextRound += HandleOnNextRound;
@@ -48,14 +53,15 @@ namespace Rounds {
 
 			roundTimer = Mathf.Max(0, roundTimer - Time.deltaTime);
 
-			if (roundTimer <= 0) RoundWon();
+			if (roundTimer <= 0) RoundOver();
 		}
 
-		private void RoundWon() {
+		private void RoundOver() {
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 
 			// TODO: Wait for all vikings to leave before continuing.
+			DisableGamePlay();
 			ShowScoreCard();
 		}
 
@@ -71,18 +77,13 @@ namespace Rounds {
 			VikingController.Instance.StatScaling = new VikingScaling(difficulty, currentRound);
 		}
 
-		private void ShowScoreCard() {
-			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
-				Debug.Log("Required money goal was not reached.");
-				// TODO: Maybe show the score card first?
-				GameOver();
-				//return;
+		private void DisableGamePlay() {
+			if (VikingController.Instance != null) VikingController.Instance.CanSpawn = false;
+
+			if (PlayerManager.Instance == null) { 
+			Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
+			return;
 			}
-
-			scoreCard.UpdateScoreCard(currentRound);
-			scoreCard.Show();
-
-			VikingController.Instance.CanSpawn = false;
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
@@ -90,14 +91,32 @@ namespace Rounds {
 			}
 		}
 
-		private void HandleOnNextRound() {
-			VikingController.Instance.CanSpawn = true;
+		private void ShowScoreCard() {
+			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+				TavernBankrupt();
+				Debug.Log("Required money goal was not reached.");
+			}
+
+			scoreCard.UpdateScoreCard(currentRound);
+			scoreCard.Show();
+		}
+
+		private void EnableGamePlay() {
+			if (VikingController.Instance != null) VikingController.Instance.CanSpawn = true;
+
+			if (PlayerManager.Instance == null) {
+				Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
+				return;
+			}
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 				PlayerInput playerInput = player.GetComponent<PlayerInput>();
 				playerInput.SwitchCurrentActionMap("Game");
 			}
+		}
 
+		private void HandleOnNextRound() {
+			EnableGamePlay();
 			isRoundActive = true;
 			currentRound++;
 			SendNextDifficulty();
@@ -111,12 +130,15 @@ namespace Rounds {
 			}
 		}
 
-		private void GameOver() {
-			// TODO
+		private void HandleOnTavernDestroyed() {
+			isRoundActive = false;
+			DisableGamePlay();
+			gameOverPanel.Show(LoseCondition.Destruction);
 		}
 
-		private void HandleOnTavernDestroyed() {
-			Debug.Log("Tavern was destroyed!");
+		private void TavernBankrupt() {
+			isRoundActive = false;
+			gameOverPanel.Show(LoseCondition.Bankrupcy);
 		}
 	}
 }

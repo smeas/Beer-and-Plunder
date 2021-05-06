@@ -18,6 +18,11 @@ namespace Menu {
 		private void Start() {
 
 			playerManager = PlayerManager.Instance;
+
+			foreach (PlayerComponent player in playerManager.Players) {
+				HandleOnPlayerJoined(player);
+			} 
+
 			playerManager.PlayerJoined += HandleOnPlayerJoined;
 			playerManager.PlayerLeft += HandleOnPlayerLeft;
 
