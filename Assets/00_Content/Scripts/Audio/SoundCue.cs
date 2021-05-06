@@ -1,11 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Audio {
 	[CreateAssetMenu(fileName = "SoundCue", menuName = "Game/Audio/Sound Cue")]
 	public class SoundCue : ScriptableObject {
-		public SoundCueMode mode;
-		public AudioClip singleClip;
-		public AudioClip[] randomClips;
+		[FormerlySerializedAs("randomClips")]
+		public AudioClip[] audioClips;
 
 		[Space]
 		[Range(0, 1)]
@@ -17,15 +17,12 @@ namespace Audio {
 		/// Get a clip to play.
 		/// </summary>
 		public AudioClip GetClip() {
-			if (mode == SoundCueMode.Single)
-				return singleClip;
-			else
-				return randomClips[Random.Range(0, randomClips.Length)];
-		}
-	}
+			if (audioClips.Length == 0)
+				return null;
+			if (audioClips.Length == 1)
+				return audioClips[0];
 
-	public enum SoundCueMode {
-		Single,
-		Random
+			return audioClips[Random.Range(0, audioClips.Length)];
+		}
 	}
 }
