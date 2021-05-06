@@ -51,11 +51,8 @@ namespace Scenes {
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 			// Move the players back out of the DDOL scene
 			if (mode == LoadSceneMode.Single && PlayerManager.Instance != null) {
-				foreach (PlayerComponent player in PlayerManager.Instance.Players) {
-					if (player == null) continue;
-
+				foreach (PlayerComponent player in PlayerManager.Instance.Players)
 					SceneManager.MoveGameObjectToScene(player.gameObject, scene);
-				}
 			}
 		}
 
