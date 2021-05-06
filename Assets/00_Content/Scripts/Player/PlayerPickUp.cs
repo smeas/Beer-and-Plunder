@@ -1,5 +1,6 @@
-using Interactables;
 using System;
+using Interactables;
+using Rounds;
 using UnityEngine;
 
 namespace Player {
@@ -20,13 +21,14 @@ namespace Player {
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += RespawnHeldItem;
 		}
 
-		public void ToggleCarrying() {
-			if (pickedUpItem == null)
-				PickUpClosestItem();
-			else
-				DropItem();
+		private void OnDestroy() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= RespawnHeldItem;
 		}
 
 		public void PickUpClosestItem() {
@@ -40,6 +42,7 @@ namespace Player {
 			OnItemPickedUp?.Invoke(pickedUpItem);
 		}
 
+		// Run from unity event
 		public void DropItem() {
 
 			if (pickedUpItem == null)
@@ -60,14 +63,18 @@ namespace Player {
 		}
 
 		public void UseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
-				usable.Use(playerRoot);
-				isUsingItem = true;
+			if (!(pickedUpItem is IUseable usable)) return;
+
+			if (pickedUpItem != null) {
+					usable.Use(playerRoot);
+					isUsingItem = true;
 			}
 		}
 
 		public void EndUseItem() {
-			if (pickedUpItem != null && pickedUpItem is IUseable usable) {
+			if (!(pickedUpItem is IUseable usable) || !isUsingItem) return;
+
+			if (pickedUpItem != null) {
 				usable.EndUse();
 				isUsingItem = false;
 			}
@@ -82,6 +89,15 @@ namespace Player {
 
 			Destroy(pickedUpItem.gameObject);
 			pickedUpItem = null;
+		}
+
+		private void RespawnHeldItem() {
+			if (pickedUpItem == null) return;
+
+			PickUp item = pickedUpItem;
+
+			DropItem();
+			item.Respawn();
 		}
 
 		public void OnClosestPickUpChange(PickUp pickUp) { }

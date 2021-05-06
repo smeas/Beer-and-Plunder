@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Rounds;
 using UnityEngine;
 using World;
 
@@ -13,11 +14,11 @@ namespace Interactables {
 		private new Rigidbody rigidbody;
 		private Vector3 startPosition;
 		private Quaternion startRotation;
+		private bool isBeingCarried;
 
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 
-		protected Collider ObjectCollider => objectCollider;
 		public event Action<PickUp> OnPickedUp;
 		public event Action<PickUp> OnDropped;
 
@@ -26,6 +27,12 @@ namespace Interactables {
 
 			startPosition = transform.position;
 			startRotation = transform.rotation;
+
+			if (StartItemSlot == null)
+				StartItemSlot = CurrentItemSlot;
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += Respawn;
 		}
 
 		private void OnDestroy() {
@@ -33,11 +40,18 @@ namespace Interactables {
 				CurrentItemSlot.ReleaseItem();
 				CurrentItemSlot = null;
 			}
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= Respawn;
+		}
+
+		public virtual void SetParent(Transform newParent) {
+			transform.SetParent(newParent);
 		}
 
 		//Drop item on floor or snap to slot if close
 		public void DropItem() {
-			transform.SetParent(null);
+			SetParent(null);
 			if (rigidbody != null)
 				rigidbody.isKinematic = false;
 
@@ -45,12 +59,13 @@ namespace Interactables {
 			objectCollider.enabled = true;
 
 			TryPutInClosestItemSlot();
+			isBeingCarried = false;
 			OnDropped?.Invoke(this);
 		}
 
 		public void PickUpItem(Transform playerGrabTransform) {
 			transform.rotation = Quaternion.identity;
-			transform.SetParent(playerGrabTransform);
+			SetParent(playerGrabTransform);
 			if (rigidbody != null)
 				rigidbody.isKinematic = true;
 
@@ -67,6 +82,7 @@ namespace Interactables {
 			}
 
 			objectCollider.enabled = false;
+			isBeingCarried = true;
 			OnPickedUp?.Invoke(this);
 		}
 
@@ -81,21 +97,36 @@ namespace Interactables {
 					.Where(slot => !slot.HasItemInSlot)
 					.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
 
-				if (closestFreeSlot != null)
+				if (closestFreeSlot != null) {
 					closestFreeSlot.PlaceItem(this);
+					OnPlace();
+				}
 			}
 		}
 
 		public void Respawn() {
+			if (isBeingCarried) return;
+
 			transform.SetPositionAndRotation(startPosition, startRotation);
 
-			// Put the item back into its original slot if possible
-			if (StartItemSlot != null && !StartItemSlot.HasItemInSlot)
+			// Put the item back into its original slot
+			if (StartItemSlot != null) {
+				if (StartItemSlot.HasItemInSlot)
+					StartItemSlot.ReleaseItem();
+
 				StartItemSlot.PlaceItem(this);
+			}
+			else if (CurrentItemSlot != null) {
+				CurrentItemSlot.ReleaseItem();
+			}
 		}
 
+		protected virtual void OnPlace() {}
+
+	#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
 			Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
 		}
+	#endif
 	}
 }

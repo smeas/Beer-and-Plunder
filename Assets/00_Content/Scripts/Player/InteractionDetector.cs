@@ -13,6 +13,7 @@ namespace Player {
 
 		private PlayerPickUp playerPickUp;
 		private PlayerInteract playerInteract;
+		private MonoBehaviour closestObject;
 		private GameObject pickUpHighlight;
 		private GameObject interactableHighlight;
 
@@ -22,10 +23,12 @@ namespace Player {
 		public PickUp ClosestPickUp { get; private set; }
 		public Interactable ClosestInteractable { get; private set; }
 
-		private void Start() {
+		private void Awake() {
 			playerPickUp = GetComponent<PlayerPickUp>();
 			playerInteract = GetComponent<PlayerInteract>();
+		}
 
+		private void Start() {
 			pickUpHighlight = Instantiate(pickUpHighlightPrefab);
 			interactableHighlight = Instantiate(interactableHighlightPrefab);
 			pickUpHighlight.SetActive(false);
@@ -35,6 +38,7 @@ namespace Player {
 		private void FixedUpdate() {
 			UpdateClosestPickup();
 			UpdateClosestInteractable();
+			UpdateClosestObject();
 		}
 
 		private void OnTriggerEnter(Collider other) {
@@ -57,6 +61,14 @@ namespace Player {
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
 				interactablesInRange.Remove(other.GetComponentInParent<Interactable>());
 			}
+		}
+
+		private void OnDestroy() {
+			if (interactableHighlight != null)
+				Destroy(interactableHighlight);
+
+			if (pickUpHighlight != null)
+				Destroy(pickUpHighlight);
 		}
 
 		private void HandleOnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
@@ -99,12 +111,39 @@ namespace Player {
 				ClearInteractableHighlight();
 		}
 
+		private void UpdateClosestObject() {
+			ClearInteractableHighlight();
+			ClearPickUpHighlight();
+
+			bool havePickup = ClosestPickUp != null;
+			bool haveInteractable = ClosestInteractable != null;
+
+			if (!havePickup || !haveInteractable) {
+				if (haveInteractable) {
+					HighlightInteractable(ClosestInteractable);
+				}
+				else if (havePickup) {
+					HighlightPickUp(ClosestPickUp);
+				}
+				return;
+			}
+
+			if ((transform.position - ClosestInteractable.transform.position).sqrMagnitude <
+			    (transform.position - ClosestPickUp.transform.position).sqrMagnitude) {
+				HighlightInteractable(ClosestInteractable);
+			}
+			else {
+				HighlightPickUp(ClosestPickUp);
+			}
+		}
+
 		private void HighlightPickUp(PickUp pickUp) {
 			if (pickUpHighlight == null)
 				pickUpHighlight = Instantiate(pickUpHighlightPrefab);
 
 			pickUpHighlight.transform.position = pickUp.transform.position + Vector3.up * 2;
 			pickUpHighlight.SetActive(true);
+			closestObject = pickUp;
 		}
 
 		private void HighlightInteractable(Interactable interactable) {
@@ -113,6 +152,7 @@ namespace Player {
 
 			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 2;
 			interactableHighlight.SetActive(true);
+			closestObject = interactable;
 		}
 
 		private void ClearPickUpHighlight() {
@@ -127,6 +167,24 @@ namespace Player {
 				interactableHighlight = Instantiate(interactableHighlightPrefab);
 
 			interactableHighlight.SetActive(false);
+		}
+
+		// Run from unity event
+		public void HandleStartInput() {
+			if (closestObject is PickUp && playerPickUp.PickedUpItem == null)
+				playerPickUp.PickUpClosestItem();
+			else if (playerPickUp.PickedUpItem is IUseable)
+				playerPickUp.UseItem();
+			else
+				playerInteract.Interact();
+		}
+
+		// Run from unity event
+		public void HandleEndInput() {
+			if (playerPickUp.PickedUpItem is IUseable)
+				playerPickUp.EndUseItem();
+			else
+				playerInteract.EndInteract();
 		}
 	}
 }

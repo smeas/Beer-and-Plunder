@@ -59,6 +59,33 @@ MonoBehaviour:
   - {r: 0.5428693, g: 1, b: 0.504, a: 1}
   - {r: 0.496, g: 0.49964753, b: 1, a: 1}
   - {r: 1, g: 0.9660482, b: 0.496, a: 1}
+  backAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Back
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: bd9def41-1b3a-4197-a4c2-d72985d14bfd
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 462f0b70-9536-45e7-88ae-387a931ba832
+        m_Path: <Gamepad>/buttonEast
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Back
+        m_Flags: 0
+      - m_Name: 
+        m_Id: 52d5fb4b-7411-4091-8cda-2aac1821dbaf
+        m_Path: <Keyboard>/escape
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Back
+        m_Flags: 0
+    m_Reference: {fileID: 0}
 --- !u!1 &4475578589298035207
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,12 +390,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

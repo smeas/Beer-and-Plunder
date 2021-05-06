@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Extensions;
 using Interactables;
+using Interactables.Beers;
 using Interactables.Weapons;
 using Player;
 using Rounds;
@@ -21,11 +23,16 @@ namespace Vikings {
 		[SerializeField] private LayerMask weaponLayer;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
+		[SerializeField] public Tankard tankardPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
 		[SerializeField] public Material brawlingMaterial;
+
+		[Space]
+		[SerializeField] public float tankardThrowConeHalfAngle = 15f;
+		[SerializeField] public float tankardThrowStrength = 5f;
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
@@ -215,6 +222,8 @@ namespace Vikings {
 				StartCoroutine(ResetHitSimulation());
 				VikingState vikingState = state.HandleOnHit(axe, this);
 				ChangeState(vikingState);
+
+				AudioManager.PlayEffectSafe(SoundEffect.Viking_AxeHit);
 			}
 		}
 

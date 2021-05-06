@@ -12,9 +12,13 @@ namespace Vikings.States {
 		private int coinsToDrop;
 		private float dropTimer;
 
+		private DesireType previousDesire;
+
 		private bool IsDroppingCoins => coinsToDrop > 0;
 
-		public SatisfiedVikingState(Viking viking) : base(viking) { }
+		public SatisfiedVikingState(Viking viking, DesireType previousDesire) : base(viking) {
+			this.previousDesire = previousDesire;
+		}
 
 		public override VikingState Enter() {
 			satisfiedDuration =
@@ -22,6 +26,20 @@ namespace Vikings.States {
 			satisfiedTimer = satisfiedDuration;
 
 			return this;
+		}
+
+		public override void Exit() {
+			if (previousDesire == DesireType.Beer) {
+				Rigidbody tankardBody = Object.Instantiate(viking.tankardPrefab,
+				                                           viking.transform.position + new Vector3(0, 2.5f, 0),
+				                                           Quaternion.identity).GetComponent<Rigidbody>();
+
+				Vector3 throwDirection = -viking.transform.forward;
+				throwDirection.y = 0.7f;
+
+				tankardBody.velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) *
+					viking.tankardThrowStrength;
+			}
 		}
 
 		public override VikingState Update() {
@@ -53,7 +71,7 @@ namespace Vikings.States {
 		}
 
 		private int CalculateCoinsToDrop(float value) {
-			return Mathf.RoundToInt(MathX.Remap(value, viking.Data.brawlMoodThreshold,
+			return Mathf.RoundToInt(MathX.RemapClamped(value, viking.Data.brawlMoodThreshold,
 				viking.Stats.StartMood, viking.Data.coinsDroppedMinMax.x, viking.Data.coinsDroppedMinMax.y));
 		}
 

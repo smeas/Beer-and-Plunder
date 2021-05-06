@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Audio;
 using Rounds;
 using UnityEngine;
 using Utilities;
@@ -48,6 +49,7 @@ namespace Vikings {
 				queueController.AddToQueue(viking);
 
 			VikingSpawned?.Invoke(viking);
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_GuestEnter);
 		}
 
 		private void OnLeaveTavern(Viking sender) {

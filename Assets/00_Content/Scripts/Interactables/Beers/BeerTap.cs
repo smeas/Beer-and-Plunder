@@ -1,4 +1,6 @@
 using System.Collections;
+using Audio;
+using Rounds;
 using Taverns;
 using UI;
 using UnityEngine;
@@ -26,6 +28,8 @@ namespace Interactables.Beers {
 		private bool isPouring = false;
 		private int beerAmount;
 		private float fillPortion;
+		private Tankard fillingTankard;
+		private SoundHandle pourSoundHandle;
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
@@ -45,15 +49,36 @@ namespace Interactables.Beers {
 				(perfectPourMinMax.y - perfectPourMinMax.x) * pourSizeDelta.x,
 				perfectProgressIndicator.sizeDelta.y
 			);
+
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += Refill;
+		}
+
+		private void OnDestroy() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver -= Refill;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			return (Tavern.Instance == null || Tavern.Instance.Money >= beerData.cost) && beerAmount > 0 && !isPouring;
+			if (isPouring || beerAmount <= 0)
+				return false;
+
+			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
+				return false;
+
+			if (!(item is Tankard tankard) || tankard.IsFull)
+				return false;
+
+			return true;
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
 			if (itemSlot.HasItemInSlot) return;
+
 			isPouring = true;
+			fillingTankard = item as Tankard;
+			Debug.Assert(fillingTankard != null);
+
 			StartCoroutine(PouringBeer());
 		}
 
@@ -61,13 +86,19 @@ namespace Interactables.Beers {
 			if (!isPouring) return;
 			float progress = pouringProgress / pourTime;
 
-			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y)
-				SpawnBeer();
-			else
+			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y) {
+				FillBeer();
+			}
+			else {
+				if (Tavern.Instance != null)
+					Tavern.Instance.EarnsMoney(beerData.cost);
+
 				ResetPouring();
+			}
 		}
 
 		private IEnumerator PouringBeer() {
+			pourSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.PourBeer);
 
 			if (Tavern.Instance != null) {
 				Tavern.Instance.SpendsMoney(beerData.cost);
@@ -84,17 +115,18 @@ namespace Interactables.Beers {
 				pourProgressBar.UpdateProgress(pouringProgress / pourTime);
 
 				if (pouringProgress > pourTime) {
-					SpawnBeer();
+					FillBeer();
 					break;
 				}
 
 				yield return null;
 			}
+
+			pourSoundHandle?.FadeOutAndStop(0.2f);
 		}
 
-		private void SpawnBeer() {
-			GameObject beer = Instantiate(beerPrefab);
-			itemSlot.PlaceItem(beer.GetComponent<PickUp>());
+		private void FillBeer() {
+			fillingTankard.IsFull = true;
 
 			beerAmount -= 1;
 
@@ -107,15 +139,15 @@ namespace Interactables.Beers {
 		private void ResetPouring() {
 			if (!isPouring) return;
 
-			if (Tavern.Instance != null)
-				Tavern.Instance.EarnsMoney(beerData.cost);
-
 			pouringProgress = 0;
 			isPouring = false;
+			fillingTankard = null;
 
 			fillProgressBar.UpdateProgress(fillPortion * beerAmount);
 			pourProgressBar.Hide();
 			perfectProgressIndicator.gameObject.SetActive(false);
+
+			pourSoundHandle?.FadeOutAndStop(0.2f);
 		}
 
 		public void Refill() {
