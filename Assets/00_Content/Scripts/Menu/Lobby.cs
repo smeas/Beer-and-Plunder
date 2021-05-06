@@ -33,11 +33,6 @@ namespace Menu {
 			playerManager.AllowJoining = true;
 		}
 
-		private void OnDestroy() {
-			if (PlayerManager.Instance != null)
-				PlayerManager.Instance.AllowJoining = false;
-		}
-
 		private void HandleOnPlayerJoined(PlayerComponent player) {
 			List<PlayerSlotObject> slots = playerSlots.OrderBy(x => x.Id).ToList();
 

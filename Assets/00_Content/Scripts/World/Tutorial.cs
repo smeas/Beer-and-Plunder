@@ -91,6 +91,9 @@ namespace World {
 				currentPhaseIndex++;
 
 				if (currentPhaseIndex >= phases.Length) {
+					if (PlayerManager.Instance != null)
+						PlayerManager.Instance.RemovePlayer(player);
+
 					SceneLoadManager.Instance.LoadMainMenu();
 					return;
 				}

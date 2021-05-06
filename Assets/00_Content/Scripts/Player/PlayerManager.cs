@@ -60,6 +60,10 @@ namespace Player {
 			Players.Add(player);
 		}
 
+		public void RemovePlayer(PlayerComponent player) {
+			Players.Remove(player);
+		}
+
 		#region Event Handlers
 
 		private void OnPlayerJoined(PlayerInput playerInput) {
