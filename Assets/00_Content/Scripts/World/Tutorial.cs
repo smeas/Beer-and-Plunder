@@ -32,6 +32,7 @@ namespace World {
 		private int currentPhaseIndex;
 		private TutorialPhase CurrentPhase => phases[currentPhaseIndex];
 		private GameObject highlight;
+		private bool highlightActive;
 		private FollowingCamera cam;
 
 		private void Start() {
@@ -101,6 +102,12 @@ namespace World {
 		private void PreparePhase() {
 			CurrentPhase.Enter(highlight);
 
+			if (highlight.activeInHierarchy && !highlightActive)
+				cam.AddTarget(highlight.transform);
+			else if (!highlight.activeInHierarchy && highlightActive)
+				cam.RemoveTarget(highlight.transform);
+
+			highlightActive = highlight.activeInHierarchy;
 
 			string trimmedText = CurrentPhase.Text.Trim();
 			if (trimmedText.Length > 0)
