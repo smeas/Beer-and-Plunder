@@ -1,4 +1,5 @@
-﻿using Taverns;
+﻿using Audio;
+using Taverns;
 using UnityEngine;
 
 namespace Interactables {
@@ -12,6 +13,8 @@ namespace Interactables {
 		private float minSpawnVelocity;
 		[SerializeField, Min(0)]
 		private float maxSpawnVelocity;
+
+		[SerializeField] private float hitSoundVelocityThreshold = 2f;
 
 		private float durationTimer;
 
@@ -43,8 +46,14 @@ namespace Interactables {
 				if (Tavern.Instance != null)
 					Tavern.Instance.EarnsMoney(value);
 
+				AudioManager.PlayEffectSafe(SoundEffect.Player_PickUpCoin);
 				Destroy(gameObject);
 			}
+		}
+
+		private void OnCollisionEnter(Collision other) {
+			if (other.relativeVelocity.sqrMagnitude >= hitSoundVelocityThreshold * hitSoundVelocityThreshold)
+				AudioManager.PlayEffectSafe(SoundEffect.Physics_CoinHit);
 		}
 	}
 }

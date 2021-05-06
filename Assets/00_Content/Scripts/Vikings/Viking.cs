@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Extensions;
 using Interactables;
 using Interactables.Beers;
@@ -221,6 +222,8 @@ namespace Vikings {
 				StartCoroutine(ResetHitSimulation());
 				VikingState vikingState = state.HandleOnHit(axe, this);
 				ChangeState(vikingState);
+
+				AudioManager.PlayEffectSafe(SoundEffect.Viking_AxeHit);
 			}
 		}
 

@@ -1,4 +1,5 @@
 using System;
+using Audio;
 using Interactables;
 using Player;
 using Taverns;
@@ -80,9 +81,9 @@ namespace Rounds {
 		private void DisableGamePlay() {
 			if (VikingController.Instance != null) VikingController.Instance.CanSpawn = false;
 
-			if (PlayerManager.Instance == null) { 
-			Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
-			return;
+			if (PlayerManager.Instance == null) {
+				Debug.Assert(false, "RoundController can't find a PlayerManager instance.");
+				return;
 			}
 
 			foreach (PlayerComponent player in PlayerManager.Instance.Players) {
@@ -95,10 +96,12 @@ namespace Rounds {
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
 				TavernBankrupt();
 				Debug.Log("Required money goal was not reached.");
+				return;
 			}
 
 			scoreCard.UpdateScoreCard(currentRound);
 			scoreCard.Show();
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundWon);
 		}
 
 		private void EnableGamePlay() {
@@ -132,13 +135,16 @@ namespace Rounds {
 
 		private void HandleOnTavernDestroyed() {
 			isRoundActive = false;
+			OnRoundOver?.Invoke();
 			DisableGamePlay();
 			gameOverPanel.Show(LoseCondition.Destruction);
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 		}
 
 		private void TavernBankrupt() {
 			isRoundActive = false;
 			gameOverPanel.Show(LoseCondition.Bankrupcy);
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 		}
 	}
 }

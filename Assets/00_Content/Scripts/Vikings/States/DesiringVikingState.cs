@@ -1,3 +1,4 @@
+using Audio;
 using Interactables;
 using Interactables.Beers;
 using Player;
@@ -111,6 +112,7 @@ namespace Vikings.States {
 
 			viking.CurrentDesireIndex++;
 			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
+			AudioManager.PlayEffectSafe(SoundEffect.Viking_DesireFilledMan);
 
 			return new SatisfiedVikingState(viking, desire.type);
 		}
