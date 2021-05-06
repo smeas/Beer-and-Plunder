@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Audio;
 using Player;
 using UnityEngine;
 using Vikings;
@@ -17,6 +18,7 @@ namespace Interactables.Instruments {
 		private GameObject usingPlayer;
 		// Tracks all vikings that are in range. Key = the viking, Value = number of triggers in range.
 		private Dictionary<Viking, int> vikingsInRange = new Dictionary<Viking, int>();
+		private SoundHandle musicSoundHandle;
 
 		public DesireType DesireType => instrumentData.desireType;
 
@@ -75,6 +77,8 @@ namespace Interactables.Instruments {
 			foreach (Viking viking in vikingsInRange.Keys) {
 				viking.Affect(usingPlayer, this);
 			}
+
+			musicSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.Instrument_HarpPlay, loop: true);
 		}
 
 		public void EndUse() {
@@ -90,6 +94,8 @@ namespace Interactables.Instruments {
 			foreach (Viking viking in vikingsInRange.Keys) {
 				viking.CancelAffect(usingPlayer, this);
 			}
+
+			musicSoundHandle?.FadeOutAndStop(0.3f);
 		}
 
 		private void OnTriggerEnter(Collider other) {

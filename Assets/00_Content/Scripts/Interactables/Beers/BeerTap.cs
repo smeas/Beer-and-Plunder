@@ -1,4 +1,5 @@
 using System.Collections;
+using Audio;
 using Rounds;
 using Taverns;
 using UI;
@@ -28,6 +29,7 @@ namespace Interactables.Beers {
 		private int beerAmount;
 		private float fillPortion;
 		private Tankard fillingTankard;
+		private SoundHandle pourSoundHandle;
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
@@ -96,6 +98,7 @@ namespace Interactables.Beers {
 		}
 
 		private IEnumerator PouringBeer() {
+			pourSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.PourBeer);
 
 			if (Tavern.Instance != null) {
 				Tavern.Instance.SpendsMoney(beerData.cost);
@@ -118,6 +121,8 @@ namespace Interactables.Beers {
 
 				yield return null;
 			}
+
+			pourSoundHandle?.FadeOutAndStop(0.2f);
 		}
 
 		private void FillBeer() {
@@ -141,6 +146,8 @@ namespace Interactables.Beers {
 			fillProgressBar.UpdateProgress(fillPortion * beerAmount);
 			pourProgressBar.Hide();
 			perfectProgressIndicator.gameObject.SetActive(false);
+
+			pourSoundHandle?.FadeOutAndStop(0.2f);
 		}
 
 		public void Refill() {
