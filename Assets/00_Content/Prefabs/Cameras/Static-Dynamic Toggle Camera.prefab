@@ -135,6 +135,9 @@ MonoBehaviour:
   minY: 12
   smoothTime: 0.3
   maxSpeed: 50
+  useBounds: 1
+  horizontalBounds: {x: 0.62, y: 10}
+  verticalBounds: {x: -5.32, y: 4.82}
 --- !u!114 &8614323515788097655
 MonoBehaviour:
   m_ObjectHideFlags: 0
