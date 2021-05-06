@@ -71,7 +71,7 @@ namespace Vikings.States {
 		}
 
 		private int CalculateCoinsToDrop(float value) {
-			return Mathf.RoundToInt(MathX.Remap(value, viking.Data.brawlMoodThreshold,
+			return Mathf.RoundToInt(MathX.RemapClamped(value, viking.Data.brawlMoodThreshold,
 				viking.Stats.StartMood, viking.Data.coinsDroppedMinMax.x, viking.Data.coinsDroppedMinMax.y));
 		}
 
