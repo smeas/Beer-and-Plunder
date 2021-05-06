@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
+  m_Name: TutorialViking
+  m_EditorClassIdentifier: 
+  startMood: 100
+  moodDeclineRate: 0
+  impatientMoodThreshold: 45
+  desires:
+  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
+  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
+  - {fileID: 11400000, guid: d08e6b7397edbc948a861ec7fd901a71, type: 2}
+  desireIntervalMinMax: {x: 0, y: 0}
+  satisfiedDurationMinMax: {x: 5, y: 5}
+  coinsDroppedMinMax: {x: 6, y: 6}
+  coinsWhenLeavingMultiplier: 1
+  canStartBrawl: 1
+  brawlMoodThreshold: 15
+  damage: 10
+  attackRate: 1
+  brawlHealth: 1
+  attackTriggerDistance: 4
+  spinAttackSpeed: 800
+  spinAttackDuration: 2
+  spinAttackDamage: 1
+  iFrameAfterGettingHit: 0.5
+  attackPlayerAtStartUp: 0
