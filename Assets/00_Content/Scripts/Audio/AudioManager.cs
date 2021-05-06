@@ -139,7 +139,7 @@ namespace Audio {
 		}
 
 		public static void PlayMusicSafe(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
-		                             bool restart = false, bool loop = true) {
+		                                 bool restart = false, bool loop = true) {
 			if (Instance != null)
 				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop);
 		}
