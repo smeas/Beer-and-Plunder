@@ -56,6 +56,10 @@ namespace Player {
 			return null;
 		}
 
+		public void AddPlayer(PlayerComponent player) {
+			Players.Add(player);
+		}
+
 		#region Event Handlers
 
 		private void OnPlayerJoined(PlayerInput playerInput) {
