@@ -47,6 +47,14 @@ namespace Cameras {
 			targets.Remove(plr.transform);
 		}
 
+		public void AddTarget(Transform newTarget) {
+			targets.Add(newTarget);
+		}
+
+		public void RemoveTarget(Transform targetToRemove) {
+			targets.Remove(targetToRemove);
+		}
+
 		// https://www.desmos.com/calculator/9gb8rpm4z1
 		private Vector3 CalculateTargetPosition() {
 			if (targets.Count == 0)

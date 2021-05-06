@@ -67,10 +67,7 @@ namespace Rounds {
 		}
 
 		private void SendNextDifficulty() {
-			if (VikingController.Instance == null) {
-				Debug.Assert(false, "Roundcontroller have access to a vikingController");
-				return;
-			}
+			if (VikingController.Instance == null) return;
 
 			ScalingData difficulty = CurrentDifficulty;
 

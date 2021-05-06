@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace Vikings {
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
+		private VikingState forcedState;
 		private VikingScaling statScaling;
 		private Rigidbody rb;
 		private NavMeshAgent navMeshAgent;
@@ -55,6 +57,9 @@ namespace Vikings {
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
+		public Action TakingSeat;
+		public Action BecameSatisfied;
+		public Action Hit;
 
 		private void Start() {
 			// statScaling is normally provided by the viking manager
@@ -84,7 +89,13 @@ namespace Vikings {
 				hasStartedAttackingPlayer = true;
 			}
 
-			ChangeState(state.Update());
+			if (forcedState == null) {
+				ChangeState(state.Update());
+			}
+			else {
+				ChangeState(forcedState);
+				forcedState = null;
+			}
 		}
 
 		private void OnDestroy() {
@@ -103,6 +114,10 @@ namespace Vikings {
 			} while (newState != state);
 
 			return true;
+		}
+
+		public void ForceChangeState(VikingState newState) {
+			forcedState = newState;
 		}
 
 		private void HandleOnRoundOver() {
@@ -221,6 +236,7 @@ namespace Vikings {
 
 				StartCoroutine(ResetHitSimulation());
 				VikingState vikingState = state.HandleOnHit(axe, this);
+				Hit?.Invoke();
 				ChangeState(vikingState);
 
 				AudioManager.PlayEffectSafe(SoundEffect.Viking_AxeHit);

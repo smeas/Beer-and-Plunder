@@ -30,6 +30,10 @@ namespace Menu {
 			SceneLoadManager.Instance.LoadLobby();
 		}
 
+		public void GoToTutorial() {
+			SceneLoadManager.Instance.LoadTutorial();
+		}
+
 		public void GoToSettings() {
 			mainMenuPanel.SetActive(false);
 			settingsPanel.SetActive(true);
@@ -41,8 +45,11 @@ namespace Menu {
 		}
 
 		public void QuitGame() {
-			Application.Quit();
-			Debug.Log("Trying to quit game.");
+			#if UNITY_EDITOR
+				UnityEditor.EditorApplication.ExitPlaymode();
+			#else
+				Application.Quit();
+			#endif
 		}
 	}
 }

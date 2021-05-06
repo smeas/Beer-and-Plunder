@@ -22,10 +22,11 @@ public class HUD : MonoBehaviour {
 			tavernMoneyText.text = " ";
 			tavernHealthSlider.value = 0;
 		}
-    }
+	}
 
 	void Update() {
-		roundTimerText.text = Mathf.RoundToInt(RoundController.Instance.RoundTimer).ToString();
+		if (RoundController.Instance != null)
+			roundTimerText.text = Mathf.RoundToInt(RoundController.Instance.RoundTimer).ToString();
 	}
 
 	private void HandleOnHealthChanges() {
