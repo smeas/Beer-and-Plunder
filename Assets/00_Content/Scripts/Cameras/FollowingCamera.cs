@@ -61,6 +61,14 @@ namespace Cameras {
 			}
 		}
 
+		public void AddTarget(Transform newTarget) {
+			targets.Add(newTarget);
+		}
+
+		public void RemoveTarget(Transform targetToRemove) {
+			targets.Remove(targetToRemove);
+		}
+
 		private void OnPlayerJoined(PlayerComponent plr) {
 			targets.Add(plr.transform);
 		}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Audio;
 using Rounds;
@@ -17,7 +18,6 @@ namespace Interactables.Beers {
 		[SerializeField] private int showFillThreshold = 3;
 
 		[Header("GameObjects")]
-		[SerializeField] private GameObject beerPrefab;
 		[SerializeField] private ProgressBar pourProgressBar;
 		[SerializeField] private RectTransform perfectProgressIndicator;
 		[SerializeField] private ProgressBar fillProgressBar;
@@ -33,6 +33,9 @@ namespace Interactables.Beers {
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
+
+		public event Action BeerPoured;
+		public event Action TapRefilled;
 
 		private void Start() {
 			itemSlot = GetComponentInChildren<ItemSlot>();
@@ -127,6 +130,7 @@ namespace Interactables.Beers {
 
 		private void FillBeer() {
 			fillingTankard.IsFull = true;
+			BeerPoured?.Invoke();
 
 			beerAmount -= 1;
 
@@ -154,6 +158,8 @@ namespace Interactables.Beers {
 			beerAmount = maxBeerAmount;
 			fillProgressBar.Hide();
 			fillProgressBar.UpdateProgress(1);
+
+			TapRefilled?.Invoke();
 		}
 	}
 }

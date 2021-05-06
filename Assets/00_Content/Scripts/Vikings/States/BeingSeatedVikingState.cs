@@ -53,6 +53,7 @@ namespace Vikings.States {
 			viking.CurrentChair = chair;
 			chair.OnVikingTakeChair(viking);
 
+			viking.TakingSeat?.Invoke();
 			return new TakingSeatVikingState(viking, chair);
 		}
 	}
