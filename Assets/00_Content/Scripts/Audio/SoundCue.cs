@@ -8,7 +8,6 @@ namespace Audio {
 		public AudioClip[] randomClips;
 
 		[Space]
-		//public bool additionalSettings;
 		[Range(0, 1)]
 		public float volume = 1f;
 		[Range(-3, 3)]
