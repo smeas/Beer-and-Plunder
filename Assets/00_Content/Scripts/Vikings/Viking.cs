@@ -12,7 +12,9 @@ using Rounds;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using Utilities;
 using Vikings.States;
+using Random = UnityEngine.Random;
 
 namespace Vikings {
 	public delegate void VikingLeaving(Viking sender);
@@ -45,8 +47,8 @@ namespace Vikings {
 		private bool isAttacking;
 
 		public VikingData Data => vikingData;
-		public DesireData[] Desires => vikingData.desires;
-		public DesireData CurrentDesire => vikingData.desires[CurrentDesireIndex];
+		public DesireData[] Desires { get; private set; }
+		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
 		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
@@ -75,6 +77,8 @@ namespace Vikings {
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
 
 			progressBar.Hide();
+
+			SetupDesires();
 		}
 
 		private void Update() {
@@ -101,6 +105,16 @@ namespace Vikings {
 		private void OnDestroy() {
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
+		}
+
+		private void SetupDesires() {
+			if (!Data.randomDesires) {
+				Desires = Data.desires;
+				return;
+			}
+
+			int totalDesires = Random.Range(Mathf.RoundToInt(Data.desiresMinMax.x), Mathf.RoundToInt(Data.desiresMinMax.y + 1));
+			Desires = MathX.RandomizeByWeight(Data.desires, x => x.randomWeight, totalDesires);
 		}
 
 		private bool ChangeState(VikingState newState) {
