@@ -29,10 +29,10 @@ namespace Audio {{
 		SoundCue[] soundCues = Resources.LoadAll<SoundCue>(SoundEffectsResourcePath);
 		string[] resourcePaths = soundCues.Select(GetResourcePath).OrderBy(s => s).ToArray();
 
-		string pathList = string.Join(",\r\n", soundCues.Select(GetResourcePath).Select(str => Indent(Quote(str), 3)));
+		string pathList = string.Join(",\r\n", resourcePaths.Select(str => Indent(Quote(str), 3)));
 		string enumList = string.Join(",\r\n", resourcePaths.Select(MakeSafeNameFromPath).Select(s => Indent(s, 2)));
-
 		string generated = string.Format(Template, enumList, pathList);
+
 		string outputPath = Path.Combine(Application.dataPath, GeneratedFilePath);
 		File.WriteAllText(outputPath, generated, Encoding.UTF8);
 		AssetDatabase.Refresh();
