@@ -1,4 +1,4 @@
-﻿using Cameras;
+using Cameras;
 using Interactables;
 using Interactables.Beers;
 using Interactables.Instruments;
@@ -78,9 +78,9 @@ namespace World {
 		private void OnTableDestroyed() => OnTutorialEvent(TutorialEvent.TableDestroyed);
 		private void OnVikingHit() => OnTutorialEvent(TutorialEvent.VikingHit);
 		private void OnTableRepaired() => OnTutorialEvent(TutorialEvent.TableRepaired);
-		private void OnInstrumentPickedUp(PickUp _) => OnTutorialEvent(TutorialEvent.InstrumentPickedUp);
-		private void OnWeaponPickedUp(PickUp _) => OnTutorialEvent(TutorialEvent.WeaponPickedUp);
-		private void OnToolPickedUp(PickUp _) => OnTutorialEvent(TutorialEvent.RepairToolPickedUp);
+		private void OnInstrumentPickedUp(PickUp _, PlayerComponent playerComponent) => OnTutorialEvent(TutorialEvent.InstrumentPickedUp);
+		private void OnWeaponPickedUp(PickUp _, PlayerComponent playerComponent) => OnTutorialEvent(TutorialEvent.WeaponPickedUp);
+		private void OnToolPickedUp(PickUp _, PlayerComponent playerComponent) => OnTutorialEvent(TutorialEvent.RepairToolPickedUp);
 
 		#endregion
 

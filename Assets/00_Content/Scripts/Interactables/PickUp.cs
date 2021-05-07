@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Player;
 using Rounds;
 using UnityEngine;
 using World;
@@ -9,18 +10,19 @@ namespace Interactables {
 	public class PickUp : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform itemGrabTransform;
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
-		[SerializeField] private Collider objectCollider;
+		[SerializeField] protected Collider objectCollider;
 
-		private new Rigidbody rigidbody;
+		protected new Rigidbody rigidbody;
 		private Vector3 startPosition;
 		private Quaternion startRotation;
 		private bool isBeingCarried;
 
+		protected bool IsMultiCarried { get; set; }
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 
-		public event Action<PickUp> OnPickedUp;
-		public event Action<PickUp> OnDropped;
+		public event Action<PickUp, PlayerComponent> OnPickedUp;
+		public event Action<PickUp, PlayerComponent> OnDropped;
 
 		protected virtual void Start() {
 			rigidbody = GetComponent<Rigidbody>();
@@ -35,7 +37,7 @@ namespace Interactables {
 				RoundController.Instance.OnRoundOver += Respawn;
 		}
 
-		private void OnDestroy() {
+		protected virtual void OnDestroy() {
 			if (CurrentItemSlot != null) {
 				CurrentItemSlot.ReleaseItem();
 				CurrentItemSlot = null;
@@ -50,7 +52,13 @@ namespace Interactables {
 		}
 
 		//Drop item on floor or snap to slot if close
-		public void DropItem() {
+		public void DropItem(Transform playerGrabTransform) {
+
+			if (IsMultiCarried) {
+				OnDropped?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
+				return;
+			}
+
 			SetParent(null);
 			if (rigidbody != null)
 				rigidbody.isKinematic = false;
@@ -60,10 +68,13 @@ namespace Interactables {
 
 			TryPutInClosestItemSlot();
 			isBeingCarried = false;
-			OnDropped?.Invoke(this);
+			OnDropped?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
 		}
 
-		public void PickUpItem(Transform playerGrabTransform) {
+		public bool PickUpItem(Transform playerGrabTransform) {
+			if (IsMultiCarried)
+				return false;
+
 			transform.rotation = Quaternion.identity;
 			SetParent(playerGrabTransform);
 			if (rigidbody != null)
@@ -83,7 +94,8 @@ namespace Interactables {
 
 			objectCollider.enabled = false;
 			isBeingCarried = true;
-			OnPickedUp?.Invoke(this);
+			OnPickedUp?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
+			return true;
 		}
 
 		private void TryPutInClosestItemSlot() {

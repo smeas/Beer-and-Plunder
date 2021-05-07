@@ -16,6 +16,7 @@ namespace Player {
 
 		public event Action<PickUp> OnItemPickedUp;
 		public event Action<PickUp> OnItemDropped;
+		public Transform PlayerGrabTransform => playerGrabTransform; 
 
 		public PickUp PickedUpItem => pickedUpItem;
 
@@ -29,9 +30,12 @@ namespace Player {
 				return;
 
 			pickedUpItem = detector.ClosestPickUp;
-			pickedUpItem.PickUpItem(playerGrabTransform);
 
-			OnItemPickedUp?.Invoke(pickedUpItem);
+			if (pickedUpItem.PickUpItem(playerGrabTransform))
+			{
+				OnItemPickedUp?.Invoke(pickedUpItem);
+			}
+
 		}
 
 		// Run from unity event
@@ -47,7 +51,7 @@ namespace Player {
 				isUsingItem = false;
 			}
 
-			pickedUpItem.DropItem();
+			pickedUpItem.DropItem(playerGrabTransform);
 			OnItemDropped?.Invoke(pickedUpItem);
 
 			pickedUpItem = null;

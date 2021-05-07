@@ -8,13 +8,18 @@ namespace Player {
 		[SerializeField] private float maxVelocity = 6f;
 		[SerializeField] private float speedMultiplier = 1f;
 		[SerializeField] private bool canMove = true;
+		[SerializeField] private bool canRotate = true;
 
 		private new Rigidbody rigidbody;
 		private Camera mainCamera;
 
 		private Vector2 moveInput;
 		private Vector2 movementDirection;
+		private Vector3 movement;
 		private float velocity;
+
+		public float Velocity => velocity;
+		public Vector2 MoveInput => moveInput;
 
 		public float SpeedMultiplier {
 			get => speedMultiplier;
@@ -29,6 +34,12 @@ namespace Player {
 			set => canMove = value;
 		}
 
+		public bool CanRotate {
+			get => canRotate;
+			set => canRotate = value;
+		}
+		public bool ShouldCalculateMovementDirection { get; set; } = true;
+
 		private void Start() {
 			rigidbody = GetComponent<Rigidbody>();
 			mainCamera = Camera.main;
@@ -40,7 +51,10 @@ namespace Player {
 			if (canMove && moveInput != Vector2.zero && accelerationDelta != 0) {
 				Vector2 accelerationInput = MakeCameraRelative(moveInput) * accelerationDelta;
 				float accelerationMagnitude = accelerationInput.magnitude;
-				movementDirection = accelerationInput * (1f / accelerationMagnitude);
+
+				if (ShouldCalculateMovementDirection)
+					movementDirection = accelerationInput * (1f / accelerationMagnitude);
+
 				velocity = Mathf.Min(maxVelocity * moveInput.magnitude, velocity + accelerationMagnitude);
 			}
 			else {
@@ -60,10 +74,12 @@ namespace Player {
 			Vector3 movement3 = new Vector3(movement2.x, 0, movement2.y);
 
 			rigidbody.MovePosition(transform.position + movement3);
-			transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
+
+			if (CanRotate)
+				transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
 		}
 
-		private Vector2 MakeCameraRelative(Vector2 movement) {
+		public Vector2 MakeCameraRelative(Vector2 movement) {
 			// This is needed because the main camera changes between scenes.
 			if (mainCamera == null) {
 				mainCamera = Camera.main;
@@ -88,6 +104,10 @@ namespace Player {
 
 			Vector3 cameraRelativeMovement = forward * movement.y + cameraTransform.right * movement.x;
 			return new Vector2(cameraRelativeMovement.x, cameraRelativeMovement.z);
+		}
+
+		public void MoveInDirection(Vector2 direction) {
+			movementDirection = direction;
 		}
 
 		public void Move(Vector2 input) {

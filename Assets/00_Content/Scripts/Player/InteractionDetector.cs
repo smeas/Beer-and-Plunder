@@ -71,15 +71,27 @@ namespace Player {
 				Destroy(pickUpHighlight);
 		}
 
-		private void HandleOnPickedUp(PickUp item) => pickUpsInRange.Remove(item);
+		private void HandleOnPickedUp(PickUp item, PlayerComponent playerComponent) => pickUpsInRange.Remove(item);
 
 		private void UpdateClosestPickup() {
 			PickUp newClosestPickUp = null;
-			if (pickUpsInRange.Count > 0)
-				newClosestPickUp = pickUpsInRange
-					.Where(pickUp => playerPickUp.CanPickUp(pickUp))
-					.OrderBy(pickUp => (pickUp.transform.position - transform.position).sqrMagnitude)
-					.FirstOrDefault();
+
+			if (pickUpsInRange.Count > 0) {
+				List<PickUp> orderedList = new List<PickUp>();
+
+				for (int i = pickUpsInRange.Count - 1; i >= 0; i--) {
+
+					if (pickUpsInRange[i] == null) {
+						pickUpsInRange.RemoveAt(i);
+						continue;
+					}
+
+					if (playerPickUp.CanPickUp(pickUpsInRange[i]))
+						orderedList.Add(pickUpsInRange[i]);
+				}
+
+				newClosestPickUp = orderedList.OrderBy((x => (x.transform.position - transform.position).sqrMagnitude)).FirstOrDefault();
+			}
 
 			if (newClosestPickUp != ClosestPickUp) {
 				ClosestPickUp = newClosestPickUp;
