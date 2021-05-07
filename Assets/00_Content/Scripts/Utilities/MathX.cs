@@ -27,12 +27,21 @@ namespace Utilities {
 		}
 
 		/// <summary>
+		/// Return a random item from <paramref name="items"/> based on weight
+		/// </summary>
+		/// <param name="items">A collection of items to use</param>
+		/// <param name="comparer">Function to determine the weight of an item</param>
+		public static T RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> comparer) {
+			return RandomizeByWeight(items, comparer, 1).First();
+		}
+
+		/// <summary>
 		/// Put together an array of <paramref name="items"/> based on weight
 		/// </summary>
 		/// <param name="items">A collection of items to use</param>
 		/// <param name="comparer">Function to determine the weight of an item</param>
 		/// <param name="itemsToReturn">How many items to return</param>
-		public static T[] RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> comparer, int itemsToReturn = 1) {
+		public static T[] RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> comparer, int itemsToReturn) {
 			if (itemsToReturn < 1) return new T[0];
 
 			int sum = items.Sum(comparer);
