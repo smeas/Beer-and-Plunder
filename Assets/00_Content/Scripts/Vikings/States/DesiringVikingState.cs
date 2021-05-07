@@ -105,16 +105,22 @@ namespace Vikings.States {
 
 		private VikingState DesireFulfilled() {
 			DesireData desire = viking.CurrentDesire;
-			if (desire.isMaterialDesire) {
-				fulfillingPlayer.GetComponentInChildren<PlayerPickUp>().ConsumeItem();
-				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
-			}
 
 			viking.CurrentDesireIndex++;
 			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
 			AudioManager.PlayEffectSafe(SoundEffect.Viking_DesireFilledMan);
 
-			return new SatisfiedVikingState(viking, desire.type);
+			if (desire.isMaterialDesire) {
+				PlayerPickUp playerPickUp = fulfillingPlayer.GetComponentInChildren<PlayerPickUp>();
+				PickUp givenItem = playerPickUp.PickedUpItem;
+				givenItem.gameObject.SetActive(false);
+				playerPickUp.DropItem();
+
+				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
+				return new SatisfiedVikingState(viking, givenItem);
+			}
+
+			return new SatisfiedVikingState(viking);
 		}
 	}
 }
