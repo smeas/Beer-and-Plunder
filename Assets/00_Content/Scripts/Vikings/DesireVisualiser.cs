@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Vikings {
 	public class DesireVisualiser : MonoBehaviour {
@@ -18,8 +19,12 @@ namespace Vikings {
 			visualisation = Instantiate(desireVisualisationPrefab, transform);
 
 			// TODO: Delete this
-			foreach (Material material in visualisation.GetComponentsInChildren<MeshRenderer>().SelectMany(x => x.materials))
+			MeshRenderer[] meshRenderers = visualisation.GetComponentsInChildren<MeshRenderer>();
+			foreach (Material material in meshRenderers.SelectMany(x => x.materials))
 				material.color = color;
+
+			foreach (MeshRenderer meshRenderer in meshRenderers)
+				meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
 		}
 
 		public void HideDesire() {

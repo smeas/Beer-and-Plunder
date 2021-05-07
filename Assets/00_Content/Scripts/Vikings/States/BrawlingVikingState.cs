@@ -102,8 +102,16 @@ namespace Vikings.States {
 
 				Table[] possibleTargets = Table.AllTables.Where(x => !x.IsDestroyed).ToArray();
 
-				// The viking leaves if there are no intact tables, this should trigger a game over
-				if (possibleTargets.Length == 0) return new LeavingVikingState(viking);
+				// The viking targets a player if there are no intact tables, otherwise leaves
+				// This is used in the tutorial but shouldn't happen in a normal game (should probably be game over)
+				if (possibleTargets.Length == 0) {
+					if (PlayerManager.Instance != null && PlayerManager.Instance.NumPlayers > 0) {
+						PlayerComponent randomPlayer = PlayerManager.Instance.Players[Random.Range(0, PlayerManager.Instance.NumPlayers)];
+						return new BrawlingVikingState(viking, randomPlayer);
+					}
+
+					return new LeavingVikingState(viking);
+				}
 
 				int index = Random.Range(0, possibleTargets.Length);
 				targetTable = possibleTargets[index];

@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using Audio;
 using Rounds;
 using UnityEngine;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace Vikings {
 	public class VikingController : SingletonBehaviour<VikingController> {
@@ -18,6 +21,8 @@ namespace Vikings {
 		public bool CanSpawn { get; set; } = true;
 		public VikingScaling StatScaling { get; set; } = new VikingScaling();
 		public Transform ExitPoint => exitPoint;
+
+		public event Action<Viking> VikingSpawned;
 
 		private void Update() {
 			if (!CanSpawn) return;
@@ -42,6 +47,9 @@ namespace Vikings {
 
 			if (queueController != null)
 				queueController.AddToQueue(viking);
+
+			VikingSpawned?.Invoke(viking);
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_GuestEnter);
 		}
 
 		private void OnLeaveTavern(Viking sender) {

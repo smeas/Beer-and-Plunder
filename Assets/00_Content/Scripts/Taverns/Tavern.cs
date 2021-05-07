@@ -58,18 +58,20 @@ namespace Taverns {
 			Money -= moneySpent;
 
 			if (IsBankrupt) {
-				Debug.Log("game over, you are bankrupt!");
+				Debug.Log("Tavern says: Game over, you are bankrupt!");
 
 				OnBankrupcy?.Invoke();
 			}
 		}
 
 		public void TakesDamage(float damage) {
+			if (IsDestroyed) return;
+
 			Health -= damage;
 			OnHealthChanges?.Invoke();
 
 			if (IsDestroyed) {
-				Debug.Log("game over, your tavern is destroyed!");
+				Debug.Log("Tavern says: Game over, your tavern is destroyed!");
 
 				OnDestroyed?.Invoke();
 			}

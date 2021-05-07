@@ -22,14 +22,6 @@ namespace Player {
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
-
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += RespawnHeldItem;
-		}
-
-		private void OnDestroy() {
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver -= RespawnHeldItem;
 		}
 
 		public void PickUpClosestItem() {
@@ -95,7 +87,7 @@ namespace Player {
 			pickedUpItem = null;
 		}
 
-		private void RespawnHeldItem() {
+		public void RespawnHeldItem() {
 			if (pickedUpItem == null) return;
 
 			PickUp item = pickedUpItem;

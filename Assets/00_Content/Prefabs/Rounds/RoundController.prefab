@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8929937810978380358}
   - component: {fileID: 4659866725042520196}
-  - component: {fileID: 8733019525744738231}
   m_Layer: 0
   m_Name: RoundController
   m_TagString: Untagged
@@ -51,22 +50,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   scoreCardPrefab: {fileID: 1623649542527638751, guid: da4dd4cf3f4df0046ad59bf395637676, type: 3}
   HUDPrefab: {fileID: 1436725447203490082, guid: 8fb4d26552804384d92abfe16ff6330a, type: 3}
+  gameOverPanelPrefab: {fileID: 2967257529519440624, guid: bddf69e494ce4784791b83252dd0e562, type: 3}
   roundDuration: 150
   requiredMoney: 150
---- !u!114 &8733019525744738231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5164173418291569658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e250eb12f55a21a459761696d0ea85a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSittingGuests: 0
-  maxHealth: 20
-  startingHealth: 20
-  startingMoney: 50
-  maxMoney: 999999

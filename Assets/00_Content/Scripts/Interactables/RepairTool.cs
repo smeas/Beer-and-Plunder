@@ -1,4 +1,5 @@
 using System;
+using Audio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ namespace Interactables {
 		private bool isRepairing;
 		private float repairDuration;
 		private float repairTimer;
+		private SoundHandle soundHandle;
 
 		public bool IsRepairing => isRepairing;
 
@@ -28,6 +30,7 @@ namespace Interactables {
 			if (repairTimer >= repairDuration) {
 				isRepairing = false;
 				repairProgressCanvas.SetActive(false);
+				soundHandle?.FadeOutAndStop(0.2f);
 
 				RepairDone?.Invoke();
 			}
@@ -45,11 +48,16 @@ namespace Interactables {
 			repairProgressImage.fillAmount = 0f;
 			repairProgressCanvas.SetActive(true);
 			repairProgressCanvas.transform.SetPositionAndRotation(progressBarPosition, Quaternion.identity);
+
+			soundHandle = AudioManager.PlayEffectSafe(SoundEffect.Repair, loop: true);
 		}
 
 		public void EndRepairing() {
+			if (!isRepairing) return;
+
 			isRepairing = false;
 			repairProgressCanvas.SetActive(false);
+			soundHandle?.FadeOutAndStop(0.2f);
 		}
 	}
 }

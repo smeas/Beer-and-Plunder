@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Extensions;
 using Interactables;
 using Interactables.Beers;
@@ -10,7 +12,9 @@ using Rounds;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using Utilities;
 using Vikings.States;
+using Random = UnityEngine.Random;
 
 namespace Vikings {
 	public delegate void VikingLeaving(Viking sender);
@@ -35,6 +39,7 @@ namespace Vikings {
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
+		private VikingState forcedState;
 		private VikingScaling statScaling;
 		private Rigidbody rb;
 		private NavMeshAgent navMeshAgent;
@@ -42,8 +47,8 @@ namespace Vikings {
 		private bool isAttacking;
 
 		public VikingData Data => vikingData;
-		public DesireData[] Desires => vikingData.desires;
-		public DesireData CurrentDesire => vikingData.desires[CurrentDesireIndex];
+		public DesireData[] Desires { get; private set; }
+		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
 		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
 		public Chair CurrentChair { get; set; }
@@ -54,6 +59,9 @@ namespace Vikings {
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
+		public Action TakingSeat;
+		public Action BecameSatisfied;
+		public Action Hit;
 
 		private void Start() {
 			// statScaling is normally provided by the viking manager
@@ -69,6 +77,8 @@ namespace Vikings {
 				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
 
 			progressBar.Hide();
+
+			SetupDesires();
 		}
 
 		private void Update() {
@@ -83,12 +93,28 @@ namespace Vikings {
 				hasStartedAttackingPlayer = true;
 			}
 
-			ChangeState(state.Update());
+			if (forcedState == null) {
+				ChangeState(state.Update());
+			}
+			else {
+				ChangeState(forcedState);
+				forcedState = null;
+			}
 		}
 
 		private void OnDestroy() {
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
+		}
+
+		private void SetupDesires() {
+			if (!Data.randomDesires) {
+				Desires = Data.desires;
+				return;
+			}
+
+			int totalDesires = Random.Range(Mathf.RoundToInt(Data.desiresMinMax.x), Mathf.RoundToInt(Data.desiresMinMax.y + 1));
+			Desires = MathX.RandomizeByWeight(Data.desires, x => x.randomWeight, totalDesires);
 		}
 
 		private bool ChangeState(VikingState newState) {
@@ -102,6 +128,10 @@ namespace Vikings {
 			} while (newState != state);
 
 			return true;
+		}
+
+		public void ForceChangeState(VikingState newState) {
+			forcedState = newState;
 		}
 
 		private void HandleOnRoundOver() {
@@ -220,7 +250,10 @@ namespace Vikings {
 
 				StartCoroutine(ResetHitSimulation());
 				VikingState vikingState = state.HandleOnHit(axe, this);
+				Hit?.Invoke();
 				ChangeState(vikingState);
+
+				AudioManager.PlayEffectSafe(SoundEffect.Viking_AxeHit);
 			}
 		}
 

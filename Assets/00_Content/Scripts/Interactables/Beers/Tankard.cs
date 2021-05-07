@@ -1,4 +1,5 @@
 using System.Linq;
+using Audio;
 using UnityEngine;
 using Vikings;
 
@@ -26,6 +27,10 @@ namespace Interactables.Beers {
 		protected override void Start() {
 			base.Start();
 			IsFull = IsFull;
+		}
+
+		protected override void OnPlace() {
+			AudioManager.PlayEffectSafe(SoundEffect.Physics_TankardPlace);
 		}
 	}
 }

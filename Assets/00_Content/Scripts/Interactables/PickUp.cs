@@ -109,8 +109,10 @@ namespace Interactables {
 					.Where(slot => !slot.HasItemInSlot)
 					.OrderBy(slot => (slot.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
 
-				if (closestFreeSlot != null)
+				if (closestFreeSlot != null) {
 					closestFreeSlot.PlaceItem(this);
+					OnPlace();
+				}
 			}
 		}
 
@@ -131,8 +133,12 @@ namespace Interactables {
 			}
 		}
 
+		protected virtual void OnPlace() {}
+
+	#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
 			Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
 		}
+	#endif
 	}
 }

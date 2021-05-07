@@ -1,5 +1,7 @@
 using Scenes;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Player;
 using UnityEngine.UI;
 using TMPro;
 
@@ -9,6 +11,14 @@ namespace Menu {
 		public GameObject settingsPanel;
 
 		private void Start() {
+
+			if (PlayerManager.Instance != null) {
+
+				foreach (PlayerComponent player in PlayerManager.Instance.Players) {
+					PlayerInput playerInput = player.GetComponent<PlayerInput>();
+					playerInput.SwitchCurrentActionMap("UI");
+				}
+			}
 			settingsPanel.SetActive(false);
 			mainMenuPanel.SetActive(true);
 		}
@@ -18,6 +28,10 @@ namespace Menu {
 			settingsPanel.SetActive(false);
 
 			SceneLoadManager.Instance.LoadLobby();
+		}
+
+		public void GoToTutorial() {
+			SceneLoadManager.Instance.LoadTutorial();
 		}
 
 		public void GoToSettings() {
@@ -31,8 +45,11 @@ namespace Menu {
 		}
 
 		public void QuitGame() {
-			Application.Quit();
-			Debug.Log("Trying to quit game.");
+			#if UNITY_EDITOR
+				UnityEditor.EditorApplication.ExitPlaymode();
+			#else
+				Application.Quit();
+			#endif
 		}
 	}
 }

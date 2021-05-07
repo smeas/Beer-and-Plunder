@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
+  m_Name: CoinHit
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: cf96d56cea62e494088aaacf8e8478ad, type: 3}
+  - {fileID: 8300000, guid: 544620a3549423947b6a19127ea69859, type: 3}
+  - {fileID: 8300000, guid: fcb4ada0d787aea4682d92ba89eed0b2, type: 3}
+  - {fileID: 8300000, guid: 84913f4af4f5d55499e56beedf994791, type: 3}
+  - {fileID: 8300000, guid: 635e73f22cb0fa04bb0c6ea27c303b6b, type: 3}
+  - {fileID: 8300000, guid: e6dee692f1dc49a449a613f485933d98, type: 3}
+  volume: 0.5
+  pitch: 1

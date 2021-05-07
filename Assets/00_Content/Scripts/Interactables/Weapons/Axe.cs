@@ -1,3 +1,4 @@
+using Audio;
 using Player;
 using UnityEngine;
 
@@ -55,5 +56,9 @@ namespace Interactables.Weapons {
 			isAttacking = false;
 		}
 
+		// Run from AnimationEvent
+		private void PlaySwingSound() {
+			AudioManager.PlayEffectSafe(SoundEffect.Player_SwingAxe);
+		}
 	}
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Audio;
 using Rounds;
 using Taverns;
 using UI;
@@ -16,25 +18,25 @@ namespace Interactables.Beers {
 		[SerializeField] private int showFillThreshold = 3;
 
 		[Header("GameObjects")]
-		[SerializeField] private GameObject beerPrefab;
 		[SerializeField] private ProgressBar pourProgressBar;
 		[SerializeField] private RectTransform perfectProgressIndicator;
 		[SerializeField] private ProgressBar fillProgressBar;
 		[SerializeField] private BeerData beerData;
 
-		private ItemSlot itemSlot;
 		private float pouringProgress = 0;
 		private bool isPouring = false;
 		private int beerAmount;
 		private float fillPortion;
 		private Tankard fillingTankard;
+		private SoundHandle pourSoundHandle;
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
 
-		private void Start() {
-			itemSlot = GetComponentInChildren<ItemSlot>();
+		public event Action BeerPoured;
+		public event Action TapRefilled;
 
+		private void Start() {
 			beerAmount = MaxBeerAmount;
 			fillPortion = 1f / MaxBeerAmount;
 			fillProgressBar.UpdateProgress(1);
@@ -71,8 +73,6 @@ namespace Interactables.Beers {
 		}
 
 		public override void Interact(GameObject player, PickUp item) {
-			if (itemSlot.HasItemInSlot) return;
-
 			isPouring = true;
 			fillingTankard = item as Tankard;
 			Debug.Assert(fillingTankard != null);
@@ -96,6 +96,7 @@ namespace Interactables.Beers {
 		}
 
 		private IEnumerator PouringBeer() {
+			pourSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.PourBeer);
 
 			if (Tavern.Instance != null) {
 				Tavern.Instance.SpendsMoney(beerData.cost);
@@ -105,7 +106,7 @@ namespace Interactables.Beers {
 			pourProgressBar.Show();
 			perfectProgressIndicator.gameObject.SetActive(true);
 
-			while (!itemSlot.HasItemInSlot && isPouring && pouringProgress <= pourTime) {
+			while (isPouring && pouringProgress <= pourTime) {
 
 				pouringProgress += Time.deltaTime;
 
@@ -118,10 +119,13 @@ namespace Interactables.Beers {
 
 				yield return null;
 			}
+
+			pourSoundHandle?.FadeOutAndStop(0.2f);
 		}
 
 		private void FillBeer() {
 			fillingTankard.IsFull = true;
+			BeerPoured?.Invoke();
 
 			beerAmount -= 1;
 
@@ -141,12 +145,16 @@ namespace Interactables.Beers {
 			fillProgressBar.UpdateProgress(fillPortion * beerAmount);
 			pourProgressBar.Hide();
 			perfectProgressIndicator.gameObject.SetActive(false);
+
+			pourSoundHandle?.FadeOutAndStop(0.2f);
 		}
 
 		public void Refill() {
 			beerAmount = maxBeerAmount;
 			fillProgressBar.Hide();
 			fillProgressBar.UpdateProgress(1);
+
+			TapRefilled?.Invoke();
 		}
 	}
 }
