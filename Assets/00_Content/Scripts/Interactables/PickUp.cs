@@ -71,7 +71,10 @@ namespace Interactables {
 			OnDropped?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
 		}
 
-		public void PickUpItem(Transform playerGrabTransform) {
+		public bool PickUpItem(Transform playerGrabTransform) {
+			if (IsMultiCarried)
+				return false;
+
 			transform.rotation = Quaternion.identity;
 			SetParent(playerGrabTransform);
 			if (rigidbody != null)
@@ -92,6 +95,7 @@ namespace Interactables {
 			objectCollider.enabled = false;
 			isBeingCarried = true;
 			OnPickedUp?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
+			return true;
 		}
 
 		private void TryPutInClosestItemSlot() {

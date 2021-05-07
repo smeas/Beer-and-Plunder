@@ -38,9 +38,12 @@ namespace Player {
 				return;
 
 			pickedUpItem = detector.ClosestPickUp;
-			pickedUpItem.PickUpItem(playerGrabTransform);
 
-			OnItemPickedUp?.Invoke(pickedUpItem);
+			if (pickedUpItem.PickUpItem(playerGrabTransform))
+			{
+				OnItemPickedUp?.Invoke(pickedUpItem);
+			}
+
 		}
 
 		// Run from unity event

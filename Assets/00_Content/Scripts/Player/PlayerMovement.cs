@@ -38,7 +38,7 @@ namespace Player {
 			get => canRotate;
 			set => canRotate = value;
 		}
-		public bool CalculateMovementDirection { get; set; } = true;
+		public bool ShouldCalculateMovementDirection { get; set; } = true;
 
 		private void Start() {
 			rigidbody = GetComponent<Rigidbody>();
@@ -52,7 +52,7 @@ namespace Player {
 				Vector2 accelerationInput = MakeCameraRelative(moveInput) * accelerationDelta;
 				float accelerationMagnitude = accelerationInput.magnitude;
 
-				if (CalculateMovementDirection)
+				if (ShouldCalculateMovementDirection)
 					movementDirection = accelerationInput * (1f / accelerationMagnitude);
 
 				velocity = Mathf.Min(maxVelocity * moveInput.magnitude, velocity + accelerationMagnitude);
@@ -65,13 +65,18 @@ namespace Player {
 		}
 
 		private void ApplyMovement() {
+			if (velocity == 0 || movementDirection == Vector2.zero) return;
+
 			Vector2 movement2 = movementDirection * (velocity * speedMultiplier * Time.deltaTime);
-			movement = new Vector3(movement2.x, 0, movement2.y);
+			if (movement2 == Vector2.zero)
+				return;
 
-			rigidbody.MovePosition(transform.position + movement);
+			Vector3 movement3 = new Vector3(movement2.x, 0, movement2.y);
 
-			if (movement != Vector3.zero && canRotate)
-				transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
+			rigidbody.MovePosition(transform.position + movement3);
+
+			if (CanRotate)
+				transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
 		}
 
 		public Vector2 MakeCameraRelative(Vector2 movement) {
@@ -107,14 +112,6 @@ namespace Player {
 
 		public void Move(Vector2 input) {
 			moveInput = input;
-		}
-
-		public void SetMaxVelocity(float velocity) {
-			maxVelocity = velocity;
-		}
-
-		public void SetDefaultVelocity() {
-			maxVelocity = 6f;
 		}
 	}
 }

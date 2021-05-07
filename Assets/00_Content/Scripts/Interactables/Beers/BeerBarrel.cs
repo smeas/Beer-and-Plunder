@@ -7,7 +7,7 @@ namespace Interactables.Beers {
 
 	public class BeerBarrel : PickUp {
 
-		[SerializeField] private float soloCarryVelocity = 2f;
+		[SerializeField] private float soloCarrySpeedMultiplier = 0.3f;
 		[SerializeField] private float carryDistance = 2f;
 		[SerializeField] private LayerMask allButSelf;
 
@@ -71,7 +71,7 @@ namespace Interactables.Beers {
 			Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
 			rigidbody.MovePosition(new Vector3(newPos.x, 0, newPos.z));
 
-			Vector3 lookPosition = carriers[1].transform.position;
+			Vector3 lookPosition = carriers[0].transform.position;
 			Vector3 lookPoint = new Vector3(lookPosition.x, transform.position.y, lookPosition.z);
 			transform.LookAt(lookPoint, Vector3.up);
 		}
@@ -102,8 +102,14 @@ namespace Interactables.Beers {
 
 			if (carriers.Count > 1) {
 				pickUp.SetParent(null);
-				rigidbody.isKinematic = false;
 
+				//TODO -> Fix pickUp bug
+				//playerMovement.transform.position = carriers[0].transform.position + carriers[0].transform.forward * carryDistance;
+				//playerMovement.transform.LookAt(carriers[0].transform);
+
+				//MoveBarrel();
+
+				rigidbody.isKinematic = false;
 				RigidbodyConstraints constraints = rigidbody.constraints;
 				constraints |= RigidbodyConstraints.FreezePositionY;
 				constraints |= RigidbodyConstraints.FreezeRotationX;
@@ -122,16 +128,16 @@ namespace Interactables.Beers {
 					coll.size = transform.localScale;
 					carryCollisionGameObjects.Add(gameObject);
 
-					playerMove.SetDefaultVelocity();
+					playerMove.SpeedMultiplier = 1f;
 					playerMove.CanRotate = false;
-					playerMove.CalculateMovementDirection = false;
+					playerMove.ShouldCalculateMovementDirection = false;
 				}
 
 				IsMultiCarried = true;
 				return;
 			}
 
-			playerMovement.SetMaxVelocity(soloCarryVelocity);
+			playerMovement.SpeedMultiplier = soloCarrySpeedMultiplier;
 		}
 
 		private void BeerBarrel_OnDropped(PickUp pickUp, PlayerComponent playerComponent) {
@@ -139,7 +145,7 @@ namespace Interactables.Beers {
 
 				foreach (PlayerMovement playerMove in carriers.Values) {
 					playerMove.CanRotate = true;
-					playerMove.CalculateMovementDirection = true;
+					playerMove.ShouldCalculateMovementDirection = true;
 					carryCollisionGameObjects.ForEach(x => Destroy(x));
 					carryCollisionGameObjects.Clear();
 				}
@@ -158,12 +164,12 @@ namespace Interactables.Beers {
 
 				PlayerMovement remainingCarrier = carriers.First().Value;
 				carriers.Clear();
-				remainingCarrier.SetMaxVelocity(soloCarryVelocity);
+				remainingCarrier.SpeedMultiplier = soloCarrySpeedMultiplier;
 				PickUpItem(remainingCarrier.GetComponentInChildren<PlayerPickUp>().PlayerGrabTransform);
 				return;
 			}
 
-			carriers.First().Value.SetDefaultVelocity();
+			carriers.First().Value.SpeedMultiplier = 1f;
 			carriers.Remove(playerComponent.PlayerId);
 		}
 	}
