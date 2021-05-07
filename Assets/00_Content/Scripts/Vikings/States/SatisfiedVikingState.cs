@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+using Interactables;
+using Interactables.Beers;
+using Rounds;
 using UnityEngine;
 using Utilities;
 
@@ -12,12 +15,14 @@ namespace Vikings.States {
 		private int coinsToDrop;
 		private float dropTimer;
 
-		private DesireType previousDesire;
+		private PickUp givenItem;
 
 		private bool IsDroppingCoins => coinsToDrop > 0;
 
-		public SatisfiedVikingState(Viking viking, DesireType previousDesire) : base(viking) {
-			this.previousDesire = previousDesire;
+		public SatisfiedVikingState(Viking viking) : base(viking) { }
+
+		public SatisfiedVikingState(Viking viking, PickUp givenItem) : this(viking) {
+			this.givenItem = givenItem;
 		}
 
 		public override VikingState Enter() {
@@ -31,16 +36,20 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
-			if (previousDesire == DesireType.Beer) {
-				Rigidbody tankardBody = Object.Instantiate(viking.tankardPrefab,
-				                                           viking.transform.position + new Vector3(0, 2.5f, 0),
-				                                           Quaternion.identity).GetComponent<Rigidbody>();
+			if (givenItem != null) {
+				if (givenItem is Tankard tankard)
+					tankard.IsFull = false;
+
+				givenItem.gameObject.SetActive(true);
+				givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
 
 				Vector3 throwDirection = -viking.transform.forward;
 				throwDirection.y = 0.7f;
 
-				tankardBody.velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) *
-					viking.tankardThrowStrength;
+				if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive)
+					givenItem.Respawn();
+				else
+					givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
 			}
 		}
 

@@ -1,6 +1,5 @@
 using System;
 using Interactables;
-using Rounds;
 using UnityEngine;
 
 namespace Player {
@@ -78,13 +77,6 @@ namespace Player {
 
 		public bool CanPickUp(PickUp pickUp) {
 			return pickedUpItem == null;
-		}
-
-		public void ConsumeItem() {
-			if (pickedUpItem == null) return;
-
-			Destroy(pickedUpItem.gameObject);
-			pickedUpItem = null;
 		}
 
 		public void RespawnHeldItem() {
