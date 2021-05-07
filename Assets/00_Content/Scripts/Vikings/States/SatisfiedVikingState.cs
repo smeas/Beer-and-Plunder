@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Interactables;
 using Interactables.Beers;
+using Rounds;
 using UnityEngine;
 using Utilities;
 
@@ -45,8 +46,10 @@ namespace Vikings.States {
 				Vector3 throwDirection = -viking.transform.forward;
 				throwDirection.y = 0.7f;
 
-				givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) *
-					viking.tankardThrowStrength;
+				if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive)
+					givenItem.Respawn();
+				else
+					givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
 			}
 		}
 

@@ -34,6 +34,7 @@ namespace Rounds {
 
 		public float RoundTimer => roundTimer;
 		public int RequiredMoney => requiredMoney;
+		public bool IsRoundActive => isRoundActive;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
