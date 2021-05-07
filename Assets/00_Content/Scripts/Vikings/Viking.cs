@@ -114,7 +114,7 @@ namespace Vikings {
 			}
 
 			int totalDesires = Random.Range(Mathf.RoundToInt(Data.desiresMinMax.x), Mathf.RoundToInt(Data.desiresMinMax.y + 1));
-			Desires = MathX.RandomizeByWeight(Data.desires, x => x.weight, totalDesires);
+			Desires = MathX.RandomizeByWeight(Data.desires, x => x.randomWeight, totalDesires);
 		}
 
 		private bool ChangeState(VikingState newState) {

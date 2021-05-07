@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Harp
   m_EditorClassIdentifier: 
   type: 3
-  weight: 1
+  randomWeight: 1
   visualisationPrefab: {fileID: 919132149155446097, guid: 40015b228ce41204b99a7073be93073b, type: 3}
   isMaterialDesire: 0
   desireFulfillTime: 5

@@ -30,28 +30,28 @@ namespace Utilities {
 		/// Return a random item from <paramref name="items"/> based on weight
 		/// </summary>
 		/// <param name="items">A collection of items to use</param>
-		/// <param name="comparer">Function to determine the weight of an item</param>
-		public static T RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> comparer) {
-			return RandomizeByWeight(items, comparer, 1).First();
+		/// <param name="weightSelector">Function to determine the weight of an item</param>
+		public static T RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> weightSelector) {
+			return RandomizeByWeight(items, weightSelector, 1).First();
 		}
 
 		/// <summary>
 		/// Put together an array of <paramref name="items"/> based on weight
 		/// </summary>
 		/// <param name="items">A collection of items to use</param>
-		/// <param name="comparer">Function to determine the weight of an item</param>
+		/// <param name="weightSelector">Function to determine the weight of an item</param>
 		/// <param name="itemsToReturn">How many items to return</param>
-		public static T[] RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> comparer, int itemsToReturn) {
+		public static T[] RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> weightSelector, int itemsToReturn) {
 			if (itemsToReturn < 1) return new T[0];
 
-			int sum = items.Sum(comparer);
+			int sum = items.Sum(weightSelector);
 			T[] output = new T[itemsToReturn];
 
 			for (int i = 0; i < itemsToReturn; i++) {
 				int target = Random.Range(0, sum);
 
 				foreach (T item in items) {
-					target -= comparer(item);
+					target -= weightSelector(item);
 
 					if (target < 0) {
 						output[i] = item;

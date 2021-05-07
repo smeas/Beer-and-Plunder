@@ -4,7 +4,7 @@ namespace Vikings {
 	[CreateAssetMenu(fileName = "new Desire", menuName = "Game/Desire", order = 0)]
 	public class DesireData : ScriptableObject {
 		public DesireType type;
-		public int weight;
+		public int randomWeight;
 		public GameObject visualisationPrefab;
 
 		[Tooltip("Does the player need to give an item to fulfill this desire")]
