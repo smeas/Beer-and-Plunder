@@ -11,7 +11,7 @@ namespace Interactables.Beers {
 		[SerializeField] private float carryDistance = 2f;
 		[SerializeField] private LayerMask allButSelf;
 
-		private Dictionary<int, PlayerMovement> carriers = new Dictionary<int, PlayerMovement>();
+		private List<PlayerMovement> carriers = new List<PlayerMovement>();
 		private List<GameObject> carryCollisionGameObjects = new List<GameObject>();
 		
 		protected override void Start() {
@@ -28,7 +28,7 @@ namespace Interactables.Beers {
 		}
 
 		public void DropBarrel() {
-			PlayerMovement[] carriersArr = carriers.Values.ToArray();
+			PlayerMovement[] carriersArr = carriers.ToArray();
 
 			for (int i = 0; i < carriersArr.Length; i++) {
 				PlayerPickUp playerPickup = carriersArr[i].GetComponentInChildren<PlayerPickUp>();
@@ -47,7 +47,7 @@ namespace Interactables.Beers {
 			else if (carriers[1].Velocity > 0)
 				Rotate(carriers[1], carriers[0]);
 
-			foreach (PlayerMovement playerMove in carriers.Values) {
+			foreach (PlayerMovement playerMove in carriers) {
 				playerMove.transform.LookAt(new Vector3(transform.position.x, 0, transform.position.z));
 			}
 
@@ -60,7 +60,7 @@ namespace Interactables.Beers {
 			Vector2 combinedMovement =
 				Vector2.ClampMagnitude((carriers[0].MoveInput + carriers[1].MoveInput), 1f);
 
-			foreach (PlayerMovement playerMovement in carriers.Values) {
+			foreach (PlayerMovement playerMovement in carriers) {
 				playerMovement.MoveInDirection(combinedMovement);
 			}
 
@@ -98,7 +98,7 @@ namespace Interactables.Beers {
 		private void BeerBarrel_OnPickedUp(PickUp pickUp, PlayerComponent playerComponent) {
 			PlayerMovement playerMovement = playerComponent.GetComponent<PlayerMovement>();
 			objectCollider.enabled = true;
-			carriers.Add(playerComponent.PlayerId, playerMovement);
+			carriers.Add(playerMovement);
 
 			if (carriers.Count > 1) {
 				pickUp.SetParent(null);
@@ -117,7 +117,7 @@ namespace Interactables.Beers {
 				constraints |= RigidbodyConstraints.FreezeRotationZ;
 				rigidbody.constraints = constraints;
 
-				foreach (PlayerMovement playerMove in carriers.Values) {
+				foreach (PlayerMovement playerMove in carriers) {
 
 					GameObject gameObject = new GameObject();
 					gameObject.transform.SetParent(playerMove.transform);
@@ -143,14 +143,14 @@ namespace Interactables.Beers {
 		private void BeerBarrel_OnDropped(PickUp pickUp, PlayerComponent playerComponent) {
 			if (IsMultiCarried) {
 
-				foreach (PlayerMovement playerMove in carriers.Values) {
+				foreach (PlayerMovement playerMove in carriers) {
 					playerMove.CanRotate = true;
 					playerMove.ShouldCalculateMovementDirection = true;
 					carryCollisionGameObjects.ForEach(x => Destroy(x));
 					carryCollisionGameObjects.Clear();
 				}
 
-				carriers.Remove(playerComponent.PlayerId);
+				carriers.Remove(playerComponent.GetComponent<PlayerMovement>());
 				IsMultiCarried = false;
 
 				rigidbody.isKinematic = true;
@@ -162,15 +162,15 @@ namespace Interactables.Beers {
 				constraints &= ~RigidbodyConstraints.FreezeRotationZ;
 				rigidbody.constraints = constraints;
 
-				PlayerMovement remainingCarrier = carriers.First().Value;
+				PlayerMovement remainingCarrier = carriers.First();
 				carriers.Clear();
 				remainingCarrier.SpeedMultiplier = soloCarrySpeedMultiplier;
 				PickUpItem(remainingCarrier.GetComponentInChildren<PlayerPickUp>().PlayerGrabTransform);
 				return;
 			}
 
-			carriers.First().Value.SpeedMultiplier = 1f;
-			carriers.Remove(playerComponent.PlayerId);
+			carriers.First().SpeedMultiplier = 1f;
+			carriers.Remove(playerComponent.GetComponent<PlayerMovement>());
 		}
 	}
 }
