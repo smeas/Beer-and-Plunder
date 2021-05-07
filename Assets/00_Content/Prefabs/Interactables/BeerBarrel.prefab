@@ -53,6 +53,9 @@ MonoBehaviour:
   objectCollider: {fileID: 708399781313109639}
   soloCarryVelocity: 2
   carryDistance: 3
+  allButSelf:
+    serializedVersion: 2
+    m_Bits: 32768
 --- !u!54 &2493232089606574164
 Rigidbody:
   m_ObjectHideFlags: 0

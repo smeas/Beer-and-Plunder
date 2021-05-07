@@ -9,12 +9,11 @@ namespace Interactables.Beers {
 
 		[SerializeField] private float soloCarryVelocity = 2f;
 		[SerializeField] private float carryDistance = 2f;
+		[SerializeField] private LayerMask allButSelf;
 
 		private Dictionary<int, PlayerMovement> carriers = new Dictionary<int, PlayerMovement>();
-
-		// Use something like this instead to save rigidbody for movement
-		//private List<(PlayerMovement, Rigidbody)> carrys = new List<(PlayerMovement, Rigidbody)>();
-
+		private List<GameObject> carryCollisionGameObjects = new List<GameObject>();
+		
 		protected override void Start() {
 			base.Start();
 
@@ -26,7 +25,15 @@ namespace Interactables.Beers {
 			base.OnDestroy();
 			OnPickedUp -= BeerBarrel_OnPickedUp;
 			OnDropped -= BeerBarrel_OnDropped;
-			// TODO: Release players carrying
+		}
+
+		public void DropBarrel() {
+			PlayerMovement[] carriersArr = carriers.Values.ToArray();
+
+			for (int i = 0; i < carriersArr.Length; i++) {
+				PlayerPickUp playerPickup = carriersArr[i].GetComponentInChildren<PlayerPickUp>();
+				playerPickup.DropItem();
+			}
 		}
 
 		private void FixedUpdate() {
@@ -42,6 +49,10 @@ namespace Interactables.Beers {
 
 			foreach (PlayerMovement playerMove in carriers.Values) {
 				playerMove.transform.LookAt(new Vector3(transform.position.x, 0, transform.position.z));
+			}
+
+			foreach (GameObject carryCollisionObject in carryCollisionGameObjects) {
+				carryCollisionObject.transform.position = transform.position;
 			}
 		}
 
@@ -59,7 +70,6 @@ namespace Interactables.Beers {
 		private void MoveBarrel() {
 			Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
 			rigidbody.MovePosition(new Vector3(newPos.x, 0, newPos.z));
-			// transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
 
 			Vector3 lookPosition = carriers[1].transform.position;
 			Vector3 lookPoint = new Vector3(lookPosition.x, transform.position.y, lookPosition.z);
@@ -102,6 +112,16 @@ namespace Interactables.Beers {
 				rigidbody.constraints = constraints;
 
 				foreach (PlayerMovement playerMove in carriers.Values) {
+
+					GameObject gameObject = new GameObject();
+					gameObject.transform.SetParent(playerMove.transform);
+					gameObject.layer =  Mathf.FloorToInt(Mathf.Log(allButSelf.value, 2));
+
+					BoxCollider coll = gameObject.AddComponent<BoxCollider>();
+					gameObject.transform.position = transform.position;
+					coll.size = transform.localScale;
+					carryCollisionGameObjects.Add(gameObject);
+
 					playerMove.SetDefaultVelocity();
 					playerMove.CanRotate = false;
 					playerMove.CalculateMovementDirection = false;
@@ -120,6 +140,8 @@ namespace Interactables.Beers {
 				foreach (PlayerMovement playerMove in carriers.Values) {
 					playerMove.CanRotate = true;
 					playerMove.CalculateMovementDirection = true;
+					carryCollisionGameObjects.ForEach(x => Destroy(x));
+					carryCollisionGameObjects.Clear();
 				}
 
 				carriers.Remove(playerComponent.PlayerId);

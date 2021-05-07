@@ -36,6 +36,10 @@ namespace Interactables.Beers {
 
 				if (switchingProgress > switchTime) {
 					beerTap.Refill();
+
+					BeerBarrel beerBarrel = barrel as BeerBarrel;
+					beerBarrel.DropBarrel();
+
 					Destroy(barrel.gameObject);
 
 					switchingProgress = 0;
