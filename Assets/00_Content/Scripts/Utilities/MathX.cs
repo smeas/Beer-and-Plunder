@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Utilities {
 	public static class MathX {
@@ -20,6 +24,34 @@ namespace Utilities {
 
 		public static float RemapClamped(float value, float low1, float high1, float low2, float high2) {
 			return Mathf.Clamp(Remap(value, low1, high1, low2, high2), low2, high2);
+		}
+
+		/// <summary>
+		/// Put together an array of <paramref name="items"/> based on weight
+		/// </summary>
+		/// <param name="items">A collection of items to use</param>
+		/// <param name="comparer">Function to determine the weight of an item</param>
+		/// <param name="itemsToReturn">How many items to return</param>
+		public static T[] RandomizeByWeight<T>(IEnumerable<T> items, Func<T, int> comparer, int itemsToReturn = 1) {
+			if (itemsToReturn < 1) return new T[0];
+
+			int sum = items.Sum(comparer);
+			T[] output = new T[itemsToReturn];
+
+			for (int i = 0; i < itemsToReturn; i++) {
+				int target = Random.Range(0, sum);
+
+				foreach (T item in items) {
+					target -= comparer(item);
+
+					if (target < 0) {
+						output[i] = item;
+						break;
+					}
+				}
+			}
+
+			return output;
 		}
 
 		/// <summary>

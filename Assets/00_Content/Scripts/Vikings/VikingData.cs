@@ -14,12 +14,18 @@ namespace Vikings {
 		public float impatientMoodThreshold = 45;
 
 		[Header("Desire")]
-		[Tooltip("What desires does this viking have")]
+		public bool randomDesires = true;
+
+		[Tooltip("What desires can this viking have")]
 		public DesireData[] desires;
+
+		[MinMaxRange(1, 10), Tooltip("How many desires does this viking have (Rounded to whole numbers)")]
+		public Vector2 desiresMinMax;
 
 		[MinMaxRange(0, 100), Tooltip("How long does it take for the viking to start desiring something")]
 		public Vector2 desireIntervalMinMax;
 
+		[Space]
 		[MinMaxRange(0, 100), Tooltip("How long does the viking stay satisfied upon fulfilling a desire")]
 		public Vector2 satisfiedDurationMinMax;
 
