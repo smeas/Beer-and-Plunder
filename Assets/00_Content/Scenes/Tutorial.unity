@@ -835,6 +835,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 869296941}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[5].text
+      value: 'The customer is requesting a refill! Unfortunately beer barrels aren''t
+        bottomless and drain after each use. They will need to be refilled once in
+        a while.
+
+        The beer barrel is heavy, carry it with a friend if you
+        can.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[0].highlightTarget
       value: 
       objectReference: {fileID: 719324597}
