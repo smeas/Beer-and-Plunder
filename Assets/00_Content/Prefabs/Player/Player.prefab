@@ -273,12 +273,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onUse:
-    m_PersistentCalls:
-      m_Calls: []
-  onEndUse:
-    m_PersistentCalls:
-      m_Calls: []
   onDrop:
     m_PersistentCalls:
       m_Calls:
@@ -347,6 +341,7 @@ MonoBehaviour:
   maxVelocity: 6
   speedMultiplier: 1
   canMove: 1
+  canRotate: 1
 --- !u!114 &4711298765348120590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,6 +547,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGrabTransform: {fileID: 807718991}
   playerRoot: {fileID: 2187889529978375777}
+  throwStrengthMultiplier: 1.25
 --- !u!114 &4004794608759683555
 MonoBehaviour:
   m_ObjectHideFlags: 0
