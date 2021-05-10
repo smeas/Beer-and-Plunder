@@ -31,7 +31,7 @@ namespace Taverns {
 		public int Money {
 			get => money;
 			set {
-				int newMoney = money;
+				int newMoney = Mathf.RoundToInt(value);
 				
 				if (money == newMoney)
 					return;
