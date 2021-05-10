@@ -1,4 +1,5 @@
 using System.Collections;
+using Player;
 using UI;
 using UnityEngine;
 
@@ -19,10 +20,14 @@ namespace Interactables.Beers {
 		public override void Interact(GameObject player, PickUp barrel) {
 			isHolding = true;
 			StartCoroutine(SwitchBeerTapBarrel(barrel));
+
+			player.GetComponent<PlayerMovement>().CanMove = false;
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
 			isHolding = false;
+
+			player.GetComponent<PlayerMovement>().CanMove = true;
 		}
 
 		private IEnumerator SwitchBeerTapBarrel(PickUp barrel) {

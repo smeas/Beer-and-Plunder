@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Audio;
+using Player;
 using Rounds;
 using Taverns;
 using UI;
@@ -78,6 +79,8 @@ namespace Interactables.Beers {
 			Debug.Assert(fillingTankard != null);
 
 			StartCoroutine(PouringBeer());
+
+			player.GetComponent<PlayerMovement>().CanMove = false;
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
@@ -93,6 +96,8 @@ namespace Interactables.Beers {
 
 				ResetPouring();
 			}
+
+			player.GetComponent<PlayerMovement>().CanMove = true;
 		}
 
 		private IEnumerator PouringBeer() {
