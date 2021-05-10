@@ -29,8 +29,18 @@ namespace Interactables.Beers {
 			IsFull = IsFull;
 		}
 
+		private void FixedUpdate() {
+			if (isFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
+				Spill();
+		}
+
 		protected override void OnPlace() {
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_TankardPlace);
+		}
+
+		private void Spill() {
+			IsFull = false;
+			AudioManager.PlayEffectSafe(SoundEffect.Physics_SpillBeer);
 		}
 	}
 }
