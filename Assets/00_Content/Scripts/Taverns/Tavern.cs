@@ -8,36 +8,36 @@ namespace Taverns {
 		[SerializeField] private int maxSittingGuests;
 		[SerializeField] private float maxHealth = 100;
 		[SerializeField] private float startingHealth = 100;
-		[SerializeField] private float startingMoney = 50;
-		[SerializeField] private float maxMoney = 100;
+		[SerializeField] private int startingMoney = 0;
 
-		private bool IsBankrupt => Money <= 0;
 		private bool IsDestroyed => Health <= 0;
 
 		private float health;
-		private float money;
+		private int money;
 
-		public event Action OnBankrupcy;
 		public event Action OnDestroyed;
 		public event Action OnMoneyChanges;
 		public event Action OnHealthChanges;
 
 		public float MaxHealth => maxHealth;
 		public float StartingHealth => startingHealth;
-		public float StartingMoney => startingMoney;
-		public float MaxMoney => maxMoney;
+		public int StartingMoney => startingMoney;
 
 		public float Health {
 			get => health;
 			set { health = Mathf.Round(Mathf.Clamp(value, 0, maxHealth)); }
 		}
 
-		public float Money {
+		public int Money {
 			get => money;
 			set {
-				float newMoney = Mathf.Round(Mathf.Clamp(value, 0, maxMoney));
+				int newMoney = money;
+				
 				if (money == newMoney)
 					return;
+
+				if (newMoney < 0)
+					newMoney = 0;
 
 				money = newMoney;
 				OnMoneyChanges?.Invoke();
@@ -51,17 +51,7 @@ namespace Taverns {
 		}
 
 		public void EarnsMoney(float moneyEarned) {
-			Money += moneyEarned;
-		}
-
-		public void SpendsMoney(float moneySpent) {
-			Money -= moneySpent;
-
-			if (IsBankrupt) {
-				Debug.Log("Tavern says: Game over, you are bankrupt!");
-
-				OnBankrupcy?.Invoke();
-			}
+			Money += Mathf.RoundToInt(moneyEarned);
 		}
 
 		public void TakesDamage(float damage) {
