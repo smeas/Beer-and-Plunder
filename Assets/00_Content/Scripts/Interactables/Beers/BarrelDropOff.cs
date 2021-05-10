@@ -12,8 +12,10 @@ namespace Interactables.Beers {
 
 		private float switchingProgress = 0f;
 		private bool isHolding;
+		private PlayerMovement holdingPlayer;
 
 		public override bool CanInteract(GameObject player, PickUp item) {
+			if (isHolding) return false;
 			return item is BeerBarrel && !beerTap.IsFull;
 		}
 
@@ -21,13 +23,13 @@ namespace Interactables.Beers {
 			isHolding = true;
 			StartCoroutine(SwitchBeerTapBarrel(barrel));
 
-			player.GetComponent<PlayerMovement>().CanMove = false;
+			holdingPlayer = player.GetComponent<PlayerMovement>();
+			holdingPlayer.CanMove = false;
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
 			isHolding = false;
-
-			player.GetComponent<PlayerMovement>().CanMove = true;
+			holdingPlayer.CanMove = true;
 		}
 
 		private IEnumerator SwitchBeerTapBarrel(PickUp barrel) {
@@ -49,6 +51,8 @@ namespace Interactables.Beers {
 
 					switchingProgress = 0;
 					progressBar.Hide();
+
+					holdingPlayer.CanMove = true;
 
 					break;
 				}

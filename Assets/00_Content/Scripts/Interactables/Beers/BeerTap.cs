@@ -30,6 +30,7 @@ namespace Interactables.Beers {
 		private float fillPortion;
 		private Tankard fillingTankard;
 		private SoundHandle pourSoundHandle;
+		private PlayerMovement pouringPlayer;
 
 		public int MaxBeerAmount => maxBeerAmount;
 		public bool IsFull => beerAmount == maxBeerAmount;
@@ -80,10 +81,13 @@ namespace Interactables.Beers {
 
 			StartCoroutine(PouringBeer());
 
-			player.GetComponent<PlayerMovement>().CanMove = false;
+			pouringPlayer = player.GetComponent<PlayerMovement>();
+			pouringPlayer.CanMove = false;
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
+			pouringPlayer.CanMove = true;
+
 			if (!isPouring) return;
 			float progress = pouringProgress / pourTime;
 
@@ -96,8 +100,6 @@ namespace Interactables.Beers {
 
 				ResetPouring();
 			}
-
-			player.GetComponent<PlayerMovement>().CanMove = true;
 		}
 
 		private IEnumerator PouringBeer() {
@@ -152,6 +154,7 @@ namespace Interactables.Beers {
 			perfectProgressIndicator.gameObject.SetActive(false);
 
 			pourSoundHandle?.FadeOutAndStop(0.2f);
+			pouringPlayer.CanMove = true;
 		}
 
 		public void Refill() {
