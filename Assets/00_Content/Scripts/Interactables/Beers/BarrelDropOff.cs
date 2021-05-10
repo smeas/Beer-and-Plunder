@@ -29,7 +29,7 @@ namespace Interactables.Beers {
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
 			isHolding = false;
-			holdingPlayer.CanMove = true;
+			ResetRefilling();
 		}
 
 		private IEnumerator SwitchBeerTapBarrel(PickUp barrel) {
@@ -49,16 +49,20 @@ namespace Interactables.Beers {
 
 					Destroy(barrel.gameObject);
 
-					switchingProgress = 0;
-					progressBar.Hide();
-
-					holdingPlayer.CanMove = true;
+					ResetRefilling();
 
 					break;
 				}
 
 				yield return null;
 			}
+		}
+
+		private void ResetRefilling() {
+			switchingProgress = 0;
+			progressBar.Hide();
+
+			holdingPlayer.CanMove = true;
 		}
 	}
 }
