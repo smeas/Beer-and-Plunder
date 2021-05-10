@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-using Player;
 using System.Linq;
+using Player;
+using UnityEngine;
 
 namespace Interactables.Beers {
 
@@ -40,11 +40,11 @@ namespace Interactables.Beers {
 			if (!IsMultiCarried)
 				return;
 
-			if (carriers[0].Velocity > 0 && carriers[1].Velocity > 0)
+			if (carriers[0].Speed > 0 && carriers[1].Speed > 0)
 				MoveTogether();
-			else if (carriers[0].Velocity > 0)
+			else if (carriers[0].Speed > 0)
 				Rotate(carriers[0], carriers[1]);
-			else if (carriers[1].Velocity > 0)
+			else if (carriers[1].Speed > 0)
 				Rotate(carriers[1], carriers[0]);
 
 			foreach (PlayerMovement playerMove in carriers) {
@@ -88,7 +88,7 @@ namespace Interactables.Beers {
 			Vector2 movingPosition2 = new Vector2(movingPosition3.x, movingPosition3.z);
 			Vector2 stillPosition2 = new Vector2(stillPosition3.x, stillPosition3.z);
 
-			Vector2 desiredMovement = rotatingPlayer.MakeCameraRelative(rotatingPlayer.MoveInput.normalized) * (rotatingPlayer.Velocity * Time.deltaTime);
+			Vector2 desiredMovement = rotatingPlayer.MakeCameraRelative(rotatingPlayer.MoveInput.normalized) * (rotatingPlayer.Speed * Time.deltaTime);
 			Vector2 desiredNextPosition = movingPosition2 + desiredMovement;
 
 			Vector2 correctedPosition = (desiredNextPosition - stillPosition2).normalized * carryDistance;
