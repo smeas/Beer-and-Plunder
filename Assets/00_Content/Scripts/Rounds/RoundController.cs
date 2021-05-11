@@ -42,8 +42,8 @@ namespace Rounds {
 			gameOverPanel = Instantiate(gameOverPanelPrefab);
 			gameOverPanel.gameObject.SetActive(false);
 
-			Tavern.Instance.OnDestroyed += HandleOnTavernDestroyed;
 			scoreCard.OnNextRound += HandleOnNextRound;
+			Table.OnTablesDestroyed += HandleOnTablesDestroyed;
 
 			roundTimer = roundDuration;
 
@@ -131,7 +131,7 @@ namespace Rounds {
 			}
 		}
 
-		private void HandleOnTavernDestroyed() {
+		private void HandleOnTablesDestroyed() {
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 			DisableGamePlay();

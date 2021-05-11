@@ -63,23 +63,5 @@ namespace Taverns {
 				OnBankrupcy?.Invoke();
 			}
 		}
-
-		public void TakesDamage(float damage) {
-			if (IsDestroyed) return;
-
-			Health -= damage;
-			OnHealthChanges?.Invoke();
-
-			if (IsDestroyed) {
-				Debug.Log("Tavern says: Game over, your tavern is destroyed!");
-
-				OnDestroyed?.Invoke();
-			}
-		}
-
-		public void RepairsDamage(float repair) {
-			Health += repair;
-			OnHealthChanges?.Invoke();
-		}
 	}
 }
