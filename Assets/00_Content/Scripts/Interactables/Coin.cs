@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Audio;
+using Extensions;
 using Taverns;
 using UnityEngine;
 using World;
@@ -7,7 +8,7 @@ using World;
 namespace Interactables {
 	[RequireComponent(typeof(Rigidbody))]
 	public class Coin : MonoBehaviour {
-		public static HashSet<Coin> AllCoins { get; } = new HashSet<Coin>();
+		public static List<Coin> AllCoins { get; } = new List<Coin>();
 
 		[SerializeField] private int value = 1;
 		[SerializeField] private float duration;
@@ -40,7 +41,7 @@ namespace Interactables {
 		}
 
 		private void OnDisable() {
-			AllCoins.Remove(this);
+			AllCoins.SwapRemove(this);
 		}
 
 		private void Update() {

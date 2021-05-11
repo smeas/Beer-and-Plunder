@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq;
 using Audio;
 using Interactables;
 using Interactables.Weapons;
@@ -72,7 +71,7 @@ namespace World {
 			if (Coin.AllCoins.Count <= targetCount)
 				targets = Coin.AllCoins.ToArray();
 			else
-				targets = Util.RandomSample(Coin.AllCoins.ToArray(), targetCount);
+				targets = Util.RandomSample(Coin.AllCoins, targetCount);
 
 			currentTargetIndex = -1;
 			NextTarget();
