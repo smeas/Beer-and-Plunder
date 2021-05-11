@@ -53,12 +53,16 @@ namespace Interactables.Beers {
 		}
 
 		private void Move() {
+			if (!carriers[0].CanMove || !carriers[1].CanMove) return;
+
 			Vector3 avgVelocity = (carriers[0].Velocity + carriers[1].Velocity) / 2;
 
 			rigidbody.MovePosition(rigidbody.position + avgVelocity * Time.deltaTime);
 		}
 
 		private void Rotate(PlayerMovement rotatingPlayer, PlayerMovement stillPlayer) {
+			if (!carriers[0].CanMove || !carriers[1].CanMove) return;
+
 			Vector3 stillPosition = stillPlayer.transform.position;
 
 			Vector3 playerDirection3 = rotatingPlayer.transform.position - stillPosition;
