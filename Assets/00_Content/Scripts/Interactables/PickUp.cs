@@ -75,17 +75,8 @@ namespace Interactables {
 			if (IsMultiCarried)
 				return false;
 
-			transform.rotation = Quaternion.identity;
-			SetParent(playerGrabTransform);
-			if (rigidbody != null)
-				rigidbody.isKinematic = true;
-
-			Vector3 offset = Vector3.zero;
-			if (itemGrabTransform != null)
-				offset = transform.position - itemGrabTransform.position;
-
-			transform.localPosition = offset;
-			transform.localRotation = Quaternion.identity;
+			if (!isBeingCarried)
+				MoveToPoint(playerGrabTransform);
 
 			if (CurrentItemSlot != null) {
 				CurrentItemSlot.ReleaseItem();
@@ -96,6 +87,21 @@ namespace Interactables {
 			isBeingCarried = true;
 			OnPickedUp?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
 			return true;
+		}
+
+		protected void MoveToPoint(Transform point) {
+			transform.rotation = Quaternion.identity;
+			SetParent(point);
+
+			if (rigidbody != null)
+				rigidbody.isKinematic = true;
+
+			Vector3 offset = Vector3.zero;
+			if (itemGrabTransform != null)
+				offset = transform.position - itemGrabTransform.position;
+
+			transform.localPosition = offset;
+			transform.localRotation = Quaternion.identity;
 		}
 
 		private void TryPutInClosestItemSlot() {

@@ -38,7 +38,7 @@ namespace Interactables.Beers {
 					beerTap.Refill();
 
 					BeerBarrel beerBarrel = barrel as BeerBarrel;
-					beerBarrel.DropBarrel();
+					beerBarrel.Release();
 
 					Destroy(barrel.gameObject);
 

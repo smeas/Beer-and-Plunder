@@ -2,175 +2,162 @@ using System.Collections.Generic;
 using System.Linq;
 using Player;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace Interactables.Beers {
-
+	[DefaultExecutionOrder(10)]
 	public class BeerBarrel : PickUp {
-
 		[SerializeField] private float soloCarrySpeedMultiplier = 0.3f;
-		[SerializeField] private float carryDistance = 2f;
-		[SerializeField] private LayerMask allButSelf;
+		[SerializeField] private float multiCarrySpeedMultiplier = 0.8f;
+		[SerializeField] private Collider multiCarryCollider;
+		[SerializeField] private float carryRadius = 1.5f;
+
+		private Transform carryPoint1;
+		private Transform carryPoint2;
 
 		private List<PlayerMovement> carriers = new List<PlayerMovement>();
-		private List<GameObject> carryCollisionGameObjects = new List<GameObject>();
-		
+
 		protected override void Start() {
 			base.Start();
 
-			OnPickedUp += BeerBarrel_OnPickedUp;
-			OnDropped += BeerBarrel_OnDropped;
-		}
+			OnPickedUp += HandleOnPickedUp;
+			OnDropped += HandleOnDrop;
 
-		protected override void OnDestroy() {
-			base.OnDestroy();
-			OnPickedUp -= BeerBarrel_OnPickedUp;
-			OnDropped -= BeerBarrel_OnDropped;
-		}
-
-		public void DropBarrel() {
-			PlayerMovement[] carriersArr = carriers.ToArray();
-
-			for (int i = 0; i < carriersArr.Length; i++) {
-				PlayerPickUp playerPickup = carriersArr[i].GetComponentInChildren<PlayerPickUp>();
-				playerPickup.DropItem();
-			}
+			CreateCarryPoints();
 		}
 
 		private void FixedUpdate() {
-			if (!IsMultiCarried)
-				return;
+			if (!IsMultiCarried) return;
 
-			if (carriers[0].Speed > 0 && carriers[1].Speed > 0)
-				MoveTogether();
-			else if (carriers[0].Speed > 0)
+			foreach (PlayerMovement carrier in carriers) {
+				Vector3 position = transform.position;
+				carrier.transform.LookAt(new Vector3(position.x, carrier.transform.position.y, position.z));
+			}
+
+			if (carriers[0].MoveInput != Vector2.zero && carriers[1].MoveInput != Vector2.zero)
+				Move();
+			else if (carriers[0].MoveInput != Vector2.zero)
 				Rotate(carriers[0], carriers[1]);
-			else if (carriers[1].Speed > 0)
+			else if (carriers[1].MoveInput != Vector2.zero)
 				Rotate(carriers[1], carriers[0]);
-
-			foreach (PlayerMovement playerMove in carriers) {
-				playerMove.transform.LookAt(new Vector3(transform.position.x, 0, transform.position.z));
-			}
-
-			foreach (GameObject carryCollisionObject in carryCollisionGameObjects) {
-				carryCollisionObject.transform.position = transform.position;
-			}
 		}
 
-		private void MoveTogether() {
-			Vector2 combinedMovement =
-				Vector2.ClampMagnitude((carriers[0].MoveInput + carriers[1].MoveInput), 1f);
+		private void CreateCarryPoints() {
+			carryPoint1 = new GameObject("CarryPoint1").transform;
+			carryPoint1.parent = transform;
+			carryPoint1.localPosition = new Vector3(0f, 0f, -carryRadius);
 
-			foreach (PlayerMovement playerMovement in carriers) {
-				playerMovement.MoveInDirection(combinedMovement);
-			}
-
-			MoveBarrel();
+			carryPoint2 = new GameObject("CarryPoint2").transform;
+			carryPoint2.parent = transform;
+			carryPoint2.localPosition = new Vector3(0f, 0f, carryRadius);
 		}
 
-		private void MoveBarrel() {
-			Vector3 newPos = (carriers[0].transform.position + carriers[1].transform.position) / 2;
-			rigidbody.MovePosition(new Vector3(newPos.x, 0, newPos.z));
+		private void Move() {
+			Vector3 avgVelocity = (carriers[0].Velocity + carriers[1].Velocity) / 2;
 
-			Vector3 lookPosition = carriers[0].transform.position;
-			Vector3 lookPoint = new Vector3(lookPosition.x, transform.position.y, lookPosition.z);
-			transform.LookAt(lookPoint, Vector3.up);
+			rigidbody.MovePosition(rigidbody.position + avgVelocity * Time.deltaTime);
 		}
 
 		private void Rotate(PlayerMovement rotatingPlayer, PlayerMovement stillPlayer) {
-			MoveBarrel();
-			RotatePlayerAroundPlayer(rotatingPlayer, stillPlayer);
+			Vector3 stillPosition = stillPlayer.transform.position;
+
+			Vector3 playerDirection3 = rotatingPlayer.transform.position - stillPosition;
+			Vector2 playerDirection2 = new Vector2(playerDirection3.x, playerDirection3.z);
+
+			Vector2 tangent = -Vector2.Perpendicular(playerDirection2).normalized;
+
+			Vector2 velocity2 = new Vector2(rotatingPlayer.Velocity.x,rotatingPlayer.Velocity.z);
+			float moveDistance = Vector2.Dot(velocity2, tangent) * Time.deltaTime;
+
+			float rotateAngle = moveDistance / carryRadius;
+
+			transform.RotateAround(stillPosition, Vector3.up, rotateAngle * Mathf.Rad2Deg);
 		}
 
-		private void RotatePlayerAroundPlayer(PlayerMovement rotatingPlayer, PlayerMovement stillPlayer) {
-			Vector3 movingPosition3 = rotatingPlayer.transform.position;
-			Vector3 stillPosition3 = stillPlayer.transform.position;
-
-			Vector2 movingPosition2 = new Vector2(movingPosition3.x, movingPosition3.z);
-			Vector2 stillPosition2 = new Vector2(stillPosition3.x, stillPosition3.z);
-
-			Vector2 desiredMovement = rotatingPlayer.MakeCameraRelative(rotatingPlayer.MoveInput.normalized) * (rotatingPlayer.Speed * Time.deltaTime);
-			Vector2 desiredNextPosition = movingPosition2 + desiredMovement;
-
-			Vector2 correctedPosition = (desiredNextPosition - stillPosition2).normalized * carryDistance;
-			rotatingPlayer.transform.position = stillPosition3 + new Vector3(correctedPosition.x, 0, correctedPosition.y);
-		}
-
-		private void BeerBarrel_OnPickedUp(PickUp pickUp, PlayerComponent playerComponent) {
-			PlayerMovement playerMovement = playerComponent.GetComponent<PlayerMovement>();
-			objectCollider.enabled = true;
+		private void HandleOnPickedUp(PickUp _, PlayerComponent player) {
+			PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
 			carriers.Add(playerMovement);
 
 			if (carriers.Count > 1) {
-				pickUp.SetParent(null);
-
-				//TODO -> Fix pickUp bug
-				//playerMovement.transform.position = carriers[0].transform.position + carriers[0].transform.forward * carryDistance;
-				//playerMovement.transform.LookAt(carriers[0].transform);
-
-				//MoveBarrel();
-
+				transform.parent = null;
 				rigidbody.isKinematic = false;
-				RigidbodyConstraints constraints = rigidbody.constraints;
-				constraints |= RigidbodyConstraints.FreezePositionY;
-				constraints |= RigidbodyConstraints.FreezeRotationX;
-				constraints |= RigidbodyConstraints.FreezeRotationY;
-				constraints |= RigidbodyConstraints.FreezeRotationZ;
-				rigidbody.constraints = constraints;
 
-				foreach (PlayerMovement playerMove in carriers) {
+				foreach (PlayerMovement carrier in carriers) {
+					carrier.SpeedMultiplier = multiCarrySpeedMultiplier;
+					carrier.DoMovement = false;
 
-					GameObject gameObject = new GameObject();
-					gameObject.transform.SetParent(playerMove.transform);
-					gameObject.layer =  Mathf.FloorToInt(Mathf.Log(allButSelf.value, 2));
-
-					BoxCollider coll = gameObject.AddComponent<BoxCollider>();
-					gameObject.transform.position = transform.position;
-					coll.size = transform.localScale;
-					carryCollisionGameObjects.Add(gameObject);
-
-					playerMove.SpeedMultiplier = 1f;
-					playerMove.CanRotate = false;
-					playerMove.ShouldCalculateMovementDirection = false;
+					Physics.IgnoreCollision(multiCarryCollider, carrier.MovementCollider, true);
 				}
+
+				LockPosition(carriers[0], carryPoint1);
+				LockPosition(carriers[1], carryPoint2);
+
+				rigidbody.constraints |= RigidbodyConstraints.FreezePositionY
+				                         | RigidbodyConstraints.FreezeRotationX
+				                         | RigidbodyConstraints.FreezeRotationZ;
+
+				multiCarryCollider.enabled = true;
 
 				IsMultiCarried = true;
 				return;
 			}
 
+			objectCollider.enabled = true;
 			playerMovement.SpeedMultiplier = soloCarrySpeedMultiplier;
 		}
 
-		private void BeerBarrel_OnDropped(PickUp pickUp, PlayerComponent playerComponent) {
-			if (IsMultiCarried) {
+		private static void LockPosition(PlayerMovement player, Transform carryPoint) {
+			Vector3 carryPosition = carryPoint.position;
+			carryPoint.position = new Vector3(
+				carryPosition.x,
+				player.transform.position.y,
+				carryPosition.z
+			);
 
-				foreach (PlayerMovement playerMove in carriers) {
-					playerMove.CanRotate = true;
-					playerMove.ShouldCalculateMovementDirection = true;
-					carryCollisionGameObjects.ForEach(x => Destroy(x));
-					carryCollisionGameObjects.Clear();
+			PositionConstraint parent = player.gameObject.AddComponent<PositionConstraint>();
+			parent.AddSource(new ConstraintSource {sourceTransform = carryPoint, weight = 1});
+			parent.constraintActive = true;
+		}
+
+		private void HandleOnDrop(PickUp _, PlayerComponent player) {
+			PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+
+			if (IsMultiCarried) {
+				foreach (PlayerMovement carrier in carriers) {
+					carrier.SpeedMultiplier = 1f;
+					carrier.DoMovement = true;
+
+					Physics.IgnoreCollision(multiCarryCollider, carrier.MovementCollider, false);
+
+					Destroy(carrier.GetComponent<PositionConstraint>());
 				}
 
-				carriers.Remove(playerComponent.GetComponent<PlayerMovement>());
+				rigidbody.constraints &= ~RigidbodyConstraints.FreezePositionY
+				                         & ~RigidbodyConstraints.FreezeRotationX
+				                         & ~RigidbodyConstraints.FreezeRotationZ;
+
+				multiCarryCollider.enabled = false;
+				objectCollider.enabled = true;
+
+				carriers.Remove(playerMovement);
+				PlayerMovement soloCarrier = carriers.First();
+				soloCarrier.SpeedMultiplier = soloCarrySpeedMultiplier;
+
+				MoveToPoint(soloCarrier.GetComponentInChildren<PlayerPickUp>().PlayerGrabTransform);
+
 				IsMultiCarried = false;
-
-				rigidbody.isKinematic = true;
-
-				RigidbodyConstraints constraints = rigidbody.constraints;
-				constraints &= ~RigidbodyConstraints.FreezePositionY;
-				constraints &= ~RigidbodyConstraints.FreezeRotationX;
-				constraints &= ~RigidbodyConstraints.FreezeRotationY;
-				constraints &= ~RigidbodyConstraints.FreezeRotationZ;
-				rigidbody.constraints = constraints;
-
-				PlayerMovement remainingCarrier = carriers.First();
-				carriers.Clear();
-				remainingCarrier.SpeedMultiplier = soloCarrySpeedMultiplier;
-				PickUpItem(remainingCarrier.GetComponentInChildren<PlayerPickUp>().PlayerGrabTransform);
 				return;
 			}
 
-			carriers.First().SpeedMultiplier = 1f;
-			carriers.Remove(playerComponent.GetComponent<PlayerMovement>());
+			playerMovement.SpeedMultiplier = 1f;
+			carriers.Remove(playerMovement);
+		}
+
+		public void Release() {
+			foreach (PlayerMovement carrier in carriers) {
+				PlayerPickUp playerPickup = carrier.GetComponentInChildren<PlayerPickUp>();
+				playerPickup.DropItem();
+			}
 		}
 	}
 }
