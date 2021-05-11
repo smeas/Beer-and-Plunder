@@ -1,4 +1,5 @@
 using System;
+using Audio;
 using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -78,19 +79,46 @@ namespace Scenes {
 					DontDestroyOnLoad(player.gameObject);
 			}
 
+			SceneInfo currentScene = CurrentScene;
+			MusicCue nextMusic = sceneInfo.music;
+			bool switchMusic = nextMusic != currentScene?.music;
+
 			void BeforeEnterScene() {
 				beforeEnterScene?.Invoke();
+
+				if (switchMusic)
+					AudioManager.PlayMusicSafe(nextMusic, FadeKind.OutIn, transition.TransitionDuration / 2f);
 
 				// Reset time scale when loading a new scene
 				Time.timeScale = 1f;
 			}
 
 			if (doTransition) {
+				if (switchMusic)
+					AudioManager.StopMusicSafe(transition.TransitionDuration / 2f);
+
 				transition.Play(sceneInfo, BeforeEnterScene);
 			}
 			else {
+				// FIXME: How do we fade here?
+				if (switchMusic)
+					AudioManager.PlayMusicSafe(nextMusic, FadeKind.OutIn, 0.4f, restart: true);
+
 				BeforeEnterScene();
 				sceneInfo.Load();
+			}
+		}
+
+
+		// Kicks off the music when the game is started
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		private static void OnInitialize() {
+			if (Instance == null)
+				return;
+
+			SceneInfo currentScene = Instance.CurrentScene;
+			if (currentScene != null && currentScene.music != null) {
+				AudioManager.PlayMusicSafe(currentScene.music);
 			}
 		}
 	}

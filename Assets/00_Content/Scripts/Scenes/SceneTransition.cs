@@ -19,6 +19,8 @@ namespace Scenes {
 		private Material overlayMaterial;
 		private Action onBeforeEnterScene;
 
+		public float TransitionDuration => transitionDuration;
+
 		private void Awake() {
 			overlayMaterial = new Material(overlay.material);
 			overlay.material = overlayMaterial;

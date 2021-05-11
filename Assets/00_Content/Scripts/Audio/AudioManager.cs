@@ -83,7 +83,10 @@ namespace Audio {
 
 		public void PlayMusic(MusicCue cue, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
 		                      bool restart = false, bool loop = true) {
-			PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
+			if (cue != null)
+				PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
+			else
+				PlayMusic(null, null, fade, fadeDuration, restart, loop);
 		}
 
 		private void PlayMusic(AudioClip introClip, AudioClip musicClip, FadeKind fade = FadeKind.NoFade,
@@ -93,6 +96,11 @@ namespace Audio {
 				&& (musicIntroSource.isPlaying || musicSource.isPlaying)) return;
 
 			StopFadingMusic();
+
+			if (introClip == null && musicClip == null) {
+				StopMusic(fade == FadeKind.OutIn ? fadeDuration : 0f);
+				return;
+			}
 
 			switch (fade) {
 				case FadeKind.OutIn:
@@ -113,6 +121,9 @@ namespace Audio {
 
 		public void StopMusic(float fadeDuration = 0f) {
 			StopFadingMusic();
+
+			if (!(musicIntroSource.isPlaying || musicSource.isPlaying))
+				return;
 
 			if (fadeDuration > 0f) {
 				StartCoroutine(CoFadeMusicOut(fadeDuration));
@@ -236,9 +247,9 @@ namespace Audio {
 				Instance.PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
 		}
 
-		public static void StopMusicSafe() {
+		public static void StopMusicSafe(float fadeDuration = 0f) {
 			if (Instance != null)
-				Instance.StopMusic();
+				Instance.StopMusic(fadeDuration);
 		}
 
 		public static void FadeOutAndStopMusicSafe(float duration) {
