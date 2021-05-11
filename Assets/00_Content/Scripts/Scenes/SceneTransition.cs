@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,14 +17,17 @@ namespace Scenes {
 		private bool hasActiveTransition;
 		private AsyncOperation loadOperation;
 		private Material overlayMaterial;
+		private Action onBeforeEnterScene;
 
 		private void Awake() {
 			overlayMaterial = new Material(overlay.material);
 			overlay.material = overlayMaterial;
 		}
 
-		public void Play(SceneInfo nextScene) {
+		public void Play(SceneInfo nextScene, Action beforeEnterSceneCallback = null) {
 			if (hasActiveTransition) return;
+
+			onBeforeEnterScene = beforeEnterSceneCallback;
 
 			loadOperation = SceneManager.LoadSceneAsync(nextScene.scene);
 			loadOperation.allowSceneActivation = false;
@@ -37,7 +41,7 @@ namespace Scenes {
 		private IEnumerator CoExitScene() {
 			float exitDuration = transitionDuration / 2;
 
-			for (float time = exitDuration; time > 0; time -= Time.deltaTime) {
+			for (float time = exitDuration; time > 0; time -= Time.unscaledDeltaTime) {
 				overlayMaterial.SetFloat(radiusID, MathX.EaseInQuad(time / exitDuration));
 				yield return null;
 			}
@@ -46,6 +50,7 @@ namespace Scenes {
 			while (loadOperation.progress < 0.9f)
 				yield return null;
 
+			onBeforeEnterScene?.Invoke();
 			StartCoroutine(CoEnterScene());
 		}
 
@@ -54,7 +59,7 @@ namespace Scenes {
 
 			float enterDuration = transitionDuration / 2;
 
-			for (float time = 0; time < enterDuration; time += Time.deltaTime) {
+			for (float time = 0; time < enterDuration; time += Time.unscaledDeltaTime) {
 				overlayMaterial.SetFloat(radiusID, MathX.EaseInQuad(time / enterDuration));
 				yield return null;
 			}
