@@ -55,6 +55,10 @@ namespace Audio {
 			return PlayEffect(cue.GetClip(), loop, cue.volume, cue.pitch);
 		}
 
+		public SoundHandle PlayEffect(SoundCue cue, bool loop = false) {
+			return PlayEffect(cue.GetClip(), loop, cue.volume, cue.pitch);
+		}
+
 		public SoundHandle PlayEffect(AudioClip clip, bool loop = false, float volume = 1f, float pitch = 1f) {
 			return soundEffectPool.PlayOneShot(clip, loop, volume, pitch);
 		}
@@ -156,6 +160,13 @@ namespace Audio {
 		public static SoundHandle PlayEffectSafe(SoundEffect effect, bool loop = false) {
 			if (Instance != null)
 				return Instance.PlayEffect(effect, loop);
+
+			return SoundHandle.NullHandle;
+		}
+
+		public static SoundHandle PlayEffectSafe(SoundCue cue, bool loop = false) {
+			if (Instance != null)
+				return Instance.PlayEffect(cue, loop);
 
 			return SoundHandle.NullHandle;
 		}
