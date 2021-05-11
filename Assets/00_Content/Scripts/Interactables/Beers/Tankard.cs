@@ -27,8 +27,13 @@ namespace Interactables.Beers {
 		protected override void Start() {
 			base.Start();
 			IsFull = IsFull;
-		}
 
+		}
+		public override void Respawn() {
+			base.Respawn();
+			//Empties out beer tankards between rounds
+			IsFull = false;
+		}
 		protected override void OnPlace() {
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_TankardPlace);
 		}

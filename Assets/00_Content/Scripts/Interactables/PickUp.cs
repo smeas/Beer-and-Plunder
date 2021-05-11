@@ -13,8 +13,6 @@ namespace Interactables {
 		[SerializeField] protected Collider objectCollider;
 
 		protected new Rigidbody rigidbody;
-		private Vector3 startPosition;
-		private Quaternion startRotation;
 		private bool isBeingCarried;
 
 		protected bool IsMultiCarried { get; set; }
@@ -26,9 +24,6 @@ namespace Interactables {
 
 		protected virtual void Start() {
 			rigidbody = GetComponent<Rigidbody>();
-
-			startPosition = transform.position;
-			startRotation = transform.rotation;
 
 			if (StartItemSlot == null)
 				StartItemSlot = CurrentItemSlot;
@@ -116,21 +111,9 @@ namespace Interactables {
 			}
 		}
 
-		public void Respawn() {
+		public virtual void Respawn() {
+			//Unsure if we really want/need this check anymore
 			if (isBeingCarried) return;
-
-			transform.SetPositionAndRotation(startPosition, startRotation);
-
-			// Put the item back into its original slot
-			if (StartItemSlot != null) {
-				if (StartItemSlot.HasItemInSlot)
-					StartItemSlot.ReleaseItem();
-
-				StartItemSlot.PlaceItem(this);
-			}
-			else if (CurrentItemSlot != null) {
-				CurrentItemSlot.ReleaseItem();
-			}
 		}
 
 		protected virtual void OnPlace() {}
