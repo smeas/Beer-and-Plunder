@@ -13,6 +13,7 @@ namespace Audio {
 		[SerializeField] private int effectVoiceCount = 16;
 
 		private AudioSourcePool soundEffectPool;
+		private AudioSource musicIntroSource;
 		private AudioSource musicSource;
 
 		private Dictionary<SoundEffect, SoundCue> soundEffectCache = new Dictionary<SoundEffect, SoundCue>();
@@ -46,6 +47,10 @@ namespace Audio {
 			DontDestroyOnLoad(gameObject);
 
 			soundEffectPool = new AudioSourcePool(effectSourcePrefab, effectVoiceCount, transform, "Sound Effects");
+
+			musicIntroSource = Instantiate(musicSourcePrefab, transform);
+			musicIntroSource.name = "Music Intro Source";
+
 			musicSource = Instantiate(musicSourcePrefab, transform);
 			musicSource.name = "Music Source";
 		}
@@ -71,32 +76,51 @@ namespace Audio {
 		/// <param name="fadeDuration">The duration of the fade.</param>
 		/// <param name="restart">Whether to restart playback if the same track is already playing.</param>
 		/// <param name="loop">Whether to loop the track.</param>
-		public void PlayMusic(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f, bool restart = false, bool loop = true) {
-			if (!restart && musicSource.clip == musicClip && musicSource.isPlaying)
-				return;
+		public void PlayMusic(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		                      bool restart = false, bool loop = true) {
+			PlayMusic(null, musicClip, fade, fadeDuration, restart, loop);
+		}
+
+		public void PlayMusic(MusicCue cue, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		                      bool restart = false, bool loop = true) {
+			PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
+		}
+
+		private void PlayMusic(AudioClip introClip, AudioClip musicClip, FadeKind fade = FadeKind.NoFade,
+		                       float fadeDuration = 0f, bool restart = false, bool loop = true) {
+			if (!restart
+				&& musicIntroSource.clip == introClip && musicSource.clip == musicClip
+				&& (musicIntroSource.isPlaying || musicSource.isPlaying)) return;
 
 			StopFadingMusic();
 
 			switch (fade) {
 				case FadeKind.OutIn:
-					StartCoroutine(CoFadeMusicOutIn(musicClip, fadeDuration, loop));
+					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop));
 					break;
 				case FadeKind.In:
+					musicIntroSource.Stop();
 					musicSource.Stop();
-					StartCoroutine(CoFadeMusicOutIn(musicClip, fadeDuration, loop));
+					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop));
 					break;
 				default:
-					musicSource.clip = musicClip;
-					musicSource.loop = loop;
-					musicSource.volume = 1f;
-					musicSource.Play();
+					musicIntroSource.Stop();
+					musicSource.Stop();
+					PlayMusicNowInternal(introClip, musicClip, loop, 1f);
 					break;
 			}
 		}
 
-		public void StopMusic() {
+		public void StopMusic(float fadeDuration = 0f) {
 			StopFadingMusic();
-			musicSource.Stop();
+
+			if (fadeDuration > 0f) {
+				StartCoroutine(CoFadeMusicOut(fadeDuration));
+			}
+			else {
+				musicIntroSource.Stop();
+				musicSource.Stop();
+			}
 		}
 
 		public void FadeOutAndStopMusic(float duration) {
@@ -122,36 +146,57 @@ namespace Audio {
 			StopAllCoroutines();
 		}
 
-		private IEnumerator CoFadeMusicOut(float duration) {
-			for (float time = duration; time >= 0f; time -= Time.unscaledDeltaTime) {
-				musicSource.volume = time / duration;
-				yield return null;
-			}
-
-			musicSource.Stop();
-		}
-
-		private IEnumerator CoFadeMusicIn(float duration) {
-			for (float time = 0f; time < duration; time += Time.unscaledDeltaTime) {
-				musicSource.volume = time / duration;
-				yield return null;
-			}
-		}
-
-		private IEnumerator CoFadeMusicOutIn(AudioClip newMusicClip, float duration, bool loop) {
-			bool alreadyPlaying = musicSource.isPlaying;
+		private IEnumerator CoFadeMusicOutIn(AudioClip newIntroClip, AudioClip newMusicClip, float duration, bool loop) {
+			bool alreadyPlaying = musicSource.isPlaying || musicIntroSource.isPlaying;
 
 			if (alreadyPlaying) {
 				yield return CoFadeMusicOut(duration / 2f);
 			}
 
 			// Start new track
-			musicSource.clip = newMusicClip;
-			musicSource.loop = loop;
-			musicSource.volume = 0f;
-			musicSource.Play();
+			PlayMusicNowInternal(newIntroClip, newMusicClip, loop, 0f);
 
 			yield return CoFadeMusicIn(alreadyPlaying ? duration / 2f : duration);
+		}
+
+		private IEnumerator CoFadeMusicOut(float duration) {
+			for (float time = duration; time >= 0f; time -= Time.unscaledDeltaTime) {
+				float volume = time / duration;
+				musicIntroSource.volume = volume;
+				musicSource.volume = volume;
+
+				yield return null;
+			}
+
+			musicIntroSource.Stop();
+			musicSource.Stop();
+		}
+
+		private IEnumerator CoFadeMusicIn(float duration) {
+			for (float time = 0f; time < duration; time += Time.unscaledDeltaTime) {
+				float volume = time / duration;
+				musicIntroSource.volume = volume;
+				musicSource.volume = volume;
+
+				yield return null;
+			}
+		}
+
+		private void PlayMusicNowInternal(AudioClip introClip, AudioClip musicClip, bool loop, float startVolume) {
+			musicIntroSource.clip = introClip;
+			musicIntroSource.volume = startVolume;
+
+			musicSource.clip = musicClip;
+			musicSource.loop = loop;
+			musicSource.volume = startVolume;
+
+			if (introClip != null) {
+				musicIntroSource.Play();
+				musicSource.PlayDelayed(introClip.length);
+			}
+			else {
+				musicSource.Play();
+			}
 		}
 
 
@@ -183,6 +228,12 @@ namespace Audio {
 		                                 bool restart = false, bool loop = true) {
 			if (Instance != null)
 				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop);
+		}
+
+		public static void PlayMusicSafe(MusicCue cue, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		                                 bool restart = false, bool loop = true) {
+			if (Instance != null)
+				Instance.PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
 		}
 
 		public static void StopMusicSafe() {
