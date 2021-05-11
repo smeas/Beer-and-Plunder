@@ -3947,7 +3947,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
       propertyPath: requiredMoney
-      value: 150
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
       propertyPath: roundDuration
@@ -5388,6 +5388,10 @@ PrefabInstance:
     - target: {fileID: 2872045016200492074, guid: f69a5d19fccb9d0429dc70d49e09a553, type: 3}
       propertyPath: m_Name
       value: Tavern
+      objectReference: {fileID: 0}
+    - target: {fileID: 7468624116003583018, guid: f69a5d19fccb9d0429dc70d49e09a553, type: 3}
+      propertyPath: startingMoney
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f69a5d19fccb9d0429dc70d49e09a553, type: 3}
