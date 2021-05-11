@@ -51,6 +51,13 @@ namespace Interactables.Weapons {
 			isAttacking = true;
 		}
 
+		private void OnTriggerEnter(Collider other) {
+			if (isAttacking) {
+				IHittable hittable = other.GetComponentInParent<IHittable>();
+				hittable?.Hit(this);
+			}
+		}
+
 		//Run from AnimationEvent
 		public void EndAttack() {
 			isAttacking = false;

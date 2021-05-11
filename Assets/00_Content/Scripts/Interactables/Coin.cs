@@ -2,6 +2,7 @@
 using Audio;
 using Taverns;
 using UnityEngine;
+using World;
 
 namespace Interactables {
 	[RequireComponent(typeof(Rigidbody))]
@@ -57,7 +58,11 @@ namespace Interactables {
 			bool pickedUp = false;
 
 			if (other.attachedRigidbody.CompareTag("Goblin")) {
-				pickedUp = true;
+				Goblin goblin = other.attachedRigidbody.GetComponent<Goblin>();
+				if (goblin.CanPickUpCoins) {
+					pickedUp = true;
+					goblin.Coins++;
+				}
 			}
 			else if (other.attachedRigidbody.CompareTag("Player")) {
 				pickedUp = true;

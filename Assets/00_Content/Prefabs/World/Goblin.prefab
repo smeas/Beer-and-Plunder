@@ -44,6 +44,51 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5958113036321908842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8419802522636411877}
+  - component: {fileID: 7019287033213576226}
+  m_Layer: 17
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8419802522636411877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5958113036321908842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6498638119708053909}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7019287033213576226
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5958113036321908842}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6498638119164078751
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,7 +101,7 @@ GameObject:
   - component: {fileID: 6498638119164078739}
   - component: {fileID: 6498638119164078736}
   - component: {fileID: 6498638119164078737}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +197,7 @@ GameObject:
   - component: {fileID: 6498638119708053906}
   - component: {fileID: 4232883466264672681}
   - component: {fileID: 6498638119708053907}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Goblin
   m_TagString: Goblin
   m_Icon: {fileID: 0}
@@ -172,6 +217,7 @@ Transform:
   m_Children:
   - {fileID: 6498638119164078750}
   - {fileID: 5787539306535003435}
+  - {fileID: 8419802522636411877}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -187,7 +233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddec3822f97e46de8015877e91a3c457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
   coinAttractionForce: 30
+  coinDropDelay: 0.2
 --- !u!54 &4232883466264672681
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -214,7 +262,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 7
+  m_Speed: 4
   m_Acceleration: 32
   avoidancePriority: 50
   m_AngularSpeed: 120
