@@ -29,8 +29,8 @@ namespace Interactables.Beers {
 			IsFull = IsFull;
 
 		}
-		public override void Respawn() {
-			base.Respawn();
+		public override void RoundOverReset() {
+			base.RoundOverReset();
 			//Empties out beer tankards between rounds
 			IsFull = false;
 		}

@@ -89,7 +89,7 @@ namespace Player {
 			PickUp item = pickedUpItem;
 
 			DropItem();
-			item.Respawn();
+			item.RoundOverReset();
 		}
 
 		public void OnClosestPickUpChange(PickUp pickUp) { }

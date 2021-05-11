@@ -15,6 +15,9 @@ namespace Interactables {
 		protected new Rigidbody rigidbody;
 		private bool isBeingCarried;
 
+		private Vector3 startPosition;
+		private Quaternion startRotation;
+
 		protected bool IsMultiCarried { get; set; }
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
@@ -25,11 +28,14 @@ namespace Interactables {
 		protected virtual void Start() {
 			rigidbody = GetComponent<Rigidbody>();
 
+			startPosition = transform.position;
+			startRotation = transform.rotation;
+
 			if (StartItemSlot == null)
 				StartItemSlot = CurrentItemSlot;
 
 			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += Respawn;
+				RoundController.Instance.OnRoundOver += RoundOverReset;
 		}
 
 		protected virtual void OnDestroy() {
@@ -111,9 +117,28 @@ namespace Interactables {
 			}
 		}
 
-		public virtual void Respawn() {
-			//Unsure if we really want/need this check anymore
+		public virtual void RoundOverReset() {
 			if (isBeingCarried) return;
+
+		}
+
+		public virtual void Respawn() {
+
+			if (isBeingCarried) return;
+
+			transform.SetPositionAndRotation(startPosition, startRotation);
+
+			// Put the item back into its original slot
+			if (StartItemSlot != null) {
+				if (StartItemSlot.HasItemInSlot)
+					StartItemSlot.ReleaseItem();
+
+				StartItemSlot.PlaceItem(this);
+			} else if (CurrentItemSlot != null) {
+				CurrentItemSlot.ReleaseItem();
+			}
+
+			RoundOverReset();
 		}
 
 		protected virtual void OnPlace() {}
