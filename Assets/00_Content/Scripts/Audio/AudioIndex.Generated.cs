@@ -1,6 +1,7 @@
 ﻿
 namespace Audio {
 	public enum SoundEffect {
+		FoodReady,
 		Gameplay_GuestEnter,
 		Gameplay_RoundLost,
 		Gameplay_RoundWon,
@@ -17,6 +18,7 @@ namespace Audio {
 
 	public static partial class AudioIndex {
 		private static string[] soundEffectPaths = {
+			"Audio/SoundEffects/FoodReady",
 			"Audio/SoundEffects/Gameplay/GuestEnter",
 			"Audio/SoundEffects/Gameplay/RoundLost",
 			"Audio/SoundEffects/Gameplay/RoundWon",

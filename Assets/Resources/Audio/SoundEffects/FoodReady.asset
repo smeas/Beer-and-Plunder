@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
-  m_Name: GuestEnter
+  m_Name: FoodReady
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: b2f7acaa93b00a54d9f8a73fdd3b57c0, type: 3}
+  - {fileID: 8300000, guid: d5995f258102a5c46855b2910276bd8d, type: 3}
   volume: 0.5
   pitch: 1

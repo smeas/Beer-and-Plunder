@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
-  m_Name: GuestEnter
+  m_Script: {fileID: 11500000, guid: 0565264e5298b694981b94bca1feaa26, type: 3}
+  m_Name: Food
   m_EditorClassIdentifier: 
-  audioClips:
-  - {fileID: 8300000, guid: b2f7acaa93b00a54d9f8a73fdd3b57c0, type: 3}
-  volume: 0.5
-  pitch: 1
+  type: 4

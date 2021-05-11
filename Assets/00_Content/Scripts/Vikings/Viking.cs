@@ -6,6 +6,7 @@ using Audio;
 using Extensions;
 using Interactables;
 using Interactables.Beers;
+using Interactables.Kitchens;
 using Interactables.Weapons;
 using Player;
 using Rounds;
@@ -27,6 +28,7 @@ namespace Vikings {
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public Tankard tankardPrefab;
+		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;

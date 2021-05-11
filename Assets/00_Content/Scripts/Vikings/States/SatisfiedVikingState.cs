@@ -1,6 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using Interactables;
 using Interactables.Beers;
+using Interactables.Kitchens;
 using Rounds;
 using UnityEngine;
 using Utilities;
@@ -39,6 +40,8 @@ namespace Vikings.States {
 			if (givenItem != null) {
 				if (givenItem is Tankard tankard)
 					tankard.IsFull = false;
+				if (givenItem is Food food)
+					return;
 
 				givenItem.gameObject.SetActive(true);
 				givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
@@ -105,7 +108,6 @@ namespace Vikings.States {
 
 		private void DropCoin() {
 			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-
 			coinsToDrop--;
 		}
 
