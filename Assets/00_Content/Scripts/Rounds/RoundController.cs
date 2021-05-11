@@ -125,10 +125,6 @@ namespace Rounds {
 
 			if (Tavern.Instance != null)
 				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
-
-			foreach (Table table in Table.AllTables) {
-				table.Repair();
-			}
 		}
 
 		private void HandleOnTavernDestroyed() {

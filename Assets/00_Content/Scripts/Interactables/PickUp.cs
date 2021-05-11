@@ -13,9 +13,10 @@ namespace Interactables {
 		[SerializeField] protected Collider objectCollider;
 
 		protected new Rigidbody rigidbody;
+		private bool isBeingCarried;
+
 		private Vector3 startPosition;
 		private Quaternion startRotation;
-		private bool isBeingCarried;
 
 		protected bool IsMultiCarried { get; set; }
 		public ItemSlot StartItemSlot { private get; set; }
@@ -34,7 +35,7 @@ namespace Interactables {
 				StartItemSlot = CurrentItemSlot;
 
 			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += Respawn;
+				RoundController.Instance.OnRoundOver += RoundOverReset;
 		}
 
 		protected virtual void OnDestroy() {
@@ -116,7 +117,13 @@ namespace Interactables {
 			}
 		}
 
-		public void Respawn() {
+		public virtual void RoundOverReset() {
+			if (isBeingCarried) return;
+
+		}
+
+		public virtual void Respawn() {
+
 			if (isBeingCarried) return;
 
 			transform.SetPositionAndRotation(startPosition, startRotation);
@@ -127,10 +134,11 @@ namespace Interactables {
 					StartItemSlot.ReleaseItem();
 
 				StartItemSlot.PlaceItem(this);
-			}
-			else if (CurrentItemSlot != null) {
+			} else if (CurrentItemSlot != null) {
 				CurrentItemSlot.ReleaseItem();
 			}
+
+			RoundOverReset();
 		}
 
 		protected virtual void OnPlace() {}
