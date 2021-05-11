@@ -15,7 +15,7 @@ namespace Audio {
 		private AudioSourcePool soundEffectPool;
 		private AudioSource musicSource;
 
-		private Dictionary<string, SoundCue> soundEffectCache = new Dictionary<string, SoundCue>();
+		private Dictionary<SoundEffect, SoundCue> soundEffectCache = new Dictionary<SoundEffect, SoundCue>();
 
 		/// <summary>
 		/// Linear master volume.
@@ -101,16 +101,15 @@ namespace Audio {
 		}
 
 		public SoundCue GetSoundEffect(SoundEffect effect) {
-			string effectPath = AudioIndex.GetPath(effect);
-			SoundCue cue;
-
-			if (soundEffectCache.TryGetValue(effectPath, out cue)) {
+			if (soundEffectCache.TryGetValue(effect, out SoundCue cue)) {
 				return cue;
 			}
 			else {
+				string effectPath = AudioIndex.GetPath(effect);
 				cue = Resources.Load<SoundCue>(effectPath);
 				Debug.Assert(cue != null, "Loaded sound cue was null");
-				soundEffectCache.Add(effectPath, cue);
+
+				soundEffectCache.Add(effect, cue);
 				return cue;
 			}
 		}

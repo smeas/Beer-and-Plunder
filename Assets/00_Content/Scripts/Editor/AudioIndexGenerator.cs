@@ -12,13 +12,15 @@ public class AudioIndexGenerator {
 	private const string GeneratedFilePath = "00_Content/Scripts/Audio/AudioIndex.Generated.cs";
 
 	private const string Template = @"
+using System.Collections.Generic;
+
 namespace Audio {{
 	public enum SoundEffect {{
 {0}
 	}}
 
 	public static partial class AudioIndex {{
-		private static string[] soundEffectPaths = {{
+		private static Dictionary<int, string> soundEffectPaths = new Dictionary<int, string> {{
 {1}
 		}};
 	}}
@@ -27,11 +29,21 @@ namespace Audio {{
 	[MenuItem("Tools/Generate Audio Index")]
 	public static void GenerateIndex() {
 		SoundCue[] soundCues = Resources.LoadAll<SoundCue>(SoundEffectsResourcePath);
-		string[] resourcePaths = soundCues.Select(GetResourcePath).OrderBy(s => s).ToArray();
+		string[] resourcePaths = soundCues.Select(GetResourcePath).ToArray();
+		int[] assetIds = soundCues.Select(GetAssetGuidHash).ToArray();
 
-		string pathList = string.Join(",\r\n", resourcePaths.Select(str => Indent(Quote(str), 3)));
-		string enumList = string.Join(",\r\n", resourcePaths.Select(MakeSafeNameFromPath).Select(s => Indent(s, 2)));
-		string generated = string.Format(Template, enumList, pathList);
+		string enumContent =
+			string.Join(",\r\n",
+			            resourcePaths.Zip(assetIds, (path, id) => $"{MakeSafeNameFromPath(path)} = {id}")
+				            .Select(s => Indent(s, 2)));
+
+		string dictionaryContent =
+			string.Join(",\r\n",
+			            resourcePaths
+				            .Zip(assetIds, (path, id) => $"{{ {id}, {Quote(path)} }}")
+				            .Select(str => Indent(str, 3)));
+
+		string generated = string.Format(Template, enumContent, dictionaryContent);
 
 		string outputPath = Path.Combine(Application.dataPath, GeneratedFilePath);
 		File.WriteAllText(outputPath, generated, Encoding.UTF8);
@@ -46,6 +58,11 @@ namespace Audio {{
 
 		assetPath = Path.ChangeExtension(assetPath, null);
 		return assetPath.Substring(ResourcePrefix.Length);
+	}
+
+	private static int GetAssetGuidHash(Object asset) {
+		string assetPath = AssetDatabase.GetAssetPath(asset);
+		return AssetDatabase.GUIDFromAssetPath(assetPath).GetHashCode();
 	}
 
 	private static string MakeSafeNameFromPath(string path) {
