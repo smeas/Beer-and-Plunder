@@ -33,6 +33,7 @@ namespace Player {
 		public void EndInteract() {
 			if (currentInteractable != null) {
 				currentInteractable.CancelInteraction(playerRoot, playerPickUp.PickedUpItem);
+				currentInteractable = null;
 			}
 		}
 

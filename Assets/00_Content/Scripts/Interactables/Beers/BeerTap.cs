@@ -166,6 +166,7 @@ namespace Interactables.Beers {
 
 			pourSoundHandle?.FadeOutAndStop(0.2f);
 			pouringPlayer.CanMove = true;
+			pouringPlayer = null;
 		}
 
 		public void Refill() {
