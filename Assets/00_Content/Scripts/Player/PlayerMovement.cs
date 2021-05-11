@@ -15,11 +15,11 @@ namespace Player {
 
 		private Vector2 moveInput;
 		private Vector2 movementDirection;
-		private Vector3 movement;
-		private float velocity;
+		private float speed;
 
-		public float Velocity => velocity;
+		public float Speed => speed;
 		public Vector2 MoveInput => moveInput;
+		public Vector3 Velocity => new Vector3(movementDirection.x * speed, 0f, movementDirection.y * speed);
 
 		public float SpeedMultiplier {
 			get => speedMultiplier;
@@ -55,19 +55,19 @@ namespace Player {
 				if (ShouldCalculateMovementDirection)
 					movementDirection = accelerationInput * (1f / accelerationMagnitude);
 
-				velocity = Mathf.Min(maxVelocity * moveInput.magnitude, velocity + accelerationMagnitude);
+				speed = Mathf.Min(maxVelocity * moveInput.magnitude, speed + accelerationMagnitude);
 			}
 			else {
-				velocity = Mathf.Max(0, velocity - deceleration * Time.deltaTime);
+				speed = Mathf.Max(0, speed - deceleration * Time.deltaTime);
 			}
 
 			ApplyMovement();
 		}
 
 		private void ApplyMovement() {
-			if (velocity == 0 || movementDirection == Vector2.zero) return;
+			if (speed == 0 || movementDirection == Vector2.zero) return;
 
-			Vector2 movement2 = movementDirection * (velocity * speedMultiplier * Time.deltaTime);
+			Vector2 movement2 = movementDirection * (speed * speedMultiplier * Time.deltaTime);
 			if (movement2 == Vector2.zero)
 				return;
 

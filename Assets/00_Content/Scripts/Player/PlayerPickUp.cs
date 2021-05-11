@@ -8,19 +8,22 @@ namespace Player {
 
 		[SerializeField] private Transform playerGrabTransform;
 		[SerializeField] private GameObject playerRoot;
+		[SerializeField] private float throwStrengthMultiplier = 1f;
 
+		private PlayerMovement playerMovement;
 		private InteractionDetector detector;
 		private PickUp pickedUpItem;
 		private bool isUsingItem;
 
 		public event Action<PickUp> OnItemPickedUp;
 		public event Action<PickUp> OnItemDropped;
-		public Transform PlayerGrabTransform => playerGrabTransform; 
+		public Transform PlayerGrabTransform => playerGrabTransform;
 
 		public PickUp PickedUpItem => pickedUpItem;
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
+			playerMovement = GetComponentInParent<PlayerMovement>();
 		}
 
 		public void PickUpClosestItem() {
@@ -30,8 +33,7 @@ namespace Player {
 
 			pickedUpItem = detector.ClosestPickUp;
 
-			if (pickedUpItem.PickUpItem(playerGrabTransform))
-			{
+			if (pickedUpItem.PickUpItem(playerGrabTransform)) {
 				OnItemPickedUp?.Invoke(pickedUpItem);
 			}
 
@@ -52,6 +54,10 @@ namespace Player {
 
 			pickedUpItem.DropItem(playerGrabTransform);
 			OnItemDropped?.Invoke(pickedUpItem);
+
+			Rigidbody body = pickedUpItem.GetComponent<Rigidbody>();
+			if (body != null)
+				body.velocity = playerMovement.Velocity * throwStrengthMultiplier;
 
 			pickedUpItem = null;
 

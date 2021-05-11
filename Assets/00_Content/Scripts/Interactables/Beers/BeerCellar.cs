@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Interactables.Beers {
-	public class BeerCellar : Interactable {
+	public class BeerCellar : MonoBehaviour {
 		[SerializeField] private BeerBarrel beerBarrelPrefab;
 		[SerializeField] private ItemSlot barrelSpawnSlot;
 
