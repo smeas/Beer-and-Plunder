@@ -51,12 +51,22 @@ namespace Interactables {
 		}
 
 		private void OnTriggerEnter(Collider other) {
+			if (other.isTrigger) return;
 			if (other.attachedRigidbody == null) return;
 
-			if (other.attachedRigidbody.CompareTag("Player")) {
+			bool pickedUp = false;
+
+			if (other.attachedRigidbody.CompareTag("Goblin")) {
+				pickedUp = true;
+			}
+			else if (other.attachedRigidbody.CompareTag("Player")) {
+				pickedUp = true;
+
 				if (Tavern.Instance != null)
 					Tavern.Instance.EarnsMoney(value);
+			}
 
+			if (pickedUp) {
 				AudioManager.PlayEffectSafe(SoundEffect.Player_PickUpCoin);
 				Destroy(gameObject);
 			}

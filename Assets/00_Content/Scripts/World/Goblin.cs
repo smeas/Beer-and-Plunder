@@ -6,8 +6,9 @@ using Utilities;
 
 namespace World {
 	public class Goblin : MonoBehaviour {
-		private NavMeshAgent agent;
+		[SerializeField] private float coinAttractionForce = 30f;
 
+		private NavMeshAgent agent;
 		private Coin[] targets;
 		private State state = State.None;
 		private Vector3 exitPosition;
@@ -55,15 +56,29 @@ namespace World {
 		}
 
 		private void NextTarget() {
-			currentTargetIndex++;
-			if (currentTargetIndex < targets.Length) {
-				// TODO: Do something about result.
-				agent.SetDestination(targets[currentTargetIndex].transform.position);
-				state = State.Running;
+			while (true) {
+				currentTargetIndex++;
+				if (currentTargetIndex < targets.Length) {
+					if (targets[currentTargetIndex] == null)
+						continue;
+
+					agent.SetDestination(targets[currentTargetIndex].transform.position);
+					state = State.Running;
+				}
+				else {
+					agent.SetDestination(exitPosition);
+					state = State.Leaving;
+				}
+
+				break;
 			}
-			else {
-				agent.SetDestination(exitPosition); // TODO: Failsafe?
-				state = State.Leaving;
+		}
+
+		private void OnTriggerStay(Collider other) {
+			// Attract dem coins
+			if (!other.isTrigger && other.CompareTag("Coin")) {
+				Vector3 attractDirection = (transform.position - other.transform.position).normalized;
+				other.attachedRigidbody.AddForce(attractDirection * coinAttractionForce);
 			}
 		}
 
