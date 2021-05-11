@@ -310,7 +310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3533185723031067887, guid: cae821057f76de24fa9ec96856889c72, type: 3}
       propertyPath: maxVikings
-      value: 3
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 6367915420586774654, guid: cae821057f76de24fa9ec96856889c72, type: 3}
       propertyPath: m_RootOrder
