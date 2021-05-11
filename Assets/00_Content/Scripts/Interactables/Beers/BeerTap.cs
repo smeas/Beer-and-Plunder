@@ -65,9 +65,6 @@ namespace Interactables.Beers {
 			if (isPouring || beerAmount <= 0)
 				return false;
 
-			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
-				return false;
-
 			if (!(item is Tankard tankard) || tankard.IsFull)
 				return false;
 
@@ -93,21 +90,11 @@ namespace Interactables.Beers {
 
 			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y) {
 				FillBeer();
-			}
-			else {
-				if (Tavern.Instance != null)
-					Tavern.Instance.EarnsMoney(beerData.cost);
-
-				ResetPouring();
-			}
+			} else { ResetPouring(); }
 		}
 
 		private IEnumerator PouringBeer() {
 			pourSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.PourBeer);
-
-			if (Tavern.Instance != null) {
-				Tavern.Instance.SpendsMoney(beerData.cost);
-			}
 
 			fillProgressBar.Show();
 			pourProgressBar.Show();
