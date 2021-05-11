@@ -45,7 +45,7 @@ namespace Vikings.States {
 			}
 
 			followingTimer += Time.deltaTime;
-			if (followingTimer >= viking.Data.MaxFollowingDuration) {
+			if (!viking.Data.FollowPlayerIndefinitely && followingTimer >= viking.Data.MaxFollowingDuration) {
 				Chair chair = Table.GetRandomEmptyChair();
 
 				if (chair != null)
