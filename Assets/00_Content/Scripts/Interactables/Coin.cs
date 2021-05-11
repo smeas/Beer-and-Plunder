@@ -1,10 +1,13 @@
-﻿using Audio;
+﻿using System.Collections.Generic;
+using Audio;
 using Taverns;
 using UnityEngine;
 
 namespace Interactables {
 	[RequireComponent(typeof(Rigidbody))]
 	public class Coin : MonoBehaviour {
+		public static HashSet<Coin> AllCoins { get; } = new HashSet<Coin>();
+
 		[SerializeField] private int value = 1;
 		[SerializeField] private float duration;
 
@@ -29,6 +32,14 @@ namespace Interactables {
 
 			rb.AddForce(direction, ForceMode.Impulse);
 			rb.AddRelativeTorque(direction, ForceMode.Impulse);
+		}
+
+		private void OnEnable() {
+			AllCoins.Add(this);
+		}
+
+		private void OnDisable() {
+			AllCoins.Remove(this);
 		}
 
 		private void Update() {
