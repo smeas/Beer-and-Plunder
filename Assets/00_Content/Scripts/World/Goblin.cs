@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Audio;
 using Interactables;
@@ -21,6 +22,8 @@ namespace World {
 
 		public int Coins { get; set; }
 		public bool CanPickUpCoins => state != State.Fleeing && state != State.None;
+
+		public event Action<Goblin> OnLeave;
 
 		private void Awake() {
 			agent = GetComponent<NavMeshAgent>();
@@ -47,9 +50,13 @@ namespace World {
 				if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.desiredVelocity == Vector3.zero) {
 					state = State.None;
 
-					while (Coins > 0)
-						DropCoin();
+					if (state == State.Fleeing) {
+						// Drop any excess coins
+						while (Coins > 0)
+							DropCoin();
+					}
 
+					OnLeave?.Invoke(this);
 					Destroy(gameObject);
 				}
 			}
