@@ -56,8 +56,6 @@ namespace UI {
 		public void Options() { /* TODO */ }
 
 		public void ExitToMenu() {
-			// FIXME: This resumes the game while doing the scene transition which might cause problems.
-			Time.timeScale = 1f;
 			SceneLoadManager.Instance.LoadMainMenu();
 		}
 	}
