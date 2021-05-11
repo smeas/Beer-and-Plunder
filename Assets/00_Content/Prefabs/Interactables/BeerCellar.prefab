@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 943735487181963073}
   - component: {fileID: 943735487181963074}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BeerCellar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 943735487355695904}
   - component: {fileID: 943735487355695919}
   - component: {fileID: 943735487355695918}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
