@@ -31,13 +31,13 @@ namespace Taverns {
 		public int Money {
 			get => money;
 			set {
-				int newMoney = Mathf.RoundToInt(value);
+				int newMoney = value;
 				
-				if (money == newMoney)
-					return;
-
 				if (newMoney < 0)
 					newMoney = 0;
+
+				if (money == newMoney)
+					return;
 
 				money = newMoney;
 				OnMoneyChanges?.Invoke();
@@ -50,8 +50,8 @@ namespace Taverns {
 			Money = startingMoney;
 		}
 
-		public void EarnsMoney(float moneyEarned) {
-			Money += Mathf.RoundToInt(moneyEarned);
+		public void EarnsMoney(int moneyEarned) {
+			Money += moneyEarned;
 		}
 
 		public void TakesDamage(float damage) {

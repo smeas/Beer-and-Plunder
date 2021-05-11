@@ -76,8 +76,6 @@ namespace Interactables {
 		}
 
 		private void StartRepairing(GameObject player, RepairTool tool) {
-			if (Tavern.Instance != null && RoundController.Instance != null) {
-
 				float repairTime = RoundController.Instance != null
 					? RoundController.Instance.CurrentDifficulty.tableRepairTime
 					: 5f;
@@ -85,11 +83,9 @@ namespace Interactables {
 				tool.RepairDone += HandleRepairDone;
 
 				player.GetComponent<PlayerMovement>().CanMove = false;
-			}
 		}
 
 		private void EndRepairing(GameObject player, RepairTool tool) {
-			if (tool.IsRepairing)
 
 			tool.EndRepairing();
 			tool.RepairDone -= HandleRepairDone;
