@@ -6,6 +6,7 @@ using Rounds;
 using Taverns;
 using UnityEngine;
 using Vikings;
+using Random = UnityEngine.Random;
 
 namespace Interactables {
 	public class Table : Interactable {
@@ -137,6 +138,22 @@ namespace Interactables {
 
 			GetComponentInChildren<MeshRenderer>().enabled = true;
 			Repaired?.Invoke();
+		}
+
+		public static Chair GetRandomEmptyChair() {
+			if (AllTables.Count == 0)
+				return null;
+
+			Table[] freeTables = AllTables.Where(tbl => !tbl.IsFull && !tbl.IsDestroyed).ToArray();
+			if (freeTables.Length == 0)
+				return null;
+
+			Table table = freeTables[Random.Range(0, freeTables.Length)];
+			Chair[] freeChairs = table.Chairs.Where(chr => !chr.IsOccupied).ToArray();
+			if (freeChairs.Length == 0)
+				return null;
+
+			return freeChairs[Random.Range(0, freeChairs.Length)];
 		}
 	}
 }

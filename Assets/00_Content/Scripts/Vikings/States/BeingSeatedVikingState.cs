@@ -12,8 +12,8 @@ namespace Vikings.States {
 
 		private readonly GameObject player;
 		private GameObject highlight;
-		private NavMeshAgent navMeshAgent;
 		private float pathTimer;
+		private float followingTimer;
 
 		public BeingSeatedVikingState(Viking viking, GameObject player) : base(viking) {
 			this.player = player;
@@ -24,9 +24,8 @@ namespace Vikings.States {
 			highlight = Object.Instantiate(viking.beingSeatedHighlightPrefab, viking.transform);
 			highlight.transform.localPosition = Vector3.up * 2;
 
-			navMeshAgent = viking.GetComponent<NavMeshAgent>();
-			navMeshAgent.enabled = true;
-			_ = navMeshAgent.SetDestination(player.transform.position);
+			viking.NavMeshAgent.enabled = true;
+			_ = viking.NavMeshAgent.SetDestination(player.transform.position);
 			pathTimer = RecalculatePathDelay;
 
 			return this;
@@ -34,15 +33,25 @@ namespace Vikings.States {
 
 		public override void Exit() {
 			Object.Destroy(highlight);
-			navMeshAgent.enabled = false;
+			viking.NavMeshAgent.enabled = false;
 			player.GetComponent<PlayerSteward>().EndSeatingViking(viking);
 		}
 
 		public override VikingState Update() {
 			pathTimer -= Time.deltaTime;
-			if (navMeshAgent.enabled && pathTimer <= 0) {
+			if (viking.NavMeshAgent.enabled && pathTimer <= 0) {
 				pathTimer = RecalculatePathDelay;
-				_ = navMeshAgent.SetDestination(player.transform.position);
+				_ = viking.NavMeshAgent.SetDestination(player.transform.position);
+			}
+
+			followingTimer += Time.deltaTime;
+			if (followingTimer >= viking.Data.MaxFollowingDuration) {
+				Chair chair = Table.GetRandomEmptyChair();
+
+				if (chair != null)
+					return TakeSeat(chair);
+
+				return new LeavingVikingState(viking);
 			}
 
 			return this;
