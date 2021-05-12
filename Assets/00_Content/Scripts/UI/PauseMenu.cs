@@ -1,3 +1,4 @@
+using Rounds;
 using Scenes;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,7 +32,8 @@ namespace UI {
 		}
 
 		private void HandleOnPausePressed(InputAction.CallbackContext ctx) {
-			TogglePaused();
+			if (RoundController.Instance != null && RoundController.Instance.IsRoundActive)
+				TogglePaused();
 		}
 
 		public void TogglePaused() {

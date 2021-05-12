@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5052421120903231814}
   - component: {fileID: 861921683220472710}
+  - component: {fileID: 3164867396716084669}
   m_Layer: 5
   m_Name: ReadyCards
   m_TagString: Untagged
@@ -62,6 +63,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3164867396716084669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433276746739105506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4816c70c88314a18b2d0c2df676bf6dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  readyCardPrefab: {fileID: 4032176489409157392, guid: 1cd397298bd69a64eae88aae9dcc2d39, type: 3}
+  readyCardRoot: {fileID: 5052421120903231814}
 --- !u!1 &1623649542527638738
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,8 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundNumberText: {fileID: 1623649542739549821}
-  readyCardPrefab: {fileID: 4032176489409157392, guid: 1cd397298bd69a64eae88aae9dcc2d39, type: 3}
-  readyCardRoot: {fileID: 5052421120903231814}
+  readySystem: {fileID: 3164867396716084669}
 --- !u!1 &1623649542636538182
 GameObject:
   m_ObjectHideFlags: 0
