@@ -39,23 +39,15 @@ namespace Vikings.States {
 		}
 
 		private VikingState TakeRandomSeat() {
-			if (Table.AllTables.Count == 0)
-				return this;
+			Chair chair = Table.GetRandomEmptyChair();
 
-			Table[] freeTables = Table.AllTables.Where(tbl => !tbl.IsFull && !tbl.IsDestroyed).ToArray();
-			if (freeTables.Length == 0)
-				return this;
+			if (chair != null) {
+				viking.CurrentChair = chair;
+				chair.OnVikingTakeChair(viking);
+				return new TakingSeatVikingState(viking, chair);
+			}
 
-			Table table = freeTables[Random.Range(0, freeTables.Length)];
-			Chair[] freeChairs = table.Chairs.Where(chr => !chr.IsOccupied).ToArray();
-			if (freeChairs.Length == 0)
-				return this;
-
-			Chair chair = freeChairs[Random.Range(0, freeChairs.Length)];
-			viking.CurrentChair = chair;
-			chair.OnVikingTakeChair(viking);
-
-			return new TakingSeatVikingState(viking, chair);
+			return this;
 		}
 	}
 }

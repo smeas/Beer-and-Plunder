@@ -46,6 +46,7 @@ namespace Vikings {
 		private bool isAttacked;
 		private bool isAttacking;
 
+		public NavMeshAgent NavMeshAgent => navMeshAgent;
 		public VikingData Data => vikingData;
 		public DesireData[] Desires { get; private set; }
 		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
