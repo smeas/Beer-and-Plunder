@@ -109,7 +109,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pourTime: 1.5
-  perfectPourMinMax: {x: 0.6, y: 0.75}
+  perfectPourMinMax: {x: 0.5, y: 0.7}
+  perfectPourSize: 0.1
   maxBeerAmount: 10
   showFillThreshold: 3
   pourProgressBar: {fileID: 6462092414840764172}
