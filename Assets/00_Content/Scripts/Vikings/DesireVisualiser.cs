@@ -34,6 +34,7 @@ namespace Vikings {
 			desireBubble.SetActive(false);
 		}
 
+		//TODO -> Expose these values in inspector
 		public void SetDesireColor(float mood) {
 			if (mood > 40 && mood < 50)
 				desireBubbleImage.color = lowDesire;
