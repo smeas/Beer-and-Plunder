@@ -55,11 +55,12 @@ namespace Menu {
 					// Give the player a unique model
 					Debug.Assert(player.ModelRoot.childCount == 1, "Model root does not have exactly one child", player.ModelRoot);
 					Destroy(player.ModelRoot.GetChild(0).gameObject);
-					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponent<MeshRenderer>();
+					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponentInChildren<Renderer>();
 
 					player.PlayerColor = playerColors[i];
-					foreach (Material material in player.BodyMeshRenderer.materials)
-						material.color = playerColors[i];
+					// TODO: Indicate color in some other way?
+					// foreach (Material material in player.BodyMeshRenderer.materials)
+					// 	material.color = playerColors[i];
 
 					slot.JoinPlayer(player);
 
