@@ -44,12 +44,13 @@ namespace Player {
 		}
 
 		public void Respawn() {
+			//If the items resets first it allows the objects to be dropped & left behind when a new round starts.
+			GetComponentInChildren<PlayerPickUp>().RespawnHeldItem();
+
 			if (SpawnPoint != null)
 				transform.SetPositionAndRotation(SpawnPoint.position, SpawnPoint.rotation);
 			else
 				transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-			GetComponentInChildren<PlayerPickUp>().RespawnHeldItem();
 		}
 	}
 }

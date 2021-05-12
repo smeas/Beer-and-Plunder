@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GameOver : MonoBehaviour {
 	[SerializeField] private TMP_Text gameOverMessage;
-
 	[SerializeField] private string destructionMessage;
 	[SerializeField] private string bankrupcyMessage;
 	[SerializeField] private Selectable firstSelected;
