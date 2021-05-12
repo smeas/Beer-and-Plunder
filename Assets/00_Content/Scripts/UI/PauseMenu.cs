@@ -10,8 +10,8 @@ namespace UI {
 	public class PauseMenu : SingletonBehaviour<PauseMenu> {
 		[SerializeField] private InputActionProperty pauseAction;
 		[SerializeField] private Selectable firstSelected;
+		[SerializeField] private Canvas canvas;
 
-		private Canvas canvas;
 		private bool isPaused;
 
 		public bool IsPaused => isPaused;
@@ -19,8 +19,7 @@ namespace UI {
 		protected override void Awake() {
 			base.Awake();
 
-			canvas = GetComponent<Canvas>();
-			canvas.enabled = false;
+			canvas.gameObject.SetActive(false);
 			pauseAction.action.Enable();
 			pauseAction.action.performed += HandleOnPausePressed;
 		}
@@ -39,12 +38,12 @@ namespace UI {
 		public void TogglePaused() {
 			isPaused = !isPaused;
 			if (isPaused) {
-				canvas.enabled = true;
+				canvas.gameObject.SetActive(true);
 				EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
 				Time.timeScale = 0f;
 			}
 			else {
-				canvas.enabled = false;
+				canvas.gameObject.SetActive(false);
 				Time.timeScale = 1f;
 			}
 		}
