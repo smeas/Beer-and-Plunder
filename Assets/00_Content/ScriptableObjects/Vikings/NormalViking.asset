@@ -15,7 +15,7 @@ MonoBehaviour:
   startMood: 75
   moodDeclineRate: 1.5
   impatientMoodThreshold: 45
-  randomDesires: 0
+  randomDesires: 1
   desires:
   - {fileID: 11400000, guid: 51d4a8a04055f6c46a8e3ed6559b4e05, type: 2}
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}

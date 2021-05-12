@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Food
   m_EditorClassIdentifier: 
   type: 4
-  randomWeight: 100
+  randomWeight: 50
   visualisationPrefab: {fileID: 650769716771590968, guid: 5af7b1c81d5d366439ddead9cf3ab953, type: 3}
   isMaterialDesire: 1
   isOrder: 1
