@@ -76,12 +76,12 @@ namespace Audio {
 		/// <param name="fadeDuration">The duration of the fade.</param>
 		/// <param name="restart">Whether to restart playback if the same track is already playing.</param>
 		/// <param name="loop">Whether to loop the track.</param>
-		public void PlayMusic(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		public void PlayMusic(AudioClip musicClip, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
 		                      bool restart = false, bool loop = true) {
 			PlayMusic(null, musicClip, fade, fadeDuration, restart, loop);
 		}
 
-		public void PlayMusic(MusicCue cue, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		public void PlayMusic(MusicCue cue, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
 		                      bool restart = false, bool loop = true) {
 			if (cue != null)
 				PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
@@ -89,7 +89,7 @@ namespace Audio {
 				PlayMusic(null, null, fade, fadeDuration, restart, loop);
 		}
 
-		private void PlayMusic(AudioClip introClip, AudioClip musicClip, FadeKind fade = FadeKind.NoFade,
+		private void PlayMusic(AudioClip introClip, AudioClip musicClip, MusicFadeType fade = MusicFadeType.None,
 		                       float fadeDuration = 0f, bool restart = false, bool loop = true) {
 			if (!restart
 				&& musicIntroSource.clip == introClip && musicSource.clip == musicClip
@@ -98,15 +98,15 @@ namespace Audio {
 			StopFadingMusic();
 
 			if (introClip == null && musicClip == null) {
-				StopMusic(fade == FadeKind.OutIn ? fadeDuration : 0f);
+				StopMusic(fade == MusicFadeType.LinearOutIn ? fadeDuration : 0f);
 				return;
 			}
 
 			switch (fade) {
-				case FadeKind.OutIn:
+				case MusicFadeType.LinearOutIn:
 					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop));
 					break;
-				case FadeKind.In:
+				case MusicFadeType.LinearIn:
 					musicIntroSource.Stop();
 					musicSource.Stop();
 					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop));
@@ -235,13 +235,13 @@ namespace Audio {
 		}
 
 		/// <inheritdoc cref="PlayMusic"/>
-		public static void PlayMusicSafe(AudioClip musicClip, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		public static void PlayMusicSafe(AudioClip musicClip, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
 		                                 bool restart = false, bool loop = true) {
 			if (Instance != null)
 				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop);
 		}
 
-		public static void PlayMusicSafe(MusicCue cue, FadeKind fade = FadeKind.NoFade, float fadeDuration = 0f,
+		public static void PlayMusicSafe(MusicCue cue, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
 		                                 bool restart = false, bool loop = true) {
 			if (Instance != null)
 				Instance.PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
@@ -260,9 +260,18 @@ namespace Audio {
 		#endregion
 	}
 
-	public enum FadeKind {
-		NoFade,
-		OutIn,
-		In,
+	public enum MusicFadeType {
+		/// <summary>
+		/// No fade.
+		/// </summary>
+		None,
+		/// <summary>
+		/// Fade out the currently playing music if any, then fade in the new music.
+		/// </summary>
+		LinearOutIn,
+		/// <summary>
+		/// Stop the currently playing music if any, then fade in the new music.
+		/// </summary>
+		LinearIn,
 	}
 }

@@ -87,7 +87,7 @@ namespace Scenes {
 				beforeEnterScene?.Invoke();
 
 				if (switchMusic)
-					AudioManager.PlayMusicSafe(nextMusic, FadeKind.OutIn, transition.TransitionDuration / 2f);
+					AudioManager.PlayMusicSafe(nextMusic, MusicFadeType.LinearOutIn, transition.TransitionDuration / 2f);
 
 				// Reset time scale when loading a new scene
 				Time.timeScale = 1f;
@@ -102,7 +102,7 @@ namespace Scenes {
 			else {
 				// FIXME: How do we fade here?
 				if (switchMusic)
-					AudioManager.PlayMusicSafe(nextMusic, FadeKind.OutIn, 0.4f, restart: true);
+					AudioManager.PlayMusicSafe(nextMusic, MusicFadeType.LinearOutIn, 0.4f, restart: true);
 
 				BeforeEnterScene();
 				sceneInfo.Load();
