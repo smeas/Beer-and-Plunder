@@ -3,7 +3,6 @@ using System.Collections;
 using Audio;
 using Player;
 using Rounds;
-using Taverns;
 using UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -82,14 +81,13 @@ namespace Interactables.Beers {
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
-			pouringPlayer.CanMove = true;
-
 			if (!isPouring) return;
 			float progress = pouringProgress / pourTime;
 
-			if (progress >= perfectPourArea.x && progress <= perfectPourArea.y) {
+			if (progress >= perfectPourArea.x && progress <= perfectPourArea.y)
 				FillBeer();
-			} else { ResetPouring(); }
+			else
+				ResetPouring();
 		}
 
 		private void MovePerfectPourArea() {
