@@ -6,10 +6,12 @@ using Rounds;
 using Taverns;
 using UnityEngine;
 using Vikings;
+using Random = UnityEngine.Random;
 
 namespace Interactables {
 	public class Table : Interactable {
 		public static List<Table> AllTables { get; } = new List<Table>();
+		public static event Action OnTablesDestroyed;
 
 		private float health;
 		private bool isRepairing;
@@ -76,23 +78,16 @@ namespace Interactables {
 		}
 
 		private void StartRepairing(GameObject player, RepairTool tool) {
-			if (Tavern.Instance != null && RoundController.Instance != null)
-				Tavern.Instance.SpendsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
+				float repairTime = RoundController.Instance != null
+					? RoundController.Instance.CurrentDifficulty.tableRepairTime
+					: 5f;
+				tool.BeginRepairing(repairTime, transform.position + new Vector3(0, 3f, 0)); //event
+				tool.RepairDone += HandleRepairDone;
 
-			float repairTime = RoundController.Instance != null
-				? RoundController.Instance.CurrentDifficulty.tableRepairTime
-				: 5f;
-			tool.BeginRepairing(repairTime, transform.position + new Vector3(0, 3f, 0));//event
-			tool.RepairDone += HandleRepairDone;
-
-			player.GetComponent<PlayerMovement>().CanMove = false;
+				player.GetComponent<PlayerMovement>().CanMove = false;
 		}
 
 		private void EndRepairing(GameObject player, RepairTool tool) {
-			if (tool.IsRepairing) {
-				if (Tavern.Instance != null && RoundController.Instance != null)
-					Tavern.Instance.EarnsMoney(RoundController.Instance.CurrentDifficulty.tableRepairCost);
-			}
 
 			tool.EndRepairing();
 			tool.RepairDone -= HandleRepairDone;
@@ -120,7 +115,6 @@ namespace Interactables {
 					closest = chair;
 				}
 			}
-
 			return closest != null;
 		}
 
@@ -131,10 +125,9 @@ namespace Interactables {
 			if (IsDestroyed) {
 				GetComponentInChildren<MeshRenderer>().enabled = false;
 
-				if (Tavern.Instance != null)
-					Tavern.Instance.TakesDamage(1);
-
 				Destroyed?.Invoke();
+
+				if (IsTablesDestroyed()) OnTablesDestroyed?.Invoke();
 			}
 		}
 
@@ -144,6 +137,29 @@ namespace Interactables {
 
 			GetComponentInChildren<MeshRenderer>().enabled = true;
 			Repaired?.Invoke();
+		}
+
+		public static Chair GetRandomEmptyChair() {
+			if (AllTables.Count == 0)
+				return null;
+
+			Table[] freeTables = AllTables.Where(tbl => !tbl.IsFull && !tbl.IsDestroyed).ToArray();
+			if (freeTables.Length == 0)
+				return null;
+
+			Table table = freeTables[Random.Range(0, freeTables.Length)];
+			Chair[] freeChairs = table.Chairs.Where(chr => !chr.IsOccupied).ToArray();
+			if (freeChairs.Length == 0)
+				return null;
+
+			return freeChairs[Random.Range(0, freeChairs.Length)];
+		}
+
+		private bool IsTablesDestroyed() {
+			foreach (Table table in AllTables) {
+				if (!table.IsDestroyed) return false;
+			}
+			return true;
 		}
 	}
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 522687833101042273}
   - component: {fileID: 7468624116003583018}
   m_Layer: 0
-  m_Name: TavernController
+  m_Name: Tavern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,5 +46,4 @@ MonoBehaviour:
   maxSittingGuests: 0
   maxHealth: 20
   startingHealth: 20
-  startingMoney: 50
-  maxMoney: 9999999
+  startingMoney: 0
