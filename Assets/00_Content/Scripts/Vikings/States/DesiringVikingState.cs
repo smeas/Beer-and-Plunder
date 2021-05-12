@@ -24,6 +24,9 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
+
+			viking.desireVisualiser.SetDesireColor(viking.Stats.Mood);
+			
 			if (hasActiveFulfillment) {
 				fulfillmentTimer += Time.deltaTime;
 

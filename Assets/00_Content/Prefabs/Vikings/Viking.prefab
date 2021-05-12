@@ -329,9 +329,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4972af94624a4586aa7b45d3555288e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 0.96754956, b: 1, a: 1}
-  DesireBubble: {fileID: 4407983342888056285}
-  DesireImage: {fileID: 9116904450003858489}
+  color: {r: 1, g: 1, b: 1, a: 1}
+  desireBubble: {fileID: 4407983342888056285}
+  desireImage: {fileID: 9116904450003858489}
+  lowDesire: {r: 1, g: 0.9879625, b: 0.3537736, a: 1}
+  mediumDesire: {r: 1, g: 0.65940195, b: 0.25, a: 1}
+  highDesire: {r: 1, g: 0.15566039, b: 0.15566039, a: 1}
 --- !u!114 &3331106219614498188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,7 +873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1201046196191210740, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7401268459065113803, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
       propertyPath: m_Pivot.x
@@ -967,6 +970,18 @@ PrefabInstance:
     - target: {fileID: 7401268459065113803, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107169570282832654, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107169570282832654, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107169570282832654, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
