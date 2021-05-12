@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 namespace Interactables {
 	public class Table : Interactable {
 		public static List<Table> AllTables { get; } = new List<Table>();
+		public static event Action OnTablesDestroyed;
 
 		private float health;
 		private bool isRepairing;
@@ -114,7 +115,6 @@ namespace Interactables {
 					closest = chair;
 				}
 			}
-
 			return closest != null;
 		}
 
@@ -125,10 +125,9 @@ namespace Interactables {
 			if (IsDestroyed) {
 				GetComponentInChildren<MeshRenderer>().enabled = false;
 
-				if (Tavern.Instance != null)
-					Tavern.Instance.TakesDamage(1);
-
 				Destroyed?.Invoke();
+
+				if (IsTablesDestroyed()) OnTablesDestroyed?.Invoke();
 			}
 		}
 
@@ -154,6 +153,13 @@ namespace Interactables {
 				return null;
 
 			return freeChairs[Random.Range(0, freeChairs.Length)];
+		}
+
+		private bool IsTablesDestroyed() {
+			foreach (Table table in AllTables) {
+				if (!table.IsDestroyed) return false;
+			}
+			return true;
 		}
 	}
 }

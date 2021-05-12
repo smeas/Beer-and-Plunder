@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76890c6c3e9e0f342bf6eb35dca9ca40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: -8500604556084231599, guid: de9dfc13a34a2fb4f9bdda39b2b42026, type: 3}
+  defaultMaterial: {fileID: 2100000, guid: 8ca204accc9d60d41b1561f0880255fd, type: 2}
   redMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
   yellowMaterial: {fileID: 2100000, guid: c56b477978f37814e9cd75e7203e36ac, type: 2}
   vikingLayer:

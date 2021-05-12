@@ -36,7 +36,6 @@ namespace Player {
 			if (pickedUpItem.PickUpItem(playerGrabTransform)) {
 				OnItemPickedUp?.Invoke(pickedUpItem);
 			}
-
 		}
 
 		// Run from unity event
@@ -60,7 +59,6 @@ namespace Player {
 				body.velocity = playerMovement.Velocity * throwStrengthMultiplier;
 
 			pickedUpItem = null;
-
 		}
 
 		public void UseItem() {
@@ -91,7 +89,7 @@ namespace Player {
 			PickUp item = pickedUpItem;
 
 			DropItem();
-			item.Respawn();
+			item.RoundOverReset();
 		}
 
 		public void OnClosestPickUpChange(PickUp pickUp) { }
