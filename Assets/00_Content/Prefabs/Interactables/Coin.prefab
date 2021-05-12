@@ -172,7 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 2
-  duration: 1e+10
   upVelocity: 4
   minSpawnVelocity: 2
   maxSpawnVelocity: 4

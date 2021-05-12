@@ -11,8 +11,6 @@ namespace Interactables {
 		public static List<Coin> AllCoins { get; } = new List<Coin>();
 
 		[SerializeField] private int value = 1;
-		[SerializeField] private float duration;
-
 		[SerializeField] private float upVelocity;
 		[SerializeField, Min(0)]
 		private float minSpawnVelocity;
@@ -20,8 +18,6 @@ namespace Interactables {
 		private float maxSpawnVelocity;
 
 		[SerializeField] private float hitSoundVelocityThreshold = 2f;
-
-		private float durationTimer;
 
 		private void Start() {
 			Rigidbody rb = GetComponent<Rigidbody>();
@@ -42,14 +38,6 @@ namespace Interactables {
 
 		private void OnDisable() {
 			AllCoins.SwapRemove(this);
-		}
-
-		private void Update() {
-			durationTimer += Time.deltaTime;
-
-			if (durationTimer >= duration) {
-				Destroy(gameObject);
-			}
 		}
 
 		private void OnTriggerEnter(Collider other) {
