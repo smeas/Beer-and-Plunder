@@ -35,6 +35,11 @@ namespace Vikings {
 		[Min(0), Tooltip("How many coins does the viking drop when all desires are fulfilled")]
 		public float coinsWhenLeavingMultiplier = 1f;
 
+		public bool FollowPlayerIndefinitely = false;
+
+		[Min(0)]
+		public float MaxFollowingDuration = 10f;
+
 		[Header("Combat")]
 		[Tooltip("Will this viking be able to start a brawl")]
 		public bool canStartBrawl = true;
