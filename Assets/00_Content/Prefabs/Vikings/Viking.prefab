@@ -329,12 +329,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4972af94624a4586aa7b45d3555288e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 1}
-  desireBubble: {fileID: 4407983342888056285}
+  desireBubble: {fileID: 3331106219614498188}
   desireImage: {fileID: 9116904450003858489}
-  lowDesire: {r: 1, g: 0.9879625, b: 0.3537736, a: 1}
-  mediumDesire: {r: 1, g: 0.65940195, b: 0.25, a: 1}
+  lowDesire: {r: 0.40767613, g: 1, b: 0.35294116, a: 1}
   highDesire: {r: 1, g: 0.15566039, b: 0.15566039, a: 1}
+  tweenMaxSpeed: 4
 --- !u!114 &3331106219614498188
 MonoBehaviour:
   m_ObjectHideFlags: 0

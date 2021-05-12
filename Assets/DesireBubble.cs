@@ -9,7 +9,14 @@ public class DesireBubble : MonoBehaviour
 	[SerializeField] private float tweenDuration = 1f;
 	[SerializeField] private Ease tweenEasing = Ease.OutQuad;
 
+	private Tween scaleTween;
+
 	private void OnEnable() {
-		transform.DOScale(tweenScaleEndValue, tweenDuration).SetEase(tweenEasing).SetLoops(-1, LoopType.Yoyo);
+		scaleTween = transform.DOScale(tweenScaleEndValue, tweenDuration).SetEase(tweenEasing).SetLoops(-1, LoopType.Yoyo);
+		
+	}
+
+	public void SetTweenTimeScale(float timeScale) {
+		scaleTween.timeScale = timeScale;
 	}
 }

@@ -3,6 +3,7 @@ using Interactables;
 using Interactables.Beers;
 using Player;
 using UnityEngine;
+using Utilities;
 
 namespace Vikings.States {
 	public class DesiringVikingState : VikingState {
@@ -24,8 +25,9 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
-
-			viking.desireVisualiser.SetDesireColor(viking.Stats.Mood);
+			float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.brawlMoodThreshold, viking.Stats.StartMood, 0, 1);
+			viking.desireVisualiser.SetDesireColor(remappedMood);
+			viking.desireVisualiser.SetTweenSpeed(remappedMood);
 			
 			if (hasActiveFulfillment) {
 				fulfillmentTimer += Time.deltaTime;

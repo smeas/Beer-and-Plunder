@@ -2,48 +2,46 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using Utilities;
 
 namespace Vikings {
 	public class DesireVisualiser : MonoBehaviour {
-		[SerializeField] private Color color = Color.green;
-		[SerializeField] GameObject desireBubble;
+		[SerializeField] DesireBubble desireBubble;
 		[SerializeField] Image desireImage;
 
+		[Header("Settings")]
 		[SerializeField] Color lowDesire;
-		[SerializeField] Color mediumDesire;
 		[SerializeField] Color highDesire;
+		[SerializeField] float tweenMaxSpeed = 4f;
 
 		private Image desireBubbleImage;
 
 		private void Start() {
-			desireBubbleImage = desireBubble.GetComponent<Image>();
+			desireBubbleImage = desireBubble.gameObject.GetComponent<Image>();
 		}
 
 		public void ShowNewDesire(Sprite sprite) { 
-
 			if (sprite == null) {
 				Debug.Assert(false, "Desire visualisation is null");
 				return;
 			}
 
 			desireImage.sprite = sprite;
-			desireBubble.SetActive(true);
+			desireBubble.gameObject.SetActive(true);
 		}
 
 		public void HideDesire() {
-			desireBubble.SetActive(false);
+			desireBubble.gameObject.SetActive(false);
 		}
 
-		//TODO -> Expose these values in inspector
-		public void SetDesireColor(float mood) {
-			if (mood > 40 && mood < 50)
-				desireBubbleImage.color = lowDesire;
-			else if (mood > 25 && mood < 40)
-				desireBubbleImage.color = mediumDesire;
-			else if (mood < 25)
-				desireBubbleImage.color = highDesire;
-			else
-				desireBubbleImage.color = Color.white;
+		
+		public void SetDesireColor(float remappedMood) {
+			desireBubbleImage.color = Color.Lerp(highDesire, lowDesire, remappedMood);
+		}
+
+		public void SetTweenSpeed(float remappedMood) {
+			float newTimeScale = MathX.RemapClamped(1 - remappedMood, 0, 1, 1, tweenMaxSpeed);
+			desireBubble.SetTweenTimeScale(newTimeScale);
 		}
 	}
 }
