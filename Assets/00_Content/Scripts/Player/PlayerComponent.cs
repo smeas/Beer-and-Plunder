@@ -12,7 +12,7 @@ namespace Player {
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
 		public Transform ModelRoot => modelRoot;
-		public MeshRenderer BodyMeshRenderer { get; set; }
+		public Renderer BodyMeshRenderer { get; set; }
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
 		public Color PlayerColor { get; set; } = new Color(0.8828125f, 0.8828125f, 0.8828125f);
 
@@ -37,7 +37,7 @@ namespace Player {
 			PlayerInput playerInput = GetComponent<PlayerInput>();
 			PlayerId = playerInput.playerIndex;
 
-			BodyMeshRenderer = GetComponentInChildren<MeshRenderer>();
+			BodyMeshRenderer = GetComponentInChildren<Renderer>();
 
 			if (playerData == null)
 				Debug.LogWarning("PlayerData is not set in PlayerComponent");
