@@ -25,12 +25,22 @@ namespace Menu {
 			}
 		}
 
+		private void Start() {
+			PlayerManager.Instance.PlayerJoined += OnPlayerJoined;
+			PlayerManager.Instance.PlayerLeft += OnPlayerLeft;
+		}
+
 		private void OnDisable() {
 			for (int i = 0; i < playerHandlers.Length; i++) {
 				if (playerHandlers[i] != default) {
 					playerHandlers[i].player.OnStart.RemoveListener(playerHandlers[i].handler);
 					playerHandlers[i] = default;
 				}
+			}
+
+			if (PlayerManager.Instance != null) {
+				PlayerManager.Instance.PlayerJoined -= OnPlayerJoined;
+				PlayerManager.Instance.PlayerLeft -= OnPlayerLeft;
 			}
 		}
 
@@ -50,6 +60,37 @@ namespace Menu {
 				player.OnStart.AddListener(OnStart);
 				playerHandlers[i] = (player, OnStart);
 			}
+		}
+
+		private void OnPlayerJoined(PlayerComponent plr) {
+			PlayerInputHandler player = plr.GetComponent<PlayerInputHandler>();
+
+			for (int i = 0; i < playerHandlers.Length; i++) {
+				if (playerHandlers[i] == default) {
+					void OnStart() => HandleOnPlayerStart(i);
+					player.OnStart.AddListener(OnStart);
+					playerHandlers[i] = (player, OnStart);
+
+					readyCards[i].gameObject.SetActive(true);
+					break;
+				}
+			}
+		}
+
+		private void OnPlayerLeft(PlayerComponent plr) {
+			PlayerInputHandler player = plr.GetComponent<PlayerInputHandler>();
+
+			for (int i = 0; i < playerHandlers.Length; i++) {
+				if (playerHandlers[i].player != player) continue;
+
+				playerHandlers[i].player.OnStart.RemoveListener(playerHandlers[i].handler);
+				playerHandlers[i] = default;
+				readyCards[i].gameObject.SetActive(false);
+				break;
+			}
+
+			foreach (PlayerReadyCard card in readyCards)
+				card.Ready = false;
 		}
 
 		private void HandleOnPlayerStart(int playerIndex) {

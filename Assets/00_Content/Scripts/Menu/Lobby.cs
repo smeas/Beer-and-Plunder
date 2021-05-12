@@ -12,6 +12,7 @@ namespace Menu {
 		[SerializeField] private GameObject[] playerModels;
 		[SerializeField] private Color[] playerColors;
 		[SerializeField] private InputActionProperty backAction;
+		[SerializeField] private ReadySystem readySystem;
 
 		private PlayerManager playerManager;
 
@@ -21,7 +22,7 @@ namespace Menu {
 
 			foreach (PlayerComponent player in playerManager.Players) {
 				HandleOnPlayerJoined(player);
-			} 
+			}
 
 			playerManager.PlayerJoined += HandleOnPlayerJoined;
 			playerManager.PlayerLeft += HandleOnPlayerLeft;
@@ -36,6 +37,9 @@ namespace Menu {
 			backAction.action.started += HandleOnBackPressed;
 
 			playerManager.AllowJoining = true;
+
+			readySystem.Initialize();
+			readySystem.AllReady += HandleOnStartGame;
 		}
 
 		private void HandleOnPlayerJoined(PlayerComponent player) {
@@ -45,7 +49,7 @@ namespace Menu {
 				PlayerSlotObject slot = slots[i];
 				if (!slot.IsTaken) {
 					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
-					playerInputHandler.OnStart.AddListener(HandleOnStartGame);
+					// playerInputHandler.OnStart.AddListener(HandleOnStartGame);
 					playerInputHandler.OnSubmit.AddListener(slot.Flash);
 					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
 
@@ -85,7 +89,7 @@ namespace Menu {
 				if (playerSlot.IsTaken) {
 					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
 					playerInputHandler.transform.position = Vector3.zero;
-					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
+					// playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 					playerSlot.PlayerComponent.GetComponent<PlayerInput>().SwitchCurrentActionMap("Game");
 				}
 			}
