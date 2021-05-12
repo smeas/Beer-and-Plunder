@@ -8,7 +8,9 @@ namespace Interactables.Beers {
 	[DefaultExecutionOrder(10)]
 	public class BeerBarrel : PickUp {
 		[SerializeField] private float soloCarrySpeedMultiplier = 0.3f;
+		[SerializeField] private Vector3 soloCarryRotation;
 		[SerializeField] private float multiCarrySpeedMultiplier = 0.8f;
+		[SerializeField] private Vector3 multiCarryRotation;
 		[SerializeField] private Collider multiCarryCollider;
 		[SerializeField] private float carryRadius = 1.5f;
 
@@ -81,9 +83,11 @@ namespace Interactables.Beers {
 		private void HandleOnPickedUp(PickUp _, PlayerComponent player) {
 			PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
 			carriers.Add(playerMovement);
+			Transform myTransform = transform;
 
 			if (carriers.Count > 1) {
-				transform.parent = null;
+				myTransform.localEulerAngles = multiCarryRotation;
+				myTransform.parent = null;
 				rigidbody.isKinematic = false;
 
 				foreach (PlayerMovement carrier in carriers) {
@@ -106,6 +110,7 @@ namespace Interactables.Beers {
 				return;
 			}
 
+			myTransform.localEulerAngles = soloCarryRotation;
 			objectCollider.enabled = true;
 			playerMovement.SpeedMultiplier = soloCarrySpeedMultiplier;
 		}
@@ -150,6 +155,7 @@ namespace Interactables.Beers {
 				MoveToPoint(soloCarrier.GetComponentInChildren<PlayerPickUp>().PlayerGrabTransform);
 
 				IsMultiCarried = false;
+				transform.localEulerAngles = soloCarryRotation;
 				return;
 			}
 
