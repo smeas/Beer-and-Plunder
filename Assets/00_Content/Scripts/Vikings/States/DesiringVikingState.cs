@@ -13,7 +13,7 @@ namespace Vikings.States {
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationPrefab);
+			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
 
 			return this;
 		}

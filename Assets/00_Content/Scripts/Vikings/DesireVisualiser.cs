@@ -1,39 +1,27 @@
-﻿using System.Linq;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 namespace Vikings {
 	public class DesireVisualiser : MonoBehaviour {
 		[SerializeField] private Color color = Color.green;
+		[SerializeField] GameObject DesireBubble;
+		[SerializeField] Image DesireImage;
 
-		private GameObject visualisation;
+		public void ShowNewDesire(Sprite sprite) { 
 
-		public void ShowNewDesire(GameObject desireVisualisationPrefab) {
-			if (visualisation == null) Destroy(visualisation);
-
-			if (desireVisualisationPrefab == null) {
+			if (sprite == null) {
 				Debug.Assert(false, "Desire visualisation is null");
 				return;
 			}
 
-			visualisation = Instantiate(desireVisualisationPrefab, transform);
-
-			// TODO: Delete this
-			MeshRenderer[] meshRenderers = visualisation.GetComponentsInChildren<MeshRenderer>();
-			foreach (Material material in meshRenderers.SelectMany(x => x.materials))
-				material.color = color;
-
-			foreach (MeshRenderer meshRenderer in meshRenderers)
-				meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+			DesireImage.sprite = sprite;
+			DesireBubble.SetActive(true);
 		}
 
 		public void HideDesire() {
-			if (visualisation == null) {
-				Debug.Assert(false, "Trying to remove a non-existing desire visualisation");
-				return;
-			}
-
-			Destroy(visualisation);
+			DesireBubble.SetActive(false);
 		}
 	}
 }
