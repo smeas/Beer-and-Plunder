@@ -1,20 +1,12 @@
 using System;
-using System.Linq;
-using Player;
+using Menu;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Rounds {
 	public class ScoreCard : MonoBehaviour {
 		[SerializeField] private TMP_Text roundNumberText;
-		[SerializeField] private PlayerReadyCard readyCardPrefab;
-		[SerializeField] private Transform readyCardRoot;
-
-		private int playerCount;
-		private PlayerReadyCard[] readyCards = new PlayerReadyCard[PlayerManager.MaxPlayers];
-		private (PlayerInputHandler player, UnityAction handler)[] playerHandlers =
-			new (PlayerInputHandler, UnityAction)[PlayerManager.MaxPlayers];
+		[SerializeField] private ReadySystem readySystem;
 
 		private int roundNumber;
 
@@ -25,19 +17,8 @@ namespace Rounds {
 			set { roundNumber = Mathf.RoundToInt(roundNumber); }
 		}
 
-		private void Awake() {
-			for (int i = 0; i < readyCards.Length; i++) {
-				readyCards[i] = Instantiate(readyCardPrefab, readyCardRoot);
-				readyCards[i].Name = "Player " + (i + 1);
-				readyCards[i].gameObject.SetActive(false);
-			}
-		}
-
 		private void OnDisable() {
-			for (int i = 0; i < playerCount; i++) {
-				playerHandlers[i].player.OnStart.RemoveListener(playerHandlers[i].handler);
-				playerHandlers[i] = default;
-			}
+			readySystem.AllReady -= GoToNextRound;
 		}
 
 		public void UpdateScoreCard(int round) {
@@ -46,29 +27,10 @@ namespace Rounds {
 		}
 
 		public void Show() {
-			playerCount = PlayerManager.Instance.Players.Count;
-			for (int i = 0; i < readyCards.Length; i++) {
-				readyCards[i].gameObject.SetActive(i < playerCount);
-				readyCards[i].Ready = false;
-			}
-
-			for (int i = 0; i < PlayerManager.Instance.Players.Count; i++) {
-				PlayerInputHandler player = PlayerManager.Instance.Players[i].GetComponent<PlayerInputHandler>();
-
-				int playerIndex = i;
-				void OnStart() => HandleOnPlayerStart(playerIndex);
-				player.OnStart.AddListener(OnStart);
-				playerHandlers[i] = (player, OnStart);
-			}
+			readySystem.Initialize();
+			readySystem.AllReady += GoToNextRound;
 
 			gameObject.SetActive(true);
-		}
-
-		private void HandleOnPlayerStart(int playerIndex) {
-			readyCards[playerIndex].ToggleReady();
-
-			if (readyCards.Take(playerCount).All(card => card.Ready))
-				GoToNextRound();
 		}
 
 		private void GoToNextRound() {
