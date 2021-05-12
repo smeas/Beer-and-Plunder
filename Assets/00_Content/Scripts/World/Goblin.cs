@@ -48,14 +48,13 @@ namespace World {
 
 				// No path or arrived
 				if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.desiredVelocity == Vector3.zero) {
-					state = State.None;
-
 					if (state == State.Fleeing) {
 						// Drop any excess coins
 						while (Coins > 0)
 							DropCoin();
 					}
 
+					state = State.None;
 					OnLeave?.Invoke(this);
 					Destroy(gameObject);
 				}
