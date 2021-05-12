@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using Interactables.Beers;
+using UnityEngine;
 
 namespace Interactables {
 	public class ItemSlot : MonoBehaviour {
@@ -16,7 +17,7 @@ namespace Interactables {
 		}
 
 		public bool PlaceItem(PickUp item) {
-			if (HasItemInSlot)
+			if (HasItemInSlot || item is BeerBarrel)
 				return false;
 
 			item.transform.position = transform.position;
