@@ -49,7 +49,6 @@ namespace Menu {
 				PlayerSlotObject slot = slots[i];
 				if (!slot.IsTaken) {
 					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
-					// playerInputHandler.OnStart.AddListener(HandleOnStartGame);
 					playerInputHandler.OnSubmit.AddListener(slot.Flash);
 					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
 
@@ -89,7 +88,6 @@ namespace Menu {
 				if (playerSlot.IsTaken) {
 					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
 					playerInputHandler.transform.position = Vector3.zero;
-					// playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 					playerSlot.PlayerComponent.GetComponent<PlayerInput>().SwitchCurrentActionMap("Game");
 				}
 			}
