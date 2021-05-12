@@ -40,8 +40,10 @@ namespace Vikings {
 				desireBubbleImage.color = lowDesire;
 			else if (mood > 25 && mood < 40)
 				desireBubbleImage.color = mediumDesire;
-			else if (mood > 0 && mood < 25)
+			else if (mood < 25)
 				desireBubbleImage.color = highDesire;
+			else
+				desireBubbleImage.color = Color.white;
 		}
 	}
 }
