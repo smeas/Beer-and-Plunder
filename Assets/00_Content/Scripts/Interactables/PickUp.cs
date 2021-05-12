@@ -145,7 +145,8 @@ namespace Interactables {
 
 	#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
-			Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
+			if (objectCollider != null)
+				Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
 		}
 	#endif
 	}

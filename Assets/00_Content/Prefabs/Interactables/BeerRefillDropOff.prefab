@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5566028750818335587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5566028750912021407}
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressBar: {fileID: 1697156085534952514}
   beerTap: {fileID: 0}
-  switchTime: 2
+  switchTime: 4
 --- !u!1001 &1435454363899508496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -452,7 +452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174956830305085372, guid: 0743d8edfe83060489b973ca9694c9b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2174956830305085372, guid: 0743d8edfe83060489b973ca9694c9b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
