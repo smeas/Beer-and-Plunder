@@ -12,6 +12,7 @@ namespace Menu {
 		[SerializeField] private GameObject[] playerModels;
 		[SerializeField] private Color[] playerColors;
 		[SerializeField] private InputActionProperty backAction;
+		[SerializeField] private ReadySystem readySystem;
 
 		private PlayerManager playerManager;
 
@@ -21,7 +22,7 @@ namespace Menu {
 
 			foreach (PlayerComponent player in playerManager.Players) {
 				HandleOnPlayerJoined(player);
-			} 
+			}
 
 			playerManager.PlayerJoined += HandleOnPlayerJoined;
 			playerManager.PlayerLeft += HandleOnPlayerLeft;
@@ -36,6 +37,9 @@ namespace Menu {
 			backAction.action.started += HandleOnBackPressed;
 
 			playerManager.AllowJoining = true;
+
+			readySystem.Initialize();
+			readySystem.AllReady += HandleOnStartGame;
 		}
 
 		private void HandleOnPlayerJoined(PlayerComponent player) {
@@ -45,14 +49,13 @@ namespace Menu {
 				PlayerSlotObject slot = slots[i];
 				if (!slot.IsTaken) {
 					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
-					playerInputHandler.OnStart.AddListener(HandleOnStartGame);
 					playerInputHandler.OnSubmit.AddListener(slot.Flash);
 					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
 
 					// Give the player a unique model
 					Debug.Assert(player.ModelRoot.childCount == 1, "Model root does not have exactly one child", player.ModelRoot);
 					Destroy(player.ModelRoot.GetChild(0).gameObject);
-					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponent<MeshRenderer>();
+					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponentInChildren<Renderer>();
 
 					player.PlayerColor = playerColors[i];
 					foreach (Material material in player.BodyMeshRenderer.materials)
@@ -85,7 +88,6 @@ namespace Menu {
 				if (playerSlot.IsTaken) {
 					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
 					playerInputHandler.transform.position = Vector3.zero;
-					playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
 					playerSlot.PlayerComponent.GetComponent<PlayerInput>().SwitchCurrentActionMap("Game");
 				}
 			}
