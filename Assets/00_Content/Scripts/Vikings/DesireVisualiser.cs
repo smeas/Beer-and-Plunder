@@ -1,39 +1,47 @@
-﻿using System.Linq;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
+using Utilities;
 
 namespace Vikings {
 	public class DesireVisualiser : MonoBehaviour {
-		[SerializeField] private Color color = Color.green;
+		[SerializeField] DesireBubble desireBubble;
+		[SerializeField] Image desireImage;
 
-		private GameObject visualisation;
+		[Header("Settings")]
+		[SerializeField] Color lowDesire;
+		[SerializeField] Color highDesire;
+		[SerializeField] float tweenMaxSpeed = 4f;
 
-		public void ShowNewDesire(GameObject desireVisualisationPrefab) {
-			if (visualisation == null) Destroy(visualisation);
+		private Image desireBubbleImage;
 
-			if (desireVisualisationPrefab == null) {
+		private void Start() {
+			desireBubbleImage = desireBubble.gameObject.GetComponent<Image>();
+		}
+
+		public void ShowNewDesire(Sprite sprite) { 
+			if (sprite == null) {
 				Debug.Assert(false, "Desire visualisation is null");
 				return;
 			}
 
-			visualisation = Instantiate(desireVisualisationPrefab, transform);
-
-			// TODO: Delete this
-			MeshRenderer[] meshRenderers = visualisation.GetComponentsInChildren<MeshRenderer>();
-			foreach (Material material in meshRenderers.SelectMany(x => x.materials))
-				material.color = color;
-
-			foreach (MeshRenderer meshRenderer in meshRenderers)
-				meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+			desireImage.sprite = sprite;
+			desireBubble.gameObject.SetActive(true);
 		}
 
 		public void HideDesire() {
-			if (visualisation == null) {
-				Debug.Assert(false, "Trying to remove a non-existing desire visualisation");
-				return;
-			}
+			desireBubble.gameObject.SetActive(false);
+		}
 
-			Destroy(visualisation);
+		
+		public void SetDesireColor(float remappedMood) {
+			desireBubbleImage.color = Color.Lerp(highDesire, lowDesire, remappedMood);
+		}
+
+		public void SetTweenSpeed(float remappedMood) {
+			float newTimeScale = MathX.RemapClamped(1 - remappedMood, 0, 1, 1, tweenMaxSpeed);
+			desireBubble.SetTweenTimeScale(newTimeScale);
 		}
 	}
 }
