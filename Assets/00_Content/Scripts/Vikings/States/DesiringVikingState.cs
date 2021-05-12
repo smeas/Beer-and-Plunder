@@ -123,10 +123,10 @@ namespace Vikings.States {
 				playerPickUp.DropItem();
 
 				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
-				return new SatisfiedVikingState(viking, givenItem);
+				return new SatisfiedVikingState(viking, desire, givenItem);
 			}
 
-			return new SatisfiedVikingState(viking);
+			return new SatisfiedVikingState(viking, desire);
 		}
 
 		private void SpawnOrderTicket() {

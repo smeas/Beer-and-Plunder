@@ -20,9 +20,6 @@ namespace Interactables.Kitchens {
 		private bool isCooking;
 		private float cookingProgress = 0f;
 
-		public override void CancelInteraction(GameObject player, PickUp item) {
-		}
-
 		public override bool CanInteract(GameObject player, PickUp item) {
 			if (isCooking) return false;
 			return item is KitchenTicket;
@@ -60,7 +57,6 @@ namespace Interactables.Kitchens {
 			cookingProgressBar.Hide();
 			Instantiate(foodPrefab, foodSpawnpoint);
 
-			Debug.Log("Food is ready!");
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
 		}
 	}

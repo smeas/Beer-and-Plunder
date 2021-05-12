@@ -9,6 +9,8 @@ namespace Vikings {
 
 		[Tooltip("Does the player need to give an item to fulfill this desire")]
 		public bool isMaterialDesire = true;
+		[Tooltip("Should the viking throw the item when desire is fullfilled")]
+		public bool shouldThrowItem = false;
 
 		[HideInInspector]
 		public bool isOrder = false;

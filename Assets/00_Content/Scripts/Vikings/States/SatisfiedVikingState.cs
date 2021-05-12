@@ -17,12 +17,15 @@ namespace Vikings.States {
 		private float dropTimer;
 
 		private PickUp givenItem;
+		private DesireData satisfiedDesire;
 
 		private bool IsDroppingCoins => coinsToDrop > 0;
 
-		public SatisfiedVikingState(Viking viking) : base(viking) { }
+		public SatisfiedVikingState(Viking viking, DesireData satisfiedDesire) : base(viking) {
+			this.satisfiedDesire = satisfiedDesire;
+		}
 
-		public SatisfiedVikingState(Viking viking, PickUp givenItem) : this(viking) {
+		public SatisfiedVikingState(Viking viking, DesireData satisfiedDesire, PickUp givenItem) : this(viking, satisfiedDesire) {
 			this.givenItem = givenItem;
 		}
 
@@ -40,19 +43,19 @@ namespace Vikings.States {
 			if (givenItem != null) {
 				if (givenItem is Tankard tankard)
 					tankard.IsFull = false;
-				if (givenItem is Food food)
-					return;
+				
+				if (satisfiedDesire.shouldThrowItem) { 
+					givenItem.gameObject.SetActive(true);
+					givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
 
-				givenItem.gameObject.SetActive(true);
-				givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
+					Vector3 throwDirection = -viking.transform.forward;
+					throwDirection.y = 0.7f;
 
-				Vector3 throwDirection = -viking.transform.forward;
-				throwDirection.y = 0.7f;
-
-				if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive)
-					givenItem.Respawn();
-				else
-					givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
+					if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive)
+						givenItem.Respawn();
+					else
+						givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
+				}
 			}
 		}
 
