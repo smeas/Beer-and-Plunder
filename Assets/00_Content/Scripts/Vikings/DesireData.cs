@@ -5,7 +5,7 @@ namespace Vikings {
 	public class DesireData : ScriptableObject {
 		public DesireType type;
 		public int randomWeight;
-		public GameObject visualisationPrefab;
+		public Sprite visualisationSprite;
 
 		[Tooltip("Does the player need to give an item to fulfill this desire")]
 		public bool isMaterialDesire = true;

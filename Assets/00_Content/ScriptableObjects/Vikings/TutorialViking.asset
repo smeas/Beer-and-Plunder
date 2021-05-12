@@ -25,6 +25,8 @@ MonoBehaviour:
   satisfiedDurationMinMax: {x: 5, y: 5}
   coinsDroppedMinMax: {x: 6, y: 6}
   coinsWhenLeavingMultiplier: 1
+  FollowPlayerIndefinitely: 1
+  MaxFollowingDuration: 10
   canStartBrawl: 1
   brawlMoodThreshold: 15
   damage: 10

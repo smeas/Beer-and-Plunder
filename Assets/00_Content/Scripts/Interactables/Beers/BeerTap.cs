@@ -3,9 +3,9 @@ using System.Collections;
 using Audio;
 using Player;
 using Rounds;
-using Taverns;
 using UI;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Interactables.Beers {
 	public class BeerTap : Interactable {
@@ -14,6 +14,8 @@ namespace Interactables.Beers {
 		[SerializeField] private float pourTime = 1.5f;
 		[MinMaxRange(0, 1)]
 		[SerializeField] private Vector2 perfectPourMinMax;
+		[Range(0, 1)]
+		[SerializeField] private float perfectPourSize;
 		[SerializeField] private int maxBeerAmount = 5;
 		[Tooltip("When the amount of beer left in the barrel goes below this amount the fillbar shows continually.")]
 		[SerializeField] private int showFillThreshold = 3;
@@ -30,6 +32,8 @@ namespace Interactables.Beers {
 		private float fillPortion;
 		private Tankard fillingTankard;
 		private SoundHandle pourSoundHandle;
+		private RectTransform pourRectTransform;
+		private Vector2 perfectPourArea;
 		private PlayerMovement pouringPlayer;
 
 		public int MaxBeerAmount => maxBeerAmount;
@@ -43,14 +47,7 @@ namespace Interactables.Beers {
 			fillPortion = 1f / MaxBeerAmount;
 			fillProgressBar.UpdateProgress(1);
 
-			// Move perfect pour indicator to fit settings
-			Vector2 pourSizeDelta = pourProgressBar.GetComponent<RectTransform>().sizeDelta;
-
-			perfectProgressIndicator.anchoredPosition = new Vector2(perfectPourMinMax.x * pourSizeDelta.x, 0);
-			perfectProgressIndicator.sizeDelta = new Vector2(
-				(perfectPourMinMax.y - perfectPourMinMax.x) * pourSizeDelta.x,
-				perfectProgressIndicator.sizeDelta.y
-			);
+			pourRectTransform = pourProgressBar.GetComponent<RectTransform>();
 
 			if (RoundController.Instance != null)
 				RoundController.Instance.OnRoundOver += Refill;
@@ -65,9 +62,6 @@ namespace Interactables.Beers {
 			if (isPouring || beerAmount <= 0)
 				return false;
 
-			if (Tavern.Instance != null && Tavern.Instance.Money < beerData.cost)
-				return false;
-
 			if (!(item is Tankard tankard) || tankard.IsFull)
 				return false;
 
@@ -79,6 +73,7 @@ namespace Interactables.Beers {
 			fillingTankard = item as Tankard;
 			Debug.Assert(fillingTankard != null);
 
+			MovePerfectPourArea();
 			StartCoroutine(PouringBeer());
 
 			pouringPlayer = player.GetComponent<PlayerMovement>();
@@ -86,28 +81,29 @@ namespace Interactables.Beers {
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
-			pouringPlayer.CanMove = true;
-
 			if (!isPouring) return;
 			float progress = pouringProgress / pourTime;
 
-			if (progress >= perfectPourMinMax.x && progress <= perfectPourMinMax.y) {
+			if (progress >= perfectPourArea.x && progress <= perfectPourArea.y)
 				FillBeer();
-			}
-			else {
-				if (Tavern.Instance != null)
-					Tavern.Instance.EarnsMoney(beerData.cost);
-
+			else
 				ResetPouring();
-			}
+		}
+
+		private void MovePerfectPourArea() {
+			Vector2 pourSizeDelta = pourRectTransform.sizeDelta;
+			perfectPourArea.x = Random.Range(perfectPourMinMax.x, perfectPourMinMax.y);
+			perfectPourArea.y = perfectPourArea.x + perfectPourSize;
+
+			perfectProgressIndicator.anchoredPosition = new Vector2(perfectPourArea.x * pourSizeDelta.x, 0);
+			perfectProgressIndicator.sizeDelta = new Vector2(
+				(perfectPourArea.y - perfectPourArea.x) * pourSizeDelta.x,
+				perfectProgressIndicator.sizeDelta.y
+			);
 		}
 
 		private IEnumerator PouringBeer() {
 			pourSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.PourBeer);
-
-			if (Tavern.Instance != null) {
-				Tavern.Instance.SpendsMoney(beerData.cost);
-			}
 
 			fillProgressBar.Show();
 			pourProgressBar.Show();
@@ -155,6 +151,7 @@ namespace Interactables.Beers {
 
 			pourSoundHandle?.FadeOutAndStop(0.2f);
 			pouringPlayer.CanMove = true;
+			pouringPlayer = null;
 		}
 
 		public void Refill() {

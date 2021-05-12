@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -57,29 +58,40 @@ namespace Scenes {
 		}
 
 		public void LoadMainMenu() {
-			if (PlayerManager.Instance != null) {
-				for (int i = PlayerManager.Instance.NumPlayers - 1; i >= 0; i--)
-					Destroy(PlayerManager.Instance.Players[i].gameObject);
-			}
-
-			Load(mainMenu, true);
+			Load(mainMenu, true, () => {
+				// Remove all player when going back to main menu
+				if (PlayerManager.Instance != null) {
+					for (int i = PlayerManager.Instance.NumPlayers - 1; i >= 0; i--)
+						Destroy(PlayerManager.Instance.Players[i].gameObject);
+				}
+			});
 		}
 
 		public void LoadTutorial() => Load(tutorial, true);
 		public void LoadLobby() => Load(lobby, false);
 		public void LoadGame() => Load(game, true);
 
-		private void Load(SceneInfo sceneInfo, bool doTransition) {
+		private void Load(SceneInfo sceneInfo, bool doTransition, Action beforeEnterScene = null) {
 			// Make sure players are carried over
 			if (PlayerManager.Instance != null) {
 				foreach (PlayerComponent player in PlayerManager.Instance.Players)
 					DontDestroyOnLoad(player.gameObject);
 			}
 
-			if (doTransition)
-				transition.Play(sceneInfo);
-			else
+			void BeforeEnterScene() {
+				beforeEnterScene?.Invoke();
+
+				// Reset time scale when loading a new scene
+				Time.timeScale = 1f;
+			}
+
+			if (doTransition) {
+				transition.Play(sceneInfo, BeforeEnterScene);
+			}
+			else {
+				BeforeEnterScene();
 				sceneInfo.Load();
+			}
 		}
 	}
 }

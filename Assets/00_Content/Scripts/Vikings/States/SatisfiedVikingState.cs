@@ -50,11 +50,8 @@ namespace Vikings.States {
 
 					Vector3 throwDirection = -viking.transform.forward;
 					throwDirection.y = 0.7f;
-
-					if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive)
-						givenItem.Respawn();
-					else
-						givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
+          
+          givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
 				}
 			}
 		}

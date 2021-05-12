@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   randomWeight: 100
-  visualisationPrefab: {fileID: 919132149155446097, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
+  visualisationSprite: {fileID: 21300000, guid: 1ab8bca6189da84438acfeca89d89106, type: 3}
   isMaterialDesire: 1
   shouldThrowItem: 1
   isOrder: 0
