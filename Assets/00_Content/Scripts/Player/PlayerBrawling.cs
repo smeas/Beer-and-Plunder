@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Extensions;
+using Interactables.Weapons;
 using UnityEngine;
 using Vikings;
 
@@ -20,15 +22,39 @@ namespace Player {
 		private bool isInvulnerable;
 		private PlayerData playerData;
 		private PlayerComponent playerComponent;
+		private Axe heldAxe;
+
+		public event Action OnAttack;
 
 		private void Start() {
 			playerComponent = GetComponent<PlayerComponent>();
 			playerData = playerComponent.PlayerData;
 			brawlHealth = playerData.brawlHealth;
 
+			// Event handlers for keeping track of the held axe and forwarding its OnAttack event
+			PlayerPickUp playerPickUp = GetComponentInChildren<PlayerPickUp>();
+			playerPickUp.OnItemPickedUp += pickUp => {
+				if (pickUp is Axe axe) {
+					heldAxe = axe;
+					heldAxe.OnAttack += HandleOnHeldAxeAttack;
+				}
+			};
+
+			playerPickUp.OnItemDropped += pickUp => {
+				if (pickUp is Axe axe) {
+					Debug.Assert(heldAxe == axe, "Dropped axe was not the held axe");
+					heldAxe.OnAttack -= HandleOnHeldAxeAttack;
+					heldAxe = null;
+				}
+			};
+
 			defaultMaterial = new Material(defaultMaterial) {
 				color = playerComponent.PlayerColor
 			};
+		}
+
+		private void HandleOnHeldAxeAttack() {
+			OnAttack?.Invoke();
 		}
 
 		private void FixedUpdate() {

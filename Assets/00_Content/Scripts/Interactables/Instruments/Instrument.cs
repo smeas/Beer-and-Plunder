@@ -22,6 +22,7 @@ namespace Interactables.Instruments {
 		private SoundHandle musicSoundHandle;
 
 		public DesireType DesireType => instrumentData.desireType;
+		public bool IsPlaying => isPlaying;
 
 		private void Awake() {
 			musicSource = GetComponent<AudioSource>();
