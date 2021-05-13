@@ -10,6 +10,7 @@ namespace Interactables.Instruments {
 		[Space]
 		[SerializeField] private InstrumentData instrumentData;
 		[SerializeField] private GameObject areaField;
+		[SerializeField] private ParticleSystem particleSystem;
 
 		private AudioSource musicSource;
 		private SphereCollider sphereCollider;
@@ -32,6 +33,11 @@ namespace Interactables.Instruments {
 			float diameter = instrumentData.effectRadius * 2f;
 			areaField.SetActive(false);
 			areaField.transform.localScale = new Vector3(diameter, areaField.transform.localScale.y, diameter);
+
+			ParticleSystem.ShapeModule particleSystemShape = particleSystem.shape;
+			particleSystemShape.radius = instrumentData.effectRadius - 1f;
+
+			particleSystem.Stop();
 		}
 
 	#if UNITY_EDITOR
@@ -71,6 +77,7 @@ namespace Interactables.Instruments {
 			musicSource.Play();
 
 			areaField.SetActive(true);
+			particleSystem.Play();
 
 			isPlaying = true;
 
@@ -90,6 +97,7 @@ namespace Interactables.Instruments {
 			musicSource.Stop();
 
 			areaField.SetActive(false);
+			particleSystem.Stop();
 
 			foreach (Viking viking in vikingsInRange.Keys) {
 				viking.CancelAffect(usingPlayer, this);
