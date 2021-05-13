@@ -52,15 +52,9 @@ namespace Menu {
 					playerInputHandler.OnSubmit.AddListener(slot.Flash);
 					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
 
-					// Give the player a unique model
-					Debug.Assert(player.ModelRoot.childCount == 1, "Model root does not have exactly one child", player.ModelRoot);
-					Destroy(player.ModelRoot.GetChild(0).gameObject);
-					player.BodyMeshRenderer = Instantiate(playerModels[i], player.ModelRoot).GetComponentInChildren<Renderer>();
-
+					// Give the player a unique model and color
+					player.SwitchCharacterModel(playerModels[i]);
 					player.PlayerColor = playerColors[i];
-					// TODO: Indicate color in some other way?
-					// foreach (Material material in player.BodyMeshRenderer.materials)
-					// 	material.color = playerColors[i];
 
 					slot.JoinPlayer(player);
 
