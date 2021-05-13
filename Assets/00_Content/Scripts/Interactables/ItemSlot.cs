@@ -20,10 +20,12 @@ namespace Interactables {
 			if (HasItemInSlot || item is BeerBarrel)
 				return false;
 
-			if (item.ItemSlotPivot != null) item.transform.position = transform.position + (item.ItemSlotPivot.position - item.transform.position);
-
-			else { item.transform.position = transform.position; }
-			
+			if (item.ItemSlotPivot != null)
+				//Places the Pickup with an offset to compensate for the items central.
+				item.transform.position = transform.position + (item.ItemSlotPivot.position - item.transform.position);
+			else {
+				item.transform.position = transform.position;
+			}
 
 			item.CurrentItemSlot = this;
 			itemInSlot = item;
