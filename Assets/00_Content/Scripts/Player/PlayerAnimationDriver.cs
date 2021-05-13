@@ -4,6 +4,16 @@ using UnityEngine;
 
 namespace Player {
 	public class PlayerAnimationDriver : MonoBehaviour {
+		private static readonly int speedId = Animator.StringToHash("Speed");
+		private static readonly int stunnedId = Animator.StringToHash("Stunned");
+		private static readonly int carryingId = Animator.StringToHash("Carrying");
+		private static readonly int carryingHeavyId = Animator.StringToHash("CarryingHeavy");
+		private static readonly int twoCarryingId = Animator.StringToHash("TwoCarrying");
+		private static readonly int holdInstrumentId = Animator.StringToHash("HoldInstrument");
+		private static readonly int playInstrumentId = Animator.StringToHash("PlayInstrument");
+		private static readonly int attackId = Animator.StringToHash("Attack");
+		private static readonly int celebratingId = Animator.StringToHash("Celebrating");
+
 		private PlayerComponent playerComponent;
 		private PlayerMovement playerMovement;
 		private PlayerBrawling playerBrawling;
@@ -13,7 +23,7 @@ namespace Player {
 		/// Play the celebration animation.
 		/// </summary>
 		public bool Celebrating {
-			set => playerComponent.CharacterAnimator.SetBool("Celebrating", value);
+			set => playerComponent.CharacterAnimator.SetBool(celebratingId, value);
 		}
 
 		private void Start() {
@@ -32,19 +42,19 @@ namespace Player {
 			Instrument instrument = playerPickUp.PickedUpItem as Instrument;
 			bool holdingInstrument = instrument != null;
 
-			playerComponent.CharacterAnimator.SetFloat("Speed", playerMovement.ActualSpeed / playerMovement.MaxSpeed);
-			playerComponent.CharacterAnimator.SetBool("Stunned", playerBrawling.IsStunned);
+			playerComponent.CharacterAnimator.SetFloat(speedId, playerMovement.ActualSpeed / playerMovement.MaxSpeed);
+			playerComponent.CharacterAnimator.SetBool(stunnedId, playerBrawling.IsStunned);
 
-			playerComponent.CharacterAnimator.SetBool("Carrying", carrying);
-			playerComponent.CharacterAnimator.SetBool("CarryingHeavy", carrying && carriedItem.IsHeavy);
-			playerComponent.CharacterAnimator.SetBool("TwoCarrying", carrying && carriedItem.IsMultiCarried);
+			playerComponent.CharacterAnimator.SetBool(carryingId, carrying);
+			playerComponent.CharacterAnimator.SetBool(carryingHeavyId, carrying && carriedItem.IsHeavy);
+			playerComponent.CharacterAnimator.SetBool(twoCarryingId, carrying && carriedItem.IsMultiCarried);
 
-			playerComponent.CharacterAnimator.SetBool("HoldInstrument", holdingInstrument);
-			playerComponent.CharacterAnimator.SetBool("PlayInstrument", holdingInstrument && instrument.IsPlaying);
+			playerComponent.CharacterAnimator.SetBool(holdInstrumentId, holdingInstrument);
+			playerComponent.CharacterAnimator.SetBool(playInstrumentId, holdingInstrument && instrument.IsPlaying);
 		}
 
 		private void HandleOnAttack() {
-			playerComponent.CharacterAnimator.SetTrigger("Attack");
+			playerComponent.CharacterAnimator.SetTrigger(attackId);
 		}
 	}
 }
