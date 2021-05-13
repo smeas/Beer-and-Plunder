@@ -11,6 +11,7 @@ namespace Interactables {
 		[SerializeField] private Transform itemGrabTransform;
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
 		[SerializeField] protected Collider objectCollider;
+		[SerializeField] public Transform ItemSlotPivot;
 
 		protected new Rigidbody rigidbody;
 		private bool isBeingCarried;
