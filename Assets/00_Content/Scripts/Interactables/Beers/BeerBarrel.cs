@@ -19,6 +19,8 @@ namespace Interactables.Beers {
 
 		private List<PlayerMovement> carriers = new List<PlayerMovement>();
 
+		public override bool IsHeavy => !IsMultiCarried;
+
 		protected override void Start() {
 			base.Start();
 

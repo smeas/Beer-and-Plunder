@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 2187889529978375781}
   - component: {fileID: 4711298765348120590}
   - component: {fileID: -3073392600206878360}
+  - component: {fileID: 6624416164148032783}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -344,7 +345,6 @@ MonoBehaviour:
   maxVelocity: 6
   speedMultiplier: 1
   canMove: 1
-  faceMovementDirection: 1
 --- !u!114 &4711298765348120590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +375,18 @@ MonoBehaviour:
   vikingLayer:
     serializedVersion: 2
     m_Bits: 8192
+--- !u!114 &6624416164148032783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2187889529978375777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8beb55f2d1174b20bb4ec74a053fd170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2187889530449677917
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,6 +664,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4120172581204064570}
     m_Modifications:
+    - target: {fileID: 4327973981739560390, guid: 327cdc29c9f9e27499dfaa555f62b529, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: efda2e7cb5015c8499affe6a85dfcd13, type: 2}
     - target: {fileID: 5922738050530735865, guid: 327cdc29c9f9e27499dfaa555f62b529, type: 3}
       propertyPath: m_RootOrder
       value: 0

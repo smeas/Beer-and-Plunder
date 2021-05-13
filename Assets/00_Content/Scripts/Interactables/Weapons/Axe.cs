@@ -1,3 +1,4 @@
+using System;
 using Audio;
 using Player;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace Interactables.Weapons {
 
 		private Animator animator;
 		private bool isAttacking;
+
+		public event Action OnAttack;
 
 		protected override void Start() {
 			base.Start();
@@ -47,6 +50,7 @@ namespace Interactables.Weapons {
 		private void Attack() {
 			if (isAttacking) return;
 
+			OnAttack?.Invoke();
 			animator.SetTrigger("attack");
 			isAttacking = true;
 		}

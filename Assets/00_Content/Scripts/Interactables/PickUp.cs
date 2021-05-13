@@ -18,9 +18,10 @@ namespace Interactables {
 		private Vector3 startPosition;
 		private Quaternion startRotation;
 
-		protected bool IsMultiCarried { get; set; }
+		public bool IsMultiCarried { get; protected set; }
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
+		public virtual bool IsHeavy => false;
 
 		public event Action<PickUp, PlayerComponent> OnPickedUp;
 		public event Action<PickUp, PlayerComponent> OnDropped;

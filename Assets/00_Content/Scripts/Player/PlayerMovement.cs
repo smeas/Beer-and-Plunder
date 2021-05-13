@@ -17,7 +17,15 @@ namespace Player {
 		private Vector2 movementDirection;
 		private float speed;
 
-		public float Speed => speed;
+		private Vector3 lastPosition;
+		private float actualSpeed;
+
+		public float Speed => speed * speedMultiplier;
+		/// <summary>
+		/// Actual speed of the player (think rigidbody.velocity) clamped to the max speed. Delayed by one FixedUpdate.
+		/// </summary>
+		public float ActualSpeed => Mathf.Min(actualSpeed, maxVelocity);
+		public float MaxSpeed => maxVelocity;
 		public Vector2 MoveInput => moveInput;
 		public Vector3 Velocity => new Vector3(movementDirection.x * speed * speedMultiplier, 0f, movementDirection.y * speed * speedMultiplier);
 		public Collider MovementCollider => movementCollider;
@@ -55,6 +63,10 @@ namespace Player {
 
 			if (DoMovement)
 				ApplyMovement();
+
+			Vector3 currentPosition = transform.position;
+			actualSpeed = (currentPosition - lastPosition).magnitude / Time.deltaTime;
+			lastPosition = currentPosition;
 		}
 
 		private void ApplyMovement() {
