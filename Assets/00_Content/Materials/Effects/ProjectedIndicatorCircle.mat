@@ -78,6 +78,7 @@ Material:
     m_Floats:
     - ENUM_8865B89FCCD84DD9BEDB80F35B5B609B: 0
     - Vector1_1: 1.5
+    - Vector1_1b64424f5c47439292de80ced38b04f0: 0.03
     - Vector1_1cf1e84ad0d94a559838754dbdd3bd85: 7
     - Vector1_735e9fc9049346e789406fc40f7cd067: 1.75
     - Vector1_80bb345359444c30884fa07e405a08bc: 0.15
