@@ -8,6 +8,7 @@ namespace Player {
 	public class PlayerComponent : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform modelRoot;
 		[SerializeField] private PlayerData playerData;
+		[SerializeField] private MeshRenderer glowRingRenderer;
 
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
@@ -19,6 +20,11 @@ namespace Player {
 		private void Start() {
 			SceneManager.sceneLoaded += HandleOnSceneLoaded;
 			HandleOnSceneLoaded(default, default);
+
+			// Update glow ring color
+			Material material = glowRingRenderer.material;
+			Color oldColor = material.color;
+			material.color = new Color(PlayerColor.r, PlayerColor.g, PlayerColor.b, oldColor.a);
 		}
 
 		private void OnDestroy() {
