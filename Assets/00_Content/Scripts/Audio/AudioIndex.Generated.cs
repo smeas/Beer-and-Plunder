@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 namespace Audio {
 	public enum SoundEffect {
+		FoodReady = 1745492459,
 		Gameplay_GuestEnter = -135389647,
 		Gameplay_RoundLost = 780448425,
 		Gameplay_RoundWon = 1687523630,
+		Goblin_GoblinHit = 118386714,
+		Goblin_GoblinLaugh = -1546456542,
 		Instrument_HarpPlay = -351740733,
 		Physics_CoinHit = 1668061808,
 		Physics_SpillBeer = -917762040,
@@ -20,9 +23,12 @@ namespace Audio {
 
 	public static partial class AudioIndex {
 		private static Dictionary<int, string> soundEffectPaths = new Dictionary<int, string> {
+			{ 1745492459, "Audio/SoundEffects/FoodReady" },
 			{ -135389647, "Audio/SoundEffects/Gameplay/GuestEnter" },
 			{ 780448425, "Audio/SoundEffects/Gameplay/RoundLost" },
 			{ 1687523630, "Audio/SoundEffects/Gameplay/RoundWon" },
+			{ 118386714, "Audio/SoundEffects/Goblin/GoblinHit" },
+			{ -1546456542, "Audio/SoundEffects/Goblin/GoblinLaugh" },
 			{ -351740733, "Audio/SoundEffects/Instrument/HarpPlay" },
 			{ 1668061808, "Audio/SoundEffects/Physics/CoinHit" },
 			{ -917762040, "Audio/SoundEffects/Physics/SpillBeer" },
