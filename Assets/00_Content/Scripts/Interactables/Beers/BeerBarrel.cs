@@ -166,8 +166,8 @@ namespace Interactables.Beers {
 		}
 
 		public void Release() {
-			foreach (PlayerMovement carrier in carriers) {
-				PlayerPickUp playerPickup = carrier.GetComponentInChildren<PlayerPickUp>();
+			for (int i = carriers.Count - 1; i >= 0; i--) {
+				PlayerPickUp playerPickup = carriers[i].GetComponentInChildren<PlayerPickUp>();
 				playerPickup.DropItem();
 			}
 		}

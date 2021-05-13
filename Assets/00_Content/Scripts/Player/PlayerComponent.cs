@@ -31,7 +31,8 @@ namespace Player {
 		}
 
 		private void Awake() {
-			CharacterAnimator = GetComponentInChildren<Animator>();
+			if (CharacterAnimator == null)
+				CharacterAnimator = GetComponentInChildren<Animator>();
 		}
 
 		private void Start() {

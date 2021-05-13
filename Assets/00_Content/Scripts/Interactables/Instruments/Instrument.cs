@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Audio;
 using Player;
 using UnityEngine;
 using Vikings;
@@ -10,7 +9,7 @@ namespace Interactables.Instruments {
 		[Space]
 		[SerializeField] private InstrumentData instrumentData;
 		[SerializeField] private GameObject areaField;
-		[SerializeField] private ParticleSystem particleSystem;
+		[SerializeField] private new ParticleSystem particleSystem;
 
 		private AudioSource musicSource;
 		private SphereCollider sphereCollider;
@@ -19,7 +18,7 @@ namespace Interactables.Instruments {
 		private GameObject usingPlayer;
 		// Tracks all vikings that are in range. Key = the viking, Value = number of triggers in range.
 		private Dictionary<Viking, int> vikingsInRange = new Dictionary<Viking, int>();
-		private SoundHandle musicSoundHandle;
+		//private SoundHandle musicSoundHandle;
 
 		public DesireType DesireType => instrumentData.desireType;
 		public bool IsPlaying => isPlaying;
@@ -86,7 +85,7 @@ namespace Interactables.Instruments {
 				viking.Affect(usingPlayer, this);
 			}
 
-			musicSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.Instrument_HarpPlay, loop: true);
+			//musicSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.Instrument_HarpPlay, loop: true);
 		}
 
 		public void EndUse() {
@@ -104,7 +103,7 @@ namespace Interactables.Instruments {
 				viking.CancelAffect(usingPlayer, this);
 			}
 
-			musicSoundHandle?.FadeOutAndStop(0.3f);
+			//musicSoundHandle?.FadeOutAndStop(0.3f);
 		}
 
 		private void OnTriggerEnter(Collider other) {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using Extensions;
 using Interactables.Weapons;
 using UnityEngine;
@@ -9,9 +8,6 @@ using Vikings;
 namespace Player {
 	public class PlayerBrawling : MonoBehaviour {
 
-		[SerializeField] private Material defaultMaterial;
-		[SerializeField] private Material redMaterial;
-		[SerializeField] private Material yellowMaterial;
 		[SerializeField] private LayerMask vikingLayer;
 
 		public bool IsStunned { get => isStunned; set => isStunned = value; }
@@ -47,10 +43,6 @@ namespace Player {
 					heldAxe = null;
 				}
 			};
-
-			defaultMaterial = new Material(defaultMaterial) {
-				color = playerComponent.PlayerColor
-			};
 		}
 
 		private void HandleOnHeldAxeAttack() {
@@ -84,9 +76,9 @@ namespace Player {
 			}
 
 			brawlHealth -= brawlDamage;
-			int materialCount = playerComponent.BodyMeshRenderer.sharedMaterials.Length;
-			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(redMaterial, materialCount).ToArray();
 
+			// TODO: Delete these
+			playerComponent.BodyMeshRenderer.material.color = Color.red;
 
 			if (brawlHealth <= 0) {
 				StopAllCoroutines();
@@ -102,8 +94,7 @@ namespace Player {
 
 			yield return new WaitForSeconds(1f);
 
-			int materialCount = playerComponent.BodyMeshRenderer.sharedMaterials.Length;
-			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
+			playerComponent.BodyMeshRenderer.material.color = Color.white;
 		}
 
 		private IEnumerator MakeInvulnerable() {
@@ -131,8 +122,7 @@ namespace Player {
 			PlayerMovement playerMovement = GetComponent<PlayerMovement>();
 			playerMovement.CanMove = false;
 
-			int materialCount = playerComponent.BodyMeshRenderer.sharedMaterials.Length;
-			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(yellowMaterial, materialCount).ToArray();
+			playerComponent.BodyMeshRenderer.material.color = Color.yellow;
 
 			Coroutine blinkRoutine = StartCoroutine(BlinkBody());
 			isStunned = true;
@@ -146,7 +136,7 @@ namespace Player {
 			brawlHealth = 3;
 			isRegeneratingHealth = false;
 
-			playerComponent.BodyMeshRenderer.sharedMaterials = Enumerable.Repeat(defaultMaterial, materialCount).ToArray();
+			playerComponent.BodyMeshRenderer.material.color = Color.white;
 
 			StopCoroutine(blinkRoutine);
 			playerComponent.BodyMeshRenderer.enabled = true;

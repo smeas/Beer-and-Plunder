@@ -165,7 +165,7 @@ namespace Player {
 			if (interactableHighlight == null)
 				interactableHighlight = Instantiate(interactableHighlightPrefab);
 
-			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 2;
+			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 3.5f;
 			interactableHighlight.SetActive(true);
 			closestObject = interactable;
 		}
