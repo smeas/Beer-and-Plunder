@@ -32,6 +32,7 @@ Transform:
   - {fileID: 4486183918862499082}
   - {fileID: 8203022220857999791}
   - {fileID: 3824459049787496328}
+  - {fileID: 4258603012808477393}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -52,6 +53,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   objectCollider: {fileID: 6311759239748045703}
+  ItemSlotPivot: {fileID: 4258603012808477393}
   beerData: {fileID: 11400000, guid: 1edea882df6ee684ea9f25370d7a98cf, type: 2}
   foam: {fileID: 8835268153560849173}
 --- !u!54 &178324330392158036
@@ -114,6 +116,36 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3647052958532574651, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
+--- !u!1 &5749220511879716862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4258603012808477393}
+  m_Layer: 0
+  m_Name: ItemSlotPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4258603012808477393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5749220511879716862}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.58, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1262854382656651555}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4163747163624643297
 PrefabInstance:
   m_ObjectHideFlags: 0

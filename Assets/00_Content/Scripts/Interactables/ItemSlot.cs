@@ -20,10 +20,13 @@ namespace Interactables {
 			if (HasItemInSlot || item is BeerBarrel)
 				return false;
 
-			item.transform.position = transform.position;
+			if (item.ItemSlotPivot != null) item.transform.position = transform.position + (item.ItemSlotPivot.position - item.transform.position);
+
+			else { item.transform.position = transform.position; }
+			
+
 			item.CurrentItemSlot = this;
 			itemInSlot = item;
-
 			Rigidbody body = item.GetComponent<Rigidbody>();
 			if (body != null)
 				body.isKinematic = true;
