@@ -15,7 +15,7 @@ namespace Vikings {
 		[HideInInspector]
 		public bool isOrder = false;
 		[HideInInspector]
-		public GameObject visualisationAfterPrefab;
+		public Sprite visualisationAfterPrefab;
 
 		[Min(0), Tooltip("How long does the desire take to be fulfilled, 0 is instant")]
 		public float desireFulfillTime;

@@ -20,7 +20,7 @@ namespace Editors {
 
 			if (desireDataScript.isOrder) // if bool is true, show other fields
 			{
-				desireDataScript.visualisationAfterPrefab = EditorGUILayout.ObjectField("visualisationAfterPrefab", desireDataScript.visualisationAfterPrefab, typeof(GameObject), true) as GameObject;
+				desireDataScript.visualisationAfterPrefab = EditorGUILayout.ObjectField("visualisationAfterPrefab", desireDataScript.visualisationAfterPrefab, typeof(Sprite), true) as Sprite;
 			}
 		}
 	}
