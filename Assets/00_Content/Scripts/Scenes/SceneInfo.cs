@@ -1,11 +1,12 @@
 ﻿using System;
+using Audio;
 using UnityEngine;
 
 namespace Scenes {
 	[Serializable]
 	public class SceneInfo {
 		[SerializeField] public SceneReference scene;
-		[SerializeField] public AudioClip music;
+		[SerializeField] public MusicCue music;
 
 		public void Load() {
 			scene.Load();

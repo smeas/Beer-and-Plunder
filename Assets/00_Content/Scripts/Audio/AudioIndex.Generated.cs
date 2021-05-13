@@ -1,42 +1,44 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Audio {
 	public enum SoundEffect {
-		FoodReady,
-		Gameplay_GuestEnter,
-		Gameplay_RoundLost,
-		Gameplay_RoundWon,
-		Goblin_GoblinHit,
-		Goblin_GoblinLaugh,
-		Instrument_HarpPlay,
-		Physics_CoinHit,
-		Physics_SpillBeer,
-		Physics_TankardPlace,
-		Player_PickUpCoin,
-		Player_SwingAxe,
-		PourBeer,
-		Repair,
-		Viking_AxeHit,
-		Viking_DesireFilledMan
+		FoodReady = 1745492459,
+		Gameplay_GuestEnter = -135389647,
+		Gameplay_RoundLost = 780448425,
+		Gameplay_RoundWon = 1687523630,
+		Goblin_GoblinHit = 118386714,
+		Goblin_GoblinLaugh = -1546456542,
+		Instrument_HarpPlay = -351740733,
+		Physics_CoinHit = 1668061808,
+		Physics_SpillBeer = -917762040,
+		Physics_TankardPlace = -1172795835,
+		Player_PickUpCoin = 594944396,
+		Player_SwingAxe = 1556566438,
+		PourBeer = 387602004,
+		Repair = -39618835,
+		Viking_AxeHit = 382397011,
+		Viking_DesireFilledMan = -574487926
 	}
 
 	public static partial class AudioIndex {
-		private static string[] soundEffectPaths = {
-			"Audio/SoundEffects/FoodReady",
-			"Audio/SoundEffects/Gameplay/GuestEnter",
-			"Audio/SoundEffects/Gameplay/RoundLost",
-			"Audio/SoundEffects/Gameplay/RoundWon",
-			"Audio/SoundEffects/Goblin/GoblinHit",
-			"Audio/SoundEffects/Goblin/GoblinLaugh",
-			"Audio/SoundEffects/Instrument/HarpPlay",
-			"Audio/SoundEffects/Physics/CoinHit",
-			"Audio/SoundEffects/Physics/SpillBeer",
-			"Audio/SoundEffects/Physics/TankardPlace",
-			"Audio/SoundEffects/Player/PickUpCoin",
-			"Audio/SoundEffects/Player/SwingAxe",
-			"Audio/SoundEffects/PourBeer",
-			"Audio/SoundEffects/Repair",
-			"Audio/SoundEffects/Viking/AxeHit",
-			"Audio/SoundEffects/Viking/DesireFilledMan"
+		private static Dictionary<int, string> soundEffectPaths = new Dictionary<int, string> {
+			{ 1745492459, "Audio/SoundEffects/FoodReady" },
+			{ -135389647, "Audio/SoundEffects/Gameplay/GuestEnter" },
+			{ 780448425, "Audio/SoundEffects/Gameplay/RoundLost" },
+			{ 1687523630, "Audio/SoundEffects/Gameplay/RoundWon" },
+			{ 118386714, "Audio/SoundEffects/Goblin/GoblinHit" },
+			{ -1546456542, "Audio/SoundEffects/Goblin/GoblinLaugh" },
+			{ -351740733, "Audio/SoundEffects/Instrument/HarpPlay" },
+			{ 1668061808, "Audio/SoundEffects/Physics/CoinHit" },
+			{ -917762040, "Audio/SoundEffects/Physics/SpillBeer" },
+			{ -1172795835, "Audio/SoundEffects/Physics/TankardPlace" },
+			{ 594944396, "Audio/SoundEffects/Player/PickUpCoin" },
+			{ 1556566438, "Audio/SoundEffects/Player/SwingAxe" },
+			{ 387602004, "Audio/SoundEffects/PourBeer" },
+			{ -39618835, "Audio/SoundEffects/Repair" },
+			{ 382397011, "Audio/SoundEffects/Viking/AxeHit" },
+			{ -574487926, "Audio/SoundEffects/Viking/DesireFilledMan" }
 		};
 	}
 }
