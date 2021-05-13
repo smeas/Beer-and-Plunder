@@ -74,6 +74,20 @@ namespace Utilities {
 			return (Quaternion.LookRotation(direction) * new Vector3(pointInCircle.x, pointInCircle.y, 1f)).normalized;
 		}
 
+		public static Vector2 Rotate2D(Vector2 vector, float angle) {
+			float cos = Mathf.Cos(angle);
+			float sin = Mathf.Sin(angle);
+
+			return new Vector2(
+				vector.x * cos - vector.y * sin,
+				vector.x * sin + vector.y * cos
+			);
+		}
+
+		public static Vector2 RotateAroundPoint2D(Vector2 vector, Vector2 point, float angle) {
+			return Rotate2D(vector - point, angle) + point;
+		}
+
 		//  20 dB <=> 10
 		//   0 dB <=> 1
 		// -80 dB <=> 0.0001

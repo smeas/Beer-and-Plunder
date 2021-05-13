@@ -44,8 +44,11 @@ namespace Player {
 		private void OnTriggerEnter(Collider other) {
 			if (pickUpLayer.ContainsLayer(other.gameObject.layer)) {
 				PickUp pickUp = other.GetComponentInParent<PickUp>();
-				pickUpsInRange.Add(pickUp);
-				pickUp.OnPickedUp += HandleOnPickedUp;
+
+				if (pickUp != playerPickUp.PickedUpItem) {
+					pickUpsInRange.Add(pickUp);
+					pickUp.OnPickedUp += HandleOnPickedUp;
+				}
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
 				interactablesInRange.Add(other.GetComponentInParent<Interactable>());

@@ -8,17 +8,23 @@ namespace Player {
 	public class PlayerComponent : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform modelRoot;
 		[SerializeField] private PlayerData playerData;
+		[SerializeField] private MeshRenderer glowRingRenderer;
 
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
 		public Transform ModelRoot => modelRoot;
-		public MeshRenderer BodyMeshRenderer { get; set; }
+		public Renderer BodyMeshRenderer { get; set; }
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
 		public Color PlayerColor { get; set; } = new Color(0.8828125f, 0.8828125f, 0.8828125f);
 
 		private void Start() {
 			SceneManager.sceneLoaded += HandleOnSceneLoaded;
 			HandleOnSceneLoaded(default, default);
+
+			// Update glow ring color
+			Material material = glowRingRenderer.material;
+			Color oldColor = material.color;
+			material.color = new Color(PlayerColor.r, PlayerColor.g, PlayerColor.b, oldColor.a);
 		}
 
 		private void OnDestroy() {
@@ -37,7 +43,7 @@ namespace Player {
 			PlayerInput playerInput = GetComponent<PlayerInput>();
 			PlayerId = playerInput.playerIndex;
 
-			BodyMeshRenderer = GetComponentInChildren<MeshRenderer>();
+			BodyMeshRenderer = GetComponentInChildren<Renderer>();
 
 			if (playerData == null)
 				Debug.LogWarning("PlayerData is not set in PlayerComponent");

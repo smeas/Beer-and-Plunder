@@ -3,18 +3,19 @@ using Interactables;
 using Interactables.Beers;
 using Player;
 using UnityEngine;
+using Utilities;
 
 namespace Vikings.States {
 	public class DesiringVikingState : VikingState {
 		private bool hasActiveFulfillment;
 		private float fulfillmentTimer;
 		private GameObject fulfillingPlayer;
+		private bool isOrderGiven;
 
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationPrefab);
-
+			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
 			return this;
 		}
 
@@ -24,6 +25,10 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
+			float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.brawlMoodThreshold, viking.Stats.StartMood, 0, 1);
+			viking.desireVisualiser.SetDesireColor(remappedMood);
+			viking.desireVisualiser.SetTweenSpeed(remappedMood);
+			
 			if (hasActiveFulfillment) {
 				fulfillmentTimer += Time.deltaTime;
 
@@ -66,6 +71,7 @@ namespace Vikings.States {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
+			if (viking.CurrentDesire.isOrder && !isOrderGiven) return true;
 			if (!(item is IDesirable givenItem)) return false;
 			if (!viking.CurrentDesire.isMaterialDesire) return false;
 			if (hasActiveFulfillment) return false;
@@ -81,6 +87,11 @@ namespace Vikings.States {
 
 		public override VikingState Interact(GameObject player, PickUp item) {
 			fulfillingPlayer = player;
+
+			if (viking.CurrentDesire.isOrder && !isOrderGiven) {
+				SpawnOrderTicket();
+				return this;
+			}
 
 			if (viking.CurrentDesire.desireFulfillTime == 0)
 				return DesireFulfilled();
@@ -117,10 +128,17 @@ namespace Vikings.States {
 				playerPickUp.DropItem();
 
 				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
-				return new SatisfiedVikingState(viking, givenItem);
+				return new SatisfiedVikingState(viking, desire, givenItem);
 			}
 
-			return new SatisfiedVikingState(viking);
+			return new SatisfiedVikingState(viking, desire);
+		}
+
+		private void SpawnOrderTicket() {
+			viking.desireVisualiser.HideDesire();
+			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationAfterPrefab);
+			Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			isOrderGiven = true;
 		}
 	}
 }

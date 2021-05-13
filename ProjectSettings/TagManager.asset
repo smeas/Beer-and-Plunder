@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - PickUp
+  - Coin
+  - Goblin
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,8 @@ TagManager:
   - Player
   - Viking
   - Ground
-  - AllButSelf
+  - 
+  - Goblin
   - 
   - 
   - 
@@ -33,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - GlowRing
   - 
   - 
   - 

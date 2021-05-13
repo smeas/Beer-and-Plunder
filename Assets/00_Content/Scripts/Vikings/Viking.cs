@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
-using Extensions;
 using Interactables;
 using Interactables.Beers;
+using Interactables.Kitchens;
 using Interactables.Weapons;
 using Player;
 using Rounds;
@@ -21,12 +21,12 @@ namespace Vikings {
 
 	public delegate void VikingLeavingQueue(Viking sender);
 
-	public class Viking : Interactable {
+	public class Viking : Interactable, IHittable {
 		[SerializeField] private VikingData vikingData;
-		[SerializeField] private LayerMask weaponLayer;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public Tankard tankardPrefab;
+		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public MeshRenderer bodyMeshRenderer;
@@ -46,6 +46,7 @@ namespace Vikings {
 		private bool isAttacked;
 		private bool isAttacking;
 
+		public NavMeshAgent NavMeshAgent => navMeshAgent;
 		public VikingData Data => vikingData;
 		public DesireData[] Desires { get; private set; }
 		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
@@ -220,19 +221,14 @@ namespace Vikings {
 			state.CancelInteraction(player, item);
 		}
 
-		private void OnTriggerEnter(Collider other) {
-			if (weaponLayer.ContainsLayer(other.gameObject.layer)) {
-				RegisterHitFromPlayer(other);
-			}
+		void IHittable.Hit(Axe weapon) {
+			RegisterHitFromPlayer(weapon);
 		}
 
-		private void RegisterHitFromPlayer(Collider other) {
+		private void RegisterHitFromPlayer(Axe axe) {
 
 			if (state is LeavingVikingState)
 				return;
-
-			//TODO - Probably get some more generic type of weapon instead of axe. Make an interface for all weapons?
-			Axe axe = other.gameObject.GetComponentInParent<Axe>();
 
 			if (axe.IsAttacking && !isAttacked) {
 
