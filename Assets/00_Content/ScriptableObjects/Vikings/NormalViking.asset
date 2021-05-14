@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
   m_Name: NormalViking
   m_EditorClassIdentifier: 
-  startMood: 75
+  startMood: 100
   moodDeclineRate: 1.5
-  impatientMoodThreshold: 45
+  impatientMoodThreshold: 60
   randomDesires: 1
   desires:
   - {fileID: 11400000, guid: 51d4a8a04055f6c46a8e3ed6559b4e05, type: 2}
@@ -23,7 +23,7 @@ MonoBehaviour:
   desiresMinMax: {x: 2, y: 4}
   desireIntervalMinMax: {x: 10, y: 15}
   satisfiedDurationMinMax: {x: 5, y: 10}
-  coinsDroppedMinMax: {x: 1, y: 9}
+  coinsDroppedMinMax: {x: 4, y: 14}
   coinsWhenLeavingMultiplier: 1.5
   FollowPlayerIndefinitely: 0
   MaxFollowingDuration: 10

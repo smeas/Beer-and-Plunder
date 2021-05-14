@@ -6403,18 +6403,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
-      propertyPath: requiredMoney
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
-      propertyPath: roundDuration
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
-      propertyPath: gameOverPanelPrefab
-      value: 
-      objectReference: {fileID: 2967257529519440624, guid: bddf69e494ce4784791b83252dd0e562, type: 3}
     - target: {fileID: 5164173418291569658, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
       propertyPath: m_Name
       value: RoundController

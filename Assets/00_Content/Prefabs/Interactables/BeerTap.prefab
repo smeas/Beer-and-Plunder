@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2023de8ca2be4624da4417c102558f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pourTime: 1.5
+  pourTime: 2
   perfectPourMinMax: {x: 0.5, y: 0.7}
   perfectPourSize: 0.1
   maxBeerAmount: 10

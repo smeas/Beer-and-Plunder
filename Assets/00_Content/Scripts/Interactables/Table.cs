@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Player;
 using Rounds;
-using Taverns;
 using UnityEngine;
 using Vikings;
 using Random = UnityEngine.Random;
@@ -54,14 +53,8 @@ namespace Interactables {
 			if (!IsDestroyed && player.GetComponent<PlayerSteward>().Follower != null)
 				return true;
 
-			if (IsDestroyed && item is RepairTool) {
-				if (Tavern.Instance != null && RoundController.Instance != null &&
-					Tavern.Instance.Money < RoundController.Instance.CurrentDifficulty.tableRepairCost) {
-					return false;
-				}
-
+			if (IsDestroyed && item is RepairTool)
 				return true;
-			}
 
 			return false;
 		}

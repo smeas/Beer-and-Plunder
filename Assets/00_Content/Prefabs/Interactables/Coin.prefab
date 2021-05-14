@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f5fbe3cb8c42838708367c138cd60c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 2
+  value: 1
   upVelocity: 4
   minSpawnVelocity: 2
   maxSpawnVelocity: 4

@@ -22,9 +22,6 @@ namespace Rounds {
 		[Min(0)]
 		public float tableHealth = 100f;
 
-		[Min(0)]
-		public int tableRepairCost = 25;
-
 		[Min(0), Tooltip("The amount of seconds it takes to repair a table")]
 		public float tableRepairTime = 5f;
 

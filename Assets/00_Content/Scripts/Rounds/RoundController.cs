@@ -93,7 +93,7 @@ namespace Rounds {
 		private void ShowScoreCard() {
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
 				TavernBankrupt();
-				Debug.Log("Required money goal was not reached.");
+				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{requiredMoney})");
 				return;
 			}
 
