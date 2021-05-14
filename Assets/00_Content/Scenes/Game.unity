@@ -2966,11 +2966,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5671636541981694617, guid: b94cc35d11c65fa4193dd3e2fcbab434, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5671636541981694617, guid: b94cc35d11c65fa4193dd3e2fcbab434, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8295582333370567664, guid: b94cc35d11c65fa4193dd3e2fcbab434, type: 3}
       propertyPath: m_Name
@@ -4514,7 +4514,6 @@ GameObject:
   - component: {fileID: 683376367}
   - component: {fileID: 683376366}
   - component: {fileID: 683376365}
-  - component: {fileID: 683376364}
   m_Layer: 0
   m_Name: Grass
   m_TagString: Untagged
@@ -4522,20 +4521,6 @@ GameObject:
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 119
   m_IsActive: 1
---- !u!64 &683376364
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683376363}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &683376365
 MeshRenderer:
   m_ObjectHideFlags: 0
