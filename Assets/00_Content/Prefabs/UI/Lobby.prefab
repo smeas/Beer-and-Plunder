@@ -137,9 +137,9 @@ MonoBehaviour:
   - {fileID: 2762872401146547993, guid: 5afc3a22bff8d3e48a662007210bbc13, type: 3}
   - {fileID: 1452854572574782182, guid: c8639f9b23d7f4a4c81c0ed221fd51f3, type: 3}
   playerColors:
+  - {r: 0.496, g: 0.49964753, b: 1, a: 1}
   - {r: 1, g: 0.504, b: 0.504, a: 1}
   - {r: 0.5428693, g: 1, b: 0.504, a: 1}
-  - {r: 0.496, g: 0.49964753, b: 1, a: 1}
   - {r: 1, g: 0.9660482, b: 0.496, a: 1}
   backAction:
     m_UseReference: 0
