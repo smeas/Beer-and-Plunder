@@ -1,9 +1,12 @@
 using System.Linq;
 using UnityEngine;
+using Utilities;
 
 namespace Player {
-	public class PlayerSpawnController : MonoBehaviour {
+	public class PlayerSpawnController : SingletonBehaviour<PlayerSpawnController> {
 		private Transform[] spawnPoints;
+
+		public Transform[] SpawnPoints => spawnPoints;
 
 		private void Start() {
 			// Array of child transforms
@@ -21,7 +24,9 @@ namespace Player {
 			PlayerManager.Instance.PlayerJoined += HandlePlayerJoined;
 		}
 
-		private void OnDestroy() {
+		protected override void OnDestroy() {
+			base.OnDestroy();
+
 			if (PlayerManager.Instance != null)
 				PlayerManager.Instance.PlayerJoined -= HandlePlayerJoined;
 		}
