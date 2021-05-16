@@ -2,13 +2,19 @@ using Scenes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Player;
-using UnityEngine.UI;
-using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace Menu {
 	public class MenuController : MonoBehaviour {
-		public GameObject mainMenuPanel;
-		public GameObject settingsPanel;
+		[SerializeField] private GameObject mainMenuPanel;
+		[SerializeField] private GameObject settingsPanel;
+		[SerializeField] private GameObject startGameButton;
+
+		[Header("Timeline")]
+		[SerializeField] private PlayableDirector timelineDirector;
+		[SerializeField] private TimelineAsset toLobbyTimeline;
 
 		private void Start() {
 
@@ -24,10 +30,9 @@ namespace Menu {
 		}
 
 		public void GoToLobby() {
-			mainMenuPanel.SetActive(false);
-			settingsPanel.SetActive(false);
-
-			SceneLoadManager.Instance.LoadLobby();
+			EventSystem.current.SetSelectedGameObject(null);
+			timelineDirector.playableAsset = toLobbyTimeline;
+			timelineDirector.Play();
 		}
 
 		public void GoToTutorial() {
@@ -50,6 +55,11 @@ namespace Menu {
 			#else
 				Application.Quit();
 			#endif
+		}
+
+		// Run from animation event
+		public void SelectStartGame() {
+			EventSystem.current.SetSelectedGameObject(startGameButton);
 		}
 	}
 }

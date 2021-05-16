@@ -4,6 +4,8 @@ using Player;
 using Scenes;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace Menu {
 
@@ -13,6 +15,10 @@ namespace Menu {
 		[SerializeField] private Color[] playerColors;
 		[SerializeField] private InputActionProperty backAction;
 		[SerializeField] private ReadySystem readySystem;
+
+		[Header("Timeline")]
+		[SerializeField] private PlayableDirector timelineDirector;
+		[SerializeField] private TimelineAsset leaveLobbyTimeline;
 
 		private PlayerManager playerManager;
 
@@ -114,7 +120,8 @@ namespace Menu {
 				LeavePlayer(players[i]);
 
 			OnLeaveMenu();
-			SceneLoadManager.Instance.LoadMainMenu();
+			timelineDirector.playableAsset = leaveLobbyTimeline;
+			timelineDirector.Play();
 		}
 
 		private void LeavePlayer(PlayerComponent player) {

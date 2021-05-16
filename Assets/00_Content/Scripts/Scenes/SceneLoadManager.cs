@@ -12,7 +12,6 @@ namespace Scenes {
 		[Header("Scenes")]
 		[SerializeField] private SceneInfo mainMenu;
 		[SerializeField] private SceneInfo tutorial;
-		[SerializeField] private SceneInfo lobby;
 		[SerializeField] private SceneInfo game;
 
 		private SceneTransition transition;
@@ -24,8 +23,6 @@ namespace Scenes {
 					return mainMenu;
 				if (currentIndex == tutorial.scene.BuildIndex)
 					return tutorial;
-				if (currentIndex == lobby.scene.BuildIndex)
-					return lobby;
 				if (currentIndex == game.scene.BuildIndex)
 					return game;
 
@@ -69,7 +66,6 @@ namespace Scenes {
 		}
 
 		public void LoadTutorial() => Load(tutorial, true);
-		public void LoadLobby() => Load(lobby, false);
 		public void LoadGame() => Load(game, true);
 
 		private void Load(SceneInfo sceneInfo, bool doTransition, Action beforeEnterScene = null) {
