@@ -83,7 +83,7 @@ namespace Player {
 			return pickedUpItem == null;
 		}
 
-		public void RespawnHeldItem() {
+		public void RoundResetHeldItem() {
 			if (pickedUpItem == null) return;
 
 			PickUp item = pickedUpItem;

@@ -25,6 +25,8 @@ namespace Cameras {
 		private Vector3 currentVelocity;
 		private Camera cam;
 
+		public bool UseBounds => useBounds;
+
 		private void Start() {
 			cam = GetComponent<Camera>();
 			initialPosition = transform.position;
@@ -42,14 +44,16 @@ namespace Cameras {
 			}
 		}
 
+		private void OnEnable() {
+			currentVelocity = Vector3.zero;
+		}
+
 		private void FixedUpdate() {
 			Vector3 position = Vector3.SmoothDamp(transform.position, CalculateTargetPosition(),
 			                                        ref currentVelocity, smoothTime, maxSpeed);
 
-			if (useBounds) {
-				position.x = Mathf.Clamp(position.x, horizontalBounds.x, horizontalBounds.y);
-				position.z = Mathf.Clamp(position.z, verticalBounds.x, verticalBounds.y);
-			}
+			if (useBounds)
+				position = ConstrainPositionInBounds(position);
 
 			transform.position = position;
 		}
@@ -83,7 +87,7 @@ namespace Cameras {
 		}
 
 		// https://www.desmos.com/calculator/9gb8rpm4z1
-		private Vector3 CalculateTargetPosition() {
+		public Vector3 CalculateTargetPosition() {
 			if (targets.Count == 0)
 				return initialPosition;
 
@@ -126,6 +130,12 @@ namespace Cameras {
 			}
 
 			return targetPoint;
+		}
+
+		public Vector3 ConstrainPositionInBounds(Vector3 position) {
+			position.x = Mathf.Clamp(position.x, horizontalBounds.x, horizontalBounds.y);
+			position.z = Mathf.Clamp(position.z, verticalBounds.x, verticalBounds.y);
+			return position;
 		}
 	}
 }
