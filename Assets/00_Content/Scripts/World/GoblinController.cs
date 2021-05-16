@@ -19,15 +19,13 @@ namespace World {
 		private List<Goblin> goblins = new List<Goblin>();
 		private float spawnTimer;
 
-		protected override void Awake() {
-			base.Awake();
-
+		private void Start() {
 			spawnPoints = transform.Cast<Transform>().ToArray();
 			if (spawnPoints.Length < 2)
 				Debug.LogError("Not enough goblin spawn points", this);
 
 			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += ResetTimer;
+				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
 
 			ResetTimer();
 		}
@@ -46,6 +44,13 @@ namespace World {
 				else
 					spawnTimer = spawnRetryDelay;
 			}
+		}
+
+		private void HandleOnRoundOver() {
+			ResetTimer();
+
+			foreach (Goblin goblin in goblins)
+				goblin.Leave();
 		}
 
 		private void ResetTimer() {

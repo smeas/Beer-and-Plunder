@@ -135,8 +135,7 @@ namespace World {
 					state = State.Running;
 				}
 				else {
-					agent.SetDestination(exitPosition);
-					state = State.Leaving;
+					Leave();
 				}
 
 				break;
@@ -148,25 +147,27 @@ namespace World {
 		void IHittable.Hit(Axe weapon) {
 			if (state == State.Fleeing) return;
 
-			// Flee
-			StartCoroutine(CoDropCoins());
-			agent.SetDestination(exitPosition);
-			agent.speed *= fleeSpeedMultiplier;
-			state = State.Fleeing;
-
+			Flee();
 			AudioManager.PlayEffectSafe(SoundEffect.Goblin_GoblinHit);
 		}
 
-		private IEnumerator CoDropCoins() {
+		private IEnumerator CoDropAllCoins() {
 			while (Coins > 0) {
 				DropCoin();
 				yield return new WaitForSeconds(coinDropDelay);
 			}
 		}
 
-		private void DropCoin() {
-			Instantiate(coinPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
-			Coins--;
+		private void Flee() {
+			StartCoroutine(CoDropAllCoins());
+			agent.SetDestination(exitPosition);
+			agent.speed *= fleeSpeedMultiplier;
+			state = State.Fleeing;
+		}
+
+		public void Leave() {
+			agent.SetDestination(exitPosition);
+			state = State.Leaving;
 		}
 
 		private enum State {
