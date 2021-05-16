@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Interactables;
+using Rounds;
 using UnityEngine;
 using Utilities;
 
@@ -25,20 +26,30 @@ namespace World {
 			if (spawnPoints.Length < 2)
 				Debug.LogError("Not enough goblin spawn points", this);
 
-			spawnTimer = Random.Range(spawnDelay.x, spawnDelay.y);
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnRoundOver += ResetTimer;
+
+			ResetTimer();
 		}
 
 		private void Update() {
 			if (goblins.Count >= maxGoblins)
 				return;
 
+			if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive)
+				return;
+
 			spawnTimer -= Time.deltaTime;
 			if (spawnTimer <= 0) {
 				if (TrySpawnGoblin())
-					spawnTimer = Random.Range(spawnDelay.x, spawnDelay.y);
+					ResetTimer();
 				else
 					spawnTimer = spawnRetryDelay;
 			}
+		}
+
+		private void ResetTimer() {
+			spawnTimer = Random.Range(spawnDelay.x, spawnDelay.y);
 		}
 
 		private bool TrySpawnGoblin() {
