@@ -12,7 +12,6 @@ using Random = UnityEngine.Random;
 
 namespace World {
 	public class Goblin : MonoBehaviour, IHittable {
-		[SerializeField] private Coin coinPrefab;
 		[SerializeField] private float coinAttractionForce = 30f;
 		[SerializeField] private float coinDropDelay = 0.2f;
 		[SerializeField] private float fleeSpeedMultiplier = 2f;
@@ -21,6 +20,9 @@ namespace World {
 		[SerializeField] private Transform coinStackPosition;
 		[SerializeField] private float coinHeight;
 		[SerializeField] private float coinDisplacement = 0.08f;
+
+		[Header("Effects")]
+		[SerializeField] private GameObject spawnEffectPrefab;
 
 		private NavMeshAgent agent;
 		private Coin[] targets;
@@ -41,6 +43,10 @@ namespace World {
 
 			coinRoot = new GameObject("Coins").transform;
 			coinRoot.SetParent(transform);
+		}
+
+		private void Start() {
+			SpawnPoofCloud();
 		}
 
 		private void Update() {
@@ -71,6 +77,7 @@ namespace World {
 					state = State.None;
 					OnLeave?.Invoke(this);
 					Destroy(gameObject);
+					SpawnPoofCloud();
 				}
 			}
 		}
@@ -83,6 +90,11 @@ namespace World {
 				Vector3 attractDirection = (transform.position - other.transform.position).normalized;
 				other.attachedRigidbody.AddForce(attractDirection * coinAttractionForce);
 			}
+		}
+
+		private void SpawnPoofCloud() {
+			Instantiate(spawnEffectPrefab, transform.position + new Vector3(0, 0.8f, 0), transform.rotation)
+				.AddComponent<ParticleCleanup>();
 		}
 
 		public void PickRandomTargetsAndGo(int targetCount, Vector3 exitPos) {
