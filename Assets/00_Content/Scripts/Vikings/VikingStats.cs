@@ -39,6 +39,10 @@ namespace Vikings {
 			RecalculateModifier(modifier.statType);
 		}
 
+		public void BoostMood(float boost) {
+			Mood = Mathf.Min(StartMood, Mood + boost);
+		}
+
 		public void TakeMoodDamage(float moodDamage) {
 			Mood -= moodDamage;
 		}

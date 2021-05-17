@@ -10,6 +10,9 @@ namespace Vikings {
 		[Tooltip("Mood/s")]
 		public float moodDeclineRate;
 
+		[Min(0), Tooltip("How much mood does a viking receive when a desire is fulfilled")]
+		public float moodBoostDesireFulfilled;
+
 		[Tooltip("Threshold for when the viking just takes a table on its own, without waiting for a player to lead them.")]
 		public float impatientMoodThreshold = 45;
 

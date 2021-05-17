@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMood: 100
   moodDeclineRate: 1.5
+  moodBoostDesireFulfilled: 30
   impatientMoodThreshold: 60
   randomDesires: 1
   desires:
