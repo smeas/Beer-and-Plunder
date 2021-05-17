@@ -28,7 +28,7 @@ namespace Vikings.States {
 			float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.brawlMoodThreshold, viking.Stats.StartMood, 0, 1);
 			viking.desireVisualiser.SetDesireColor(remappedMood);
 			viking.desireVisualiser.SetTweenSpeed(remappedMood);
-			
+
 			if (hasActiveFulfillment) {
 				fulfillmentTimer += Time.deltaTime;
 
@@ -90,6 +90,7 @@ namespace Vikings.States {
 
 			if (viking.CurrentDesire.isOrder && !isOrderGiven) {
 				SpawnOrderTicket();
+				viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
 				return this;
 			}
 
@@ -119,6 +120,7 @@ namespace Vikings.States {
 
 			viking.CurrentDesireIndex++;
 			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
+			viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
 			AudioManager.PlayEffectSafe(SoundEffect.Viking_DesireFilledMan);
 
 			if (desire.isMaterialDesire) {
@@ -135,7 +137,6 @@ namespace Vikings.States {
 		}
 
 		private void SpawnOrderTicket() {
-			viking.desireVisualiser.HideDesire();
 			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationAfterPrefab);
 			Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
 			isOrderGiven = true;
