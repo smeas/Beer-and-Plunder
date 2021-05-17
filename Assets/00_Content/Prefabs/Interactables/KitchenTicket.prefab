@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22167b041fcac854eaa864daf3bb1446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemGrabTransform: {fileID: 0}
+  itemGrabOffset: {x: -0.01, y: 0.23, z: 0.04}
+  itemGrabRotation: {x: 78.49, y: 244.72, z: 1.14}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512

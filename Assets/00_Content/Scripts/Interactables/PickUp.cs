@@ -3,12 +3,14 @@ using System.Linq;
 using Player;
 using Rounds;
 using UnityEngine;
+using UnityEngine.Animations;
 using World;
 
 namespace Interactables {
 
 	public class PickUp : MonoBehaviour, IRespawnable {
-		[SerializeField] private Transform itemGrabTransform;
+		[SerializeField] private Vector3 itemGrabOffset;
+		[SerializeField] private Vector3 itemGrabRotation;
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
 		[SerializeField] protected Collider objectCollider;
 		[SerializeField] public Transform ItemSlotPivot;
@@ -23,6 +25,7 @@ namespace Interactables {
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 		public virtual bool IsHeavy => false;
+		public Vector3 ItemGrabOffset => itemGrabOffset;
 
 		public event Action<PickUp, PlayerComponent> OnPickedUp;
 		public event Action<PickUp, PlayerComponent> OnDropped;
@@ -93,18 +96,13 @@ namespace Interactables {
 		}
 
 		protected void MoveToPoint(Transform point) {
-			transform.rotation = Quaternion.identity;
 			SetParent(point);
 
 			if (rigidbody != null)
 				rigidbody.isKinematic = true;
 
-			Vector3 offset = Vector3.zero;
-			if (itemGrabTransform != null)
-				offset = transform.position - itemGrabTransform.position;
-
-			transform.localPosition = offset;
-			transform.localRotation = Quaternion.identity;
+			transform.localPosition = Vector3.zero;
+			transform.localEulerAngles = itemGrabRotation;
 		}
 
 		private void TryPutInClosestItemSlot() {
@@ -155,6 +153,16 @@ namespace Interactables {
 		private void OnDrawGizmosSelected() {
 			if (objectCollider != null)
 				Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
+		}
+
+		private void OnValidate() {
+			if (Application.isPlaying && isBeingCarried) {
+				transform.localEulerAngles = itemGrabRotation;
+
+				ParentConstraint positionConstraint = transform.parent.GetComponent<ParentConstraint>();
+				if (positionConstraint != null)
+					positionConstraint.translationOffsets = new[] {itemGrabOffset};
+			}
 		}
 	#endif
 	}

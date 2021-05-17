@@ -161,11 +161,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d2d1151fed4730952290fdcbd66db8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemGrabTransform: {fileID: 0}
+  itemGrabOffset: {x: 0.27, y: 0.14, z: 0.3}
+  itemGrabRotation: {x: 0, y: 0, z: 0}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
   objectCollider: {fileID: 1480724880975316311}
+  ItemSlotPivot: {fileID: 0}
   instrumentData: {fileID: 11400000, guid: 6e0387dac9e4ae3409052a5d2dc8043c, type: 2}
   areaField: {fileID: 9034574924443869887}
   particleSystem: {fileID: 4316398146900890341}

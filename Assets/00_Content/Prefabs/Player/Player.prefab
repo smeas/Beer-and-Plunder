@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 807718991}
+  - component: {fileID: 8351378864821717021}
   m_Layer: 0
   m_Name: GrabPoint
   m_TagString: Untagged
@@ -23,13 +24,39 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807718990}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.683}
+  m_LocalRotation: {x: 0.0000006553868, y: 0.000002340669, z: -0.00000018725504, w: 1}
+  m_LocalPosition: {x: -0.00000014901161, y: 0, z: 0.6830001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4223223547760060935}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1773428102 &8351378864821717021
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807718990}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0, y: 0, z: 0.6830001}
+  m_RotationAtRest: {x: 0, y: 0.00017166128, z: 0}
+  m_TranslationOffsets:
+  - {x: -0.35987628, y: 0.22412404, z: 0.49576342}
+  m_RotationOffsets:
+  - {x: -81.77264, y: -8.928362, z: 104.21526}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 4403760900044610107}
+    weight: 1
 --- !u!1 &2187889529978375777
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,5 +764,10 @@ PrefabInstance:
 --- !u!4 &1947054089663384544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5922738050530735865, guid: 327cdc29c9f9e27499dfaa555f62b529, type: 3}
+  m_PrefabInstance: {fileID: 5275009841063623961}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4403760900044610107 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8370455253239244578, guid: 327cdc29c9f9e27499dfaa555f62b529, type: 3}
   m_PrefabInstance: {fileID: 5275009841063623961}
   m_PrefabAsset: {fileID: 0}

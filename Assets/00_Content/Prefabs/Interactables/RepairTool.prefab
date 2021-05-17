@@ -60,11 +60,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d591e35841b4ed0bc1f348a0b32a6d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemGrabTransform: {fileID: 0}
+  itemGrabOffset: {x: -0.27, y: 0.18, z: -0.02}
+  itemGrabRotation: {x: 15.83, y: 87.14, z: 17.2}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
   objectCollider: {fileID: 7638650648582139330}
+  ItemSlotPivot: {fileID: 0}
   repairProgressCanvas: {fileID: 3418456946252394427}
   repairProgressImage: {fileID: 929576792369695688}
 --- !u!54 &7638650649491389683
