@@ -1,18 +1,28 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Audio;
+using Extensions;
 using Interactables;
 using Interactables.Weapons;
 using UnityEngine;
 using UnityEngine.AI;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace World {
 	public class Goblin : MonoBehaviour, IHittable {
-		[SerializeField] private Coin coinPrefab;
 		[SerializeField] private float coinAttractionForce = 30f;
 		[SerializeField] private float coinDropDelay = 0.2f;
 		[SerializeField] private float fleeSpeedMultiplier = 2f;
+
+		[Header("Coin stack")]
+		[SerializeField] private Transform coinStackPosition;
+		[SerializeField] private float coinHeight;
+		[SerializeField] private float coinDisplacement = 0.08f;
+
+		[Header("Effects")]
+		[SerializeField] private GameObject spawnEffectPrefab;
 
 		private NavMeshAgent agent;
 		private Coin[] targets;
@@ -20,13 +30,23 @@ namespace World {
 		private Vector3 exitPosition;
 		private int currentTargetIndex = -1;
 
-		public int Coins { get; set; }
+		private Transform coinRoot;
+		private List<Coin> carriedCoins = new List<Coin>();
+
+		public int Coins => carriedCoins.Count;
 		public bool CanPickUpCoins => state != State.Fleeing && state != State.None;
 
 		public event Action<Goblin> OnLeave;
 
 		private void Awake() {
 			agent = GetComponent<NavMeshAgent>();
+
+			coinRoot = new GameObject("Coins").transform;
+			coinRoot.SetParent(transform);
+		}
+
+		private void Start() {
+			SpawnPoofCloud();
 		}
 
 		private void Update() {
@@ -57,6 +77,7 @@ namespace World {
 					state = State.None;
 					OnLeave?.Invoke(this);
 					Destroy(gameObject);
+					SpawnPoofCloud();
 				}
 			}
 		}
@@ -71,6 +92,11 @@ namespace World {
 			}
 		}
 
+		private void SpawnPoofCloud() {
+			Instantiate(spawnEffectPrefab, transform.position + new Vector3(0, 0.8f, 0), transform.rotation)
+				.AddComponent<ParticleCleanup>();
+		}
+
 		public void PickRandomTargetsAndGo(int targetCount, Vector3 exitPos) {
 			exitPosition = exitPos;
 
@@ -81,6 +107,33 @@ namespace World {
 
 			currentTargetIndex = -1;
 			NextTarget();
+		}
+
+		public bool PickUpCoin(Coin coin) {
+			if (!CanPickUpCoins) return false;
+
+			Vector2 displacement = carriedCoins.Count > 0
+				? new Vector2(Random.value * coinDisplacement, Random.value * coinDisplacement)
+				: Vector2.zero;
+			Transform coinTransform = coin.transform;
+
+			coin.IsDisplay = true;
+			coinTransform.SetParent(coinRoot);
+			coinTransform.rotation = Quaternion.identity;
+			coinTransform.position = coinStackPosition.position +
+				new Vector3(displacement.x, carriedCoins.Count * coinHeight, displacement.y);
+			carriedCoins.Add(coin);
+
+			return true;
+		}
+
+		private void DropCoin() {
+			if (carriedCoins.Count <= 0) return;
+
+			Coin coin = carriedCoins.Pop();
+			coin.transform.SetParent(null);
+			coin.IsDisplay = false;
+			coin.RandomThrow();
 		}
 
 		private void NextTarget() {
@@ -94,8 +147,7 @@ namespace World {
 					state = State.Running;
 				}
 				else {
-					agent.SetDestination(exitPosition);
-					state = State.Leaving;
+					Leave();
 				}
 
 				break;
@@ -107,25 +159,27 @@ namespace World {
 		void IHittable.Hit(Axe weapon) {
 			if (state == State.Fleeing) return;
 
-			// Flee
-			StartCoroutine(CoDropCoins());
-			agent.SetDestination(exitPosition);
-			agent.speed *= fleeSpeedMultiplier;
-			state = State.Fleeing;
-
+			Flee();
 			AudioManager.PlayEffectSafe(SoundEffect.Goblin_GoblinHit);
 		}
 
-		private IEnumerator CoDropCoins() {
+		private IEnumerator CoDropAllCoins() {
 			while (Coins > 0) {
 				DropCoin();
 				yield return new WaitForSeconds(coinDropDelay);
 			}
 		}
 
-		private void DropCoin() {
-			Instantiate(coinPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
-			Coins--;
+		private void Flee() {
+			StartCoroutine(CoDropAllCoins());
+			agent.SetDestination(exitPosition);
+			agent.speed *= fleeSpeedMultiplier;
+			state = State.Fleeing;
+		}
+
+		public void Leave() {
+			agent.SetDestination(exitPosition);
+			state = State.Leaving;
 		}
 
 		private enum State {
