@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Audio;
 using Extensions;
 using Taverns;
 using UnityEngine;
 using World;
+using Rounds;
 
 namespace Interactables {
 	[RequireComponent(typeof(Rigidbody))]
@@ -52,16 +53,25 @@ namespace Interactables {
 
 		private void OnEnable() {
 			AllCoins.Add(this);
+
+			if (RoundController.Instance != null) {
+				RoundController.Instance.OnNewRoundStart += HandleOnNewRoundStart;
+			}
 		}
 
 		private void OnDisable() {
 			AllCoins.SwapRemove(this);
+
+			if(RoundController.Instance != null) {
+				RoundController.Instance.OnNewRoundStart -= HandleOnNewRoundStart;
+			}
 		}
 
 		private void OnTriggerEnter(Collider other) {
 			if (isDisplay) return;
 			if (other.isTrigger) return;
 			if (other.attachedRigidbody == null) return;
+			if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive) return;
 
 			if (other.attachedRigidbody.CompareTag("Goblin")) {
 				Goblin goblin = other.attachedRigidbody.GetComponent<Goblin>();
@@ -82,6 +92,10 @@ namespace Interactables {
 
 			if (other.relativeVelocity.sqrMagnitude >= hitSoundVelocityThreshold * hitSoundVelocityThreshold)
 				AudioManager.PlayEffectSafe(SoundEffect.Physics_CoinHit);
+		}
+
+		public void HandleOnNewRoundStart() {
+			Destroy(gameObject);
 		}
 
 		public void RandomThrow() {

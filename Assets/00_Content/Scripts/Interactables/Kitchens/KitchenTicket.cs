@@ -24,5 +24,11 @@ namespace Interactables.Kitchens {
 
 			base.Start();
 		}
+
+		public override void HandleNewRoundReset() {
+			base.HandleNewRoundReset();
+
+			Destroy(gameObject);
+		}
 	}
 }

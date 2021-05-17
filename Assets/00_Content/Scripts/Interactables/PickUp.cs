@@ -36,8 +36,10 @@ namespace Interactables {
 			if (StartItemSlot == null)
 				StartItemSlot = CurrentItemSlot;
 
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += RoundOverReset;
+			if (RoundController.Instance != null) {
+				//RoundController.Instance.OnRoundOver += Respawn;
+				RoundController.Instance.OnNewRoundStart += HandleNewRoundReset;
+			}
 		}
 
 		protected virtual void OnDestroy() {
@@ -46,8 +48,10 @@ namespace Interactables {
 				CurrentItemSlot = null;
 			}
 
-			if (RoundController.Instance != null)
+			if (RoundController.Instance != null) {
 				RoundController.Instance.OnRoundOver -= Respawn;
+				RoundController.Instance.OnNewRoundStart -= HandleNewRoundReset;
+			}
 		}
 
 		public virtual void SetParent(Transform newParent) {
@@ -125,7 +129,7 @@ namespace Interactables {
 			}
 		}
 
-		public virtual void RoundOverReset() {
+		public virtual void HandleNewRoundReset() {
 			if (isBeingCarried) return;
 
 		}
@@ -146,7 +150,7 @@ namespace Interactables {
 				CurrentItemSlot.ReleaseItem();
 			}
 
-			RoundOverReset();
+			HandleNewRoundReset();
 		}
 
 		protected virtual void OnPlace() {}

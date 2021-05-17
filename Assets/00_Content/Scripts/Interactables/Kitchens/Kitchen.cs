@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UI;
 using UnityEngine;
+using Rounds;
 
 namespace Interactables.Kitchens {
 	public class Kitchen : Interactable {
@@ -19,6 +20,14 @@ namespace Interactables.Kitchens {
 
 		private bool isCooking;
 		private float cookingProgress = 0f;
+
+		private void OnEnable() {
+			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver += HandleOnNewRoundStart;
+		}
+
+		private void OnDisable() {
+			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver -= HandleOnNewRoundStart;
+		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
 			if (isCooking) return false;
@@ -49,7 +58,6 @@ namespace Interactables.Kitchens {
 
 				yield return null;
 			}
-
 		}
 
 		private void FinishCooking() {
@@ -58,6 +66,13 @@ namespace Interactables.Kitchens {
 			Instantiate(foodPrefab, foodSpawnpoint);
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
+		}
+
+		private void HandleOnNewRoundStart() {
+			isCooking = false;
+			//Might actually not need to reset cookingProgress to zero here, seeing as that is done whenever StartCooking() begins.
+			cookingProgress = 0;
+			cookingProgressBar.Hide();
 		}
 	}
 }
