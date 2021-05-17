@@ -49,7 +49,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   - {fileID: 11400000, guid: 79ced5b0b2f09424199a35e9046b91c9, type: 2}
   scoreCardPrefab: {fileID: 1623649542527638751, guid: da4dd4cf3f4df0046ad59bf395637676, type: 3}
-  HUDPrefab: {fileID: 1436725447203490082, guid: 8fb4d26552804384d92abfe16ff6330a, type: 3}
   gameOverPanelPrefab: {fileID: 2967257529519440624, guid: bddf69e494ce4784791b83252dd0e562, type: 3}
   roundDuration: 150
   requiredMoney: 150
+  timelineDirector: {fileID: 0}
+  showScoreCardTimeline: {fileID: 11400000, guid: e0180af46d5cc5c4cbb1c45927a9f58e, type: 2}
+  hideScoreCardTimeline: {fileID: 11400000, guid: 13cd6e50c0e24cd4486ced4b5c898d45, type: 2}
+  virtualFollowingCamera: {fileID: 0}

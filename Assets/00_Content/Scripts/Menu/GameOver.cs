@@ -1,7 +1,9 @@
+using Player;
 using Scenes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameOver : MonoBehaviour {
@@ -17,6 +19,15 @@ public class GameOver : MonoBehaviour {
 		gameObject.SetActive(true);
 		EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
 	}
-	public void RestartGame() => SceneLoadManager.Instance.LoadLobby();
+
+	public void RestartGame() {
+		foreach (PlayerComponent player in PlayerManager.Instance.Players) {
+			PlayerInput playerInput = player.GetComponent<PlayerInput>();
+			playerInput.SwitchCurrentActionMap("Game");
+		}
+
+		SceneLoadManager.Instance.LoadGame();
+	}
+
 	public void GoToMainMenu() => SceneLoadManager.Instance.LoadMainMenu();
 }

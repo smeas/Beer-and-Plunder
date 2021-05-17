@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
 using Audio;
+using Cameras;
+using Cinemachine;
 using Interactables;
 using Player;
 using Taverns;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 using Utilities;
 using Vikings;
 
@@ -12,14 +16,19 @@ namespace Rounds {
 	public class RoundController : SingletonBehaviour<RoundController> {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
-		[SerializeField] private GameObject HUDPrefab;
 		[SerializeField] private GameOver gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 		[SerializeField] private int requiredMoney = 250;
 
-		private GameOver gameOverPanel;
+		[Header("Timeline")]
+		[SerializeField] private PlayableDirector timelineDirector;
+		[SerializeField] private PlayableAsset showScoreCardTimeline;
+		[SerializeField] private PlayableAsset hideScoreCardTimeline;
+		[SerializeField] private CinemachineVirtualCamera virtualFollowingCamera;
 
+		private GameOver gameOverPanel;
+		private FollowingCamera followingCamera;
 		private ScoreCard scoreCard;
 		private float roundTimer;
 		private int currentRound = 1;
@@ -46,6 +55,7 @@ namespace Rounds {
 			Table.OnTablesDestroyed += HandleOnTablesDestroyed;
 
 			roundTimer = roundDuration;
+			followingCamera = Camera.main.GetComponent<FollowingCamera>();
 
 			SendNextDifficulty();
 		}
@@ -64,7 +74,14 @@ namespace Rounds {
 
 			// TODO: Wait for all vikings to leave before continuing.
 			DisableGamePlay();
-			ShowScoreCard();
+
+			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+				TavernBankrupt();
+				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{requiredMoney})");
+			}
+			else {
+				ShowScoreCard();
+			}
 		}
 
 		private void SendNextDifficulty() {
@@ -91,15 +108,22 @@ namespace Rounds {
 		}
 
 		private void ShowScoreCard() {
-			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
-				TavernBankrupt();
-				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{requiredMoney})");
-				return;
-			}
+			Transform camTransform = followingCamera.transform;
+			virtualFollowingCamera.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 
 			scoreCard.UpdateScoreCard(currentRound);
-			scoreCard.Show();
+
 			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundWon);
+			StartCoroutine(CoMoveToScoreCard());
+		}
+
+		private IEnumerator CoMoveToScoreCard() {
+			timelineDirector.playableAsset = showScoreCardTimeline;
+			timelineDirector.Play();
+
+			yield return new WaitForSeconds((float)showScoreCardTimeline.duration);
+
+			scoreCard.Show();
 		}
 
 		private void EnableGamePlay() {
@@ -117,14 +141,33 @@ namespace Rounds {
 		}
 
 		private void HandleOnNextRound() {
-			EnableGamePlay();
-			isRoundActive = true;
 			currentRound++;
 			SendNextDifficulty();
 			roundTimer = roundDuration;
 
 			if (Tavern.Instance != null)
 				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
+
+			StartCoroutine(CoLeaveScoreCard());
+		}
+
+		private IEnumerator CoLeaveScoreCard() {
+			followingCamera.transform.rotation = virtualFollowingCamera.transform.rotation;
+
+			Vector3 desiredPosition = followingCamera.CalculateTargetPosition();
+
+			if (followingCamera.UseBounds)
+				desiredPosition = followingCamera.ConstrainPositionInBounds(desiredPosition);
+
+			virtualFollowingCamera.transform.position = desiredPosition;
+
+			timelineDirector.playableAsset = hideScoreCardTimeline;
+			timelineDirector.Play();
+
+			yield return new WaitForSeconds((float)hideScoreCardTimeline.duration);
+
+			EnableGamePlay();
+			isRoundActive = true;
 		}
 
 		private void HandleOnTablesDestroyed() {

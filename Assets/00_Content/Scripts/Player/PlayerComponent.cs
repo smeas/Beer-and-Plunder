@@ -1,5 +1,7 @@
+using System.Collections;
 using Rounds;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using World;
@@ -11,6 +13,7 @@ namespace Player {
 		[SerializeField] private MeshRenderer glowRingRenderer;
 
 		private Color playerColor = new Color(0.8828125f, 0.8828125f, 0.8828125f);
+		private NavMeshAgent navMeshAgent;
 
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
@@ -39,19 +42,21 @@ namespace Player {
 			SceneManager.sceneLoaded += HandleOnSceneLoaded;
 			HandleOnSceneLoaded(default, default);
 
+			navMeshAgent = GetComponent<NavMeshAgent>();
+
 			PlayerColor = playerColor;
 		}
 
 		private void OnDestroy() {
 			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver -= Respawn;
+				RoundController.Instance.OnRoundOver -= OnRoundOver;
 
 			SceneManager.sceneLoaded -= HandleOnSceneLoaded;
 		}
 
 		private void HandleOnSceneLoaded(Scene _, LoadSceneMode __) {
 			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += Respawn;
+				RoundController.Instance.OnRoundOver += OnRoundOver;
 		}
 
 		public void Initialize() {
@@ -73,10 +78,26 @@ namespace Player {
 			CharacterAnimator = model.GetComponentInChildren<Animator>();
 		}
 
-		public void Respawn() {
-			//If the items resets first it allows the objects to be dropped & left behind when a new round starts.
-			GetComponentInChildren<PlayerPickUp>().RespawnHeldItem();
+		private void OnRoundOver() {
+			GetComponentInChildren<PlayerPickUp>().RoundResetHeldItem();
 
+			if (navMeshAgent == null)
+				Debug.LogError("Player does not have a navmesh agent");
+
+			navMeshAgent.enabled = true;
+			navMeshAgent.SetDestination(SpawnPoint.position);
+			StartCoroutine(CoWaitReachSpawnPoint());
+		}
+
+		private IEnumerator CoWaitReachSpawnPoint() {
+			while (navMeshAgent.pathPending || navMeshAgent.desiredVelocity != Vector3.zero)
+				yield return null;
+
+			navMeshAgent.enabled = false;
+			transform.rotation = SpawnPoint.rotation;
+		}
+
+		public void Respawn() {
 			if (SpawnPoint != null)
 				transform.SetPositionAndRotation(SpawnPoint.position, SpawnPoint.rotation);
 			else

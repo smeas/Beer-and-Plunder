@@ -4,6 +4,8 @@ using Player;
 using Scenes;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace Menu {
 
@@ -14,9 +16,13 @@ namespace Menu {
 		[SerializeField] private InputActionProperty backAction;
 		[SerializeField] private ReadySystem readySystem;
 
+		[Header("Timeline")]
+		[SerializeField] private PlayableDirector timelineDirector;
+		[SerializeField] private TimelineAsset leaveLobbyTimeline;
+
 		private PlayerManager playerManager;
 
-		private void Start() {
+		private void OnEnable() {
 
 			playerManager = PlayerManager.Instance;
 
@@ -48,8 +54,6 @@ namespace Menu {
 			for (int i = 0; i < slots.Count; i++) {
 				PlayerSlotObject slot = slots[i];
 				if (!slot.IsTaken) {
-					PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
-					playerInputHandler.OnSubmit.AddListener(slot.Flash);
 					player.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
 
 					// Give the player a unique model and color
@@ -71,20 +75,13 @@ namespace Menu {
 				return;
 
 			playerSlot.LeavePlayer();
-
-			PlayerInputHandler playerInputHandler = player.GetComponent<PlayerInputHandler>();
-			playerInputHandler.OnStart.RemoveListener(HandleOnStartGame);
-			playerInputHandler.OnSubmit.RemoveListener(playerSlot.Flash);
 		}
 
 		private void HandleOnStartGame() {
 
 			foreach (PlayerSlotObject playerSlot in playerSlots) {
-				if (playerSlot.IsTaken) {
-					PlayerInputHandler playerInputHandler = playerSlot.PlayerComponent.GetComponent<PlayerInputHandler>();
-					playerInputHandler.transform.position = Vector3.zero;
+				if (playerSlot.IsTaken)
 					playerSlot.PlayerComponent.GetComponent<PlayerInput>().SwitchCurrentActionMap("Game");
-				}
 			}
 
 			OnLeaveMenu();
@@ -96,6 +93,8 @@ namespace Menu {
 
 			playerManager.PlayerJoined -= HandleOnPlayerJoined;
 			playerManager.PlayerLeft -= HandleOnPlayerLeft;
+
+			readySystem.AllReady -= HandleOnStartGame;
 
 			playerManager.AllowJoining = false;
 		}
@@ -121,7 +120,8 @@ namespace Menu {
 				LeavePlayer(players[i]);
 
 			OnLeaveMenu();
-			SceneLoadManager.Instance.LoadMainMenu();
+			timelineDirector.playableAsset = leaveLobbyTimeline;
+			timelineDirector.Play();
 		}
 
 		private void LeavePlayer(PlayerComponent player) {
