@@ -33,11 +33,8 @@ namespace Menu {
 		}
 
 		public void Initialize() {
-			int playerCount = PlayerManager.Instance.Players.Count;
-			for (int i = 0; i < readyCards.Length; i++) {
-				readyCards[i].gameObject.SetActive(i < playerCount);
+			for (int i = 0; i < readyCards.Length; i++)
 				readyCards[i].Ready = false;
-			}
 
 			for (int i = 0; i < PlayerManager.Instance.Players.Count; i++)
 				SetupPlayer(PlayerManager.Instance.Players[i], i);
