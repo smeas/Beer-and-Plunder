@@ -25,7 +25,6 @@ namespace Vikings {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public Coin coinPrefab;
-		[SerializeField] public Tankard tankardPrefab;
 		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
@@ -34,8 +33,8 @@ namespace Vikings {
 		[SerializeField] public Material brawlingMaterial;
 
 		[Space]
-		[SerializeField] public float tankardThrowConeHalfAngle = 15f;
-		[SerializeField] public float tankardThrowStrength = 5f;
+		[SerializeField] public float itemThrowConeHalfAngle = 15f;
+		[SerializeField] public float throwStrength = 5f;
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
