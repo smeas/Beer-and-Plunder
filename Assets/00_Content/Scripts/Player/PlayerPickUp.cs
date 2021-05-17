@@ -41,8 +41,8 @@ namespace Player {
 			if (pickedUpItem.PickUpItem(playerGrabTransform)) {
 				OnItemPickedUp?.Invoke(pickedUpItem);
 
-				parentConstraint.SetSource(0, new ConstraintSource {sourceTransform = playerComponent.Grabber, weight = 1});
-				parentConstraint.translationOffsets = new[] {pickedUpItem.ItemGrabOffset};
+				// parentConstraint.SetSource(0, new ConstraintSource {sourceTransform = playerComponent.Grabber, weight = 1});
+				// parentConstraint.translationOffsets = new[] {pickedUpItem.ItemGrabOffset};
 			}
 		}
 

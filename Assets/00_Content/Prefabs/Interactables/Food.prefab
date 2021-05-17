@@ -43,10 +43,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00f99fea3ce32af4a965270a6c953a86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemGrabOffset: {x: -0.37, y: 0.09, z: 0.1}
-  itemGrabRotation: {x: -90, y: -208.39, z: 90}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemGrabOffset: {x: -0.036, y: 0.443, z: 0.062}
+  itemGrabRotation: {x: 270, y: 241.60999, z: 0}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 26fa244e82ee00d4985bbfa6ad2f99bd, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 00e4c5c6f8b90f04e8dc1285e13daf5a, type: 2}
     - target: {fileID: 919132149155446097, guid: 26fa244e82ee00d4985bbfa6ad2f99bd, type: 3}
       propertyPath: m_Name

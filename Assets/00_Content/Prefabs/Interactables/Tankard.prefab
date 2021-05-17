@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 594daa1a5c216534faed12f849406237, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemGrabOffset: {x: 0.4, y: 0.26, z: 0.39}
-  itemGrabRotation: {x: 0, y: 201.38, z: 0}
+  m_Name:
+  m_EditorClassIdentifier:
+  itemGrabOffset: {x: -0.377, y: -0.335, z: 0.328}
+  itemGrabRotation: {x: 359.29248, y: 205.60228, z: 2.9423232}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -212,11 +212,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8203440586099774637, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
     - target: {fileID: -7511558181221131132, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 9ef2041c9db840949af6ce3f739540e5, type: 2}
     - target: {fileID: 919132149155446097, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
       propertyPath: m_Name
@@ -232,11 +232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4844017482600478662, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
     - target: {fileID: 7739440314910435725, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 472574317f1a33d42a661cb28073e09a, type: 3}
@@ -315,7 +315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 17e902f8f97a7fb4d95e7d5919cb4732, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: c8a1031f682a14c4e893512efc1a3169, type: 2}
     - target: {fileID: 919132149155446097, guid: 17e902f8f97a7fb4d95e7d5919cb4732, type: 3}
       propertyPath: m_Name

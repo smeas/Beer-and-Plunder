@@ -3,7 +3,6 @@ using System.Linq;
 using Player;
 using Rounds;
 using UnityEngine;
-using UnityEngine.Animations;
 using World;
 
 namespace Interactables {
@@ -25,7 +24,16 @@ namespace Interactables {
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 		public virtual bool IsHeavy => false;
-		public Vector3 ItemGrabOffset => itemGrabOffset;
+
+		public Vector3 ItemGrabOffset {
+			get => itemGrabOffset;
+			set => itemGrabOffset = value;
+		}
+
+		public Vector3 ItemGrabRotation {
+			get => itemGrabRotation;
+			set => itemGrabRotation = value;
+		}
 
 		public event Action<PickUp, PlayerComponent> OnPickedUp;
 		public event Action<PickUp, PlayerComponent> OnDropped;
@@ -101,7 +109,11 @@ namespace Interactables {
 			if (rigidbody != null)
 				rigidbody.isKinematic = true;
 
-			transform.localPosition = Vector3.zero;
+			UpdateGrabPositionOffset();
+		}
+
+		public void UpdateGrabPositionOffset() {
+			transform.localPosition = itemGrabOffset;
 			transform.localEulerAngles = itemGrabRotation;
 		}
 
@@ -157,11 +169,7 @@ namespace Interactables {
 
 		private void OnValidate() {
 			if (Application.isPlaying && isBeingCarried) {
-				transform.localEulerAngles = itemGrabRotation;
-
-				ParentConstraint positionConstraint = transform.parent.GetComponent<ParentConstraint>();
-				if (positionConstraint != null)
-					positionConstraint.translationOffsets = new[] {itemGrabOffset};
+				UpdateGrabPositionOffset();
 			}
 		}
 	#endif
