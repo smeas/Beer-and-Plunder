@@ -40,6 +40,13 @@ namespace Interactables.Instruments {
 			particleSystem.Stop();
 		}
 
+		private void FixedUpdate() {
+			if (!isPlaying) return;
+
+			foreach (Viking viking in vikingsInRange.Keys)
+				viking.Affect(usingPlayer, this);
+		}
+
 	#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
 			if (instrumentData == null) return;
@@ -81,10 +88,6 @@ namespace Interactables.Instruments {
 
 			isPlaying = true;
 
-			foreach (Viking viking in vikingsInRange.Keys) {
-				viking.Affect(usingPlayer, this);
-			}
-
 			//musicSoundHandle = AudioManager.PlayEffectSafe(SoundEffect.Instrument_HarpPlay, loop: true);
 		}
 
@@ -118,11 +121,6 @@ namespace Interactables.Instruments {
 			}
 			else {
 				vikingsInRange[viking] = 1;
-
-				// NOTE: Because of the reasons in the big comment above, this code will also execute when
-				// picking up/dropping the instrument. This does not seem to be a problem right now though (yet).
-				if (isPlaying)
-					viking.Affect(usingPlayer, this);
 			}
 		}
 
