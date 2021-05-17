@@ -27,9 +27,11 @@ namespace Interactables {
 		public event Action<PickUp, PlayerComponent> OnPickedUp;
 		public event Action<PickUp, PlayerComponent> OnDropped;
 
-		protected virtual void Start() {
+		private void Awake() {
 			rigidbody = GetComponent<Rigidbody>();
+		}
 
+		protected virtual void Start() {
 			startPosition = transform.position;
 			startRotation = transform.rotation;
 
