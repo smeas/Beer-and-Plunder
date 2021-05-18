@@ -246,7 +246,7 @@ MonoBehaviour:
   moneyFillBar: {fileID: 4404271362743530561}
   moneyCurrentText: {fileID: 1833031657971049650}
   moneyRequiredText: {fileID: 8194489799805106529}
-  moneyPunchStrength: 1.25
+  moneyPunchStrength: 0.5
   moneyCurrentPunchDuration: 0.2
 --- !u!1 &2281177745522150552
 GameObject:

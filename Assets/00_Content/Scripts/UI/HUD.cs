@@ -50,6 +50,7 @@ public class HUD : MonoBehaviour {
 
 		moneyCurrentText.text = Tavern.Instance.Money.ToString();
 		moneyCurrentText.transform.DOKill();
+		moneyCurrentText.transform.localScale = Vector3.one;
 		moneyCurrentText.transform.DOPunchScale(new Vector2(moneyPunchStrength, moneyPunchStrength), moneyCurrentPunchDuration);
 
 		moneyRequiredText.text = requiredMoney.ToString();
