@@ -1,5 +1,6 @@
 ﻿using Audio;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Utilities;
 
@@ -8,6 +9,7 @@ namespace Menu {
 		[SerializeField] private DefaultSettingsData defaultSettings;
 
 		[Space]
+		[SerializeField] private Selectable firstSelected;
 		[SerializeField] private Slider masterSlider;
 		[SerializeField] private Slider musicSlider;
 		[SerializeField] private Slider sfxSlider;
@@ -22,6 +24,8 @@ namespace Menu {
 			masterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
 			musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
 			sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
+
+			EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
 		}
 
 		private void OnDisable() {

@@ -12,6 +12,9 @@ namespace UI {
 		[SerializeField] private Selectable firstSelected;
 		[SerializeField] private Canvas canvas;
 
+		[SerializeField] private GameObject pausePanel;
+		[SerializeField] private GameObject settingsPanel;
+
 		private bool isPaused;
 
 		public bool IsPaused => isPaused;
@@ -31,8 +34,9 @@ namespace UI {
 		}
 
 		private void HandleOnPausePressed(InputAction.CallbackContext ctx) {
-			if (RoundController.Instance != null && RoundController.Instance.IsRoundActive)
-				TogglePaused();
+			if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive) return;
+
+			TogglePaused();
 		}
 
 		public void TogglePaused() {
@@ -54,7 +58,15 @@ namespace UI {
 			TogglePaused();
 		}
 
-		public void Options() { /* TODO */ }
+		public void Options() {
+			pausePanel.SetActive(false);
+			settingsPanel.SetActive(true);
+		}
+
+		public void ExitOptions() {
+			settingsPanel.SetActive(false);
+			pausePanel.SetActive(true);
+		}
 
 		public void ExitToMenu() {
 			SceneLoadManager.Instance.LoadMainMenu();

@@ -54,6 +54,8 @@ namespace Menu {
 		}
 
 		public void ClosePanel() {
+			if (panels.Count == 1) return;
+
 			panels.Pop().SetActive(false);
 			panels.Peek().SetActive(true);
 
