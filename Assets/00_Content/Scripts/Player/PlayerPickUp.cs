@@ -1,7 +1,6 @@
 using System;
 using Interactables;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Player {
 
@@ -11,12 +10,10 @@ namespace Player {
 		[SerializeField] private GameObject playerRoot;
 		[SerializeField] private float throwStrengthMultiplier = 1f;
 
-		private PlayerComponent playerComponent;
 		private PlayerMovement playerMovement;
 		private InteractionDetector detector;
 		private PickUp pickedUpItem;
 		private bool isUsingItem;
-		private ParentConstraint parentConstraint;
 
 		public event Action<PickUp> OnItemPickedUp;
 		public event Action<PickUp> OnItemDropped;
@@ -26,9 +23,7 @@ namespace Player {
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
-			playerComponent = GetComponentInParent<PlayerComponent>();
 			playerMovement = GetComponentInParent<PlayerMovement>();
-			parentConstraint = playerGrabTransform.GetComponent<ParentConstraint>();
 		}
 
 		public void PickUpClosestItem() {
@@ -40,9 +35,6 @@ namespace Player {
 
 			if (pickedUpItem.PickUpItem(playerGrabTransform)) {
 				OnItemPickedUp?.Invoke(pickedUpItem);
-
-				// parentConstraint.SetSource(0, new ConstraintSource {sourceTransform = playerComponent.Grabber, weight = 1});
-				// parentConstraint.translationOffsets = new[] {pickedUpItem.ItemGrabOffset};
 			}
 		}
 
