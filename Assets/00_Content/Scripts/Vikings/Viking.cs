@@ -23,6 +23,7 @@ namespace Vikings {
 	public class Viking : Interactable, IHittable {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
+		[SerializeField] public ParticleSystem disappearParticleSystem;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;

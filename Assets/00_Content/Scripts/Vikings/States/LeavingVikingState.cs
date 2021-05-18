@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Utilities;
 
 namespace Vikings.States {
 	public class LeavingVikingState : VikingState {
@@ -36,6 +37,9 @@ namespace Vikings.States {
 
 			if (maxLeavingTimer >= MaxLeavingTime) {
 				Debug.LogWarning("Viking took to long to leave the tavern", viking);
+				Object.Instantiate(viking.disappearParticleSystem, viking.transform.position + new Vector3(0, 0.8f, 0), viking.transform.rotation)
+					.gameObject.AddComponent<ParticleCleanup>();
+
 				viking.FinishLeaving();
 				return new NullVikingState(viking);
 			}
