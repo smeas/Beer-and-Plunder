@@ -70,10 +70,22 @@ namespace Rounds {
 
 		private void RoundOver() {
 			isRoundActive = false;
-			OnRoundOver?.Invoke();
+			// TODO: Add round over horn SFX
 
-			// TODO: Wait for all vikings to leave before continuing.
+			StartCoroutine(CoWaitForVikingsLeaving());
+		}
+
+		private IEnumerator CoWaitForVikingsLeaving() {
+			if (VikingController.Instance != null) {
+				VikingController.Instance.CanSpawn = false;
+				VikingController.Instance.LeaveAllVikings();
+
+				while (VikingController.Instance.VikingCount > 0)
+					yield return null;
+			}
+
 			DisableGamePlay();
+			OnRoundOver?.Invoke();
 
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
 				TavernBankrupt();
