@@ -54,6 +54,9 @@ ModelImporter:
   - first:
       74: 8349542763059015795
     second: Walk
+  - first:
+      74: -8932725816703116708
+    second: Leaving
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -83,11 +86,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Angry
-      takeName: Armature|Angry
+      name: Leaving
+      takeName: Armature|Leaving
       internalID: 0
       firstFrame: 0
-      lastFrame: 80
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
