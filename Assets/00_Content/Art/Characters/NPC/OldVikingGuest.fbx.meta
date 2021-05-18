@@ -1,59 +1,8 @@
 fileFormatVersion: 2
-guid: b86dfddd580c7124fa421895b131954b
+guid: 7404631d83239674fa3e5d72e82304cb
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: -6238614802773283547
-    second: Armature|Angry
-  - first:
-      74: -5405817554067991751
-    second: Armature|AngryWalk
-  - first:
-      74: -1785242027413151391
-    second: Armature|Drinking
-  - first:
-      74: 5297050669623574059
-    second: Armature|Eat
-  - first:
-      74: -4419367786298704615
-    second: Armature|FightPlayer
-  - first:
-      74: -1993777165312737479
-    second: Armature|GettingAngry
-  - first:
-      74: -8544982944672715099
-    second: Armature|Happy
-  - first:
-      74: -797658302429625390
-    second: Armature|IdleGettingAngry
-  - first:
-      74: -8205218223043111747
-    second: Armature|IdleSit
-  - first:
-      74: 5351374015779665343
-    second: Armature|IdleStanding
-  - first:
-      74: -3401008314989937155
-    second: Armature|RequestSit
-  - first:
-      74: 4724887770959480615
-    second: Armature|Sit
-  - first:
-      74: 2504972278735546524
-    second: Armature|TableBeginFight
-  - first:
-      74: -6389837957200166923
-    second: Armature|TableDestroy
-  - first:
-      74: 5177076074048517598
-    second: Armature|TableFight
-  - first:
-      74: -3189743636635921687
-    second: Armature|ThrowDrink
-  - first:
-      74: 8349542763059015795
-    second: Armature|Walk
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -114,7 +63,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
