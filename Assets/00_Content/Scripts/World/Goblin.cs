@@ -15,6 +15,7 @@ namespace World {
 		[SerializeField] private float coinAttractionForce = 30f;
 		[SerializeField] private float coinDropDelay = 0.2f;
 		[SerializeField] private float fleeSpeedMultiplier = 2f;
+		[SerializeField] private float maxLeaveTime = 8f;
 
 		[Header("Coin stack")]
 		[SerializeField] private Transform coinStackPosition;
@@ -29,6 +30,7 @@ namespace World {
 		private State state = State.None;
 		private Vector3 exitPosition;
 		private int currentTargetIndex = -1;
+		private float leaveTimer;
 
 		private Transform coinRoot;
 		private List<Coin> carriedCoins = new List<Coin>();
@@ -66,18 +68,11 @@ namespace World {
 			else if (state == State.Leaving || state == State.Fleeing) {
 				if (agent.pathPending) return;
 
-				// No path or arrived
-				if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.desiredVelocity == Vector3.zero) {
-					if (state == State.Fleeing) {
-						// Drop any excess coins
-						while (Coins > 0)
-							DropCoin();
-					}
+				leaveTimer += Time.deltaTime;
 
-					state = State.None;
-					OnLeave?.Invoke(this);
-					Destroy(gameObject);
-					SpawnPoofCloud();
+				// No path or arrived
+				if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.desiredVelocity == Vector3.zero || leaveTimer >= maxLeaveTime) {
+					FinishLeaving();
 				}
 			}
 		}
@@ -90,6 +85,19 @@ namespace World {
 				Vector3 attractDirection = (transform.position - other.transform.position).normalized;
 				other.attachedRigidbody.AddForce(attractDirection * coinAttractionForce);
 			}
+		}
+
+		private void FinishLeaving() {
+			if (state == State.Fleeing) {
+				// Drop any excess coins
+				while (Coins > 0)
+					DropCoin();
+			}
+
+			state = State.None;
+			OnLeave?.Invoke(this);
+			Destroy(gameObject);
+			SpawnPoofCloud();
 		}
 
 		private void SpawnPoofCloud() {
