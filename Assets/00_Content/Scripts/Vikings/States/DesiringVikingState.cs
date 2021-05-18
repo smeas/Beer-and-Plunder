@@ -71,7 +71,7 @@ namespace Vikings.States {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			if (viking.CurrentDesire.isOrder && !isOrderGiven) return true;
+			if (viking.CurrentDesire.isOrder && !isOrderGiven && item == null) return true;
 			if (!(item is IDesirable givenItem)) return false;
 			if (!viking.CurrentDesire.isMaterialDesire) return false;
 			if (hasActiveFulfillment) return false;
@@ -89,7 +89,7 @@ namespace Vikings.States {
 			fulfillingPlayer = player;
 
 			if (viking.CurrentDesire.isOrder && !isOrderGiven) {
-				SpawnOrderTicket();
+				SpawnOrderTicket(player);
 				viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
 				return this;
 			}
@@ -136,10 +136,12 @@ namespace Vikings.States {
 			return new SatisfiedVikingState(viking, desire);
 		}
 
-		private void SpawnOrderTicket() {
+		private void SpawnOrderTicket(GameObject player) {
 			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationAfterPrefab);
-			Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-			isOrderGiven = true;
+
+			PickUp ticket = Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			if (player.GetComponentInChildren<PlayerPickUp>().TryReceiveItem(ticket))
+				isOrderGiven = true;
 		}
 	}
 }
