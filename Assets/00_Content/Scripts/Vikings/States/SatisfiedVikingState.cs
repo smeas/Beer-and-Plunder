@@ -49,7 +49,7 @@ namespace Vikings.States {
 					Vector3 throwDirection = -viking.transform.forward;
 					throwDirection.y = 0.7f;
 
-          givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
+          givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) * viking.throwStrength;
 				}
 			}
 		}
@@ -103,7 +103,8 @@ namespace Vikings.States {
 		}
 
 		private void DropCoin() {
-			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			Coin coin = Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			coin.ThrowInDirection(MathX.RandomDirectionInQuarterSphere(-viking.transform.forward, Vector3.up));
 			coinsToDrop--;
 		}
 
