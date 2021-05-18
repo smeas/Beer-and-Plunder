@@ -3,7 +3,10 @@ using UnityEngine.AI;
 
 namespace Vikings.States {
 	public class LeavingVikingState : VikingState {
+		private const float MaxLeavingTime = 15f;
+
 		private NavMeshAgent navMeshAgent;
+		private float maxLeavingTimer;
 
 		public LeavingVikingState(Viking viking) : base(viking) { }
 
@@ -28,6 +31,14 @@ namespace Vikings.States {
 				return this;
 
 			Debug.Assert(navMeshAgent.hasPath);
+
+			maxLeavingTimer += Time.deltaTime;
+
+			if (maxLeavingTimer >= MaxLeavingTime) {
+				Debug.LogWarning("Viking took to long to leave the tavern", viking);
+				viking.FinishLeaving();
+				return new NullVikingState(viking);
+			}
 
 			if (navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete) {
 				Debug.LogWarning("Viking has no exit path or is blocked!", viking);
