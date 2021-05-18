@@ -1,22 +1,21 @@
 ﻿using Audio;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 namespace Menu {
 	public class SettingsMenu : MonoBehaviour {
+		[SerializeField] private DefaultSettingsData defaultSettings;
+
+		[Space]
 		[SerializeField] private Slider masterSlider;
 		[SerializeField] private Slider musicSlider;
 		[SerializeField] private Slider sfxSlider;
 
-		[Header("DefaultValues")]
-		[SerializeField] private float masterVolume = 0.5f;
-		[SerializeField] private float musicVolume = 0.5f;
-		[SerializeField] private float sfxVolume = 0.5f;
-
 		private void Start() {
-			masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", masterVolume);
-			musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", musicVolume);
-			sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", sfxVolume);
+			masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", defaultSettings.masterVolume);
+			musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", defaultSettings.musicVolume);
+			sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", defaultSettings.sfxVolume);
 		}
 
 		private void OnEnable() {
@@ -30,24 +29,21 @@ namespace Menu {
 			musicSlider.onValueChanged.RemoveListener(OnMusicSliderChanged);
 			sfxSlider.onValueChanged.RemoveListener(OnSFXSliderChanged);
 
-			PlayerPrefs.SetFloat("MasterVolume", masterVolume);
-			PlayerPrefs.SetFloat("MusicVolume", musicVolume);
-			PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+			PlayerPrefs.SetFloat("MasterVolume", masterSlider.value);
+			PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+			PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
 		}
 
 		private void OnMasterSliderChanged(float value) {
 			AudioManager.Instance.Volume = value;
-			masterVolume = value;
 		}
 
 		private void OnMusicSliderChanged(float value) {
 			AudioManager.Instance.MusicVolume = value;
-			musicVolume = value;
 		}
 
 		private void OnSFXSliderChanged(float value) {
 			AudioManager.Instance.EffectsVolume = value;
-			sfxVolume = value;
 		}
 	}
 }
