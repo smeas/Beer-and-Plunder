@@ -9,6 +9,7 @@ namespace Interactables.Kitchens {
 	public class Kitchen : Interactable {
 		[SerializeField] ProgressBar cookingProgressBar;
 		[SerializeField] Transform foodSpawnpoint;
+		[SerializeField] private ParticleSystem foodSpawnEffect;
 		[SerializeField] GameObject foodPrefab;
 
 		[Header("Settings")]
@@ -62,6 +63,7 @@ namespace Interactables.Kitchens {
 			}
 
 			Instantiate(foodPrefab, foodSpawnpoint);
+			foodSpawnEffect.Play();
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
 		}
