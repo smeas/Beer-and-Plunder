@@ -16,11 +16,13 @@ namespace Vikings {
 
 		private Image desireBubbleImage;
 
+		public bool IsShowing { get; private set; }
+
 		private void Start() {
 			desireBubbleImage = desireBubble.gameObject.GetComponent<Image>();
 		}
 
-		public void ShowNewDesire(Sprite sprite) { 
+		public void ShowNewDesire(Sprite sprite) {
 			if (sprite == null) {
 				Debug.Assert(false, "Desire visualisation is null");
 				return;
@@ -28,13 +30,14 @@ namespace Vikings {
 
 			desireImage.sprite = sprite;
 			desireBubble.gameObject.SetActive(true);
+			IsShowing = true;
 		}
 
 		public void HideDesire() {
 			desireBubble.gameObject.SetActive(false);
+			IsShowing = false;
 		}
 
-		
 		public void SetDesireColor(float remappedMood) {
 			desireBubbleImage.color = Color.Lerp(highDesire, lowDesire, remappedMood);
 		}

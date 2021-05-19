@@ -1,8 +1,8 @@
-using System.Linq;
 using Interactables;
 using Interactables.Weapons;
 using Player;
 using UnityEngine;
+using Utilities;
 
 namespace Vikings.States {
 	/// <summary>
@@ -16,11 +16,23 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
+			viking.desireVisualiser.HideDesire();
+
 			viking.FinishQueueing();
 		}
 
 		public override VikingState Update() {
-			viking.Stats.Decline();
+			if (viking.QueuePosition == 0) {
+				if (!viking.desireVisualiser.IsShowing)
+					viking.desireVisualiser.ShowNewDesire(viking.Data.desireSeatVisualisation);
+
+				float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.impatientMoodThreshold, viking.Stats.StartMood, 0, 1);
+
+				viking.desireVisualiser.SetDesireColor(remappedMood);
+				viking.desireVisualiser.SetTweenSpeed(remappedMood);
+
+				viking.Stats.Decline();
+			}
 
 			if (viking.Stats.Mood < viking.Data.impatientMoodThreshold)
 				return TakeRandomSeat();

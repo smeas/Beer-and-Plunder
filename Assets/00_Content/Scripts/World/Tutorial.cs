@@ -67,6 +67,11 @@ namespace World {
 			Tavern.Instance.OnMoneyChanges += OnMoneyChanged;
 		}
 
+		private void OnDestroy() {
+			if (PlayerManager.Instance != null)
+				PlayerManager.Instance.RemovePlayer(player);
+		}
+
 		#region EventConversions
 
 		private void OnVikingLeaveQueue(Viking sender) => OnTutorialEvent(TutorialEvent.VikingLeaveQueue);
@@ -91,9 +96,6 @@ namespace World {
 				currentPhaseIndex++;
 
 				if (currentPhaseIndex >= phases.Length) {
-					if (PlayerManager.Instance != null)
-						PlayerManager.Instance.RemovePlayer(player);
-
 					SceneLoadManager.Instance.LoadMainMenu();
 					return;
 				}

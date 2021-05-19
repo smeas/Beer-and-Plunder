@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Scenes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,25 +9,30 @@ using UnityEngine.Timeline;
 
 namespace Menu {
 	public class MenuController : MonoBehaviour {
-		[SerializeField] private GameObject mainMenuPanel;
-		[SerializeField] private GameObject settingsPanel;
+		[SerializeField] private GameObject startPanel;
+		[SerializeField] private GameObject backButton;
+
+		[Space]
 		[SerializeField] private GameObject startGameButton;
+		[SerializeField] private ParticleSystem clickEffect;
 
 		[Header("Timeline")]
 		[SerializeField] private PlayableDirector timelineDirector;
 		[SerializeField] private TimelineAsset toLobbyTimeline;
 
+		private Stack<GameObject> panels = new Stack<GameObject>();
+
 		private void Start() {
-
 			if (PlayerManager.Instance != null) {
-
 				foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 					PlayerInput playerInput = player.GetComponent<PlayerInput>();
 					playerInput.SwitchCurrentActionMap("UI");
 				}
 			}
-			settingsPanel.SetActive(false);
-			mainMenuPanel.SetActive(true);
+
+			startPanel.SetActive(true);
+			panels.Push(startPanel);
+			backButton.SetActive(false);
 		}
 
 		public void GoToLobby() {
@@ -39,14 +45,27 @@ namespace Menu {
 			SceneLoadManager.Instance.LoadTutorial();
 		}
 
-		public void GoToSettings() {
-			mainMenuPanel.SetActive(false);
-			settingsPanel.SetActive(true);
+		public void ShowPanel(GameObject panel) {
+			clickEffect.Play();
+
+			panels.Peek().SetActive(false);
+			panel.SetActive(true);
+			panels.Push(panel);
+
+			if (panels.Count > 1)
+				backButton.SetActive(true);
 		}
 
-		public void ReturnToMainMenu() {
-			settingsPanel.SetActive(false);
-			mainMenuPanel.SetActive(true);
+		public void ClosePanel() {
+			if (panels.Count == 1) return;
+
+			clickEffect.Play();
+
+			panels.Pop().SetActive(false);
+			panels.Peek().SetActive(true);
+
+			if (panels.Count == 1)
+				backButton.SetActive(false);
 		}
 
 		public void QuitGame() {
