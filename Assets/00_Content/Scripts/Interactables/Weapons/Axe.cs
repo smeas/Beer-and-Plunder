@@ -61,10 +61,9 @@ namespace Interactables.Weapons {
 				IHittable hittable = other.GetComponentInParent<IHittable>();
 
 				if(hittable != null) {
-					Instantiate(particleSystemHit, other.transform.position, Quaternion.identity);
+					particleSystemHit.Play(true);
 					hittable.Hit(this);
 				}
-				
 			}
 		}
 
