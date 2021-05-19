@@ -9,6 +9,7 @@ namespace Vikings.States {
 	public class TakingSeatVikingState : VikingState {
 		private readonly Chair chair;
 		private NavMeshAgent navMeshAgent;
+		private bool isSeating;
 
 		public TakingSeatVikingState(Viking viking, Chair chair) : base(viking) {
 			this.chair = chair;
@@ -24,19 +25,21 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
-			navMeshAgent.enabled = false;
-			viking.GetComponent<Rigidbody>().isKinematic = true;
+			if (isSeating)
+				viking.animationDriver.InterruptSeating();
 		}
 
 		public override VikingState Update() {
-			if (navMeshAgent.enabled && navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001f) {
+			if (isSeating) {
+				if (viking.animationDriver.IsSitting)
+					return new PassiveVikingState(viking);
+			}
+			else if (navMeshAgent.enabled && navMeshAgent.desiredVelocity.sqrMagnitude <= 0.0001f) {
+				navMeshAgent.enabled = false;
+				viking.GetComponent<Rigidbody>().isKinematic = true;
 
-				// Arrived at destination (mostly)
-				Transform transform = viking.transform;
-				transform.position = chair.SitPivot.position;
-				transform.rotation = chair.SitPivot.rotation;
-
-				return new PassiveVikingState(viking);
+				viking.animationDriver.BeginSitting(chair.SitPivot.position, chair.Table.transform.position);
+				isSeating = true;
 			}
 
 			return this;

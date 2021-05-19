@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interactables;
-using Interactables.Beers;
 using Interactables.Kitchens;
 using Interactables.Weapons;
 using Player;
@@ -35,6 +34,7 @@ namespace Vikings {
 		[Space]
 		[SerializeField] public float itemThrowConeHalfAngle = 15f;
 		[SerializeField] public float throwStrength = 5f;
+		[SerializeField] public Transform pivotWhenSitting;
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
@@ -44,6 +44,8 @@ namespace Vikings {
 		private NavMeshAgent navMeshAgent;
 		private bool isAttacked;
 		private bool isAttacking;
+		[NonSerialized] public Animator animator;
+		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
 		public VikingData Data => vikingData;
@@ -64,6 +66,9 @@ namespace Vikings {
 		public Action Hit;
 
 		private void Start() {
+			animator = GetComponentInChildren<Animator>();
+			animationDriver = GetComponentInChildren<VikingAnimationDriver>();
+
 			// statScaling is normally provided by the viking manager
 			statScaling ??= new VikingScaling();
 			rb = GetComponent<Rigidbody>();
@@ -82,6 +87,7 @@ namespace Vikings {
 		}
 
 		private void Update() {
+			animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
 
 			if (Data.attackPlayerAtStartUp && !hasStartedAttackingPlayer) {
 				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();
