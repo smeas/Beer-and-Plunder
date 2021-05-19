@@ -4,8 +4,6 @@ using Utilities;
 
 namespace Vikings.States {
 	public class LeavingVikingState : VikingState {
-		private const float MaxLeavingTime = 15f;
-
 		private NavMeshAgent navMeshAgent;
 		private float maxLeavingTimer;
 
@@ -35,7 +33,7 @@ namespace Vikings.States {
 
 			maxLeavingTimer += Time.deltaTime;
 
-			if (maxLeavingTimer >= MaxLeavingTime) {
+			if (maxLeavingTimer >= viking.maxLeavingTime) {
 				Debug.LogWarning("Viking took to long to leave the tavern", viking);
 				Object.Instantiate(viking.disappearParticleSystem, viking.transform.position + new Vector3(0, 0.8f, 0), viking.transform.rotation)
 					.gameObject.AddComponent<ParticleCleanup>();
