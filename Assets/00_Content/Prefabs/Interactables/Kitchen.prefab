@@ -482,10 +482,22 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 7145782877122779918, guid: ee2fe80fc1f3e4a4f99ba835d9b85eca, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68a9f1c30deb05140831b18d7164e707, type: 3}
+    - target: {fileID: 7145782877129546984, guid: ee2fe80fc1f3e4a4f99ba835d9b85eca, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bb4838ce955860e4dbada553c2261f23, type: 3}
     - target: {fileID: 7145782877129546986, guid: ee2fe80fc1f3e4a4f99ba835d9b85eca, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 7145782877235037793, guid: ee2fe80fc1f3e4a4f99ba835d9b85eca, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 45b732bc8dec9814aaed948bb1dc684c, type: 3}
     - target: {fileID: 7145782877235037795, guid: ee2fe80fc1f3e4a4f99ba835d9b85eca, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
