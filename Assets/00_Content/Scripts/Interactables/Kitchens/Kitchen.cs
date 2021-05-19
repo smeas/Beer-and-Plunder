@@ -17,6 +17,7 @@ namespace Interactables.Kitchens {
 
 		private Queue<KitchenTicket> tickets = new Queue<KitchenTicket>();
 		private bool isCooking;
+		private SoundHandle cookingSound;
 
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return item is KitchenTicket;
@@ -36,6 +37,10 @@ namespace Interactables.Kitchens {
 			float cookingProgress = 0;
 			isCooking = true;
 			cookingProgressBar.Show();
+
+			if(tickets.Count == 1) {
+				cookingSound = AudioManager.Instance.PlayEffect(SoundEffect.Cooking, true);
+			}
 
 			while (isCooking && cookingProgress <= cookingTime) {
 
@@ -65,7 +70,9 @@ namespace Interactables.Kitchens {
 			Instantiate(foodPrefab, foodSpawnpoint);
 			foodSpawnEffect.Play();
 
+			cookingSound.Stop();
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
+
 		}
 	}
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Audio {
 	public enum SoundEffect {
+		BeerDrop = -639203100,
+		Cooking = -195161644,
 		FoodReady = 1745492459,
 		Gameplay_GuestEnter = -135389647,
 		Gameplay_RoundLost = 780448425,
@@ -23,6 +25,8 @@ namespace Audio {
 
 	public static partial class AudioIndex {
 		private static Dictionary<int, string> soundEffectPaths = new Dictionary<int, string> {
+			{ -639203100, "Audio/SoundEffects/BeerDrop" },
+			{ -195161644, "Audio/SoundEffects/Cooking" },
 			{ 1745492459, "Audio/SoundEffects/FoodReady" },
 			{ -135389647, "Audio/SoundEffects/Gameplay/GuestEnter" },
 			{ 780448425, "Audio/SoundEffects/Gameplay/RoundLost" },

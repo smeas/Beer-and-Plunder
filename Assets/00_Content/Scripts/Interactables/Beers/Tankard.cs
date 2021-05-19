@@ -25,7 +25,7 @@ namespace Interactables.Beers {
 		}
 
 		private void FixedUpdate() {
-			if (isFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
+			if (IsFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
 				Spill();
 		}
 
@@ -42,6 +42,12 @@ namespace Interactables.Beers {
 		private void Spill() {
 			IsFull = false;
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_SpillBeer);
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > 4f) {
+				AudioManager.PlayEffectSafe(SoundEffect.BeerDrop);
+			}
 		}
 	}
 }
