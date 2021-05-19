@@ -30,9 +30,11 @@ namespace Rounds {
 		private GameOver gameOverPanel;
 		private FollowingCamera followingCamera;
 		private ScoreCard scoreCard;
+		private SoundHandle clockTickSound;
 		private float roundTimer;
 		private int currentRound = 1;
 		private bool isRoundActive = true;
+		private bool isTenSecondTimerStarted = false;
 
 		public ScalingData CurrentDifficulty =>
 			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
@@ -65,7 +67,16 @@ namespace Rounds {
 
 			roundTimer = Mathf.Max(0, roundTimer - Time.deltaTime);
 
-			if (roundTimer <= 0) RoundOver();
+			if (roundTimer <= 10 && !isTenSecondTimerStarted) {
+				clockTickSound = AudioManager.Instance.PlayEffect(SoundEffect.ClockTick, true);
+				isTenSecondTimerStarted = true;
+			}
+
+			if (roundTimer <= 0) {
+				clockTickSound.Stop();
+				isTenSecondTimerStarted = false;
+				RoundOver();
+			}
 		}
 
 		private void RoundOver() {
