@@ -26,6 +26,7 @@ namespace Vikings {
 
 		public bool IsSitting { get; private set; }
 		public bool IsPlayingHappyAnimation { get; private set; }
+		public bool IsPlayingAttackAnimation { get; private set; }
 
 		private void Start() {
 			animator = GetComponent<Animator>();
@@ -199,7 +200,10 @@ namespace Vikings {
 		public void TriggerThrow() => animator.SetTrigger("Throw");
 		public void TriggerRequest() => animator.SetTrigger("Request");
 		public void TriggerGettingAngryEffect() => animator.SetTrigger("GettingAngryEffect");
-		public void TriggerAttack() => animator.SetTrigger("Attack");
+		public void TriggerAttack() {
+			animator.SetTrigger("Attack");
+			IsPlayingAttackAnimation = true;
+		}
 
 		#region Animation Events
 
@@ -217,6 +221,10 @@ namespace Vikings {
 
 		private void OnHappyEnd() {
 			IsPlayingHappyAnimation = false;
+		}
+
+		private void OnAttackEnd() {
+			IsPlayingAttackAnimation = false;
 		}
 
 		#endregion

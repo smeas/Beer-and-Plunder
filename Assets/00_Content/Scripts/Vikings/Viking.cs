@@ -57,7 +57,7 @@ namespace Vikings {
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
-		public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+		public bool IsAttacking => animationDriver.IsPlayingAttackAnimation;
 		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
 
 		public event VikingLeaving LeaveTavern;
@@ -170,28 +170,10 @@ namespace Vikings {
 			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
 		}
 
-		public void MakeSpinAttack() {
+		public void MakeAttack() {
 			if (!IsAttacking) {
-				IsAttacking = true;
-				StartCoroutine(SpinAttack());
-				StartCoroutine(FinishAttack());
+				animationDriver.TriggerAttack();
 			}
-		}
-
-		private IEnumerator SpinAttack() {
-			while(IsAttacking) {
-				yield return null;
-				transform.Rotate(Vector3.up, vikingData.spinAttackSpeed * Time.deltaTime);
-			}
-		}
-
-		private IEnumerator FinishAttack() {
-
-			yield return new WaitForSeconds(vikingData.spinAttackDuration);
-
-			StopAllCoroutines();
-			IsAttacking = false;
-			IsAttacked = false;
 		}
 
 		public void FinishLeaving() {

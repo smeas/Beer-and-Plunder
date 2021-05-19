@@ -63,7 +63,6 @@ namespace Vikings.States {
 			viking.SetMaterial(viking.normalMaterial);
 
 			navMeshAgent.enabled = false;
-			viking.IsAttacking = false;
 		}
 
 		private void OnChairDismounted() {
@@ -120,8 +119,7 @@ namespace Vikings.States {
 
 			// When we stop moving, make sure we're looking at the table.
 			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
-				Vector3 tableDirection = (targetTable.transform.position - viking.transform.position).normalized;
-				viking.transform.DORotateQuaternion(Quaternion.LookRotation(tableDirection), 0.2f);
+				LookAtTable();
 			}
 
 			if (IsMoving) return this;
@@ -159,6 +157,11 @@ namespace Vikings.States {
 			return this;
 		}
 
+		private void LookAtTable() {
+			Vector3 tableDirection = (targetTable.transform.position - viking.transform.position).normalized;
+			viking.transform.DORotateQuaternion(Quaternion.LookRotation(tableDirection), 0.2f);
+		}
+
 		private VikingState DoVikingBrawl() {
 			Debug.Log("Fighting another viking...");
 			return this;
@@ -169,7 +172,7 @@ namespace Vikings.States {
 			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude <
 				viking.Data.attackTriggerDistance * viking.Data.attackTriggerDistance
 				&& !viking.IsAttacking) {
-				viking.MakeSpinAttack();
+				viking.MakeAttack();
 				return this;
 			}
 
