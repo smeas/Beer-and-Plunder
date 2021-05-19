@@ -392,9 +392,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76890c6c3e9e0f342bf6eb35dca9ca40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vikingLayer:
+  vikingHandsLayer:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 2048
 --- !u!114 &6624416164148032783
 MonoBehaviour:
   m_ObjectHideFlags: 0

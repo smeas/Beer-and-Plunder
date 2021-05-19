@@ -197,13 +197,14 @@ namespace Vikings {
 			IsPlayingHappyAnimation = true;
 		}
 
-		public void TriggerThrow() => animator.SetTrigger("Throw");
-		public void TriggerRequest() => animator.SetTrigger("Request");
-		public void TriggerGettingAngryEffect() => animator.SetTrigger("GettingAngryEffect");
 		public void TriggerAttack() {
 			animator.SetTrigger("Attack");
 			IsPlayingAttackAnimation = true;
 		}
+
+		public void TriggerThrow() => animator.SetTrigger("Throw");
+		public void TriggerRequest() => animator.SetTrigger("Request");
+		public void TriggerGettingAngryEffect() => animator.SetTrigger("GettingAngryEffect");
 
 		#region Animation Events
 
