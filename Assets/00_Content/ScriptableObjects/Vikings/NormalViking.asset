@@ -16,6 +16,7 @@ MonoBehaviour:
   moodDeclineRate: 1.5
   moodBoostDesireFulfilled: 30
   impatientMoodThreshold: 60
+  InQueueVisualisation: {fileID: 21300000, guid: a99d394cfb3c7ee4ba74a4a8de9ecbe4, type: 3}
   randomDesires: 1
   desires:
   - {fileID: 11400000, guid: 51d4a8a04055f6c46a8e3ed6559b4e05, type: 2}
