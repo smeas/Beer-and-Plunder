@@ -3,7 +3,12 @@ guid: ce35fdc828b8e054da5a03d7430f1040
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grid_mat
+    second: {fileID: 2100000, guid: cd747a29756f2254f8725d3eab62520d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -63,7 +68,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
