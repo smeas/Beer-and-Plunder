@@ -22,7 +22,10 @@ namespace Vikings {
 		private Transform sitTransform;
 		private bool sitTransformAttached;
 
+		private Vector3 lastPosition;
+
 		public bool IsSitting { get; private set; }
+		public bool IsPlayingHappyAnimation { get; private set; }
 
 		private void Start() {
 			animator = GetComponent<Animator>();
@@ -39,6 +42,10 @@ namespace Vikings {
 					BeginSittingStage2();
 				}
 			}
+
+			Vector3 currentPosition = vikingTransform.position;
+			Speed = (currentPosition - lastPosition).magnitude / Time.deltaTime;
+			lastPosition = currentPosition;
 		}
 
 		#region Sit Stuff
@@ -177,6 +184,23 @@ namespace Vikings {
 
 		#endregion
 
+		public float Speed { set => animator.SetFloat("Speed", value); }
+		public bool GettingAngry { set => animator.SetBool("GettingAngry", value); }
+		public bool Drinking { set => animator.SetBool("Drinking", value); }
+		public bool Eating { set => animator.SetBool("Eating", value); }
+		public bool Brawl { set => animator.SetBool("Brawl", value); }
+		public bool TableBrawl { set => animator.SetBool("TableBrawl", value); }
+
+		public void TriggerHappy() {
+			animator.SetTrigger("Happy");
+			IsPlayingHappyAnimation = true;
+		}
+
+		public void TriggerThrow() => animator.SetTrigger("Throw");
+		public void TriggerRequest() => animator.SetTrigger("Request");
+		public void TriggerGettingAngryEffect() => animator.SetTrigger("GettingAngryEffect");
+		public void TriggerAttack() => animator.SetTrigger("Attack");
+
 		#region Animation Events
 
 		private void OnSitEnd() {
@@ -189,6 +213,10 @@ namespace Vikings {
 			if (!isUnsitting) return;
 
 			OnEndSittingCompleted();
+		}
+
+		private void OnHappyEnd() {
+			IsPlayingHappyAnimation = false;
 		}
 
 		#endregion

@@ -88,8 +88,6 @@ namespace Vikings {
 		}
 
 		private void Update() {
-			animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
-
 			// TODO: Remove
 			if (Keyboard.current.gKey.wasPressedThisFrame) {
 				ChangeState(new LeavingVikingState(this));
