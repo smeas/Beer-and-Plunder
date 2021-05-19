@@ -11,6 +11,7 @@ using Rounds;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using Utilities;
 using Vikings.States;
 using Random = UnityEngine.Random;
@@ -89,6 +90,11 @@ namespace Vikings {
 		private void Update() {
 			animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
 
+			// TODO: Remove
+			if (Keyboard.current.gKey.wasPressedThisFrame) {
+				ChangeState(new LeavingVikingState(this));
+			}
+
 			if (Data.attackPlayerAtStartUp && !hasStartedAttackingPlayer) {
 				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();
 
@@ -157,7 +163,7 @@ namespace Vikings {
 		public void DismountChair() {
 			if (CurrentChair == null) return;
 
-			transform.position = CurrentChair.DismountPoint.position;
+			animationDriver.EndSitting();
 			CurrentChair.OnVikingLeaveChair(this);
 			CurrentChair = null;
 		}

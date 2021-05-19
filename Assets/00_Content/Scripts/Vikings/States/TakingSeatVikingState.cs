@@ -26,7 +26,7 @@ namespace Vikings.States {
 
 		public override void Exit() {
 			if (isSeating)
-				viking.animationDriver.InterruptSeating();
+				viking.animationDriver.InterruptBeginSitting();
 		}
 
 		public override VikingState Update() {

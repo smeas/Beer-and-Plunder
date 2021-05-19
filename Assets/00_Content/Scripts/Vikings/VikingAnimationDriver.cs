@@ -1,16 +1,19 @@
 using DG.Tweening;
+using Interactables;
 using UnityEngine;
 
 namespace Vikings {
 	public class VikingAnimationDriver : MonoBehaviour {
 		[SerializeField] private AnimationClip referenceSitAnimation;
+		[SerializeField] private AnimationClip referenceUnsitAnimation;
 		[SerializeField] private float sitTurnDuration = 0.5f;
 
 		private Animator animator;
 		private Viking viking;
 		private Transform vikingTransform;
 
-		private bool isPerformingSitAction;
+		private bool isBeginningSitting;
+		private bool isUnsitting;
 		private bool sitAnimationDone;
 		private bool firstSitTweenDone;
 		private Vector3 tablePosition;
@@ -31,17 +34,26 @@ namespace Vikings {
 		}
 
 		private void Update() {
-			if (isPerformingSitAction) {
+			if (isBeginningSitting) {
 				if (firstSitTweenDone && sitAnimationDone) {
 					BeginSittingStage2();
 				}
 			}
 		}
 
+		#region Sit Stuff
+
 		public void BeginSitting(Vector3 sitPoint, Vector3 tablePos) {
+			if (isBeginningSitting) return;
+			if (isUnsitting) {
+				InterruptEndSitting();
+				return;
+			}
+			if (IsSitting) return;
+
 			IsSitting = false;
 			sitAnimationDone = false;
-			isPerformingSitAction = true;
+			isBeginningSitting = true;
 
 			tablePosition = tablePos;
 
@@ -73,16 +85,16 @@ namespace Vikings {
 				.OnComplete(OnBeginSittingCompleted);
 		}
 
-		public void InterruptSeating() {
-			if (!isPerformingSitAction) return;
+		public void InterruptBeginSitting() {
+			if (!isBeginningSitting) return;
 
 			sitTween.Kill();
 
-			IsSitting = true;
+			IsSitting = false;
 			sitTween = null;
 			sitAnimationDone = false;
 			firstSitTweenDone = false;
-			isPerformingSitAction = false;
+			isBeginningSitting = false;
 
 			animator.SetBool("Sitting", false);
 
@@ -94,8 +106,51 @@ namespace Vikings {
 			sitTween = null;
 			sitAnimationDone = false;
 			firstSitTweenDone = false;
-			isPerformingSitAction = false;
+			isBeginningSitting = false;
 		}
+
+		public void EndSitting() {
+			if (isUnsitting) return;
+			if (isBeginningSitting) {
+				InterruptBeginSitting();
+				return;
+			}
+			if (!IsSitting) return;
+
+			isUnsitting = true;
+
+			Chair chair = viking.CurrentChair;
+			Vector3 dismountPosition = chair.DismountPoint.position;
+			Vector3 dismountDirection = (dismountPosition - sitTransform.position).normalized;
+			Quaternion dismountRotation = Quaternion.LookRotation(dismountDirection, Vector3.up);
+
+			sitTween = DOTween.Sequence()
+				.Append(sitTransform.DORotateQuaternion(dismountRotation, sitTurnDuration))
+				.AppendCallback(() => {
+					DetachSitTransform();
+					animator.SetBool("Sitting", false);
+				})
+				.Append(vikingTransform.DOMove(dismountPosition, referenceUnsitAnimation.length));
+		}
+
+		public void InterruptEndSitting() {
+			if (!isUnsitting) return;
+
+			IsSitting = true;
+			sitTween = null;
+			isUnsitting = false;
+
+			animator.SetBool("Sitting", true);
+
+			AttachSitTransform();
+		}
+
+		private void OnEndSittingCompleted() {
+			IsSitting = false;
+			sitTween = null;
+			isUnsitting = false;
+		}
+
 
 		private void AttachSitTransform() {
 			if (sitTransformAttached) return;
@@ -120,12 +175,20 @@ namespace Vikings {
 			sitTransformAttached = false;
 		}
 
+		#endregion
+
 		#region Animation Events
 
 		private void OnSitEnd() {
-			if (!isPerformingSitAction) return;
+			if (!isBeginningSitting) return;
 
 			sitAnimationDone = true;
+		}
+
+		private void OnUnsitEnd() {
+			if (!isUnsitting) return;
+
+			OnEndSittingCompleted();
 		}
 
 		#endregion
