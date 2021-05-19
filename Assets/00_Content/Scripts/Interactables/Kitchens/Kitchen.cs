@@ -13,6 +13,7 @@ namespace Interactables.Kitchens {
 		[SerializeField] ProgressBar cookingProgressBar;
 		[SerializeField] Transform foodSpawnpoint;
 		[SerializeField] GameObject foodPrefab;
+		[SerializeField] ParticleSystem smokeParticleSystem;
 
 		[Header("Settings")]
 		[SerializeField] private float cookingTime = 10;
@@ -35,6 +36,7 @@ namespace Interactables.Kitchens {
 			cookingProgress = 0;
 			isCooking = true;
 			cookingProgressBar.Show();
+			smokeParticleSystem.Play(true);
 
 			while (isCooking && cookingProgress <= cookingTime) {
 
@@ -55,6 +57,7 @@ namespace Interactables.Kitchens {
 		private void FinishCooking() {
 			isCooking = false;
 			cookingProgressBar.Hide();
+			smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 			Instantiate(foodPrefab, foodSpawnpoint);
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);

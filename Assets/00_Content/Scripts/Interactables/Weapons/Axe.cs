@@ -8,6 +8,7 @@ namespace Interactables.Weapons {
 
 		[SerializeField] private Collider weaponCollider;
 		[SerializeField] private WeaponData weaponData;
+		[SerializeField] private ParticleSystem particleSystemHit;
 
 		public bool IsAttacking {
 			get { return isAttacking; }
@@ -58,7 +59,12 @@ namespace Interactables.Weapons {
 		private void OnTriggerEnter(Collider other) {
 			if (isAttacking) {
 				IHittable hittable = other.GetComponentInParent<IHittable>();
-				hittable?.Hit(this);
+
+				if(hittable != null) {
+					Instantiate(particleSystemHit, other.transform.position, Quaternion.identity);
+					hittable.Hit(this);
+				}
+				
 			}
 		}
 

@@ -163,6 +163,7 @@ MonoBehaviour:
   ItemSlotPivot: {fileID: 2236711834209687227}
   weaponCollider: {fileID: 7602050476943310791}
   weaponData: {fileID: 11400000, guid: 2240e11cb45323e4fbbe31e2086e2248, type: 2}
+  particleSystemHit: {fileID: 19899290, guid: 3547e5e490f502041ae6e8a59042e4bd, type: 3}
 --- !u!54 &8619401761067881784
 Rigidbody:
   m_ObjectHideFlags: 0
