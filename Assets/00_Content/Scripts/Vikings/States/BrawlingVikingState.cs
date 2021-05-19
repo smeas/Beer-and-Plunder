@@ -73,9 +73,10 @@ namespace Vikings.States {
 
 			viking.SetMaterial(viking.brawlingMaterial);
 
-			// FIXME: Maybe, maybe not?
-			if (brawlType == BrawlType.TableBrawl)
-				navMeshAgent.SetDestination(targetTable.transform.position);
+			if (brawlType == BrawlType.TableBrawl) {
+				navMeshAgent.enabled = false;
+				LookAtTable();
+			}
 		}
 
 		public override VikingState HandleOnHit(Axe axe, Viking viking) {
@@ -119,6 +120,7 @@ namespace Vikings.States {
 
 			// When we stop moving, make sure we're looking at the table.
 			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
+				navMeshAgent.enabled = false;
 				LookAtTable();
 			}
 
@@ -126,7 +128,6 @@ namespace Vikings.States {
 
 			attackTimer -= Time.deltaTime;
 			if (attackTimer <= 0) {
-				//viking.MakeSpinAttack();
 				targetTable.Damage(viking.Data.damage);
 				attackTimer = viking.Data.attackRate;
 			}
@@ -150,6 +151,7 @@ namespace Vikings.States {
 				int index = Random.Range(0, possibleTargets.Length);
 				targetTable = possibleTargets[index];
 
+				navMeshAgent.enabled = true;
 				navMeshAgent.SetDestination(targetTable.transform.position);
 				attackTimer = viking.Data.attackRate;
 			}
