@@ -47,6 +47,13 @@ namespace Interactables.Instruments {
 				viking.Affect(usingPlayer, this);
 		}
 
+		private void LateUpdate() {
+			// Makes sure the visual effects don't rotate along with the instrument when held in the player's hand.
+			// The trigger may still rotate, but as it's a sphere, it shouldn't matter.
+			areaField.transform.rotation = Quaternion.identity;
+			particleSystem.transform.rotation = Quaternion.Euler(-90, 0, 0);
+		}
+
 	#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
 			if (instrumentData == null) return;
