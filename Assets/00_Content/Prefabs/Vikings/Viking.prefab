@@ -74,7 +74,7 @@ MonoBehaviour:
   kitchenTicketPrefab: {fileID: 482211264044046102, guid: 88d643d9c464d014995555ca35e17371, type: 3}
   desireVisualiser: {fileID: 2110882707906954946}
   progressBar: {fileID: 1725203097003537118}
-  bodyMeshRenderer: {fileID: 0}
+  bodyMeshRenderer: {fileID: 724876860708356633}
   normalMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   brawlingMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
   itemThrowConeHalfAngle: 15
@@ -946,14 +946,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
---- !u!1 &4407983342888056285 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1201046196191210740, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
-  m_PrefabInstance: {fileID: 3280507669078726953}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5417867920736855522 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7401268459065113803, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
+  m_PrefabInstance: {fileID: 3280507669078726953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4407983342888056285 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1201046196191210740, guid: 9d6330674135b654cb47af64fd602aa5, type: 3}
   m_PrefabInstance: {fileID: 3280507669078726953}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4961139811570083810
@@ -1013,6 +1013,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
+--- !u!137 &724876860708356633 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5680945638611805691, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
+  m_PrefabInstance: {fileID: 4961139811570083810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1381843411193907755 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6337911703329811913, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}

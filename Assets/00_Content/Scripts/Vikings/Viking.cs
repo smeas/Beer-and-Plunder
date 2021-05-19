@@ -28,7 +28,7 @@ namespace Vikings {
 		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
-		[SerializeField] public MeshRenderer bodyMeshRenderer;
+		[SerializeField] public Renderer bodyMeshRenderer;
 		[SerializeField] public Material normalMaterial;
 		[SerializeField] public Material brawlingMaterial;
 

@@ -1,4 +1,5 @@
 using System.Linq;
+using DG.Tweening;
 using Interactables;
 using Interactables.Weapons;
 using Player;
@@ -17,8 +18,10 @@ namespace Vikings.States {
 		private BrawlType brawlType;
 
 		private float attackTimer;
+		private bool isDismountingChair;
+		private bool lastIsMoving;
 
-		private bool IsMoving => navMeshAgent.desiredVelocity.sqrMagnitude != 0;
+		private bool IsMoving =>  navMeshAgent.pathPending || navMeshAgent.desiredVelocity.sqrMagnitude != 0;
 
 		public BrawlingVikingState(Viking viking, Table targetTable) : base(viking) {
 			Debug.Assert(targetTable != null, "Viking is entering a tableBrawl with no target");
@@ -40,22 +43,40 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Enter() {
-			navMeshAgent = viking.GetComponent<NavMeshAgent>();
-			navMeshAgent.enabled = true;
+			viking.animationDriver.Brawl = true;
 
-			viking.SetMaterial(viking.brawlingMaterial);
-
-			if(viking.CurrentChair != null)
+			if (viking.CurrentChair != null) {
 				viking.DismountChair();
+				isDismountingChair = true;
+			}
+			else {
+				OnChairDismounted();
+			}
 
 			return this;
 		}
 
 		public override void Exit() {
+			viking.animationDriver.Brawl = false;
+			viking.animationDriver.TableBrawl = false;
+
 			viking.SetMaterial(viking.normalMaterial);
 
 			navMeshAgent.enabled = false;
 			viking.IsAttacking = false;
+		}
+
+		private void OnChairDismounted() {
+			isDismountingChair = false;
+
+			navMeshAgent = viking.GetComponent<NavMeshAgent>();
+			navMeshAgent.enabled = true;
+
+			viking.SetMaterial(viking.brawlingMaterial);
+
+			// FIXME: Maybe, maybe not?
+			if (brawlType == BrawlType.TableBrawl)
+				navMeshAgent.SetDestination(targetTable.transform.position);
 		}
 
 		public override VikingState HandleOnHit(Axe axe, Viking viking) {
@@ -73,6 +94,13 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
+			if (isDismountingChair) {
+				if (!viking.animationDriver.IsSitting)
+					OnChairDismounted();
+
+				return this;
+			}
+
 			viking.Stats.Decline();
 
 			switch (brawlType) {
@@ -88,11 +116,19 @@ namespace Vikings.States {
 		}
 
 		private VikingState DoTableBrawl() {
+			viking.animationDriver.TableBrawl = !IsMoving;
+
+			// When we stop moving, make sure we're looking at the table.
+			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
+				Vector3 tableDirection = (targetTable.transform.position - viking.transform.position).normalized;
+				viking.transform.DORotateQuaternion(Quaternion.LookRotation(tableDirection), 0.2f);
+			}
+
 			if (IsMoving) return this;
 
 			attackTimer -= Time.deltaTime;
 			if (attackTimer <= 0) {
-				viking.MakeSpinAttack();
+				//viking.MakeSpinAttack();
 				targetTable.Damage(viking.Data.damage);
 				attackTimer = viking.Data.attackRate;
 			}
