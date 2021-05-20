@@ -56,6 +56,7 @@ namespace World {
 		}
 
 		private void Update() {
+
 			if (state == State.Running) {
 				if (agent.pathPending) return;
 

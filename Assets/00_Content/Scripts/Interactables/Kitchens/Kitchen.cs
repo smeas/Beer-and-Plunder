@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Player;
 using UI;
 using UnityEngine;
+using Rounds;
 
 namespace Interactables.Kitchens {
 	public class Kitchen : Interactable {
@@ -17,6 +18,14 @@ namespace Interactables.Kitchens {
 
 		private Queue<KitchenTicket> tickets = new Queue<KitchenTicket>();
 		private bool isCooking;
+
+		private void OnEnable() {
+			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver += HandleOnNewRoundStart;
+		}
+
+		private void OnDisable() {
+			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver -= HandleOnNewRoundStart;
+		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
 			return item is KitchenTicket;
@@ -51,7 +60,6 @@ namespace Interactables.Kitchens {
 
 				yield return null;
 			}
-
 		}
 
 		private void FinishCooking() {
@@ -66,6 +74,19 @@ namespace Interactables.Kitchens {
 			foodSpawnEffect.Play();
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
+		}
+		/// <summary>
+		/// Resets the progress etc on the kitchen between each round
+		/// </summary>
+		private void HandleOnNewRoundStart() {
+			isCooking = false;
+			StopAllCoroutines();
+
+			while(tickets.Count > 0) {
+				Destroy(tickets.Dequeue());
+			}
+
+			cookingProgressBar.Hide();
 		}
 	}
 }

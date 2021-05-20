@@ -13,5 +13,11 @@ namespace Interactables.Kitchens {
 		[SerializeField] private FoodData foodData;
 
 		public DesireType DesireType => foodData.type;
+
+		public override void HandleNewRoundReset() {
+			base.HandleNewRoundReset();
+
+			ShrinkAway();
+		}
 	}
 }

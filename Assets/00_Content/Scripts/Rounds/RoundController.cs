@@ -13,6 +13,7 @@ using Utilities;
 using Vikings;
 
 namespace Rounds {
+	[DefaultExecutionOrder(-1)]
 	public class RoundController : SingletonBehaviour<RoundController> {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
@@ -40,6 +41,7 @@ namespace Rounds {
 			: 0];
 
 		public event Action OnRoundOver;
+		public event Action OnNewRoundStart;
 
 		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
@@ -95,7 +97,7 @@ namespace Rounds {
 				ShowScoreCard();
 			}
 		}
-
+		
 		private void SendNextDifficulty() {
 			if (VikingController.Instance == null) return;
 
@@ -159,6 +161,8 @@ namespace Rounds {
 
 			if (Tavern.Instance != null)
 				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
+
+			OnNewRoundStart?.Invoke();
 
 			StartCoroutine(CoLeaveScoreCard());
 		}
