@@ -12,6 +12,8 @@ using Random = UnityEngine.Random;
 
 namespace World {
 	public class Goblin : MonoBehaviour, IHittable {
+		private static readonly int carryingID = Animator.StringToHash("Carrying");
+
 		[SerializeField] private float coinAttractionForce = 30f;
 		[SerializeField] private float coinDropDelay = 0.2f;
 		[SerializeField] private float fleeSpeedMultiplier = 2f;
@@ -26,6 +28,7 @@ namespace World {
 		[SerializeField] private GameObject spawnEffectPrefab;
 
 		private NavMeshAgent agent;
+		private Animator animator;
 		private Coin[] targets;
 		private State state = State.None;
 		private Vector3 exitPosition;
@@ -42,6 +45,7 @@ namespace World {
 
 		private void Awake() {
 			agent = GetComponent<NavMeshAgent>();
+			animator = GetComponentInChildren<Animator>();
 
 			coinRoot = new GameObject("Coins").transform;
 			coinRoot.SetParent(transform);
@@ -52,6 +56,7 @@ namespace World {
 		}
 
 		private void Update() {
+
 			if (state == State.Running) {
 				if (agent.pathPending) return;
 
@@ -132,6 +137,8 @@ namespace World {
 				new Vector3(displacement.x, carriedCoins.Count * coinHeight, displacement.y);
 			carriedCoins.Add(coin);
 
+			animator.SetBool(carryingID, carriedCoins.Count > 0);
+
 			return true;
 		}
 
@@ -142,6 +149,7 @@ namespace World {
 			coin.transform.SetParent(null);
 			coin.IsDisplay = false;
 			coin.RandomThrow();
+			animator.SetBool(carryingID, carriedCoins.Count > 0);
 		}
 
 		private void NextTarget() {

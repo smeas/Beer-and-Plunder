@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Collections;
+using DG.Tweening;
 using Audio;
 using Extensions;
 using Taverns;
 using UnityEngine;
 using World;
+using Rounds;
 using Random = UnityEngine.Random;
 
 namespace Interactables {
@@ -20,6 +23,8 @@ namespace Interactables {
 		private float maxSpawnVelocity;
 
 		[SerializeField] private float hitSoundVelocityThreshold = 2f;
+
+		[SerializeField] private float shrinkTime = 0.6f;
 
 		private bool isDisplay;
 		private Rigidbody rb;
@@ -54,16 +59,25 @@ namespace Interactables {
 
 		private void OnEnable() {
 			AllCoins.Add(this);
+
+			if (RoundController.Instance != null) {
+				RoundController.Instance.OnNewRoundStart += HandleOnNewRoundStart;
+			}
 		}
 
 		private void OnDisable() {
 			AllCoins.SwapRemove(this);
+
+			if(RoundController.Instance != null) {
+				RoundController.Instance.OnNewRoundStart -= HandleOnNewRoundStart;
+			}
 		}
 
 		private void OnTriggerEnter(Collider other) {
 			if (isDisplay) return;
 			if (other.isTrigger) return;
 			if (other.attachedRigidbody == null) return;
+			if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive) return;
 
 			if (other.attachedRigidbody.CompareTag("Goblin")) {
 				Goblin goblin = other.attachedRigidbody.GetComponent<Goblin>();
@@ -84,6 +98,12 @@ namespace Interactables {
 
 			if (other.relativeVelocity.sqrMagnitude >= hitSoundVelocityThreshold * hitSoundVelocityThreshold)
 				AudioManager.PlayEffectSafe(SoundEffect.Physics_CoinHit);
+		}
+
+		private void HandleOnNewRoundStart() {
+			transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
+				Destroy(gameObject);
+			});
 		}
 
 		public void RandomThrow() {

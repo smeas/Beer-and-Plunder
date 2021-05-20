@@ -17,6 +17,8 @@ namespace Vikings {
 		public float impatientMoodThreshold = 45;
 
 		[Header("Desire")]
+		public Sprite desireSeatVisualisation;
+
 		public bool randomDesires = true;
 
 		[Tooltip("What desires can this viking have")]

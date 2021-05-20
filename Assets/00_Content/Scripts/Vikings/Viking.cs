@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interactables;
-using Interactables.Beers;
 using Interactables.Kitchens;
 using Interactables.Weapons;
 using Player;
@@ -24,6 +23,8 @@ namespace Vikings {
 	public class Viking : Interactable, IHittable {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
+		[SerializeField] public ParticleSystem disappearParticleSystem;
+		[SerializeField] public float maxLeavingTime = 10f;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
@@ -73,9 +74,6 @@ namespace Vikings {
 
 			ChangeState(new WaitingForSeatVikingState(this));
 
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
-
 			progressBar.Hide();
 
 			SetupDesires();
@@ -100,11 +98,6 @@ namespace Vikings {
 				ChangeState(forcedState);
 				forcedState = null;
 			}
-		}
-
-		private void OnDestroy() {
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
 		}
 
 		private void SetupDesires() {
@@ -134,8 +127,7 @@ namespace Vikings {
 			forcedState = newState;
 		}
 
-		private void HandleOnRoundOver() {
-			// Leave when the round is over.
+		public void Leave() {
 			if (!(state is LeavingVikingState))
 				ChangeState(new LeavingVikingState(this));
 		}
