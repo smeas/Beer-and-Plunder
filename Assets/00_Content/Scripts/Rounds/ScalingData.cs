@@ -18,13 +18,6 @@ namespace Rounds {
 		[SerializeField, Tooltip("Multiplier controlling how fast mood decline")]
 		private AnimationCurve moodDeclineMultiplier;
 
-		[Header("Other")]
-		[Min(0)]
-		public float tableHealth = 10f;
-
-		[Min(0), Tooltip("The amount of seconds it takes to repair a table")]
-		public float tableRepairTime = 5f;
-
 	#region ScalingCalculations
 
 		/// <summary>
