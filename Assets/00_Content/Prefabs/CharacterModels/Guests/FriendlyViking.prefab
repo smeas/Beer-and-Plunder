@@ -87,8 +87,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 09f764a64dd638045998a2a961f7b5b1, type: 3}
       propertyPath: m_Name
-      value: FriendlyVikingGuest Variant
+      value: FriendlyViking
       objectReference: {fileID: 0}
+    - target: {fileID: 2209215271627665369, guid: 09f764a64dd638045998a2a961f7b5b1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b794bce265aa8cb498d38271100745fa, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09f764a64dd638045998a2a961f7b5b1, type: 3}
 --- !u!1 &464065515207265842 stripped

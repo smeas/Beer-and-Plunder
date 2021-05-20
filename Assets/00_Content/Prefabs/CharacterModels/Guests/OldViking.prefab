@@ -183,8 +183,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7404631d83239674fa3e5d72e82304cb, type: 3}
       propertyPath: m_Name
-      value: OldVikingGuest Variant
+      value: OldViking
       objectReference: {fileID: 0}
+    - target: {fileID: 2209215271627665369, guid: 7404631d83239674fa3e5d72e82304cb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d213082122e8cd409eee07a420eef3a, type: 2}
     - target: {fileID: 2412161367050800168, guid: 7404631d83239674fa3e5d72e82304cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 9.170916
