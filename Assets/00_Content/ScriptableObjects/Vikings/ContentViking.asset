@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMood: 6
   moodDeclineRate: 0
+  moodBoostDesireFulfilled: 0
   impatientMoodThreshold: 45
+  gettingAngryThreshold: 30
   randomDesires: 1
   desires: []
   desiresMinMax: {x: 1, y: 1}
@@ -22,14 +24,13 @@ MonoBehaviour:
   satisfiedDurationMinMax: {x: 0, y: 0}
   coinsDroppedMinMax: {x: 0, y: 0}
   coinsWhenLeavingMultiplier: 1
+  FollowPlayerIndefinitely: 0
+  MaxFollowingDuration: 10
   canStartBrawl: 0
   brawlMoodThreshold: 15
-  damage: 10
+  damage: 1
   attackRate: 1
   brawlHealth: 3
   attackTriggerDistance: 5
-  spinAttackSpeed: 800
-  spinAttackDuration: 2
-  spinAttackDamage: 1
   iFrameAfterGettingHit: 0.5
   attackPlayerAtStartUp: 0

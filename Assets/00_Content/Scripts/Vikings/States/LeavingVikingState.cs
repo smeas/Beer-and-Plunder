@@ -5,25 +5,33 @@ using Utilities;
 namespace Vikings.States {
 	public class LeavingVikingState : VikingState {
 		private float maxLeavingTimer;
+		private bool isDismounting;
 
 		public LeavingVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-
-			if(viking.CurrentChair != null)
+			if (viking.CurrentChair != null) {
+				isDismounting = true;
 				viking.DismountChair();
-
-			viking.NavMeshAgent.enabled = true;
-
-			_ = viking.NavMeshAgent.SetDestination(VikingController.Instance != null
-				                                ? VikingController.Instance.ExitPoint.position
-				                                // Magic fallback exit position that may or may not work.
-				                                : new Vector3(12f, 0, -8.5f));
+			}
+			else {
+				StartNavigating();
+			}
 
 			return this;
 		}
 
 		public override VikingState Update() {
+			if (isDismounting) {
+				if (!viking.animationDriver.IsSitting) {
+					StartNavigating();
+					isDismounting = false;
+				}
+				else {
+					return this;
+				}
+			}
+
 			if (viking.NavMeshAgent.pathPending)
 				return this;
 
@@ -53,6 +61,17 @@ namespace Vikings.States {
 			}
 
 			return this;
+		}
+
+		private void StartNavigating() {
+			viking.NavMeshAgent.enabled = true;
+
+			_ = viking.NavMeshAgent.SetDestination(VikingController.Instance != null
+				                                       ? VikingController.Instance.ExitPoint.position
+				                                       // Magic fallback exit position that may or may not work.
+				                                       : new Vector3(12f, 0, -8.5f));
+
+			isDismounting = false;
 		}
 	}
 }

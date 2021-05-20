@@ -27,7 +27,8 @@ Transform:
   m_LocalRotation: {x: 0.0000019661618, y: 0.0000065538725, z: -1.28859735e-11, w: 1}
   m_LocalPosition: {x: 0.42395866, y: -0.39477122, z: 0.3831027}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: [{fileID: 1272824319361500555}]
+  m_Children:
+  - {fileID: 1272824319361500555}
   m_Father: {fileID: 4223223547760060935}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -452,9 +453,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76890c6c3e9e0f342bf6eb35dca9ca40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vikingLayer:
+  vikingHandsLayer:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 2048
   particleSystemStunned: {fileID: 7139959978002789195}
 --- !u!114 &6624416164148032783
 MonoBehaviour:

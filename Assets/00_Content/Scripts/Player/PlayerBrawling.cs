@@ -8,7 +8,7 @@ using Vikings;
 namespace Player {
 	public class PlayerBrawling : MonoBehaviour {
 
-		[SerializeField] private LayerMask vikingLayer;
+		[SerializeField] private LayerMask vikingHandsLayer;
 		[SerializeField] private ParticleSystem particleSystemStunned;
 
 		public bool IsStunned { get => isStunned; set => isStunned = value; }
@@ -147,13 +147,11 @@ namespace Player {
 			particleSystemStunned.Stop();
 		}
 
-		private void OnCollisionEnter(Collision collision) {
-
-			if (vikingLayer.ContainsLayer(collision.gameObject.layer)) {
-
-				Viking viking = collision.gameObject.GetComponent<Viking>();
+		private void OnTriggerEnter(Collider other) {
+			if (vikingHandsLayer.ContainsLayer(other.gameObject.layer)) {
+				Viking viking = other.gameObject.GetComponentInParent<Viking>();
 				if (viking.IsAttacking)
-					TakeBrawlDamage(viking.Data.spinAttackDamage);
+					TakeBrawlDamage(viking.Data.damage);
 			}
 		}
 	}
