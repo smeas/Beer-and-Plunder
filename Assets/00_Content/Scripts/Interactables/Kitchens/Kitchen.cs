@@ -80,8 +80,12 @@ namespace Interactables.Kitchens {
 		/// </summary>
 		private void HandleOnNewRoundStart() {
 			isCooking = false;
-			//Might actually not need to reset cookingProgress to zero here, seeing as that is done whenever StartCooking() begins.
-			cookingProgress = 0;
+			StopAllCoroutines();
+
+			while(tickets.Count > 0) {
+				Destroy(tickets.Dequeue());
+			}
+
 			cookingProgressBar.Hide();
 		}
 	}

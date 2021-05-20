@@ -172,8 +172,6 @@ namespace Interactables {
 			} else if (CurrentItemSlot != null) {
 				CurrentItemSlot.ReleaseItem();
 			}
-
-			HandleNewRoundReset();
 		}
 
 		protected virtual void OnPlace() { }
