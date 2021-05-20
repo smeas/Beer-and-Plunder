@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMood: 100
   moodDeclineRate: 0
+  moodBoostDesireFulfilled: 0
   impatientMoodThreshold: 45
+  gettingAngryThreshold: 30
   randomDesires: 0
   desires:
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
@@ -29,12 +31,9 @@ MonoBehaviour:
   MaxFollowingDuration: 10
   canStartBrawl: 1
   brawlMoodThreshold: 15
-  damage: 10
+  damage: 1
   attackRate: 1
   brawlHealth: 1
   attackTriggerDistance: 4
-  spinAttackSpeed: 800
-  spinAttackDuration: 2
-  spinAttackDamage: 1
   iFrameAfterGettingHit: 0.5
   attackPlayerAtStartUp: 0

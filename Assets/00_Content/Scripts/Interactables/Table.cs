@@ -46,7 +46,7 @@ namespace Interactables {
 			if (RoundController.Instance != null)
 				health = RoundController.Instance.CurrentDifficulty.tableHealth;
 			else
-				health = 100;
+				health = 10f;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {

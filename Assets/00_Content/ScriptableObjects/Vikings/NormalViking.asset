@@ -16,6 +16,7 @@ MonoBehaviour:
   moodDeclineRate: 1.5
   moodBoostDesireFulfilled: 30
   impatientMoodThreshold: 60
+  gettingAngryThreshold: 30
   randomDesires: 1
   desires:
   - {fileID: 11400000, guid: 51d4a8a04055f6c46a8e3ed6559b4e05, type: 2}
@@ -30,12 +31,9 @@ MonoBehaviour:
   MaxFollowingDuration: 10
   canStartBrawl: 1
   brawlMoodThreshold: 15
-  damage: 10
+  damage: 1
   attackRate: 1
   brawlHealth: 3
   attackTriggerDistance: 5
-  spinAttackSpeed: 800
-  spinAttackDuration: 2
-  spinAttackDamage: 1
   iFrameAfterGettingHit: 0.5
   attackPlayerAtStartUp: 0

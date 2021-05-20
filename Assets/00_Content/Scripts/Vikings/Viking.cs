@@ -11,7 +11,6 @@ using Rounds;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 using Utilities;
 using Vikings.States;
 using Random = UnityEngine.Random;
@@ -88,10 +87,7 @@ namespace Vikings {
 		}
 
 		private void Update() {
-			// TODO: Remove
-			if (Keyboard.current.gKey.wasPressedThisFrame) {
-				ChangeState(new LeavingVikingState(this));
-			}
+			animationDriver.GettingAngry = Stats.Mood < Data.gettingAngryThreshold;
 
 			if (Data.attackPlayerAtStartUp && !hasStartedAttackingPlayer) {
 				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();

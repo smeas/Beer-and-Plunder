@@ -146,7 +146,7 @@ namespace Player {
 			if (vikingHandsLayer.ContainsLayer(other.gameObject.layer)) {
 				Viking viking = other.gameObject.GetComponentInParent<Viking>();
 				if (viking.IsAttacking)
-					TakeBrawlDamage(viking.Data.spinAttackDamage);
+					TakeBrawlDamage(viking.Data.damage);
 			}
 		}
 	}
