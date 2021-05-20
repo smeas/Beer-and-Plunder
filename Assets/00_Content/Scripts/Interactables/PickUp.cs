@@ -38,7 +38,7 @@ namespace Interactables {
 		public event Action<PickUp, PlayerComponent> OnPickedUp;
 		public event Action<PickUp, PlayerComponent> OnDropped;
 
-		private void Awake() {
+		protected virtual void Awake() {
 			rigidbody = GetComponent<Rigidbody>();
 		}
 

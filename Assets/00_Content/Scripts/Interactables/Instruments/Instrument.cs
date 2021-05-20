@@ -23,7 +23,9 @@ namespace Interactables.Instruments {
 		public DesireType DesireType => instrumentData.desireType;
 		public bool IsPlaying => isPlaying;
 
-		private void Awake() {
+		protected override void Awake() {
+			base.Awake();
+
 			musicSource = GetComponent<AudioSource>();
 			musicSource.loop = true;
 
