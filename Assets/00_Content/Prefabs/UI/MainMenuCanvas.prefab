@@ -304,7 +304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8328911642650427600, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
       propertyPath: m_fontSize
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8328911642650427600, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
       propertyPath: m_fontColor.b
@@ -320,7 +320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8328911642650427600, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
       propertyPath: m_fontSizeBase
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8328911642650427600, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -1196,7 +1196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7101323164978993994, guid: a5c186692ef2adf409ef00b1eb9de6e8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: -1.26
       objectReference: {fileID: 0}
     - target: {fileID: 7101323164978993994, guid: a5c186692ef2adf409ef00b1eb9de6e8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1216,11 +1216,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7101323164978993994, guid: a5c186692ef2adf409ef00b1eb9de6e8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.56
+      value: 1.15
       objectReference: {fileID: 0}
     - target: {fileID: 7101323164978993994, guid: a5c186692ef2adf409ef00b1eb9de6e8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.02
+      value: -1.11
       objectReference: {fileID: 0}
     - target: {fileID: 7101323164978993994, guid: a5c186692ef2adf409ef00b1eb9de6e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
