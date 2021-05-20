@@ -8,34 +8,45 @@ namespace Interactables.Weapons {
 
 		[SerializeField] private Collider weaponCollider;
 		[SerializeField] private WeaponData weaponData;
+		[SerializeField] private AnimationClip referenceAnimation;
+		[SerializeField] private int beginAttackFrame;
 
-		public bool IsAttacking {
-			get { return isAttacking; }
-			set { isAttacking = value; }
-		}
+		private bool isAttacking;
+		private bool isAnimating;
+		private float animationTimer;
+
+		public bool IsAttacking => isAttacking;
 
 		public WeaponData WeaponData => weaponData;
-
-		private Animator animator;
-		private bool isAttacking;
 
 		public event Action OnAttack;
 
 		protected override void Start() {
 			base.Start();
 
-			OnPickedUp += HandleOnPickedUp;
 			OnDropped += HandleOnDropped;
-
-			animator = GetComponent<Animator>();
 		}
 
-		private void HandleOnPickedUp(PickUp obj, PlayerComponent playerComponent) {
-			animator.enabled = true;
-			weaponCollider.enabled = true;
+		private void Update() {
+			if (!isAnimating) return;
+
+			animationTimer += Time.deltaTime;
+			if (!isAttacking && animationTimer >= beginAttackFrame / referenceAnimation.frameRate) {
+				BeginAttack();
+			}
+			else if (isAttacking && animationTimer >= referenceAnimation.length) {
+				EndAttack();
+			}
 		}
+
+		private void OnTriggerEnter(Collider other) {
+			if (isAttacking) {
+				IHittable hittable = other.GetComponentInParent<IHittable>();
+				hittable?.Hit(this);
+			}
+		}
+
 		private void HandleOnDropped(PickUp obj, PlayerComponent playerComponent) {
-			animator.enabled = false;
 			weaponCollider.enabled = false;
 		}
 
@@ -48,28 +59,23 @@ namespace Interactables.Weapons {
 		public void EndUse() { }
 
 		private void Attack() {
-			if (isAttacking) return;
+			if (isAnimating) return;
 
 			OnAttack?.Invoke();
-			animator.SetTrigger("attack");
+			isAnimating = true;
+			animationTimer = 0f;
+		}
+
+		private void BeginAttack() {
 			isAttacking = true;
-		}
-
-		private void OnTriggerEnter(Collider other) {
-			if (isAttacking) {
-				IHittable hittable = other.GetComponentInParent<IHittable>();
-				hittable?.Hit(this);
-			}
-		}
-
-		//Run from AnimationEvent
-		public void EndAttack() {
-			isAttacking = false;
-		}
-
-		// Run from AnimationEvent
-		private void PlaySwingSound() {
+			weaponCollider.enabled = true;
 			AudioManager.PlayEffectSafe(SoundEffect.Player_SwingAxe);
+		}
+
+		private void EndAttack() {
+			isAnimating = false;
+			isAttacking = false;
+			weaponCollider.enabled = false;
 		}
 	}
 }
