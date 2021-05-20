@@ -11,12 +11,13 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
   m_Name: TutorialViking
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   startMood: 100
   moodDeclineRate: 0
   moodBoostDesireFulfilled: 0
   impatientMoodThreshold: 45
   gettingAngryThreshold: 30
+  desireSeatVisualisation: {fileID: 21300000, guid: a99d394cfb3c7ee4ba74a4a8de9ecbe4, type: 3}
   randomDesires: 0
   desires:
   - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}

@@ -14,6 +14,7 @@ namespace Menu {
 
 		[Space]
 		[SerializeField] private GameObject startGameButton;
+		[SerializeField] private ParticleSystem clickEffect;
 
 		[Header("Timeline")]
 		[SerializeField] private PlayableDirector timelineDirector;
@@ -45,6 +46,8 @@ namespace Menu {
 		}
 
 		public void ShowPanel(GameObject panel) {
+			clickEffect.Play();
+
 			panels.Peek().SetActive(false);
 			panel.SetActive(true);
 			panels.Push(panel);
@@ -55,6 +58,8 @@ namespace Menu {
 
 		public void ClosePanel() {
 			if (panels.Count == 1) return;
+
+			clickEffect.Play();
 
 			panels.Pop().SetActive(false);
 			panels.Peek().SetActive(true);
