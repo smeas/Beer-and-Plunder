@@ -1,4 +1,6 @@
+using DG.Tweening;
 using Audio;
+using System.Collections;
 using UnityEngine;
 using Vikings;
 
@@ -6,6 +8,8 @@ namespace Interactables.Beers {
 	public class Tankard : PickUp, IDesirable {
 		[SerializeField] private BeerData beerData;
 		[SerializeField] private GameObject foam;
+
+		private Vector3 foamStartingSize;
 
 		private bool isFull;
 
@@ -22,17 +26,25 @@ namespace Interactables.Beers {
 		protected override void Start() {
 			base.Start();
 			IsFull = IsFull;
+			//Saves this to reset it before the tankard is filled again
+			foamStartingSize = foam.transform.localScale;
 		}
 
 		private void FixedUpdate() {
 			if (isFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
 				Spill();
 		}
+		/// <summary>
+		/// Tankards override on pickup, this shrinks away the foam on the tankard, instead of the whole tankard.
+		/// </summary>
+		public override void HandleNewRoundReset() {
+			base.HandleNewRoundReset();
 
-		public override void RoundOverReset() {
-			base.RoundOverReset();
-			//Empties out beer tankards between rounds
-			IsFull = false;
+			if (foam != null && IsFull == true)
+				foam.transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
+					IsFull = false;
+					foam.transform.localScale = foamStartingSize;
+				});			
 		}
 
 		protected override void OnPlace() {
