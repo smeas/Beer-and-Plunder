@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using System.Linq;
 using Player;
 using Rounds;
@@ -28,6 +27,7 @@ namespace Interactables {
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 		public virtual bool IsHeavy => false;
+		public Collider ObjectCollider => objectCollider;
 
 		public Vector3 ItemGrabOffset {
 			get => itemGrabOffset;

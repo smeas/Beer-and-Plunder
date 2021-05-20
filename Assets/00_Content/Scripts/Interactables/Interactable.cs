@@ -2,6 +2,7 @@
 
 namespace Interactables {
 	public class Interactable : MonoBehaviour {
+		[SerializeField] public Transform highlightPivot;
 
 		public virtual void CancelInteraction(GameObject player, PickUp item) {
 		}

@@ -6,16 +6,14 @@ using UnityEngine;
 
 namespace Player {
 	public class InteractionDetector : MonoBehaviour {
-		[SerializeField] private GameObject pickUpHighlightPrefab;
-		[SerializeField] private GameObject interactableHighlightPrefab;
+		[SerializeField] private ParticleSystem highlightPrefab;
 		[SerializeField] private LayerMask pickUpLayer;
 		[SerializeField] private LayerMask interactableLayer;
 
 		private PlayerPickUp playerPickUp;
 		private PlayerInteract playerInteract;
 		private MonoBehaviour closestObject;
-		private GameObject pickUpHighlight;
-		private GameObject interactableHighlight;
+		private ParticleSystem highlight;
 
 		private List<PickUp> pickUpsInRange = new List<PickUp>();
 		private List<Interactable> interactablesInRange = new List<Interactable>();
@@ -29,10 +27,7 @@ namespace Player {
 		}
 
 		private void Start() {
-			pickUpHighlight = Instantiate(pickUpHighlightPrefab);
-			interactableHighlight = Instantiate(interactableHighlightPrefab);
-			pickUpHighlight.SetActive(false);
-			interactableHighlight.SetActive(false);
+			highlight = Instantiate(highlightPrefab);
 		}
 
 		private void FixedUpdate() {
@@ -67,11 +62,8 @@ namespace Player {
 		}
 
 		private void OnDestroy() {
-			if (interactableHighlight != null)
-				Destroy(interactableHighlight);
-
-			if (pickUpHighlight != null)
-				Destroy(pickUpHighlight);
+			if (highlight != null)
+				Destroy(highlight);
 		}
 
 		private void HandleOnPickedUp(PickUp item, PlayerComponent playerComponent) => pickUpsInRange.Remove(item);
@@ -100,11 +92,6 @@ namespace Player {
 				ClosestPickUp = newClosestPickUp;
 				playerPickUp.OnClosestPickUpChange(ClosestPickUp);
 			}
-
-			if (ClosestPickUp != null)
-				HighlightPickUp(ClosestPickUp);
-			else
-				ClearPickUpHighlight();
 		}
 
 		private void UpdateClosestInteractable() {
@@ -119,69 +106,59 @@ namespace Player {
 				ClosestInteractable = newClosestInteractable;
 				playerInteract.OnClosestInteractableChange(ClosestInteractable);
 			}
-
-			if (ClosestInteractable != null)
-				HighlightInteractable(ClosestInteractable);
-			else
-				ClearInteractableHighlight();
 		}
 
 		private void UpdateClosestObject() {
-			ClearInteractableHighlight();
-			ClearPickUpHighlight();
-
 			bool havePickup = ClosestPickUp != null;
 			bool haveInteractable = ClosestInteractable != null;
+			bool haveHighlighted = false;
+			closestObject = null;
 
 			if (!havePickup || !haveInteractable) {
 				if (haveInteractable) {
 					HighlightInteractable(ClosestInteractable);
+					haveHighlighted = true;
 				}
 				else if (havePickup) {
 					HighlightPickUp(ClosestPickUp);
+					haveHighlighted = true;
 				}
-				return;
 			}
 
-			if ((transform.position - ClosestInteractable.transform.position).sqrMagnitude <
-			    (transform.position - ClosestPickUp.transform.position).sqrMagnitude) {
-				HighlightInteractable(ClosestInteractable);
+			if (!haveHighlighted && havePickup) {
+				if ((transform.position - ClosestInteractable.transform.position).sqrMagnitude <
+				    (transform.position - ClosestPickUp.transform.position).sqrMagnitude) {
+					HighlightInteractable(ClosestInteractable);
+				}
+				else {
+					HighlightPickUp(ClosestPickUp);
+				}
 			}
-			else {
-				HighlightPickUp(ClosestPickUp);
-			}
+
+			if (closestObject == null && highlight.isPlaying)
+				highlight.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 		}
 
 		private void HighlightPickUp(PickUp pickUp) {
-			if (pickUpHighlight == null)
-				pickUpHighlight = Instantiate(pickUpHighlightPrefab);
+			Bounds objectBounds = pickUp.ObjectCollider.bounds;
+			MoveHighlight(objectBounds.center - new Vector3(0, objectBounds.extents.y, 0));
 
-			pickUpHighlight.transform.position = pickUp.transform.position + Vector3.up * 2;
-			pickUpHighlight.SetActive(true);
 			closestObject = pickUp;
 		}
 
 		private void HighlightInteractable(Interactable interactable) {
-			if (interactableHighlight == null)
-				interactableHighlight = Instantiate(interactableHighlightPrefab);
+			MoveHighlight(interactable.highlightPivot != null
+					? interactable.highlightPivot.position
+					: interactable.transform.position);
 
-			interactableHighlight.transform.position = interactable.transform.position + Vector3.up * 3.5f;
-			interactableHighlight.SetActive(true);
 			closestObject = interactable;
 		}
 
-		private void ClearPickUpHighlight() {
-			if (pickUpHighlight == null)
-				pickUpHighlight = Instantiate(pickUpHighlightPrefab);
+		private void MoveHighlight(Vector3 position) {
+			highlight.transform.position = position;
 
-			pickUpHighlight.SetActive(false);
-		}
-
-		private void ClearInteractableHighlight() {
-			if (interactableHighlight == null)
-				interactableHighlight = Instantiate(interactableHighlightPrefab);
-
-			interactableHighlight.SetActive(false);
+			if (!highlight.isPlaying)
+				highlight.Play(true);
 		}
 
 		// Run from unity event
