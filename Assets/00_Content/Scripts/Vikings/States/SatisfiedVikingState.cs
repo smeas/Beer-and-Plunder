@@ -1,8 +1,6 @@
 using System.Linq;
 using Interactables;
 using Interactables.Beers;
-using Interactables.Kitchens;
-using Rounds;
 using UnityEngine;
 using Utilities;
 
@@ -43,15 +41,15 @@ namespace Vikings.States {
 			if (givenItem != null) {
 				if (givenItem is Tankard tankard)
 					tankard.IsFull = false;
-				
-				if (satisfiedDesire.shouldThrowItem) { 
+
+				if (satisfiedDesire.shouldThrowItem) {
 					givenItem.gameObject.SetActive(true);
 					givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
 
 					Vector3 throwDirection = -viking.transform.forward;
 					throwDirection.y = 0.7f;
-          
-          givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.tankardThrowConeHalfAngle) * viking.tankardThrowStrength;
+
+          givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) * viking.throwStrength;
 				}
 			}
 		}
@@ -95,10 +93,8 @@ namespace Vikings.States {
 			if (dropTimer <= 0) {
 				DropCoin();
 
-				if (coinsToDrop <= 0) {
-					viking.Stats.Reset();
+				if (coinsToDrop <= 0)
 					return SelectNextState();
-				}
 
 				dropTimer = DropDelay;
 			}
@@ -107,7 +103,8 @@ namespace Vikings.States {
 		}
 
 		private void DropCoin() {
-			Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			Coin coin = Object.Instantiate(viking.coinPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			coin.ThrowInDirection(MathX.RandomDirectionInQuarterSphere(-viking.transform.forward, Vector3.up));
 			coinsToDrop--;
 		}
 

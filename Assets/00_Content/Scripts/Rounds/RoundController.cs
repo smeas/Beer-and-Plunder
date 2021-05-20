@@ -43,6 +43,7 @@ namespace Rounds {
 		public event Action OnRoundOver;
 		public event Action OnNewRoundStart;
 
+		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
 		public int RequiredMoney => requiredMoney;
 		public bool IsRoundActive => isRoundActive;
@@ -56,7 +57,6 @@ namespace Rounds {
 			scoreCard.OnNextRound += HandleOnNextRound;
 			Table.OnTablesDestroyed += HandleOnTablesDestroyed;
 
-			roundTimer = roundDuration;
 			followingCamera = Camera.main.GetComponent<FollowingCamera>();
 
 			SendNextDifficulty();
@@ -65,17 +65,29 @@ namespace Rounds {
 		private void Update() {
 			if (!isRoundActive) return;
 
-			roundTimer = Mathf.Max(0, roundTimer - Time.deltaTime);
+			roundTimer += Time.deltaTime;
 
-			if (roundTimer <= 0) RoundOver();
+			if (roundTimer >= roundDuration) RoundOver();
 		}
 
 		private void RoundOver() {
 			isRoundActive = false;
-			OnRoundOver?.Invoke();
+			// TODO: Add round over horn SFX
 
-			// TODO: Wait for all vikings to leave before continuing.
+			StartCoroutine(CoWaitForVikingsLeaving());
+		}
+
+		private IEnumerator CoWaitForVikingsLeaving() {
+			if (VikingController.Instance != null) {
+				VikingController.Instance.CanSpawn = false;
+				VikingController.Instance.LeaveAllVikings();
+
+				while (VikingController.Instance.VikingCount > 0)
+					yield return null;
+			}
+
 			DisableGamePlay();
+			OnRoundOver?.Invoke();
 
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
 				TavernBankrupt();

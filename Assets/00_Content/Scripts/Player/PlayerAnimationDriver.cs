@@ -1,4 +1,5 @@
 using Interactables;
+using Interactables.Beers;
 using Interactables.Instruments;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ namespace Player {
 
 			playerComponent.CharacterAnimator.SetBool(carryingId, carrying);
 			playerComponent.CharacterAnimator.SetBool(carryingHeavyId, carrying && carriedItem.IsHeavy);
-			playerComponent.CharacterAnimator.SetBool(twoCarryingId, carrying && carriedItem.IsMultiCarried);
+			playerComponent.CharacterAnimator.SetBool(twoCarryingId, carrying && carriedItem is BeerBarrel);
 
 			playerComponent.CharacterAnimator.SetBool(holdInstrumentId, holdingInstrument);
 			playerComponent.CharacterAnimator.SetBool(playInstrumentId, holdingInstrument && instrument.IsPlaying);

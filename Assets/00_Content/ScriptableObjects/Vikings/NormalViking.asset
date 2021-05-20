@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMood: 100
   moodDeclineRate: 1.5
+  moodBoostDesireFulfilled: 30
   impatientMoodThreshold: 60
-  randomDesires: 1
+  desireSeatVisualisation: {fileID: 21300000, guid: a99d394cfb3c7ee4ba74a4a8de9ecbe4, type: 3}
+  randomDesires: 0
   desires:
-  - {fileID: 11400000, guid: 51d4a8a04055f6c46a8e3ed6559b4e05, type: 2}
-  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
   - {fileID: 11400000, guid: d08e6b7397edbc948a861ec7fd901a71, type: 2}
+  - {fileID: 11400000, guid: 99ba782e7d74840409e2ed100983cd26, type: 2}
+  - {fileID: 11400000, guid: 51d4a8a04055f6c46a8e3ed6559b4e05, type: 2}
   desiresMinMax: {x: 2, y: 4}
   desireIntervalMinMax: {x: 10, y: 15}
   satisfiedDurationMinMax: {x: 5, y: 10}

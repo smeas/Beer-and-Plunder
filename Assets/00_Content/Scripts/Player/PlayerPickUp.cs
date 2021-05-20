@@ -38,6 +38,18 @@ namespace Player {
 			}
 		}
 
+		public bool TryReceiveItem(PickUp item) {
+			if (pickedUpItem != null) return false;
+
+			if (item.PickUpItem(playerGrabTransform)) {
+				pickedUpItem = item;
+				OnItemPickedUp?.Invoke(pickedUpItem);
+				return true;
+			}
+
+			return false;
+		}
+
 		// Run from unity event
 		public void DropItem() {
 

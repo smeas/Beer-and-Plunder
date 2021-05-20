@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
@@ -7,6 +8,7 @@ using Taverns;
 using UnityEngine;
 using World;
 using Rounds;
+using Random = UnityEngine.Random;
 
 namespace Interactables {
 	[RequireComponent(typeof(Rigidbody))]
@@ -25,6 +27,7 @@ namespace Interactables {
 		[SerializeField] private float shrinkTime = 0.6f;
 
 		private bool isDisplay;
+		private Rigidbody rb;
 
 		/// <summary>
 		/// Is the coin only for display - meaning it can't be picked up and has no physics?
@@ -35,8 +38,7 @@ namespace Interactables {
 				if (isDisplay == value)
 					return;
 
-				Rigidbody body = GetComponent<Rigidbody>();
-				body.isKinematic = value;
+				rb.isKinematic = value;
 				if (value)
 					AllCoins.SwapRemove(this);
 				else
@@ -46,13 +48,13 @@ namespace Interactables {
 			}
 		}
 
-		private void Start() {
-			if (isDisplay) {
-				AllCoins.SwapRemove(this);
-				return;
-			}
+		private void Awake() {
+			rb = GetComponent<Rigidbody>();
+		}
 
-			RandomThrow();
+		private void Start() {
+			if (isDisplay)
+				AllCoins.SwapRemove(this);
 		}
 
 		private void OnEnable() {
@@ -105,16 +107,18 @@ namespace Interactables {
 		}
 
 		public void RandomThrow() {
-			Rigidbody rb = GetComponent<Rigidbody>();
-
 			float x = Mathf.Sin(Random.Range(0, Mathf.PI * 2));
 			float z = Mathf.Cos(Random.Range(0, Mathf.PI * 2));
 
-			Vector3 direction = new Vector3(x, 0, z).normalized * Random.Range(minSpawnVelocity, maxSpawnVelocity);
-			direction.y = upVelocity;
+			ThrowInDirection(new Vector3(x, 0, z).normalized);
+		}
 
-			rb.AddForce(direction, ForceMode.Impulse);
-			rb.AddRelativeTorque(direction, ForceMode.Impulse);
+		public void ThrowInDirection(Vector3 direction) {
+			Vector3 force = direction * Random.Range(minSpawnVelocity, maxSpawnVelocity);
+			force.y = Math.Max(force.y, upVelocity);
+
+			rb.AddForce(force, ForceMode.Impulse);
+			rb.AddRelativeTorque(force, ForceMode.Impulse);
 		}
 	}
 }

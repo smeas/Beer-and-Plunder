@@ -69,9 +69,24 @@ namespace Utilities {
 		/// <param name="direction">The direction of the cone.</param>
 		/// <param name="halfAngle">Half the angle of the cone measured in degrees.</param>
 		public static Vector3 RandomDirectionInCone(Vector3 direction, float halfAngle) {
-			float radius = Mathf.Tan(halfAngle * Mathf.Deg2Rad);
+			float radius = Mathf.Sin(halfAngle * Mathf.Deg2Rad);
 			Vector2 pointInCircle = Random.insideUnitCircle * radius;
 			return (Quaternion.LookRotation(direction) * new Vector3(pointInCircle.x, pointInCircle.y, 1f)).normalized;
+		}
+
+		/// <summary>
+		/// Get a random direction within a 180° wide quarter sphere.
+		/// </summary>
+		public static Vector3 RandomDirectionInQuarterSphere(Vector3 forward, Vector3 up) {
+			Vector3 pointInSphere = Random.onUnitSphere;
+
+			if (Vector3.Dot(pointInSphere, Vector3.forward) < 0)
+				pointInSphere.z = -pointInSphere.z;
+
+			if (Vector3.Dot(pointInSphere, Vector3.up) < 0)
+				pointInSphere.y = -pointInSphere.y;
+
+			return Quaternion.LookRotation(forward, up) * pointInSphere;
 		}
 
 		public static Vector2 Rotate2D(Vector2 vector, float angle) {

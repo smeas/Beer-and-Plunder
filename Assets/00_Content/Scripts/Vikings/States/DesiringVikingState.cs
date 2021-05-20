@@ -28,7 +28,7 @@ namespace Vikings.States {
 			float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.brawlMoodThreshold, viking.Stats.StartMood, 0, 1);
 			viking.desireVisualiser.SetDesireColor(remappedMood);
 			viking.desireVisualiser.SetTweenSpeed(remappedMood);
-			
+
 			if (hasActiveFulfillment) {
 				fulfillmentTimer += Time.deltaTime;
 
@@ -71,7 +71,7 @@ namespace Vikings.States {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			if (viking.CurrentDesire.isOrder && !isOrderGiven) return true;
+			if (viking.CurrentDesire.isOrder && !isOrderGiven && item == null) return true;
 			if (!(item is IDesirable givenItem)) return false;
 			if (!viking.CurrentDesire.isMaterialDesire) return false;
 			if (hasActiveFulfillment) return false;
@@ -89,7 +89,8 @@ namespace Vikings.States {
 			fulfillingPlayer = player;
 
 			if (viking.CurrentDesire.isOrder && !isOrderGiven) {
-				SpawnOrderTicket();
+				SpawnOrderTicket(player);
+				viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
 				return this;
 			}
 
@@ -119,6 +120,7 @@ namespace Vikings.States {
 
 			viking.CurrentDesireIndex++;
 			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
+			viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
 			AudioManager.PlayEffectSafe(SoundEffect.Viking_DesireFilledMan);
 
 			if (desire.isMaterialDesire) {
@@ -134,11 +136,12 @@ namespace Vikings.States {
 			return new SatisfiedVikingState(viking, desire);
 		}
 
-		private void SpawnOrderTicket() {
-			viking.desireVisualiser.HideDesire();
+		private void SpawnOrderTicket(GameObject player) {
 			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationAfterPrefab);
-			Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-			isOrderGiven = true;
+
+			PickUp ticket = Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+			if (player.GetComponentInChildren<PlayerPickUp>().TryReceiveItem(ticket))
+				isOrderGiven = true;
 		}
 	}
 }

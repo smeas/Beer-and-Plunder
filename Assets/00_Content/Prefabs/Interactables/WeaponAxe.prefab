@@ -72,8 +72,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 1, z: 0.79}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 0.1, y: 1.524012, z: 0.9061451}
+  m_Center: {x: -0.010000002, y: 0.762006, z: 0.1671052}
 --- !u!64 &1113167590017774379
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -97,7 +97,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1983163692256703326}
-  - component: {fileID: 359948719}
   - component: {fileID: 359948718}
   - component: {fileID: 8619401761067881784}
   m_Layer: 6
@@ -124,25 +123,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &359948719
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118839621052462725}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6e84733142e1fb346a68776a7b6708db, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &359948718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b556ce97bca74742a40699fccc4fbd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemGrabTransform: {fileID: 1983163692256703326}
+  itemGrabOffset: {x: -0.087, y: -0.24, z: 0.016}
+  itemGrabRotation: {x: 359.52682, y: 342.2318, z: 335.03326}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -163,6 +144,8 @@ MonoBehaviour:
   ItemSlotPivot: {fileID: 2236711834209687227}
   weaponCollider: {fileID: 7602050476943310791}
   weaponData: {fileID: 11400000, guid: 2240e11cb45323e4fbbe31e2086e2248, type: 2}
+  referenceAnimation: {fileID: 368175923009134368, guid: 13de1d3e8bb95ee4cb2d2f135c9f6fb8, type: 3}
+  beginAttackFrame: 3
 --- !u!54 &8619401761067881784
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -233,7 +216,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 4e6eadb8393152641ab165eeeac4dc69, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fc16abe20f5fa754988c9143ef0e894e, type: 2}
+      objectReference: {fileID: 2100000, guid: 1bd13245c2b67fe44955314198ccf225, type: 2}
     - target: {fileID: -7511558181221131132, guid: 4e6eadb8393152641ab165eeeac4dc69, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
