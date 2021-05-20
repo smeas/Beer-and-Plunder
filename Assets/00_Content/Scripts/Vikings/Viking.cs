@@ -32,8 +32,7 @@ namespace Vikings {
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public Renderer bodyMeshRenderer;
-		[SerializeField] public Material normalMaterial;
-		[SerializeField] public Material brawlingMaterial;
+		[SerializeField] private Color hitColor = Color.red;
 
 		[Space]
 		[SerializeField] public float itemThrowConeHalfAngle = 15f;
@@ -245,7 +244,7 @@ namespace Vikings {
 
 				isAttacked = true;
 
-				SetMaterial(brawlingMaterial);
+				bodyMeshRenderer.material.color = hitColor;
 
 				if (CurrentChair == null) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
@@ -268,7 +267,7 @@ namespace Vikings {
 
 			yield return new WaitForSeconds(vikingData.iFrameAfterGettingHit);
 
-			SetMaterial(normalMaterial);
+			bodyMeshRenderer.material.color = Color.white;
 
 			if (CurrentChair == null) {
 				rb.isKinematic = true;
@@ -277,12 +276,6 @@ namespace Vikings {
 			}
 
 			isAttacked = false;
-		}
-
-		// TODO: Delete this
-		public void SetMaterial(Material newMaterial) {
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(newMaterial, materialCount).ToArray();
 		}
 	}
 }

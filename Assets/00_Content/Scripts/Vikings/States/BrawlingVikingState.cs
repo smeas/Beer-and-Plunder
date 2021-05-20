@@ -60,8 +60,6 @@ namespace Vikings.States {
 			viking.animationDriver.Brawl = false;
 			viking.animationDriver.TableBrawl = false;
 
-			viking.SetMaterial(viking.normalMaterial);
-
 			navMeshAgent.enabled = false;
 		}
 
@@ -70,8 +68,6 @@ namespace Vikings.States {
 
 			navMeshAgent = viking.GetComponent<NavMeshAgent>();
 			navMeshAgent.enabled = true;
-
-			viking.SetMaterial(viking.brawlingMaterial);
 
 			if (brawlType == BrawlType.TableBrawl) {
 				navMeshAgent.enabled = false;
