@@ -157,7 +157,7 @@ namespace Rounds {
 		private void HandleOnNextRound() {
 			currentRound++;
 			SendNextDifficulty();
-			roundTimer = roundDuration;
+			roundTimer = 0f;
 
 			if (Tavern.Instance != null)
 				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
