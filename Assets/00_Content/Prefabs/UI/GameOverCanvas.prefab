@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b0908246eca0d4492b108f9e7051e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverMessage: {fileID: 6677956837184601327}
+  gameOverMessage: {fileID: 4667632192489043287}
   destructionMessage: The tavern was destroyed!
   bankrupcyMessage: You went bankrupt!
   firstSelected: {fileID: 4798687925561701807}
@@ -158,6 +158,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184672732920426916, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
       propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184672732920426916, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6184672732920426918, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
@@ -266,9 +270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6677956837184601327 stripped
+--- !u!114 &4667632192489043287 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3789107596550840861, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2954222454477581221, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
   m_PrefabInstance: {fileID: 7510107607431044850}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
