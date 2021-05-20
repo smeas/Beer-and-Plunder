@@ -37,6 +37,7 @@ namespace Vikings {
 		[SerializeField] public float itemThrowConeHalfAngle = 15f;
 		[SerializeField] public float throwStrength = 5f;
 		[SerializeField] public Transform pivotWhenSitting;
+		[SerializeField] public Transform handTransform;
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;

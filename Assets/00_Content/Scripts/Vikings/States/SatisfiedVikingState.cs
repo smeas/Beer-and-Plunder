@@ -45,13 +45,10 @@ namespace Vikings.States {
 
 		public override void Exit() {
 			if (givenItem != null) {
-				if (givenItem is Tankard tankard)
-					tankard.IsFull = false;
-
 				if (satisfiedDesire.shouldThrowItem) {
 					viking.animationDriver.TriggerThrow();
 
-					givenItem.gameObject.SetActive(true);
+					givenItem.VikingDropItem();
 					givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
 
 					Vector3 throwDirection = -viking.transform.forward;
@@ -71,6 +68,12 @@ namespace Vikings.States {
 				viking.animationDriver.Eating = false;
 				viking.animationDriver.Drinking = false;
 				viking.animationDriver.TriggerHappy();
+				if (givenItem is Tankard tankard)
+					tankard.IsFull = false;
+
+				if (satisfiedDesire.isMaterialDesire && !satisfiedDesire.shouldThrowItem)
+					Object.Destroy(givenItem.gameObject);
+
 				isWaitingForHappyToEnd = true;
 
 				SetupDroppingCoins();

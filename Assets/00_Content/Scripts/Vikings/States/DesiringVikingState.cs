@@ -127,8 +127,9 @@ namespace Vikings.States {
 			if (desire.isMaterialDesire) {
 				PlayerPickUp playerPickUp = fulfillingPlayer.GetComponentInChildren<PlayerPickUp>();
 				PickUp givenItem = playerPickUp.PickedUpItem;
-				givenItem.gameObject.SetActive(false);
+
 				playerPickUp.DropItem();
+				givenItem.VikingPickUpItem(viking);
 
 				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
 				return new SatisfiedVikingState(viking, desire, givenItem);
