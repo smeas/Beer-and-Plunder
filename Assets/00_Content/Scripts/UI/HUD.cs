@@ -37,9 +37,10 @@ public class HUD : MonoBehaviour {
 	private void UpdateClock() {
 		if (RoundController.Instance != null) {
 			float progress = RoundController.Instance.RoundTimer / RoundController.Instance.RoundDuration;
+			progress = Mathf.Clamp01(progress);
 
 			clockBackgroundDark.fillAmount = 1 - progress;
-			clockPointer.localEulerAngles = new Vector3(0, 0, -MathX.RemapClamped(progress, 0, 1, 0, 360));
+			clockPointer.localEulerAngles = new Vector3(0, 0, -progress * 360);
 		}
 	}
 
