@@ -22,7 +22,7 @@ namespace Interactables {
 
 		[SerializeField] private float hitSoundVelocityThreshold = 2f;
 
-		private float shrinkTime = 0.6f;
+		[SerializeField] private float shrinkTime = 0.6f;
 
 		private bool isDisplay;
 

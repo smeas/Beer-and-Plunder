@@ -21,7 +21,7 @@ namespace Interactables {
 		private Vector3 startPosition;
 		private Quaternion startRotation;
 
-		protected float shrinkTime = 1.0f;
+		[SerializeField] protected float shrinkTime = 1.0f;
 
 		public bool IsMultiCarried { get; protected set; }
 		public ItemSlot StartItemSlot { private get; set; }

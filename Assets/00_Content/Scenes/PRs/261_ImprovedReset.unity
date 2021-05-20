@@ -275,13 +275,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
+      propertyPath: shrinkTime
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_RootOrder
       value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.1657486
+      value: -1.17
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -289,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.714466
+      value: 10.19
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1484,13 +1488,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
+      propertyPath: shrinkTime
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.08
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1498,7 +1506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.3
+      value: 10.87
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2402,6 +2410,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 482211264044046102, guid: 88d643d9c464d014995555ca35e17371, type: 3}
+      propertyPath: shrinkTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1686943777525048747, guid: 88d643d9c464d014995555ca35e17371, type: 3}
       propertyPath: m_Name
       value: KitchenTicket
@@ -5286,13 +5298,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
+      propertyPath: shrinkTime
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.1657486
+      value: 2.39
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5300,7 +5316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.714466
+      value: 9.68
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7240,7 +7256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
       propertyPath: roundDuration
-      value: 25
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4659866725042520196, guid: a3ff7957b32364041b546e451ff3009d, type: 3}
       propertyPath: timelineDirector
@@ -7740,7 +7756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.1657486
+      value: -2.68
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7748,7 +7764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.714466
+      value: 10.2
       objectReference: {fileID: 0}
     - target: {fileID: 9042747282398308305, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10997,6 +11013,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 482211264044046102, guid: 88d643d9c464d014995555ca35e17371, type: 3}
+      propertyPath: shrinkTime
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1686943777525048747, guid: 88d643d9c464d014995555ca35e17371, type: 3}
       propertyPath: m_Name
       value: KitchenTicket (1)
