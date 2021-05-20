@@ -85,7 +85,7 @@ namespace Rounds {
 				ShowScoreCard();
 			}
 		}
-
+		
 		private void SendNextDifficulty() {
 			if (VikingController.Instance == null) return;
 

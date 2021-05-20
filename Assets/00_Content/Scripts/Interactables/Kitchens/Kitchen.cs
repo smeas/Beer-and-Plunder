@@ -67,7 +67,9 @@ namespace Interactables.Kitchens {
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
 		}
-
+		/// <summary>
+		/// Resets the progress etc on the kitchen between each round
+		/// </summary>
 		private void HandleOnNewRoundStart() {
 			isCooking = false;
 			//Might actually not need to reset cookingProgress to zero here, seeing as that is done whenever StartCooking() begins.

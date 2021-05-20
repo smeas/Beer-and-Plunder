@@ -1,4 +1,6 @@
+using DG.Tweening;
 using System;
+using System.Collections;
 using System.Linq;
 using Player;
 using Rounds;
@@ -19,6 +21,8 @@ namespace Interactables {
 		private Vector3 startPosition;
 		private Quaternion startRotation;
 
+		protected float shrinkTime = 1.0f;
+
 		public bool IsMultiCarried { get; protected set; }
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
@@ -37,7 +41,6 @@ namespace Interactables {
 				StartItemSlot = CurrentItemSlot;
 
 			if (RoundController.Instance != null) {
-				//RoundController.Instance.OnRoundOver += Respawn;
 				RoundController.Instance.OnNewRoundStart += HandleNewRoundReset;
 			}
 		}
@@ -133,6 +136,14 @@ namespace Interactables {
 			if (isBeingCarried) return;
 
 		}
+		/// <summary>
+		/// Used in override on HandleNewRoundReset to ensure things shrink away and disappears
+		/// </summary>
+		protected void ShrinkAway() {
+			transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
+				Destroy(gameObject);
+			});
+		}
 
 		public virtual void Respawn() {
 
@@ -153,13 +164,13 @@ namespace Interactables {
 			HandleNewRoundReset();
 		}
 
-		protected virtual void OnPlace() {}
+		protected virtual void OnPlace() { }
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
 			if (objectCollider != null)
 				Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
 		}
-	#endif
+#endif
 	}
 }

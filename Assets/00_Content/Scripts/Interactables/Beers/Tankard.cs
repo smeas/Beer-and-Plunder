@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Audio;
 using System.Collections;
 using UnityEngine;
@@ -8,10 +9,6 @@ namespace Interactables.Beers {
 		[SerializeField] private BeerData beerData;
 		[SerializeField] private GameObject foam;
 
-		//Var for ensuring the foam fades away in a nice gradual way when a new round starts
-		private float shrinkSpeed = 0.5f;
-		private float shrinkSize = 1f;
-		private float shrinkThreshold = 0.1f;
 		private Vector3 foamStartingSize;
 
 		private bool isFull;
@@ -37,28 +34,17 @@ namespace Interactables.Beers {
 			if (isFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
 				Spill();
 		}
-
+		/// <summary>
+		/// Tankards override on pickup, this shrinks away the foam on the tankard, instead of the whole tankard.
+		/// </summary>
 		public override void HandleNewRoundReset() {
 			base.HandleNewRoundReset();
 
-			if (foam != null && IsFull == true) StartCoroutine(CoEmptyOutTankards());
-		}
-
-		private IEnumerator CoEmptyOutTankards() {
-			//Gradually shrinks the foam of the tankard until it is below the threshold and then sets the tankard to empty
-			while(IsFull == true) {
-				foam.transform.localScale -= Vector3.one * Time.deltaTime * shrinkSpeed;
-				shrinkSize -= 1f * Time.deltaTime * shrinkSpeed;
-
-				if (shrinkSize <= shrinkThreshold) {
-					shrinkSize = 1f;
+			if (foam != null && IsFull == true)
+				foam.transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
 					IsFull = false;
-					//Resets the scale of the foam now that it has been set to inactive by the bool IsFull
 					foam.transform.localScale = foamStartingSize;
-				}
-
-				yield return null;
-			}
+				});			
 		}
 
 		protected override void OnPlace() {

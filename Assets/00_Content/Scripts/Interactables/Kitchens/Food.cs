@@ -17,7 +17,7 @@ namespace Interactables.Kitchens {
 		public override void HandleNewRoundReset() {
 			base.HandleNewRoundReset();
 
-			Destroy(gameObject);
+			ShrinkAway();
 		}
 	}
 }

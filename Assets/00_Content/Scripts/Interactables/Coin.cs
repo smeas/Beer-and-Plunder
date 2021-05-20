@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Collections;
+using DG.Tweening;
 using Audio;
 using Extensions;
 using Taverns;
@@ -19,6 +21,8 @@ namespace Interactables {
 		private float maxSpawnVelocity;
 
 		[SerializeField] private float hitSoundVelocityThreshold = 2f;
+
+		private float shrinkTime = 0.6f;
 
 		private bool isDisplay;
 
@@ -94,8 +98,10 @@ namespace Interactables {
 				AudioManager.PlayEffectSafe(SoundEffect.Physics_CoinHit);
 		}
 
-		public void HandleOnNewRoundStart() {
-			Destroy(gameObject);
+		private void HandleOnNewRoundStart() {
+			transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
+				Destroy(gameObject);
+			});
 		}
 
 		public void RandomThrow() {
