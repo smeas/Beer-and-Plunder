@@ -10,6 +10,7 @@ namespace Interactables.Weapons {
 		[SerializeField] private WeaponData weaponData;
 		[SerializeField] private AnimationClip referenceAnimation;
 		[SerializeField] private int beginAttackFrame;
+		[SerializeField] private ParticleSystem particleSystemHit;
 
 		private bool isAttacking;
 		private bool isAnimating;
@@ -42,7 +43,11 @@ namespace Interactables.Weapons {
 		private void OnTriggerEnter(Collider other) {
 			if (isAttacking) {
 				IHittable hittable = other.GetComponentInParent<IHittable>();
-				hittable?.Hit(this);
+
+				if (hittable != null) {
+					particleSystemHit.Play(true);
+					hittable.Hit(this);
+				}
 			}
 		}
 

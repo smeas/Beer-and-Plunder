@@ -9,6 +9,7 @@ namespace Player {
 	public class PlayerBrawling : MonoBehaviour {
 
 		[SerializeField] private LayerMask vikingHandsLayer;
+		[SerializeField] private ParticleSystem particleSystemStunned;
 
 		public bool IsStunned { get => isStunned; set => isStunned = value; }
 
@@ -128,6 +129,8 @@ namespace Player {
 			isStunned = true;
 			isInvulnerable = true;
 
+			particleSystemStunned.Play();
+
 			yield return new WaitForSeconds(playerData.stunDuration);
 
 			isStunned = false;
@@ -140,6 +143,8 @@ namespace Player {
 
 			StopCoroutine(blinkRoutine);
 			playerComponent.BodyMeshRenderer.enabled = true;
+
+			particleSystemStunned.Stop();
 		}
 
 		private void OnTriggerEnter(Collider other) {

@@ -8,10 +8,11 @@ using Rounds;
 
 namespace Interactables.Kitchens {
 	public class Kitchen : Interactable {
-		[SerializeField] ProgressBar cookingProgressBar;
-		[SerializeField] Transform foodSpawnpoint;
+		[SerializeField] private ProgressBar cookingProgressBar;
+		[SerializeField] private Transform foodSpawnpoint;
 		[SerializeField] private ParticleSystem foodSpawnEffect;
-		[SerializeField] GameObject foodPrefab;
+		[SerializeField] private GameObject foodPrefab;
+		[SerializeField] private ParticleSystem smokeParticleSystem;
 
 		[Header("Settings")]
 		[SerializeField] private float cookingTime = 10;
@@ -45,6 +46,7 @@ namespace Interactables.Kitchens {
 			float cookingProgress = 0;
 			isCooking = true;
 			cookingProgressBar.Show();
+			smokeParticleSystem.Play(true);
 
 			while (isCooking && cookingProgress <= cookingTime) {
 
@@ -68,6 +70,7 @@ namespace Interactables.Kitchens {
 			if (tickets.Count == 0) {
 				cookingProgressBar.Hide();
 				isCooking = false;
+				smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 			}
 
 			Instantiate(foodPrefab, foodSpawnpoint);
