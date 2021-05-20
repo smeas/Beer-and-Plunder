@@ -17,7 +17,8 @@ namespace Vikings.States {
 		private PickUp givenItem;
 		private DesireData satisfiedDesire;
 
-		private bool IsDroppingCoins => coinsToDrop > 0;
+		private bool isWaitingForHappyToEnd;
+		private bool isDroppingCoins;
 
 		public SatisfiedVikingState(Viking viking, DesireData satisfiedDesire) : base(viking) {
 			this.satisfiedDesire = satisfiedDesire;
@@ -34,37 +35,58 @@ namespace Vikings.States {
 
 			viking.BecameSatisfied?.Invoke();
 
+			if (satisfiedDesire.type == DesireType.Food)
+				viking.animationDriver.Eating = true;
+			else if (satisfiedDesire.type == DesireType.Beer)
+				viking.animationDriver.Drinking = true;
+
 			return this;
 		}
 
 		public override void Exit() {
 			if (givenItem != null) {
-				if (givenItem is Tankard tankard)
-					tankard.IsFull = false;
-
 				if (satisfiedDesire.shouldThrowItem) {
-					givenItem.gameObject.SetActive(true);
+					viking.animationDriver.TriggerThrow();
+
+					givenItem.VikingDropItem();
 					givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
 
 					Vector3 throwDirection = -viking.transform.forward;
 					throwDirection.y = 0.7f;
 
-          givenItem.GetComponent<Rigidbody>().velocity = MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) * viking.throwStrength;
+					givenItem.GetComponent<Rigidbody>().velocity =
+						MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) *
+						viking.throwStrength;
 				}
 			}
 		}
 
 		public override VikingState Update() {
-			VikingState nextState = this;
 			satisfiedTimer -= Time.deltaTime;
 
-			if (satisfiedTimer <= 0 && !IsDroppingCoins)
+			if (satisfiedTimer <= 0 && !isDroppingCoins) {
+				viking.animationDriver.Eating = false;
+				viking.animationDriver.Drinking = false;
+				viking.animationDriver.TriggerHappy();
+				if (givenItem is Tankard tankard)
+					tankard.IsFull = false;
+
+				if (satisfiedDesire.isMaterialDesire && !satisfiedDesire.shouldThrowItem)
+					Object.Destroy(givenItem.gameObject);
+
+				isWaitingForHappyToEnd = true;
+
 				SetupDroppingCoins();
+			}
 
-			if (IsDroppingCoins)
-				nextState = DropCoins();
+			if (isDroppingCoins) {
+				if (coinsToDrop > 0)
+					DropCoins();
+				else if (isWaitingForHappyToEnd && !viking.animationDriver.IsPlayingHappyAnimation)
+					return SelectNextState();
+			}
 
-			return nextState;
+			return this;
 		}
 
 		private void SetupDroppingCoins() {
@@ -73,13 +95,14 @@ namespace Vikings.States {
 			}
 			else {
 				float avgMood = viking.MoodWhenDesireFulfilled.Sum(x => x) /
-				              viking.MoodWhenDesireFulfilled.Count;
+				                viking.MoodWhenDesireFulfilled.Count;
 
 				coinsToDrop = CalculateCoinsToDrop(avgMood);
 				coinsToDrop = Mathf.RoundToInt(coinsToDrop * viking.Data.coinsWhenLeavingMultiplier);
 			}
 
 			dropTimer = DropDelay;
+			isDroppingCoins = true;
 		}
 
 		private int CalculateCoinsToDrop(float value) {
@@ -87,19 +110,17 @@ namespace Vikings.States {
 				viking.Stats.StartMood, viking.Data.coinsDroppedMinMax.x, viking.Data.coinsDroppedMinMax.y));
 		}
 
-		private VikingState DropCoins() {
+		private void DropCoins() {
 			dropTimer -= Time.deltaTime;
 
 			if (dropTimer <= 0) {
 				DropCoin();
 
 				if (coinsToDrop <= 0)
-					return SelectNextState();
+					return;
 
 				dropTimer = DropDelay;
 			}
-
-			return this;
 		}
 
 		private void DropCoin() {
