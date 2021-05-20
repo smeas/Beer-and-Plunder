@@ -82,8 +82,11 @@ MonoBehaviour:
   brawlingMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
   itemThrowConeHalfAngle: 15
   throwStrength: 5
+  modelRoot: {fileID: 5434854226010570008}
   pivotWhenSitting: {fileID: 8273866561871697723}
   handTransform: {fileID: 4824911068634423702}
+  leftFist: {fileID: 8870825898271353313}
+  rightFist: {fileID: 5934142259353520255}
 --- !u!195 &4565282245141147248
 NavMeshAgent:
   m_ObjectHideFlags: 0

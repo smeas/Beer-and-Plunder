@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
+using Extensions;
 using Interactables;
 using Interactables.Kitchens;
 using Interactables.Weapons;
@@ -11,6 +12,7 @@ using Rounds;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 using Utilities;
 using Vikings.States;
 using Random = UnityEngine.Random;
@@ -36,8 +38,11 @@ namespace Vikings {
 		[Space]
 		[SerializeField] public float itemThrowConeHalfAngle = 15f;
 		[SerializeField] public float throwStrength = 5f;
+		[SerializeField] private Transform modelRoot;
 		[SerializeField] public Transform pivotWhenSitting;
 		[SerializeField] public Transform handTransform;
+		[SerializeField] private Transform leftFist;
+		[SerializeField] private Transform rightFist;
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
@@ -47,7 +52,6 @@ namespace Vikings {
 		private NavMeshAgent navMeshAgent;
 		private bool isAttacked;
 		private bool isAttacking;
-		[NonSerialized] public Animator animator;
 		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
@@ -68,10 +72,11 @@ namespace Vikings {
 		public Action BecameSatisfied;
 		public Action Hit;
 
-		private void Start() {
-			animator = GetComponentInChildren<Animator>();
+		private void Awake() {
 			animationDriver = GetComponentInChildren<VikingAnimationDriver>();
+		}
 
+		private void Start() {
 			// statScaling is normally provided by the viking manager
 			statScaling ??= new VikingScaling();
 			rb = GetComponent<Rigidbody>();
@@ -106,6 +111,31 @@ namespace Vikings {
 				ChangeState(forcedState);
 				forcedState = null;
 			}
+		}
+
+		public void ChangeModel(GameObject prefab) {
+			Debug.Assert(modelRoot.childCount == 1, "Viking model root does not have exactly one child", modelRoot);
+			Destroy(modelRoot.GetChild(0).gameObject);
+			GameObject model = Instantiate(prefab, modelRoot);
+			Transform modelTransform = model.transform;
+
+			Transform grabber = model.transform.FindChildByNameRecursive("Grabber");
+			if (grabber == null)
+				Debug.LogError("No grabber found on viking model", model);
+
+			animationDriver = model.GetComponent<VikingAnimationDriver>();
+			bodyMeshRenderer = model.GetComponentInChildren<Renderer>();
+
+			handTransform.GetComponent<ParentConstraint>()
+				.SetSource(0, new ConstraintSource {sourceTransform = grabber, weight = 1});
+
+			leftFist.GetComponent<ParentConstraint>().SetSource(
+				0,
+				new ConstraintSource {sourceTransform = modelTransform.FindChildByNameRecursive("mixamorig:LeftHand"), weight = 1});
+
+			rightFist.GetComponent<ParentConstraint>().SetSource(
+				0,
+				new ConstraintSource {sourceTransform = modelTransform.FindChildByNameRecursive("mixamorig:RightHand"), weight = 1});
 		}
 
 		private void SetupDesires() {

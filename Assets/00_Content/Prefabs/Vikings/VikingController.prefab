@@ -49,6 +49,11 @@ MonoBehaviour:
   maxVikings: 13
   exitPoint: {fileID: 1367337362236766043}
   queueController: {fileID: 2224986603886603022}
+  vikingModelPrefabs:
+  - {fileID: 8597118777143083592, guid: 422965cde37307840b45ab3c79658341, type: 3}
+  - {fileID: 464065515207265842, guid: 71939908f737c194796bb0fc096f9d3e, type: 3}
+  - {fileID: 3823324680259448005, guid: 199e70ad729c15349a4388cb77cc341a, type: 3}
+  - {fileID: 6683088623605380979, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
 --- !u!1 &7359549989527738492
 GameObject:
   m_ObjectHideFlags: 0
