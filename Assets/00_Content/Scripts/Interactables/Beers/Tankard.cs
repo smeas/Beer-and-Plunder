@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Audio;
 using System.Collections;
@@ -13,6 +14,7 @@ namespace Interactables.Beers {
 		private Vector3 foamStartingSize;
 
 		private bool isFull;
+		public event Action OnSpilled;
 
 		public DesireType DesireType => beerData.type;
 
@@ -32,7 +34,7 @@ namespace Interactables.Beers {
 		}
 
 		private void FixedUpdate() {
-			if (IsFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
+			if (isFull && !isBeingCarried && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
 				Spill();
 		}
 		/// <summary>
@@ -55,6 +57,7 @@ namespace Interactables.Beers {
 		private void Spill() {
 			IsFull = false;
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_SpillBeer);
+			OnSpilled?.Invoke();
 		}
 
 		private void OnCollisionEnter(Collision collision) {

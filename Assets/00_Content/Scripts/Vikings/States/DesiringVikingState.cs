@@ -92,6 +92,7 @@ namespace Vikings.States {
 			if (viking.CurrentDesire.isOrder && !isOrderGiven) {
 				SpawnOrderTicket(player);
 				viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
+				viking.OrderTaken?.Invoke();
 				return this;
 			}
 

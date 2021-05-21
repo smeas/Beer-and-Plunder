@@ -1,3 +1,4 @@
+using System;
 using Audio;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Interactables.Kitchens {
 		[SerializeField] private ProgressBar cookingProgressBar;
 		[SerializeField] private Transform foodSpawnpoint;
 		[SerializeField] private ParticleSystem foodSpawnEffect;
-		[SerializeField] private GameObject foodPrefab;
+		[SerializeField] private Food foodPrefab;
 		[SerializeField] private ParticleSystem smokeParticleSystem;
 
 		[Header("Settings")]
@@ -20,6 +21,8 @@ namespace Interactables.Kitchens {
 		private Queue<KitchenTicket> tickets = new Queue<KitchenTicket>();
 		private bool isCooking;
 		private SoundHandle cookingSound;
+
+		public event Action<Food> CookingFinished;
 
 		private void OnEnable() {
 			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver += HandleOnNewRoundStart;
@@ -79,11 +82,12 @@ namespace Interactables.Kitchens {
 				cookingSound.Stop();
 			}
 
-			Instantiate(foodPrefab, foodSpawnpoint);
+			Food food = Instantiate(foodPrefab, foodSpawnpoint);
 			foodSpawnEffect.Play();
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
 
+			CookingFinished?.Invoke(food);
 		}
 		/// <summary>
 		/// Resets the progress etc on the kitchen between each round
