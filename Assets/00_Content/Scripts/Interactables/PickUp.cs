@@ -1,14 +1,18 @@
+using DG.Tweening;
 using System;
+using System.Collections;
 using System.Linq;
 using Player;
 using Rounds;
 using UnityEngine;
+using Vikings;
 using World;
 
 namespace Interactables {
 
 	public class PickUp : MonoBehaviour, IRespawnable {
-		[SerializeField] private Transform itemGrabTransform;
+		[SerializeField] private Vector3 itemGrabOffset;
+		[SerializeField] private Vector3 itemGrabRotation;
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
 		[SerializeField] protected Collider objectCollider;
 		[SerializeField] public Transform ItemSlotPivot;
@@ -19,15 +23,27 @@ namespace Interactables {
 		private Vector3 startPosition;
 		private Quaternion startRotation;
 
+		[SerializeField] protected float shrinkTime = 1.0f;
+
 		public bool IsMultiCarried { get; protected set; }
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 		public virtual bool IsHeavy => false;
 
+		public Vector3 ItemGrabOffset {
+			get => itemGrabOffset;
+			set => itemGrabOffset = value;
+		}
+
+		public Vector3 ItemGrabRotation {
+			get => itemGrabRotation;
+			set => itemGrabRotation = value;
+		}
+
 		public event Action<PickUp, PlayerComponent> OnPickedUp;
 		public event Action<PickUp, PlayerComponent> OnDropped;
 
-		private void Awake() {
+		protected virtual void Awake() {
 			rigidbody = GetComponent<Rigidbody>();
 		}
 
@@ -38,8 +54,9 @@ namespace Interactables {
 			if (StartItemSlot == null)
 				StartItemSlot = CurrentItemSlot;
 
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += RoundOverReset;
+			if (RoundController.Instance != null) {
+				RoundController.Instance.OnNewRoundStart += HandleNewRoundReset;
+			}
 		}
 
 		protected virtual void OnDestroy() {
@@ -48,8 +65,10 @@ namespace Interactables {
 				CurrentItemSlot = null;
 			}
 
-			if (RoundController.Instance != null)
+			if (RoundController.Instance != null) {
 				RoundController.Instance.OnRoundOver -= Respawn;
+				RoundController.Instance.OnNewRoundStart -= HandleNewRoundReset;
+			}
 		}
 
 		public virtual void SetParent(Transform newParent) {
@@ -94,19 +113,34 @@ namespace Interactables {
 			return true;
 		}
 
+		public void VikingPickUpItem(Viking viking) {
+			MoveToPoint(viking.handTransform);
+
+			objectCollider.enabled = false;
+			isBeingCarried = true;
+		}
+
+		public void VikingDropItem() {
+			SetParent(null);
+			if (rigidbody != null)
+				rigidbody.isKinematic = false;
+
+			objectCollider.enabled = true;
+			isBeingCarried = false;
+		}
+
 		protected void MoveToPoint(Transform point) {
-			transform.rotation = Quaternion.identity;
 			SetParent(point);
 
 			if (rigidbody != null)
 				rigidbody.isKinematic = true;
 
-			Vector3 offset = Vector3.zero;
-			if (itemGrabTransform != null)
-				offset = transform.position - itemGrabTransform.position;
+			UpdateGrabPositionOffset();
+		}
 
-			transform.localPosition = offset;
-			transform.localRotation = Quaternion.identity;
+		public void UpdateGrabPositionOffset() {
+			transform.localPosition = itemGrabOffset;
+			transform.localEulerAngles = itemGrabRotation;
 		}
 
 		private void TryPutInClosestItemSlot() {
@@ -127,9 +161,17 @@ namespace Interactables {
 			}
 		}
 
-		public virtual void RoundOverReset() {
+		public virtual void HandleNewRoundReset() {
 			if (isBeingCarried) return;
 
+		}
+		/// <summary>
+		/// Used in override on HandleNewRoundReset to ensure things shrink away and disappears
+		/// </summary>
+		protected void ShrinkAway() {
+			transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
+				Destroy(gameObject);
+			});
 		}
 
 		public virtual void Respawn() {
@@ -147,16 +189,20 @@ namespace Interactables {
 			} else if (CurrentItemSlot != null) {
 				CurrentItemSlot.ReleaseItem();
 			}
-
-			RoundOverReset();
 		}
 
-		protected virtual void OnPlace() {}
+		protected virtual void OnPlace() { }
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 		private void OnDrawGizmosSelected() {
 			if (objectCollider != null)
 				Gizmos.DrawWireCube(objectCollider.bounds.center, objectCollider.bounds.size);
+		}
+
+		private void OnValidate() {
+			if (Application.isPlaying && isBeingCarried) {
+				UpdateGrabPositionOffset();
+			}
 		}
 	#endif
 	}

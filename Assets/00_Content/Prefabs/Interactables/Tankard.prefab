@@ -48,14 +48,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594daa1a5c216534faed12f849406237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemGrabTransform: {fileID: 3824459049787496328}
+  itemGrabOffset: {x: -0.377, y: -0.335, z: 0.328}
+  itemGrabRotation: {x: 359.29248, y: 205.60228, z: 2.9423232}
   itemSlotLayer:
     serializedVersion: 2
     m_Bits: 512
   objectCollider: {fileID: 6311759239748045703}
   ItemSlotPivot: {fileID: 4258603012808477393}
+  shrinkTime: 1
   beerData: {fileID: 11400000, guid: 1edea882df6ee684ea9f25370d7a98cf, type: 2}
   foam: {fileID: 8835268153560849173}
+  floorHitSoundVelocityLimit: 1.5
 --- !u!54 &178324330392158036
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -96,7 +99,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606772948269209316}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.25}
+  m_LocalPosition: {x: -0.442, y: 0.315, z: -0.003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1262854382656651555}

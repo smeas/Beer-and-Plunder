@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
+using Extensions;
 using Interactables;
-using Interactables.Beers;
 using Interactables.Kitchens;
 using Interactables.Weapons;
 using Player;
@@ -12,6 +12,7 @@ using Rounds;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 using Utilities;
 using Vikings.States;
 using Random = UnityEngine.Random;
@@ -24,17 +25,23 @@ namespace Vikings {
 	public class Viking : Interactable, IHittable {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
+		[SerializeField] public ParticleSystem disappearParticleSystem;
+		[SerializeField] public float maxLeavingTime = 10f;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public KitchenTicket kitchenTicketPrefab;
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
-		[SerializeField] public MeshRenderer bodyMeshRenderer;
-		[SerializeField] public Material normalMaterial;
-		[SerializeField] public Material brawlingMaterial;
+		[SerializeField] public Renderer bodyMeshRenderer;
+		[SerializeField] private Color hitColor = Color.red;
 
 		[Space]
 		[SerializeField] public float itemThrowConeHalfAngle = 15f;
 		[SerializeField] public float throwStrength = 5f;
+		[SerializeField] private Transform modelRoot;
+		[SerializeField] public Transform pivotWhenSitting;
+		[SerializeField] public Transform handTransform;
+		[SerializeField] private Transform leftFist;
+		[SerializeField] private Transform rightFist;
 
 		private bool hasStartedAttackingPlayer;
 		private VikingState state;
@@ -44,6 +51,7 @@ namespace Vikings {
 		private NavMeshAgent navMeshAgent;
 		private bool isAttacked;
 		private bool isAttacking;
+		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
 		public VikingData Data => vikingData;
@@ -54,7 +62,7 @@ namespace Vikings {
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
-		public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+		public bool IsAttacking => animationDriver.IsPlayingAttackAnimation;
 		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
 
 		public event VikingLeaving LeaveTavern;
@@ -62,6 +70,10 @@ namespace Vikings {
 		public Action TakingSeat;
 		public Action BecameSatisfied;
 		public Action Hit;
+
+		private void Awake() {
+			animationDriver = GetComponentInChildren<VikingAnimationDriver>();
+		}
 
 		private void Start() {
 			// statScaling is normally provided by the viking manager
@@ -73,15 +85,13 @@ namespace Vikings {
 
 			ChangeState(new WaitingForSeatVikingState(this));
 
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += HandleOnRoundOver;
-
 			progressBar.Hide();
 
 			SetupDesires();
 		}
 
 		private void Update() {
+			animationDriver.GettingAngry = Stats.Mood < Data.gettingAngryThreshold;
 
 			if (Data.attackPlayerAtStartUp && !hasStartedAttackingPlayer) {
 				PlayerComponent player = PlayerManager.Instance.Players.FirstOrDefault();
@@ -102,9 +112,29 @@ namespace Vikings {
 			}
 		}
 
-		private void OnDestroy() {
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver -= HandleOnRoundOver;
+		public void ChangeModel(GameObject prefab) {
+			Debug.Assert(modelRoot.childCount == 1, "Viking model root does not have exactly one child", modelRoot);
+			Destroy(modelRoot.GetChild(0).gameObject);
+			GameObject model = Instantiate(prefab, modelRoot);
+			Transform modelTransform = model.transform;
+
+			Transform grabber = model.transform.FindChildByNameRecursive("Grabber");
+			if (grabber == null)
+				Debug.LogError("No grabber found on viking model", model);
+
+			animationDriver = model.GetComponent<VikingAnimationDriver>();
+			bodyMeshRenderer = model.GetComponentInChildren<Renderer>();
+
+			handTransform.GetComponent<ParentConstraint>()
+				.SetSource(0, new ConstraintSource {sourceTransform = grabber, weight = 1});
+
+			leftFist.GetComponent<ParentConstraint>().SetSource(
+				0,
+				new ConstraintSource {sourceTransform = modelTransform.FindChildByNameRecursive("mixamorig:LeftHand"), weight = 1});
+
+			rightFist.GetComponent<ParentConstraint>().SetSource(
+				0,
+				new ConstraintSource {sourceTransform = modelTransform.FindChildByNameRecursive("mixamorig:RightHand"), weight = 1});
 		}
 
 		private void SetupDesires() {
@@ -134,8 +164,7 @@ namespace Vikings {
 			forcedState = newState;
 		}
 
-		private void HandleOnRoundOver() {
-			// Leave when the round is over.
+		public void Leave() {
 			if (!(state is LeavingVikingState))
 				ChangeState(new LeavingVikingState(this));
 		}
@@ -151,7 +180,7 @@ namespace Vikings {
 		public void DismountChair() {
 			if (CurrentChair == null) return;
 
-			transform.position = CurrentChair.DismountPoint.position;
+			animationDriver.EndSitting();
 			CurrentChair.OnVikingLeaveChair(this);
 			CurrentChair = null;
 		}
@@ -160,28 +189,10 @@ namespace Vikings {
 			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
 		}
 
-		public void MakeSpinAttack() {
+		public void MakeAttack() {
 			if (!IsAttacking) {
-				IsAttacking = true;
-				StartCoroutine(SpinAttack());
-				StartCoroutine(FinishAttack());
+				animationDriver.TriggerAttack();
 			}
-		}
-
-		private IEnumerator SpinAttack() {
-			while(IsAttacking) {
-				yield return null;
-				transform.Rotate(Vector3.up, vikingData.spinAttackSpeed * Time.deltaTime);
-			}
-		}
-
-		private IEnumerator FinishAttack() {
-
-			yield return new WaitForSeconds(vikingData.spinAttackDuration);
-
-			StopAllCoroutines();
-			IsAttacking = false;
-			IsAttacked = false;
 		}
 
 		public void FinishLeaving() {
@@ -233,7 +244,7 @@ namespace Vikings {
 
 				isAttacked = true;
 
-				SetMaterial(brawlingMaterial);
+				bodyMeshRenderer.material.color = hitColor;
 
 				if (CurrentChair == null) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
@@ -256,7 +267,7 @@ namespace Vikings {
 
 			yield return new WaitForSeconds(vikingData.iFrameAfterGettingHit);
 
-			SetMaterial(normalMaterial);
+			bodyMeshRenderer.material.color = Color.white;
 
 			if (CurrentChair == null) {
 				rb.isKinematic = true;
@@ -265,12 +276,6 @@ namespace Vikings {
 			}
 
 			isAttacked = false;
-		}
-
-		// TODO: Delete this
-		public void SetMaterial(Material newMaterial) {
-			int materialCount = bodyMeshRenderer.sharedMaterials.Length;
-			bodyMeshRenderer.sharedMaterials = Enumerable.Repeat(newMaterial, materialCount).ToArray();
 		}
 	}
 }

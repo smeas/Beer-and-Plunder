@@ -1,7 +1,9 @@
 using System.Collections;
+using Extensions;
 using Rounds;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using World;
@@ -9,6 +11,7 @@ using World;
 namespace Player {
 	public class PlayerComponent : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform modelRoot;
+		[SerializeField] private Transform grabPoint;
 		[SerializeField] private PlayerData playerData;
 		[SerializeField] private MeshRenderer glowRingRenderer;
 
@@ -17,10 +20,13 @@ namespace Player {
 
 		public int PlayerId { get; private set; }
 		public Transform SpawnPoint { get; set; }
+		public Transform Grabber { get; set; }
 		public Transform ModelRoot => modelRoot;
 		public Renderer BodyMeshRenderer { get; set; }
 		public Animator CharacterAnimator { get; private set; }
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
+
+		private bool hasSetUpModel;
 
 		public Color PlayerColor {
 			get => playerColor;
@@ -34,8 +40,8 @@ namespace Player {
 		}
 
 		private void Awake() {
-			if (CharacterAnimator == null)
-				CharacterAnimator = GetComponentInChildren<Animator>();
+			if (!hasSetUpModel)
+				SetUpModel(modelRoot.gameObject);
 		}
 
 		private void Start() {
@@ -74,8 +80,20 @@ namespace Player {
 			Destroy(modelRoot.GetChild(0).gameObject);
 
 			GameObject model = Instantiate(prefab, modelRoot);
+			SetUpModel(model);
+		}
+
+		private void SetUpModel(GameObject model) {
+			hasSetUpModel = true;
 			BodyMeshRenderer = model.GetComponentInChildren<Renderer>();
 			CharacterAnimator = model.GetComponentInChildren<Animator>();
+			Grabber = model.transform.FindChildByNameRecursive("Grabber");
+
+			if (Grabber == null)
+				Debug.LogError("No grabber found on model", model);
+
+			grabPoint.GetComponent<ParentConstraint>()
+				.SetSource(0, new ConstraintSource {sourceTransform = Grabber, weight = 1});
 		}
 
 		private void OnRoundOver() {

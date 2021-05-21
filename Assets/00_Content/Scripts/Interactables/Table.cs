@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Player;
-using Rounds;
 using UnityEngine;
 using Vikings;
 using Random = UnityEngine.Random;
@@ -12,11 +11,18 @@ namespace Interactables {
 		public static List<Table> AllTables { get; } = new List<Table>();
 		public static event Action OnTablesDestroyed;
 
+		[SerializeField] private float maxHealth = 10f;
+		[SerializeField] private float repairTime = 5f;
+		[SerializeField] private Renderer bodyRenderer;
+		[SerializeField] private Material[] damageStates;
+		[SerializeField] private GameObject brokenTablePrefab;
+
 		private float health;
 		private bool isRepairing;
 		private float repairTimer;
 		private float repairDuration;
 		private RepairTool repairTool;
+		private GameObject brokenTable;
 
 		public Chair[] Chairs { get; private set; }
 		public bool IsFull => Chairs.All(chair => chair.IsOccupied);
@@ -34,6 +40,9 @@ namespace Interactables {
 		}
 
 		private void Start() {
+			if (damageStates.Length == 0)
+				Debug.LogError("Table has no damage states!", this);
+
 			Chairs = GetComponentsInChildren<Chair>();
 
 			if (Chairs.Length == 0)
@@ -43,10 +52,7 @@ namespace Interactables {
 				chair.Table = this;
 			}
 
-			if (RoundController.Instance != null)
-				health = RoundController.Instance.CurrentDifficulty.tableHealth;
-			else
-				health = 100;
+			health = maxHealth;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
@@ -71,13 +77,10 @@ namespace Interactables {
 		}
 
 		private void StartRepairing(GameObject player, RepairTool tool) {
-				float repairTime = RoundController.Instance != null
-					? RoundController.Instance.CurrentDifficulty.tableRepairTime
-					: 5f;
-				tool.BeginRepairing(repairTime, transform.position + new Vector3(0, 3f, 0)); //event
-				tool.RepairDone += HandleRepairDone;
+			tool.BeginRepairing(repairTime, transform.position + new Vector3(0, 3f, 0)); //event
+			tool.RepairDone += HandleRepairDone;
 
-				player.GetComponent<PlayerMovement>().CanMove = false;
+			player.GetComponent<PlayerMovement>().CanMove = false;
 		}
 
 		private void EndRepairing(GameObject player, RepairTool tool) {
@@ -116,17 +119,31 @@ namespace Interactables {
 
 			health = Mathf.Max(0, health - damage);
 			if (IsDestroyed) {
-				GetComponentInChildren<MeshRenderer>().enabled = false;
+				bodyRenderer.gameObject.SetActive(false);
+				Transform modelTransform = bodyRenderer.transform;
+				brokenTable = Instantiate(brokenTablePrefab, modelTransform.position, modelTransform.rotation, transform);
 
 				Destroyed?.Invoke();
 
 				if (IsTablesDestroyed()) OnTablesDestroyed?.Invoke();
 			}
+			else {
+				float healthFraction = health / maxHealth; // should never be zero here
+				int damageIndex = Mathf.FloorToInt((1f - healthFraction) * damageStates.Length);
+				bodyRenderer.sharedMaterial = damageStates[damageIndex];
+			}
 		}
 
 		public void Repair() {
-			if (RoundController.Instance != null)
-				health = RoundController.Instance.CurrentDifficulty.tableHealth;
+			if (!IsDestroyed) return;
+
+			health = maxHealth;
+
+			if (brokenTable != null)
+				Destroy(brokenTable);
+
+			bodyRenderer.gameObject.SetActive(true);
+			bodyRenderer.sharedMaterial = damageStates[0];
 
 			GetComponentInChildren<MeshRenderer>().enabled = true;
 			Repaired?.Invoke();

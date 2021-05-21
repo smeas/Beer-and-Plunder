@@ -12,6 +12,7 @@ namespace Vikings {
 		[SerializeField] private int maxVikings = 10;
 		[SerializeField] private Transform exitPoint;
 		[SerializeField] private QueueController queueController;
+		[SerializeField] private GameObject[] vikingModelPrefabs;
 
 		private List<Viking> vikings = new List<Viking>();
 		private float spawnDelay = 1f;
@@ -21,6 +22,7 @@ namespace Vikings {
 		public bool CanSpawn { get; set; } = true;
 		public VikingScaling StatScaling { get; set; } = new VikingScaling();
 		public Transform ExitPoint => exitPoint;
+		public int VikingCount => vikings.Count;
 
 		public event Action<Viking> VikingSpawned;
 
@@ -40,6 +42,7 @@ namespace Vikings {
 			if (queueController != null && queueController.QueueSize >= queueController.QueueCapacity) return;
 
 			Viking viking = Instantiate(vikingPrefab, transform);
+			viking.ChangeModel(Util.RandomElement(vikingModelPrefabs));
 			viking.SetScaling(StatScaling);
 			viking.LeaveTavern += OnLeaveTavern;
 
@@ -62,6 +65,12 @@ namespace Vikings {
 		public void SetSpawnSettings(float delay, float variance) {
 			spawnDelay = delay;
 			spawnVariance = variance;
+		}
+
+		public void LeaveAllVikings() {
+			foreach (Viking viking in vikings) {
+				viking.Leave();
+			}
 		}
 	}
 }

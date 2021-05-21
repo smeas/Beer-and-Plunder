@@ -27,6 +27,13 @@ namespace Interactables {
 				item.transform.position = transform.position;
 			}
 
+			Vector3 forward = item.transform.forward;
+			forward.y = 0f;
+			if (forward.sqrMagnitude > 0.001f)
+				item.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+			else
+				item.transform.rotation = Quaternion.identity;
+
 			item.CurrentItemSlot = this;
 			itemInSlot = item;
 			Rigidbody body = item.GetComponent<Rigidbody>();

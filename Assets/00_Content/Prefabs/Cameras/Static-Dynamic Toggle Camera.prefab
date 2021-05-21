@@ -108,7 +108,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -137,8 +137,8 @@ MonoBehaviour:
   smoothTime: 0.3
   maxSpeed: 50
   useBounds: 1
-  horizontalBounds: {x: 0.62, y: 10}
-  verticalBounds: {x: -5.32, y: 4.82}
+  horizontalBounds: {x: 4.47, y: 6.22}
+  verticalBounds: {x: -8.11, y: 4.82}
 --- !u!114 &8614323515788097655
 MonoBehaviour:
   m_ObjectHideFlags: 0

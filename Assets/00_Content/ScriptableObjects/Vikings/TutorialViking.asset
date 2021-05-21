@@ -11,11 +11,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ec16fbc31454a629d54f1e2addd3646, type: 3}
   m_Name: TutorialViking
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   startMood: 100
   moodDeclineRate: 0
   moodBoostDesireFulfilled: 0
   impatientMoodThreshold: 45
+  gettingAngryThreshold: 30
   desireSeatVisualisation: {fileID: 21300000, guid: a99d394cfb3c7ee4ba74a4a8de9ecbe4, type: 3}
   randomDesires: 0
   desires:
@@ -31,12 +32,9 @@ MonoBehaviour:
   MaxFollowingDuration: 10
   canStartBrawl: 1
   brawlMoodThreshold: 15
-  damage: 10
+  damage: 1
   attackRate: 1
   brawlHealth: 1
   attackTriggerDistance: 4
-  spinAttackSpeed: 800
-  spinAttackDuration: 2
-  spinAttackDamage: 1
   iFrameAfterGettingHit: 0.5
   attackPlayerAtStartUp: 0
