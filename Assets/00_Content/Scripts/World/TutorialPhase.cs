@@ -9,6 +9,8 @@ namespace World {
 		[TextArea]
 		[SerializeField] private string text;
 		[SerializeField] private TutorialEvent completeOn;
+		[SerializeField] private bool setDuration;
+		[SerializeField] private float duration;
 
 		[Header("Actions")]
 		[SerializeField] private GameObject[] deactivate;
@@ -19,6 +21,8 @@ namespace World {
 		[SerializeField] private UnityEvent onEnter;
 
 		public string Text => text;
+		public bool SetDuration => setDuration;
+		public float Duration => duration;
 
 		public void Enter(GameObject highlightObject) {
 			foreach (GameObject gameObject in deactivate) {
@@ -43,10 +47,9 @@ namespace World {
 		private void MoveHighlight(GameObject highlightObject, GameObject target) {
 			highlightObject.SetActive(true);
 			highlightObject.transform.position = target.transform.position + new Vector3(0, 4.5f, 0);
-			highlightObject.transform.parent = target.transform;
 		}
 
-		public bool OnEvent(TutorialEvent e) {
+		public bool IsCorrectEvent(TutorialEvent e) {
 			return e == completeOn;
 		}
 	}
