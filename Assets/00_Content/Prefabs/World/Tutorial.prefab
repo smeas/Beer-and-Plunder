@@ -60,7 +60,7 @@ MonoBehaviour:
   - name: Welcome to the game
     text: "Welcome to \u201CBeer & Plunder\u201D! While other vikings are getting
       rich from pillaging you have decided to open a bar instead, earning money from
-      the rowdy raiders!\r\n"
+      the rowdy raiders!\r"
     completeOn: 7
     setDuration: 1
     duration: 5
@@ -83,9 +83,8 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - name: Remove viking from queue
-    text: Oh! Our first guest is here! Hopefully the first of many! They wait at
-      the entrance. Do you see the icon of  a stool over their head? It shows that
-      they are waiting to be seated.
+    text: Our first guest is here! Guests wait by the entrance. Interact with the
+      viking that is waiting to be seated
     completeOn: 0
     setDuration: 0
     duration: 0
@@ -122,8 +121,10 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Pick up tankard
-    text: Great! Now this viking wants a beer. Pick up an empty tankard and pour
-      up a beer into it from the barrel standing behind the counter.
+    text: 'Now this viking wants a beer. Pick up an empty tankard and pour up a beer
+      from the beer tap behind the counter.
+
+'
     completeOn: 9
     setDuration: 0
     duration: 0
@@ -138,6 +139,17 @@ MonoBehaviour:
   - name: Pour tankard
     text: 
     completeOn: 4
+    setDuration: 0
+    duration: 0
+    deactivate: []
+    activate: []
+    highlightTarget: {fileID: 0}
+    onEnter:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: Deliver tankard
+    text: Excellent! Now bring the filled tankard over to the customer.
+    completeOn: 2
     setDuration: 0
     duration: 0
     deactivate: []
@@ -186,8 +198,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Carrying a beer barrel alone
-    text: While your customer enjoys their beer, you should refill the beer tap behind
-      the counter. Pick up a barrel from the stack by the wall.
+    text: "Heavy and slow right? Running a bar isn\u2019t easy alone, later on you
+      might want to get a friend to help you with carrying heavy things."
     completeOn: 5
     setDuration: 0
     duration: 0
@@ -210,9 +222,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - name: Pick up tankard again
-    text: "The viking wants another beer! No surprise there. Just reuse the same
-      tankard as before, very hygienic, we are about twelve hundred years away from
-      the five second rule.\r"
+    text: "Vikings don\u2019t care about picking up after themselves"
     completeOn: 9
     setDuration: 0
     duration: 0
@@ -222,8 +232,8 @@ MonoBehaviour:
     onEnter:
       m_PersistentCalls:
         m_Calls: []
-  - name: Filling second tankard
-    text: 
+  - name: Delivering second tankard
+    text: The viking wants another beer! Just refill the tankard from before.
     completeOn: 2
     setDuration: 0
     duration: 0
@@ -234,8 +244,10 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Picking up instrument
-    text: Now the viking wants to listen to some nice tunes. Pick up the harp to
-      play some music for the guests until they are satisfied.
+    text: 'Now the viking wants to hear some music. Pick up the harp to play for
+      them until they are satisfied.
+
+'
     completeOn: 11
     setDuration: 0
     duration: 0
@@ -258,9 +270,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Drop harp
-    text: "Woho! The crowd loves you! But you don\u2019t have time for an encore.
-      Put the harp away for now, I\u2019m sure you won\u2019t forget where you put
-      it if things ever get hectic."
+    text: 'Woho! The crowd loves you! Drop the harp for now.
+
+'
     completeOn: 12
     setDuration: 0
     duration: 0
@@ -271,9 +283,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Take food order
-    text: Now the viking is hungry and wants to order food. They will probably want
-      a big piece of pork as always, but you still need to ask them for their order
-      anyway.
+    text: Now the viking is hungry and wants to order food. You should ask them for
+      their order.
     completeOn: 15
     setDuration: 0
     duration: 0
@@ -284,9 +295,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Cook food
-    text: "Right, now you have their order all chiseled down on the ticket you\u2019re
-      holding. Don\u2019t lose it! Give it to the chef in the kitchen and they will
-      start grilling half of a hog.\r\n"
+    text: "Right, now you have their order on the ticket you\u2019re holding. Hand
+      it into the kitchen window.\r\n"
     completeOn: 16
     setDuration: 0
     duration: 0
@@ -298,7 +308,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Pickup food
-    text: "Orders up! Time for you to deliver the food to the viking.\r"
+    text: 'Orders up! Time to deliver the food.
+
+'
     completeOn: 17
     setDuration: 0
     duration: 0
@@ -320,9 +332,10 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Pickup axe
-    text: "Look out! As most pagan homes yours is beset by thieving goblins that
-      will try and steal your money. We don\u2019t have a fancy priest around to
-      scare it away, quickly, grab your axe and chase it off.\r\n"
+    text: 'Look out! Your home is beset by thieving goblins that try to steal your
+      money. Quickly, grab your axe and chase it off.
+
+'
     completeOn: 13
     setDuration: 0
     duration: 0
@@ -386,8 +399,8 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - name: Goblin left
-    text: "There, it\u2019s gone for now. But it will be back, as soon as it can
-      smell some unguarded gold"
+    text: "There, it\u2019s gone for now. But it will be back if there are coins
+      left on the floor.\r\n"
     completeOn: 13
     setDuration: 1
     duration: 3
@@ -398,8 +411,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Breaking a table
-    text: 'Oh no! Our customer has gone berserk and is tearing this place apart.
-      This usually happens if you have been too slow in giving them service.
+    text: 'Oh no! Our customer is tearing the place apart. This happens if the service
+      is too slow.
 
 '
     completeOn: 6
@@ -436,8 +449,9 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - name: Fighting viking
-    text: Good thing you already have the axe close at hand, use it to make them
-      understand that it is time for them to go home.
+    text: 'Hit them with your axe until they want to leave.
+
+'
     completeOn: 3
     setDuration: 0
     duration: 0
@@ -460,11 +474,8 @@ MonoBehaviour:
             m_BoolArgument: 1
           m_CallState: 2
   - name: Picking up tool
-    text: 'With that done you need to fix the damages that the viking has caused.
-      Drop your axe and equip the hammer instead. Use it to repair the table that
-      got destroyed.
-
-'
+    text: Now you need to repair the bar. Drop your axe and equip the hammer. Use
+      the hammer to repair the table.
     completeOn: 14
     setDuration: 0
     duration: 0
@@ -487,9 +498,11 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - name: Ending
-    text: "Didn\u2019t it feel very natural to put that table together? Maybe you
-      could\u2026 Nah, no one has gotten rich by selling people furniture in pieces!
-      Best stay with your bar instead.\r\n"
+    text: 'Congratulations! The bar is in one piece and you are now ready to open
+      the bar for real. Can you and your friends make enough gold before the time
+      runs out?
+
+'
     completeOn: 7
     setDuration: 1
     duration: 5
