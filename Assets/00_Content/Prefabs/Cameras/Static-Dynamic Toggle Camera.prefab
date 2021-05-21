@@ -138,7 +138,7 @@ MonoBehaviour:
   maxSpeed: 50
   useBounds: 1
   horizontalBounds: {x: 4.47, y: 6.22}
-  verticalBounds: {x: -8.11, y: 4.82}
+  verticalBounds: {x: -6.94, y: 4.82}
 --- !u!114 &8614323515788097655
 MonoBehaviour:
   m_ObjectHideFlags: 0
