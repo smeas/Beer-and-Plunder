@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
   m_Name: Poof
   m_EditorClassIdentifier: 
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: d194035e46aae8b41898f5d9ab13f53f, type: 3}
   volume: 1
   pitch: 1

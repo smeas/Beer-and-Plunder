@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
   m_Name: Cooking
   m_EditorClassIdentifier: 
-  audioClips: []
-  volume: 1
+  audioClips:
+  - {fileID: 8300000, guid: 6f564beb51401dc42ba45d3e4428d528, type: 3}
+  volume: 0.6
   pitch: 1
