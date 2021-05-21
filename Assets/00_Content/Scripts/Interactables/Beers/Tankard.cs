@@ -45,7 +45,7 @@ namespace Interactables.Beers {
 				foam.transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
 					IsFull = false;
 					foam.transform.localScale = foamStartingSize;
-				});			
+				});
 		}
 
 		protected override void OnPlace() {
@@ -58,7 +58,6 @@ namespace Interactables.Beers {
 		}
 
 		private void OnCollisionEnter(Collision collision) {
-			Debug.Log(collision.relativeVelocity.y);
 			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
 				AudioManager.PlayEffectSafe(SoundEffect.BeerDrop);
 			}

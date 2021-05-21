@@ -76,12 +76,12 @@ namespace Interactables.Kitchens {
 				cookingProgressBar.Hide();
 				isCooking = false;
 				smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+				cookingSound.Stop();
 			}
 
 			Instantiate(foodPrefab, foodSpawnpoint);
 			foodSpawnEffect.Play();
 
-			cookingSound.Stop();
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
 
 		}
