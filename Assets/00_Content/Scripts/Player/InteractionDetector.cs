@@ -27,7 +27,7 @@ namespace Player {
 		}
 
 		private void Start() {
-			highlight = Instantiate(highlightPrefab);
+			SetupHighlight();
 		}
 
 		private void FixedUpdate() {
@@ -64,6 +64,19 @@ namespace Player {
 		private void OnDestroy() {
 			if (highlight != null)
 				Destroy(highlight);
+		}
+
+		private void SetupHighlight() {
+			highlight = Instantiate(highlightPrefab);
+
+			ParticleSystem[] childEffects = highlight.GetComponentsInChildren<ParticleSystem>();
+			Color startColor = GetComponentInParent<PlayerComponent>().PlayerColor;
+
+			foreach (ParticleSystem childEffect in childEffects) {
+				ParticleSystem.MainModule effectMain = childEffect.main;
+				startColor.a = effectMain.startColor.color.a;
+				effectMain.startColor = startColor;
+			}
 		}
 
 		private void HandleOnPickedUp(PickUp item, PlayerComponent playerComponent) => pickUpsInRange.Remove(item);
@@ -135,7 +148,7 @@ namespace Player {
 				}
 			}
 
-			if (closestObject == null && highlight.isPlaying)
+			if (closestObject == null && highlight != null && highlight.isPlaying)
 				highlight.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 		}
 
@@ -155,6 +168,9 @@ namespace Player {
 		}
 
 		private void MoveHighlight(Vector3 position) {
+			if (highlight == null)
+				SetupHighlight();
+
 			highlight.transform.position = position;
 
 			if (!highlight.isPlaying)
