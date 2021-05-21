@@ -91,7 +91,8 @@ namespace World {
 		private void OnGoblinSpawned(Goblin goblin) {
 			goblinAgent = goblin.GetComponent<NavMeshAgent>();
 			goblinSpeed = goblinAgent.speed;
-			goblinAgent.speed = 0;
+			// goblinAgent.isStopped = true;
+			goblinAgent.speed = 0.01f;
 
 			goblin.OnLeave += OnGoblinLeave;
 		}
@@ -184,8 +185,9 @@ namespace World {
 		public void StartBrawl() => viking.ForceChangeState(new BrawlingVikingState(viking, table));
 		public void DisableAutoFill() => autoFill = false;
 		public void SpawnGoblin() => GoblinController.Instance.MaxGoblins = 1;
-		public void DisableGoblinSpawning() => GoblinController.Instance.MaxGoblins = 1;
+		public void DisableGoblinSpawning() => GoblinController.Instance.MaxGoblins = 0;
 		public void EnableGoblin() => goblinAgent.speed = goblinSpeed;
+		public void NullifyViking() => viking.ForceChangeState(new NullVikingState(viking));
 
 		#endregion
 	}

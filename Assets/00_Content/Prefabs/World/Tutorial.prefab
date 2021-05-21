@@ -90,7 +90,8 @@ MonoBehaviour:
     setDuration: 0
     duration: 0
     deactivate: []
-    activate: []
+    activate:
+    - {fileID: 0}
     highlightTarget: {fileID: 0}
     onEnter:
       m_PersistentCalls:
@@ -137,17 +138,6 @@ MonoBehaviour:
   - name: Pour tankard
     text: 
     completeOn: 4
-    setDuration: 0
-    duration: 0
-    deactivate: []
-    activate: []
-    highlightTarget: {fileID: 0}
-    onEnter:
-      m_PersistentCalls:
-        m_Calls: []
-  - name: Give tankard to viking
-    text: Excellent! Now bring the filled tankard over to the customer.
-    completeOn: 2
     setDuration: 0
     duration: 0
     deactivate: []
@@ -320,7 +310,7 @@ MonoBehaviour:
         m_Calls: []
   - name: Deliver food
     text: 
-    completeOn: 17
+    completeOn: 2
     setDuration: 0
     duration: 0
     deactivate: []
@@ -374,6 +364,18 @@ MonoBehaviour:
         - m_Target: {fileID: 7555673374434960930}
           m_TargetAssemblyTypeName: World.Tutorial, Assembly-CSharp
           m_MethodName: DisableGoblinSpawning
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7555673374434960930}
+          m_TargetAssemblyTypeName: World.Tutorial, Assembly-CSharp
+          m_MethodName: EnableGoblin
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -444,9 +446,25 @@ MonoBehaviour:
     highlightTarget: {fileID: 0}
     onEnter:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: Player.PlayerMovement, Assembly-CSharp
+          m_MethodName: set_CanMove
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
   - name: Picking up tool
-    text: Luckily you can repair the table using the hammer.
+    text: 'With that done you need to fix the damages that the viking has caused.
+      Drop your axe and equip the hammer instead. Use it to repair the table that
+      got destroyed.
+
+'
     completeOn: 14
     setDuration: 0
     duration: 0
@@ -639,7 +657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.34901962}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
