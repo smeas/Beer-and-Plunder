@@ -1,13 +1,16 @@
+using System.Collections;
 using Cameras;
 using Interactables;
 using Interactables.Beers;
 using Interactables.Instruments;
+using Interactables.Kitchens;
 using Interactables.Weapons;
 using Player;
 using Scenes;
 using Taverns;
 using UI;
 using UnityEngine;
+using UnityEngine.AI;
 using Vikings;
 using Vikings.States;
 
@@ -16,11 +19,14 @@ namespace World {
 		[Header("Tutorial objects")]
 		[SerializeField] private PlayerComponent player;
 		[SerializeField] private Viking viking;
+		[SerializeField] private Tankard tankard;
 		[SerializeField] private BeerTap beerTap;
+		[SerializeField] private BeerCellar beerCellar;
 		[SerializeField] private Table table;
 		[SerializeField] private Instrument instrument;
 		[SerializeField] private RepairTool tool;
 		[SerializeField] private Axe weapon;
+		[SerializeField] private Kitchen kitchen;
 
 		[Space]
 		[SerializeField] private DialogueText dialogueText;
@@ -34,6 +40,10 @@ namespace World {
 		private GameObject highlight;
 		private bool highlightActive;
 		private FollowingCamera cam;
+
+		private bool autoFill = true;
+		private NavMeshAgent goblinAgent;
+		private float goblinSpeed;
 
 		private void Start() {
 			if (PlayerManager.Instance != null)
@@ -53,18 +63,42 @@ namespace World {
 			viking.TakingSeat += OnVikingTakeSeat;
 			viking.BecameSatisfied += OnVikingSatisfied;
 			viking.Hit += OnVikingHit;
+			viking.OrderTaken += OnVikingOrderTaken;
+
+			tankard.OnPickedUp += OnTankardPickedUp;
+			tankard.OnSpilled += OnTankardSpilled;
 
 			beerTap.BeerPoured += OnBeerPoured;
 			beerTap.TapRefilled += OnBeerTapRefilled;
+
+			beerCellar.beerBarrelSpawn += barrel => barrel.OnPickedUp += OnBeerBarrelPickedUp;
+
+			kitchen.CookingFinished += OnCookingFinished;
+
+			GoblinController.Instance.GoblinSpawned += OnGoblinSpawned;
 
 			table.Destroyed += OnTableDestroyed;
 			table.Repaired += OnTableRepaired;
 
 			instrument.OnPickedUp += OnInstrumentPickedUp;
+			instrument.OnDropped += OnInstrumentDropped;
 			weapon.OnPickedUp += OnWeaponPickedUp;
 			tool.OnPickedUp += OnToolPickedUp;
 
 			Tavern.Instance.OnMoneyChanges += OnMoneyChanged;
+		}
+
+		private void OnGoblinSpawned(Goblin goblin) {
+			goblinAgent = goblin.GetComponent<NavMeshAgent>();
+			goblinSpeed = goblinAgent.speed;
+			goblinAgent.speed = 0;
+
+			goblin.OnLeave += OnGoblinLeave;
+		}
+
+		private void OnTankardSpilled() {
+			if (autoFill)
+				beerTap.Refill();
 		}
 
 		private void OnDestroy() {
@@ -73,7 +107,6 @@ namespace World {
 		}
 
 		#region EventConversions
-
 		private void OnVikingLeaveQueue(Viking sender) => OnTutorialEvent(TutorialEvent.VikingLeaveQueue);
 		private void OnVikingTakeSeat() => OnTutorialEvent(TutorialEvent.VikingSeated);
 		private void OnVikingSatisfied() => OnTutorialEvent(TutorialEvent.VikingSatisfied);
@@ -83,25 +116,42 @@ namespace World {
 		private void OnTableDestroyed() => OnTutorialEvent(TutorialEvent.TableDestroyed);
 		private void OnVikingHit() => OnTutorialEvent(TutorialEvent.VikingHit);
 		private void OnTableRepaired() => OnTutorialEvent(TutorialEvent.TableRepaired);
+		private void OnTankardPickedUp(PickUp _, PlayerComponent __) => OnTutorialEvent(TutorialEvent.TankardPickedUp);
+		private void OnBeerBarrelPickedUp(PickUp _, PlayerComponent __) => OnTutorialEvent(TutorialEvent.BeerBarrelPickedUp);
 		private void OnInstrumentPickedUp(PickUp _, PlayerComponent playerComponent) => OnTutorialEvent(TutorialEvent.InstrumentPickedUp);
+		private void OnInstrumentDropped(PickUp _, PlayerComponent __) => OnTutorialEvent(TutorialEvent.InstrumentDropped);
 		private void OnWeaponPickedUp(PickUp _, PlayerComponent playerComponent) => OnTutorialEvent(TutorialEvent.WeaponPickedUp);
 		private void OnToolPickedUp(PickUp _, PlayerComponent playerComponent) => OnTutorialEvent(TutorialEvent.RepairToolPickedUp);
+		private void OnVikingOrderTaken() => OnTutorialEvent(TutorialEvent.OrderTaken);
+		private void OnCookingFinished(Food food) {
+			food.OnPickedUp += OnFoodPickedUp;
+			OnTutorialEvent(TutorialEvent.CookingFinished);
+		}
+		private void OnFoodPickedUp(PickUp _, PlayerComponent __) => OnTutorialEvent(TutorialEvent.FoodPickedUp);
+		private void OnGoblinLeave(Goblin obj) => OnTutorialEvent(TutorialEvent.GoblinLeave);
 
 		#endregion
 
 		private void OnTutorialEvent(TutorialEvent e) {
 			if (currentPhaseIndex >= phases.Length) return;
 
-			if (CurrentPhase.OnEvent(e)) {
-				currentPhaseIndex++;
-
-				if (currentPhaseIndex >= phases.Length) {
-					SceneLoadManager.Instance.LoadMainMenu();
+			if (!CurrentPhase.SetDuration && CurrentPhase.IsCorrectEvent(e)) {
+				if (!TryGoToNextPhase())
 					return;
-				}
 
 				PreparePhase();
 			}
+		}
+
+		private bool TryGoToNextPhase() {
+			currentPhaseIndex++;
+
+			if (currentPhaseIndex >= phases.Length) {
+				SceneLoadManager.Instance.LoadMainMenu();
+				return false;
+			}
+
+			return true;
 		}
 
 		private void PreparePhase() {
@@ -117,13 +167,25 @@ namespace World {
 			string trimmedText = CurrentPhase.Text.Trim();
 			if (trimmedText.Length > 0)
 				dialogueText.TypeText(trimmedText);
+
+			if (CurrentPhase.SetDuration)
+				StartCoroutine(CoWaitPhaseDuration(CurrentPhase.Duration));
+		}
+
+		private IEnumerator CoWaitPhaseDuration(float duration) {
+			yield return new WaitForSeconds(duration);
+
+			if (TryGoToNextPhase())
+				PreparePhase();
 		}
 
 		#region Unity Event Handlers
 
-		public void StartBrawl() {
-			viking.ForceChangeState(new BrawlingVikingState(viking, table));
-		}
+		public void StartBrawl() => viking.ForceChangeState(new BrawlingVikingState(viking, table));
+		public void DisableAutoFill() => autoFill = false;
+		public void SpawnGoblin() => GoblinController.Instance.MaxGoblins = 1;
+		public void DisableGoblinSpawning() => GoblinController.Instance.MaxGoblins = 1;
+		public void EnableGoblin() => goblinAgent.speed = goblinSpeed;
 
 		#endregion
 	}

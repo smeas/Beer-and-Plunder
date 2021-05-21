@@ -9,8 +9,15 @@
 		TableDestroyed,
 		TableRepaired,
 		MoneyEarned,
+		TankardPickedUp,
+		BeerBarrelPickedUp,
 		InstrumentPickedUp,
+		InstrumentDropped,
 		WeaponPickedUp,
 		RepairToolPickedUp,
+		OrderTaken,
+		CookingFinished,
+		FoodPickedUp,
+		GoblinLeave,
 	}
 }

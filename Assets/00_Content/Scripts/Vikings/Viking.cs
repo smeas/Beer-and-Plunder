@@ -69,6 +69,7 @@ namespace Vikings {
 		public event VikingLeavingQueue LeaveQueue;
 		public Action TakingSeat;
 		public Action BecameSatisfied;
+		public Action OrderTaken;
 		public Action Hit;
 
 		private void Awake() {

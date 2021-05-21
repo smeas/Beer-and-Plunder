@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Audio;
 using System.Collections;
@@ -12,6 +13,7 @@ namespace Interactables.Beers {
 		private Vector3 foamStartingSize;
 
 		private bool isFull;
+		public event Action OnSpilled;
 
 		public DesireType DesireType => beerData.type;
 
@@ -31,7 +33,7 @@ namespace Interactables.Beers {
 		}
 
 		private void FixedUpdate() {
-			if (isFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
+			if (isFull && !isBeingCarried && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
 				Spill();
 		}
 		/// <summary>
@@ -44,7 +46,7 @@ namespace Interactables.Beers {
 				foam.transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
 					IsFull = false;
 					foam.transform.localScale = foamStartingSize;
-				});			
+				});
 		}
 
 		protected override void OnPlace() {
@@ -54,6 +56,7 @@ namespace Interactables.Beers {
 		private void Spill() {
 			IsFull = false;
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_SpillBeer);
+			OnSpilled?.Invoke();
 		}
 	}
 }

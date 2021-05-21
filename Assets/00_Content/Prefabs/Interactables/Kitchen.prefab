@@ -108,7 +108,8 @@ MonoBehaviour:
   cookingProgressBar: {fileID: 3024475685242705396}
   foodSpawnpoint: {fileID: 6154440364915559081}
   foodSpawnEffect: {fileID: 6070338717345129699}
-  foodPrefab: {fileID: 650769716771590968, guid: 775d3b8ca228ff54a8d379acdefe47cb, type: 3}
+  foodPrefab: {fileID: 1531665673357003027, guid: 775d3b8ca228ff54a8d379acdefe47cb, type: 3}
+  smokeParticleSystem: {fileID: 0}
   cookingTime: 10
 --- !u!1 &8295582334344848446
 GameObject:

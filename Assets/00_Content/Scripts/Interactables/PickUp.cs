@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using System.Linq;
 using Player;
 using Rounds;
@@ -18,7 +17,7 @@ namespace Interactables {
 		[SerializeField] public Transform ItemSlotPivot;
 
 		protected new Rigidbody rigidbody;
-		private bool isBeingCarried;
+		protected bool isBeingCarried;
 
 		private Vector3 startPosition;
 		private Quaternion startRotation;
