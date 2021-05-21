@@ -8,6 +8,7 @@ namespace Interactables.Beers {
 	public class Tankard : PickUp, IDesirable {
 		[SerializeField] private BeerData beerData;
 		[SerializeField] private GameObject foam;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1f;
 
 		private Vector3 foamStartingSize;
 
@@ -31,7 +32,7 @@ namespace Interactables.Beers {
 		}
 
 		private void FixedUpdate() {
-			if (isFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
+			if (IsFull && Vector3.Dot(transform.up, Vector3.down) >= -0.2f)
 				Spill();
 		}
 		/// <summary>
@@ -44,7 +45,7 @@ namespace Interactables.Beers {
 				foam.transform.DOScale(Vector3.zero, shrinkTime).OnComplete(() => {
 					IsFull = false;
 					foam.transform.localScale = foamStartingSize;
-				});			
+				});
 		}
 
 		protected override void OnPlace() {
@@ -54,6 +55,12 @@ namespace Interactables.Beers {
 		private void Spill() {
 			IsFull = false;
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_SpillBeer);
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+				AudioManager.PlayEffectSafe(SoundEffect.BeerDrop);
+			}
 		}
 	}
 }

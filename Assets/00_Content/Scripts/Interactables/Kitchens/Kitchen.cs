@@ -19,6 +19,7 @@ namespace Interactables.Kitchens {
 
 		private Queue<KitchenTicket> tickets = new Queue<KitchenTicket>();
 		private bool isCooking;
+		private SoundHandle cookingSound;
 
 		private void OnEnable() {
 			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver += HandleOnNewRoundStart;
@@ -48,6 +49,10 @@ namespace Interactables.Kitchens {
 			cookingProgressBar.Show();
 			smokeParticleSystem.Play(true);
 
+			if(tickets.Count == 1) {
+				cookingSound = AudioManager.Instance.PlayEffect(SoundEffect.Cooking, true);
+			}
+
 			while (isCooking && cookingProgress <= cookingTime) {
 
 				cookingProgress += Time.deltaTime;
@@ -71,12 +76,14 @@ namespace Interactables.Kitchens {
 				cookingProgressBar.Hide();
 				isCooking = false;
 				smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+				cookingSound.Stop();
 			}
 
 			Instantiate(foodPrefab, foodSpawnpoint);
 			foodSpawnEffect.Play();
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
+
 		}
 		/// <summary>
 		/// Resets the progress etc on the kitchen between each round

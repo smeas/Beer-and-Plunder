@@ -31,9 +31,11 @@ namespace Rounds {
 		private GameOver gameOverPanel;
 		private FollowingCamera followingCamera;
 		private ScoreCard scoreCard;
+		private SoundHandle clockTickSound;
 		private float roundTimer;
 		private int currentRound = 1;
 		private bool isRoundActive = true;
+		private bool isTenSecondTimerStarted = false;
 
 		public ScalingData CurrentDifficulty =>
 			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
@@ -67,7 +69,17 @@ namespace Rounds {
 
 			roundTimer += Time.deltaTime;
 
-			if (roundTimer >= roundDuration) RoundOver();
+			
+			if (roundDuration - roundTimer <= 10 && !isTenSecondTimerStarted) {
+				clockTickSound = AudioManager.Instance.PlayEffect(SoundEffect.ClockTick, true);
+				isTenSecondTimerStarted = true;
+			}
+
+			if (roundTimer >= roundDuration) {
+				clockTickSound.Stop();
+				isTenSecondTimerStarted = false;
+				RoundOver();
+			}
 		}
 
 		private void RoundOver() {
@@ -81,6 +93,7 @@ namespace Rounds {
 			if (VikingController.Instance != null) {
 				VikingController.Instance.CanSpawn = false;
 				VikingController.Instance.LeaveAllVikings();
+				AudioManager.Instance.PlayEffect(SoundEffect.Gameplay_WarHorn);
 
 				while (VikingController.Instance.VikingCount > 0)
 					yield return null;
