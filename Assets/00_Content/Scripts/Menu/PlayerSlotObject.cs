@@ -1,3 +1,4 @@
+using System.Collections;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -21,9 +22,25 @@ namespace Menu {
 		private bool isTaken;
 		private PlayerComponent playerComponent;
 
-		private void OnEnable() {
+		private void Start() {
+			StartCoroutine(CoDelayJoinText());
+		}
+
+		// In update due to it positioning badly the first frame
+		private void Update() {
 			Vector3 screenPoint = Camera.main.WorldToScreenPoint(PlayerSpawnController.Instance.SpawnPoints[Id-1].position);
 			transform.position = screenPoint + new Vector3(offset.x, offset.y, 0f);
+		}
+
+		// Delay frames to prevent flickering of text
+		private IEnumerator CoDelayJoinText() {
+			joinText.gameObject.SetActive(false);
+			const int framesToWait = 1;
+
+			for (int i = 0; i < framesToWait; i++)
+				yield return null;
+
+			joinText.gameObject.SetActive(!isTaken);
 		}
 
 		public void JoinPlayer(PlayerComponent player) {

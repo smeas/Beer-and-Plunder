@@ -9,6 +9,7 @@ namespace Interactables.Beers {
 	public class Tankard : PickUp, IDesirable {
 		[SerializeField] private BeerData beerData;
 		[SerializeField] private GameObject foam;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1f;
 
 		private Vector3 foamStartingSize;
 
@@ -57,6 +58,12 @@ namespace Interactables.Beers {
 			IsFull = false;
 			AudioManager.PlayEffectSafe(SoundEffect.Physics_SpillBeer);
 			OnSpilled?.Invoke();
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+				AudioManager.PlayEffectSafe(SoundEffect.BeerDrop);
+			}
 		}
 	}
 }

@@ -20,6 +20,7 @@ namespace Interactables.Kitchens {
 
 		private Queue<KitchenTicket> tickets = new Queue<KitchenTicket>();
 		private bool isCooking;
+		private SoundHandle cookingSound;
 
 		public event Action<Food> CookingFinished;
 
@@ -51,6 +52,10 @@ namespace Interactables.Kitchens {
 			cookingProgressBar.Show();
 			smokeParticleSystem.Play(true);
 
+			if(tickets.Count == 1) {
+				cookingSound = AudioManager.Instance.PlayEffect(SoundEffect.Cooking, true);
+			}
+
 			while (isCooking && cookingProgress <= cookingTime) {
 
 				cookingProgress += Time.deltaTime;
@@ -74,12 +79,14 @@ namespace Interactables.Kitchens {
 				cookingProgressBar.Hide();
 				isCooking = false;
 				smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+				cookingSound.Stop();
 			}
 
 			Food food = Instantiate(foodPrefab, foodSpawnpoint);
 			foodSpawnEffect.Play();
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
+
 			CookingFinished?.Invoke(food);
 		}
 		/// <summary>
