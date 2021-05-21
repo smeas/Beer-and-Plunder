@@ -82,6 +82,7 @@ namespace Rounds {
 		private void RoundOver() {
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
+			AudioManager.Instance.PlayEffect(SoundEffect.Gameplay_WarHorn);
 
 			// TODO: Wait for all vikings to leave before continuing.
 			DisableGamePlay();
