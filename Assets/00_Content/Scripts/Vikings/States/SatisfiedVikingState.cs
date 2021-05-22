@@ -44,6 +44,9 @@ namespace Vikings.States {
 		}
 
 		public override void Exit() {
+			viking.animationDriver.Eating = false;
+			viking.animationDriver.Drinking = false;
+
 			if (givenItem != null) {
 				if (satisfiedDesire.shouldThrowItem) {
 					viking.animationDriver.TriggerThrow();
@@ -57,6 +60,9 @@ namespace Vikings.States {
 					givenItem.GetComponent<Rigidbody>().velocity =
 						MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) *
 						viking.throwStrength;
+				}
+				else {
+					Object.Destroy(givenItem.gameObject);
 				}
 			}
 		}
