@@ -15,7 +15,7 @@ namespace Player {
 
 		private Vector2 moveInput;
 		private Vector2 movementDirection;
-		public float speed;
+		private float speed;
 
 		public float Speed => speed * speedMultiplier;
 		/// <summary>

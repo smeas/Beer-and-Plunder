@@ -429,8 +429,6 @@ MonoBehaviour:
   maxVelocity: 6
   speedMultiplier: 1
   canMove: 1
-  speed: 0
-  actualSpeed: 0
 --- !u!114 &4711298765348120590
 MonoBehaviour:
   m_ObjectHideFlags: 0
