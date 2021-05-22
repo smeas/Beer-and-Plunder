@@ -19,6 +19,7 @@ namespace World {
 		[SerializeField] private bool showInteractControls;
 		[SerializeField] private bool showDropControls;
 		[SerializeField] private GameObject highlightTarget;
+		[SerializeField] private float highlightHeight = 4.5f;
 
 		[Header("Events")]
 		[SerializeField] private UnityEvent onEnter;
@@ -52,7 +53,7 @@ namespace World {
 
 		private void MoveHighlight(GameObject highlightObject, GameObject target) {
 			highlightObject.SetActive(true);
-			highlightObject.transform.position = target.transform.position + new Vector3(0, 4.5f, 0);
+			highlightObject.transform.position = target.transform.position + new Vector3(0, highlightHeight, 0);
 		}
 
 		public bool IsCorrectEvent(TutorialEvent e) {

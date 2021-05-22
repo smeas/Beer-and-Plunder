@@ -255,6 +255,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -283,6 +284,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 4
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -311,6 +313,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 2
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -330,6 +333,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 1
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -344,6 +348,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 4
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -358,6 +363,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -375,6 +381,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -403,6 +410,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 1
     highlightTarget: {fileID: 0}
+    highlightHeight: 1.5
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -418,6 +426,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 4
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -444,6 +453,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 1.5
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -458,6 +468,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -476,6 +487,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 1
     highlightTarget: {fileID: 0}
+    highlightHeight: 2
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -490,6 +502,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 1
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -506,6 +519,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 1
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -521,6 +535,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -537,6 +552,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 4
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -553,6 +569,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 2.5
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -567,6 +584,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -590,6 +608,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 1
     highlightTarget: {fileID: 0}
+    highlightHeight: 3
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -616,6 +635,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -655,6 +675,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -672,6 +693,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -700,6 +722,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls:
@@ -728,6 +751,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 1.5
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -742,6 +766,7 @@ MonoBehaviour:
     showInteractControls: 1
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -760,6 +785,7 @@ MonoBehaviour:
     showInteractControls: 0
     showDropControls: 0
     highlightTarget: {fileID: 0}
+    highlightHeight: 0
     onEnter:
       m_PersistentCalls:
         m_Calls: []
