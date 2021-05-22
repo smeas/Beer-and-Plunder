@@ -51,6 +51,7 @@ namespace Rounds {
 		public float RoundTimer => roundTimer;
 		public int RequiredMoney => requiredMoney;
 		public bool IsRoundActive => isRoundActive;
+		public bool IsGamePlayActive => isGamePlayActive;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
