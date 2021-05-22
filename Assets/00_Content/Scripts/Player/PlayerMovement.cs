@@ -17,18 +17,16 @@ namespace Player {
 		private Vector2 movementDirection;
 		private float speed;
 
-		private Vector3 lastPosition;
-		private float actualSpeed;
-
 		public float Speed => speed * speedMultiplier;
 		/// <summary>
-		/// Actual speed of the player (think rigidbody.velocity) clamped to the max speed. Delayed by one FixedUpdate.
+		/// Actual speed of the player (think rigidbody.velocity) clamped to the max speed.
 		/// </summary>
-		public float ActualSpeed => Mathf.Min(actualSpeed, maxVelocity);
+		public float ActualSpeed => Mathf.Min(rigidbody.velocity.magnitude, maxVelocity);
 		public float MaxSpeed => maxVelocity;
 		public Vector2 MoveInput => moveInput;
 		public Vector3 Velocity => new Vector3(movementDirection.x * speed * speedMultiplier, 0f, movementDirection.y * speed * speedMultiplier);
 		public Collider MovementCollider => movementCollider;
+		public Rigidbody Rigidbody => rigidbody;
 		public bool DoMovement { get; set; } = true;
 
 		public float SpeedMultiplier {
@@ -41,8 +39,11 @@ namespace Player {
 			set => canMove = value;
 		}
 
-		private void Start() {
+		private void Awake() {
 			rigidbody = GetComponent<Rigidbody>();
+		}
+
+		private void Start() {
 			mainCamera = Camera.main;
 		}
 
@@ -63,23 +64,18 @@ namespace Player {
 
 			if (DoMovement)
 				ApplyMovement();
-
-			Vector3 currentPosition = transform.position;
-			actualSpeed = (currentPosition - lastPosition).magnitude / Time.deltaTime;
-			lastPosition = currentPosition;
 		}
 
 		private void ApplyMovement() {
-			if (speed == 0 || movementDirection == Vector2.zero) return;
-
-			Vector2 movement2 = movementDirection * (speed * speedMultiplier * Time.deltaTime);
-			if (movement2 == Vector2.zero)
+			if (speed == 0 || speedMultiplier == 0 || movementDirection == Vector2.zero) {
+				rigidbody.velocity = Vector3.zero;
 				return;
+			}
 
+			Vector2 movement2 = movementDirection * (speed * speedMultiplier);
 			Vector3 movement3 = new Vector3(movement2.x, 0, movement2.y);
 
-			rigidbody.MovePosition(transform.position + movement3);
-
+			rigidbody.velocity = movement3;
 			transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
 		}
 
