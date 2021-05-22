@@ -4,16 +4,14 @@ using Taverns;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities;
 
 public class HUD : MonoBehaviour {
-	[SerializeField] private TMP_Text tavernMoneyText;
-
 	[SerializeField] private Image clockBackgroundDark;
 	[SerializeField] private Transform clockPointer;
 	[SerializeField] private Image moneyFillBar;
 	[SerializeField] private TMP_Text moneyCurrentText;
 	[SerializeField] private TMP_Text moneyRequiredText;
+	[SerializeField] private TMP_Text roundStatusText;
 
 	[Header("Effects")]
 	[SerializeField] private float moneyPunchStrength = 1.25f;
@@ -26,7 +24,12 @@ public class HUD : MonoBehaviour {
 			Tavern.Instance.OnMoneyChanges += HandleOnMoneyChanges;
 		} else {
 			Debug.Log("The HUD cannot find an instance of the Tavern-singleton while in the Start-function.");
-			tavernMoneyText.text = " ";
+		}
+
+		if (RoundController.Instance != null) {
+			RoundController.Instance.OnIntermissionStart += HandleOnIntermissionStart;
+			RoundController.Instance.OnRoundOver += HandleOnRoundOver;
+			RoundController.Instance.OnNewRoundStart += HandleOnNewRoundStart;
 		}
 	}
 
@@ -55,5 +58,18 @@ public class HUD : MonoBehaviour {
 		moneyCurrentText.transform.DOPunchScale(new Vector2(moneyPunchStrength, moneyPunchStrength), moneyCurrentPunchDuration);
 
 		moneyRequiredText.text = requiredMoney.ToString();
+	}
+
+	private void HandleOnIntermissionStart() {
+		roundStatusText.text = "Intermission";
+	}
+
+	private void HandleOnRoundOver() {
+		roundStatusText.enabled = false;
+	}
+
+	private void HandleOnNewRoundStart() {
+		roundStatusText.text = "Shift " + RoundController.Instance.CurrentRound;
+		roundStatusText.enabled = true;
 	}
 }
