@@ -22,6 +22,17 @@ namespace Vikings.States {
 		}
 
 		public override VikingState Update() {
+			maxLeavingTimer += Time.deltaTime;
+
+			if (maxLeavingTimer >= viking.maxLeavingTime) {
+				Debug.LogWarning("Viking took to long to leave the tavern", viking);
+				Object.Instantiate(viking.disappearParticleSystem, viking.transform.position + new Vector3(0, 0.8f, 0), viking.transform.rotation)
+					.gameObject.AddComponent<ParticleCleanup>();
+
+				viking.FinishLeaving();
+				return new NullVikingState(viking);
+			}
+
 			if (isDismounting) {
 				if (!viking.animationDriver.IsSitting) {
 					StartNavigating();
@@ -36,17 +47,6 @@ namespace Vikings.States {
 				return this;
 
 			Debug.Assert(viking.NavMeshAgent.hasPath);
-
-			maxLeavingTimer += Time.deltaTime;
-
-			if (maxLeavingTimer >= viking.maxLeavingTime) {
-				Debug.LogWarning("Viking took to long to leave the tavern", viking);
-				Object.Instantiate(viking.disappearParticleSystem, viking.transform.position + new Vector3(0, 0.8f, 0), viking.transform.rotation)
-					.gameObject.AddComponent<ParticleCleanup>();
-
-				viking.FinishLeaving();
-				return new NullVikingState(viking);
-			}
 
 			if (viking.NavMeshAgent.pathStatus != NavMeshPathStatus.PathComplete) {
 				Debug.LogWarning("Viking has no exit path or is blocked!", viking);
