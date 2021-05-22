@@ -30,6 +30,9 @@ namespace World {
 
 		[Space]
 		[SerializeField] private DialogueText dialogueText;
+		[SerializeField] private GameObject moveControls;
+		[SerializeField] private GameObject interactControls;
+		[SerializeField] private GameObject dropControls;
 		[SerializeField] private GameObject highlightPrefab;
 
 		[Space]
@@ -171,6 +174,10 @@ namespace World {
 
 			if (CurrentPhase.SetDuration)
 				StartCoroutine(CoWaitPhaseDuration(CurrentPhase.Duration));
+
+			moveControls.SetActive(CurrentPhase.ShowMoveControls);
+			interactControls.SetActive(CurrentPhase.ShowInteractControls);
+			dropControls.SetActive(CurrentPhase.ShowDropControls);
 		}
 
 		private IEnumerator CoWaitPhaseDuration(float duration) {

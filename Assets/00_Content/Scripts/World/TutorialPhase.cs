@@ -15,6 +15,9 @@ namespace World {
 		[Header("Actions")]
 		[SerializeField] private GameObject[] deactivate;
 		[SerializeField] private GameObject[] activate;
+		[SerializeField] private bool showMoveControls;
+		[SerializeField] private bool showInteractControls;
+		[SerializeField] private bool showDropControls;
 		[SerializeField] private GameObject highlightTarget;
 
 		[Header("Events")]
@@ -23,6 +26,9 @@ namespace World {
 		public string Text => text;
 		public bool SetDuration => setDuration;
 		public float Duration => duration;
+		public bool ShowMoveControls => showMoveControls;
+		public bool ShowInteractControls => showInteractControls;
+		public bool ShowDropControls => showDropControls;
 
 		public void Enter(GameObject highlightObject) {
 			foreach (GameObject gameObject in deactivate) {
