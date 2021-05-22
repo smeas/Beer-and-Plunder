@@ -4,7 +4,6 @@ using Interactables;
 using Interactables.Weapons;
 using Player;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Vikings.States {
 	/// <summary>
@@ -14,14 +13,13 @@ namespace Vikings.States {
 		private Table targetTable;
 		private Viking vikingTarget;
 		private PlayerComponent playerTarget;
-		private NavMeshAgent navMeshAgent;
 		private BrawlType brawlType;
 
 		private float attackTimer;
 		private bool isDismountingChair;
 		private bool lastIsMoving;
 
-		private bool IsMoving =>  navMeshAgent.pathPending || navMeshAgent.desiredVelocity.sqrMagnitude != 0;
+		private bool IsMoving =>  viking.NavMeshAgent.pathPending || viking.NavMeshAgent.desiredVelocity.sqrMagnitude != 0;
 
 		public BrawlingVikingState(Viking viking, Table targetTable) : base(viking) {
 			Debug.Assert(targetTable != null, "Viking is entering a tableBrawl with no target");
@@ -60,17 +58,16 @@ namespace Vikings.States {
 			viking.animationDriver.Brawl = false;
 			viking.animationDriver.TableBrawl = false;
 
-			navMeshAgent.enabled = false;
+			viking.NavMeshAgent.enabled = false;
 		}
 
 		private void OnChairDismounted() {
 			isDismountingChair = false;
 
-			navMeshAgent = viking.GetComponent<NavMeshAgent>();
-			navMeshAgent.enabled = true;
+			viking.NavMeshAgent.enabled = true;
 
 			if (brawlType == BrawlType.TableBrawl) {
-				navMeshAgent.enabled = false;
+				viking.NavMeshAgent.enabled = false;
 				LookAtTable();
 			}
 		}
@@ -116,7 +113,7 @@ namespace Vikings.States {
 
 			// When we stop moving, make sure we're looking at the table.
 			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
-				navMeshAgent.enabled = false;
+				viking.NavMeshAgent.enabled = false;
 				LookAtTable();
 			}
 
@@ -147,8 +144,8 @@ namespace Vikings.States {
 				int index = Random.Range(0, possibleTargets.Length);
 				targetTable = possibleTargets[index];
 
-				navMeshAgent.enabled = true;
-				navMeshAgent.SetDestination(targetTable.transform.position);
+				viking.NavMeshAgent.enabled = true;
+				viking.NavMeshAgent.SetDestination(targetTable.transform.position);
 				attackTimer = viking.Data.attackRate;
 			}
 
@@ -167,7 +164,7 @@ namespace Vikings.States {
 
 		private VikingState DoPlayerBrawl() {
 
-			if ((navMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude <
+			if ((viking.NavMeshAgent.transform.position - playerTarget.transform.position).sqrMagnitude <
 				viking.Data.attackTriggerDistance * viking.Data.attackTriggerDistance
 				&& !viking.IsAttacking) {
 				viking.MakeAttack();
@@ -175,8 +172,8 @@ namespace Vikings.States {
 			}
 
 			if (!viking.IsAttacked) {
-				navMeshAgent.enabled = true;
-				navMeshAgent.SetDestination(playerTarget.transform.position);
+				viking.NavMeshAgent.enabled = true;
+				viking.NavMeshAgent.SetDestination(playerTarget.transform.position);
 			}
 
 			return this;
