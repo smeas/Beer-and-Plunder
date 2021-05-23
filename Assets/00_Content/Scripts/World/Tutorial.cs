@@ -18,7 +18,6 @@ namespace World {
 	public class Tutorial : MonoBehaviour {
 		[Header("Tutorial objects")]
 		[SerializeField] private PlayerComponent player;
-		[SerializeField] private Viking viking;
 		[SerializeField] private Tankard tankard;
 		[SerializeField] private BeerTap beerTap;
 		[SerializeField] private BeerCellar beerCellar;
@@ -43,6 +42,7 @@ namespace World {
 		private GameObject highlight;
 		private bool highlightActive;
 		private FollowingCamera cam;
+		private Viking viking;
 
 		private bool autoFill = true;
 		private NavMeshAgent goblinAgent;
@@ -62,11 +62,14 @@ namespace World {
 		}
 
 		private void AddEventListeners() {
-			viking.LeaveQueue += OnVikingLeaveQueue;
-			viking.TakingSeat += OnVikingTakeSeat;
-			viking.BecameSatisfied += OnVikingSatisfied;
-			viking.Hit += OnVikingHit;
-			viking.OrderTaken += OnVikingOrderTaken;
+			VikingController.Instance.VikingSpawned += vik => {
+				viking = vik;
+				viking.LeaveQueue += OnVikingLeaveQueue;
+				viking.TakingSeat += OnVikingTakeSeat;
+				viking.BecameSatisfied += OnVikingSatisfied;
+				viking.Hit += OnVikingHit;
+				viking.OrderTaken += OnVikingOrderTaken;
+			};
 
 			tankard.OnPickedUp += OnTankardPickedUp;
 			tankard.OnSpilled += OnTankardSpilled;
@@ -94,7 +97,6 @@ namespace World {
 		private void OnGoblinSpawned(Goblin goblin) {
 			goblinAgent = goblin.GetComponent<NavMeshAgent>();
 			goblinSpeed = goblinAgent.speed;
-			// goblinAgent.isStopped = true;
 			goblinAgent.speed = 0.01f;
 
 			goblin.OnLeave += OnGoblinLeave;

@@ -54,7 +54,6 @@ namespace Vikings {
 		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
-		public VikingData Data => vikingData;
 		public DesireData[] Desires { get; private set; }
 		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
 		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
@@ -64,6 +63,10 @@ namespace Vikings {
 		public int QueuePosition { get; set; }
 		public bool IsAttacking => animationDriver.IsPlayingAttackAnimation;
 		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
+		public VikingData Data {
+			get => vikingData;
+			set => vikingData = value;
+		}
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
