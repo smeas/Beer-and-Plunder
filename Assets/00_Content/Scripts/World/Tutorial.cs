@@ -11,6 +11,7 @@ using Taverns;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using Vikings;
 using Vikings.States;
 
@@ -32,7 +33,11 @@ namespace World {
 		[SerializeField] private GameObject moveControls;
 		[SerializeField] private GameObject interactControls;
 		[SerializeField] private GameObject dropControls;
+		[SerializeField] private GameObject continuePrompt;
 		[SerializeField] private GameObject highlightPrefab;
+
+		[Space]
+		[SerializeField] private InputActionProperty continueAction;
 
 		[Space]
 		[SerializeField] private TutorialPhase[] phases;
@@ -59,6 +64,11 @@ namespace World {
 			AddEventListeners();
 
 			PreparePhase();
+		}
+
+		private void OnEnable() {
+			continueAction.action.Enable();
+			continueAction.action.performed += OnContinuePerformed;
 		}
 
 		private void AddEventListeners() {
@@ -135,6 +145,7 @@ namespace World {
 		}
 		private void OnFoodPickedUp(PickUp _, PlayerComponent __) => OnTutorialEvent(TutorialEvent.FoodPickedUp);
 		private void OnGoblinLeave(Goblin obj) => OnTutorialEvent(TutorialEvent.GoblinLeave);
+		private void OnContinuePerformed(InputAction.CallbackContext obj) => OnTutorialEvent(TutorialEvent.ContinuePressed);
 
 		#endregion
 
@@ -180,6 +191,8 @@ namespace World {
 			moveControls.SetActive(CurrentPhase.ShowMoveControls);
 			interactControls.SetActive(CurrentPhase.ShowInteractControls);
 			dropControls.SetActive(CurrentPhase.ShowDropControls);
+
+			continuePrompt.SetActive(CurrentPhase.CompleteOn == TutorialEvent.ContinuePressed);
 		}
 
 		private IEnumerator CoWaitPhaseDuration(float duration) {

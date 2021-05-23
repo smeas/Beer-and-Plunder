@@ -30,6 +30,7 @@ namespace World {
 		public bool ShowMoveControls => showMoveControls;
 		public bool ShowInteractControls => showInteractControls;
 		public bool ShowDropControls => showDropControls;
+		public TutorialEvent CompleteOn => completeOn;
 
 		public void Enter(GameObject highlightObject) {
 			foreach (GameObject gameObject in deactivate) {

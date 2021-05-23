@@ -19,5 +19,6 @@
 		CookingFinished,
 		FoodPickedUp,
 		GoblinLeave,
+		ContinuePressed,
 	}
 }
