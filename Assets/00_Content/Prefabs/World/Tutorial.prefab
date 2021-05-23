@@ -559,7 +559,7 @@ MonoBehaviour:
         m_Calls: []
   - name: Delivering second tankard
     text: The viking wants another beer! Just refill the tankard from before.
-    completeOn: 2
+    completeOn: 20
     setDuration: 0
     duration: 0
     deactivate: []
@@ -610,7 +610,7 @@ MonoBehaviour:
     text: 'Woho! The crowd loves you! Drop the harp for now.
 
 '
-    completeOn: 12
+    completeOn: 20
     setDuration: 0
     duration: 0
     deactivate: []
@@ -675,7 +675,7 @@ MonoBehaviour:
         m_Calls: []
   - name: Deliver food
     text: 
-    completeOn: 2
+    completeOn: 20
     setDuration: 0
     duration: 0
     deactivate: []

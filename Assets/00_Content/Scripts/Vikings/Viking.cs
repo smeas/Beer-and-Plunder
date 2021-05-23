@@ -72,6 +72,7 @@ namespace Vikings {
 		public event VikingLeavingQueue LeaveQueue;
 		public Action TakingSeat;
 		public Action BecameSatisfied;
+		public Action SatisfiedEnd;
 		public Action OrderTaken;
 		public Action Hit;
 

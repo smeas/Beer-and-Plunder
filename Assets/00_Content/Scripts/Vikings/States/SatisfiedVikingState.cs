@@ -59,6 +59,8 @@ namespace Vikings.States {
 						viking.throwStrength;
 				}
 			}
+
+			viking.SatisfiedEnd?.Invoke();
 		}
 
 		public override VikingState Update() {

@@ -20,5 +20,6 @@
 		FoodPickedUp,
 		GoblinLeave,
 		ContinuePressed,
+		VikingSatisfiedEnd,
 	}
 }

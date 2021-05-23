@@ -77,6 +77,7 @@ namespace World {
 				viking.LeaveQueue += OnVikingLeaveQueue;
 				viking.TakingSeat += OnVikingTakeSeat;
 				viking.BecameSatisfied += OnVikingSatisfied;
+				viking.SatisfiedEnd += OnVikingSatisfiedEnd;
 				viking.Hit += OnVikingHit;
 				viking.OrderTaken += OnVikingOrderTaken;
 			};
@@ -126,6 +127,7 @@ namespace World {
 		private void OnVikingLeaveQueue(Viking sender) => OnTutorialEvent(TutorialEvent.VikingLeaveQueue);
 		private void OnVikingTakeSeat() => OnTutorialEvent(TutorialEvent.VikingSeated);
 		private void OnVikingSatisfied() => OnTutorialEvent(TutorialEvent.VikingSatisfied);
+		private void OnVikingSatisfiedEnd() => OnTutorialEvent(TutorialEvent.VikingSatisfiedEnd);
 		private void OnBeerPoured() => OnTutorialEvent(TutorialEvent.BeerPoured);
 		private void OnBeerTapRefilled() => OnTutorialEvent(TutorialEvent.BeerTapRefilled);
 		private void OnMoneyChanged() => OnTutorialEvent(TutorialEvent.MoneyEarned);
