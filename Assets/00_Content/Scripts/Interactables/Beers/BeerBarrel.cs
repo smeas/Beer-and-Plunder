@@ -87,6 +87,8 @@ namespace Interactables.Beers {
 			carriers.Add(playerMovement);
 			Transform myTransform = transform;
 
+			Physics.IgnoreCollision(objectCollider, playerMovement.MovementCollider, true);
+
 			if (carriers.Count > 1) {
 				myTransform.localEulerAngles = multiCarryRotation;
 				myTransform.parent = null;
@@ -132,6 +134,8 @@ namespace Interactables.Beers {
 
 		private void HandleOnDrop(PickUp _, PlayerComponent player) {
 			PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+
+			Physics.IgnoreCollision(objectCollider, playerMovement.MovementCollider, false);
 
 			if (IsMultiCarried) {
 				foreach (PlayerMovement carrier in carriers) {
