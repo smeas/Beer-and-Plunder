@@ -67,6 +67,10 @@ namespace Rounds {
 			SendNextDifficulty();
 		}
 
+		private void OnDisable() {
+			clockTickSound?.Stop();
+		}
+
 		private void Update() {
 			if (!isGamePlayActive) return;
 
