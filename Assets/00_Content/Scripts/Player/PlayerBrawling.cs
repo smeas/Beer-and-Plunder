@@ -22,6 +22,7 @@ namespace Player {
 		private Axe heldAxe;
 
 		public event Action OnAttack;
+		public event Action OnStun;
 
 		private void Start() {
 			playerComponent = GetComponent<PlayerComponent>();
@@ -130,6 +131,7 @@ namespace Player {
 			isInvulnerable = true;
 
 			particleSystemStunned.Play();
+			OnStun?.Invoke();
 
 			yield return new WaitForSeconds(playerData.stunDuration);
 

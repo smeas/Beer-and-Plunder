@@ -35,6 +35,8 @@ namespace Player {
 			interactableHighlight = Instantiate(interactableHighlightPrefab);
 			pickUpHighlight.SetActive(false);
 			interactableHighlight.SetActive(false);
+
+			playerBrawling.OnStun += HandleEndInput;
 		}
 
 		private void FixedUpdate() {
