@@ -56,7 +56,7 @@ namespace Interactables {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
-			if (!IsDestroyed && player.GetComponent<PlayerSteward>().Follower != null)
+			if (!IsDestroyed && player.GetComponent<PlayerSteward>().Follower != null && Chairs.Any(x => !x.IsOccupied))
 				return true;
 
 			if (IsDestroyed && item is RepairTool)
