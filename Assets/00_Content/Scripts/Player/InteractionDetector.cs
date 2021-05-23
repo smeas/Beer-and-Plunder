@@ -13,6 +13,7 @@ namespace Player {
 
 		private PlayerPickUp playerPickUp;
 		private PlayerInteract playerInteract;
+		private PlayerBrawling playerBrawling;
 		private MonoBehaviour closestObject;
 		private GameObject pickUpHighlight;
 		private GameObject interactableHighlight;
@@ -26,6 +27,7 @@ namespace Player {
 		private void Awake() {
 			playerPickUp = GetComponent<PlayerPickUp>();
 			playerInteract = GetComponent<PlayerInteract>();
+			playerBrawling = GetComponentInParent<PlayerBrawling>();
 		}
 
 		private void Start() {
@@ -186,6 +188,8 @@ namespace Player {
 
 		// Run from unity event
 		public void HandleStartInput() {
+			if (playerBrawling.IsStunned) return;
+
 			if (closestObject is PickUp && playerPickUp.PickedUpItem == null)
 				playerPickUp.PickUpClosestItem();
 			else if (playerPickUp.PickedUpItem is IUseable)
