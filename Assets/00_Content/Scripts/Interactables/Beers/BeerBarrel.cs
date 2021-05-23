@@ -18,6 +18,7 @@ namespace Interactables.Beers {
 		private Transform carryPoint2;
 
 		private List<PlayerMovement> carriers = new List<PlayerMovement>();
+		private float startDrag;
 
 		public override bool IsHeavy => !IsMultiCarried;
 
@@ -26,6 +27,8 @@ namespace Interactables.Beers {
 
 			OnPickedUp += HandleOnPickedUp;
 			OnDropped += HandleOnDrop;
+
+			startDrag = rigidbody.drag;
 
 			CreateCarryPoints();
 		}
@@ -37,6 +40,8 @@ namespace Interactables.Beers {
 				Vector3 position = transform.position;
 				carrier.transform.LookAt(new Vector3(position.x, carrier.transform.position.y, position.z));
 			}
+
+			rigidbody.velocity = Vector3.zero;
 
 			if (carriers[0].MoveInput != Vector2.zero && carriers[1].MoveInput != Vector2.zero)
 				Move();
@@ -61,7 +66,7 @@ namespace Interactables.Beers {
 
 			Vector3 avgVelocity = (carriers[0].Velocity + carriers[1].Velocity) / 2;
 
-			rigidbody.MovePosition(rigidbody.position + avgVelocity * Time.deltaTime);
+			rigidbody.velocity = avgVelocity;
 		}
 
 		private void Rotate(PlayerMovement rotatingPlayer, PlayerMovement stillPlayer) {
@@ -99,6 +104,7 @@ namespace Interactables.Beers {
 				myTransform.position = new Vector3(myPosition.x, desiredY, myPosition.z);
 
 				rigidbody.isKinematic = false;
+				rigidbody.drag = 0;
 
 				foreach (PlayerMovement carrier in carriers) {
 					carrier.SpeedMultiplier = multiCarrySpeedMultiplier;
@@ -157,6 +163,7 @@ namespace Interactables.Beers {
 				rigidbody.constraints &= ~RigidbodyConstraints.FreezePositionY
 				                         & ~RigidbodyConstraints.FreezeRotationX
 				                         & ~RigidbodyConstraints.FreezeRotationZ;
+				rigidbody.drag = startDrag;
 
 				multiCarryCollider.enabled = false;
 				objectCollider.enabled = true;
