@@ -11,7 +11,7 @@ namespace Interactables.Beers {
 		[SerializeField] private Vector3 soloCarryRotation;
 		[SerializeField] private float multiCarrySpeedMultiplier = 0.8f;
 		[SerializeField] private Vector3 multiCarryRotation;
-		[SerializeField] private Collider multiCarryCollider;
+		[SerializeField] private BoxCollider multiCarryCollider;
 		[SerializeField] private float carryRadius = 1.5f;
 
 		private Transform carryPoint1;
@@ -92,6 +92,12 @@ namespace Interactables.Beers {
 			if (carriers.Count > 1) {
 				myTransform.localEulerAngles = multiCarryRotation;
 				myTransform.parent = null;
+
+				// Set the height due to different models carrying at different heights
+				float desiredY = multiCarryCollider.size.y / 2;
+				Vector3 myPosition = myTransform.position;
+				myTransform.position = new Vector3(myPosition.x, desiredY, myPosition.z);
+
 				rigidbody.isKinematic = false;
 
 				foreach (PlayerMovement carrier in carriers) {
@@ -101,6 +107,7 @@ namespace Interactables.Beers {
 					Physics.IgnoreCollision(multiCarryCollider, carrier.MovementCollider, true);
 				}
 
+				transform.rotation = Quaternion.LookRotation(carriers[0].transform.forward, carriers[0].transform.up);
 				LockPosition(carriers[0], carryPoint1);
 				LockPosition(carriers[1], carryPoint2);
 
