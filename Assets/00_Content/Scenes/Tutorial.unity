@@ -352,66 +352,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 802807128670504151, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 802807128670504151, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 802807128670504151, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 802807128670504151, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 802807128670504151, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455672559006598726, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455672559006598726, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455672559006598726, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455672559006598726, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455672559006598726, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5371724355549551811, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5371724355549551811, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5371724355549551811, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5371724355549551811, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5371724355549551811, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960929, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -468,10 +408,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 966777432}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: viking
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: weapon
       value: 
@@ -545,14 +481,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2130195179}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].activate.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].activate.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[2].activate.Array.data[0]
       value: 
       objectReference: {fileID: 277157567}
@@ -605,30 +533,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 164773457}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[2].onEnter.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[2].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1439517817}
@@ -652,58 +556,6 @@ PrefabInstance:
       propertyPath: phases.Array.data[22].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1439517817}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[2].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_CanSpawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_CanSpawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[2].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_CanSpawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Vikings.VikingController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Vikings.VikingController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[2].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Vikings.VikingController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[1].onEnter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[2].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960931, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: m_Name
       value: Tutorial
@@ -1294,7 +1146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7113924080189386551, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7113924080189386552, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
       propertyPath: m_Pivot.x
