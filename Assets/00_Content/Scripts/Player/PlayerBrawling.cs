@@ -121,7 +121,7 @@ namespace Player {
 		private IEnumerator StunPlayer() {
 
 			PlayerMovement playerMovement = GetComponent<PlayerMovement>();
-			playerMovement.CanMove = false;
+			playerMovement.BlockMovement();
 
 			playerComponent.BodyMeshRenderer.material.color = Color.yellow;
 
@@ -134,7 +134,7 @@ namespace Player {
 			yield return new WaitForSeconds(playerData.stunDuration);
 
 			isStunned = false;
-			playerMovement.CanMove = true;
+			playerMovement.UnblockMovement();
 			isInvulnerable = false;
 			brawlHealth = 3;
 			isRegeneratingHealth = false;

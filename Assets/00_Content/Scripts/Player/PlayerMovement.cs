@@ -8,7 +8,6 @@ namespace Player {
 		[SerializeField] private float deceleration = 48f;
 		[SerializeField] private float maxVelocity = 6f;
 		[SerializeField] private float speedMultiplier = 1f;
-		[SerializeField] private bool canMove = true;
 
 		private new Rigidbody rigidbody;
 		private Camera mainCamera;
@@ -16,6 +15,8 @@ namespace Player {
 		private Vector2 moveInput;
 		private Vector2 movementDirection;
 		private float speed;
+
+		private int movementBlockers;
 
 		public float Speed => speed * speedMultiplier;
 		/// <summary>
@@ -34,10 +35,7 @@ namespace Player {
 			set => speedMultiplier = value;
 		}
 
-		public bool CanMove {
-			get => canMove;
-			set => canMove = value;
-		}
+		public bool CanMove => movementBlockers == 0;
 
 		private void Awake() {
 			rigidbody = GetComponent<Rigidbody>();
@@ -50,7 +48,7 @@ namespace Player {
 		private void FixedUpdate() {
 			float accelerationDelta = acceleration * speedMultiplier * Time.deltaTime;
 
-			if (canMove && moveInput != Vector2.zero && accelerationDelta != 0) {
+			if (CanMove && moveInput != Vector2.zero && accelerationDelta != 0) {
 				Vector2 accelerationInput = MakeCameraRelative(moveInput) * accelerationDelta;
 				float accelerationMagnitude = accelerationInput.magnitude;
 
@@ -108,6 +106,14 @@ namespace Player {
 
 		public void Move(Vector2 input) {
 			moveInput = input;
+		}
+
+		public void BlockMovement() {
+			movementBlockers++;
+		}
+
+		public void UnblockMovement() {
+			movementBlockers = Mathf.Max(0, --movementBlockers);
 		}
 	}
 }
