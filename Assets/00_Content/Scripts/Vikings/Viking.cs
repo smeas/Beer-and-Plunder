@@ -58,6 +58,7 @@ namespace Vikings {
 		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
 		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
+		public bool Invulnerable { get; set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
@@ -242,7 +243,7 @@ namespace Vikings {
 
 		private void RegisterHitFromPlayer(Axe axe) {
 
-			if (state is LeavingVikingState)
+			if (state is LeavingVikingState || Invulnerable)
 				return;
 
 			if (axe.IsAttacking && !isAttacked) {

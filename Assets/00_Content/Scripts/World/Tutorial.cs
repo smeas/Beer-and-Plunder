@@ -211,7 +211,8 @@ namespace World {
 		public void SpawnGoblin() => GoblinController.Instance.MaxGoblins = 1;
 		public void DisableGoblinSpawning() => GoblinController.Instance.MaxGoblins = 0;
 		public void EnableGoblin() => goblinAgent.speed = goblinSpeed;
-		public void NullifyViking() => viking.ForceChangeState(new NullVikingState(viking));
+		public void EnableHittingViking() => viking.Invulnerable = false;
+		public void DisableHittingViking() => viking.Invulnerable = true;
 
 		#endregion
 	}
