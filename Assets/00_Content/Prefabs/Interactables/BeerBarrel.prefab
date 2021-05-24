@@ -70,6 +70,7 @@ MonoBehaviour:
     m_Bits: 512
   objectCollider: {fileID: 4048669657034056994}
   ItemSlotPivot: {fileID: 0}
+  highlightSize: 0.65
   shrinkTime: 1
   soloCarrySpeedMultiplier: 0.3
   soloCarryRotation: {x: -90, y: 0, z: 0}
