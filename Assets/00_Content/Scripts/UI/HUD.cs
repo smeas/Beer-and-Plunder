@@ -29,7 +29,6 @@ public class HUD : MonoBehaviour {
 		if (RoundController.Instance != null) {
 			RoundController.Instance.OnIntermissionStart += HandleOnIntermissionStart;
 			RoundController.Instance.OnRoundOver += HandleOnRoundOver;
-			RoundController.Instance.OnNewRoundStart += HandleOnNewRoundStart;
 		}
 	}
 
@@ -61,15 +60,11 @@ public class HUD : MonoBehaviour {
 	}
 
 	private void HandleOnIntermissionStart() {
+		roundStatusText.enabled = true;
 		roundStatusText.text = "Intermission";
 	}
 
 	private void HandleOnRoundOver() {
 		roundStatusText.enabled = false;
-	}
-
-	private void HandleOnNewRoundStart() {
-		roundStatusText.text = "Shift " + RoundController.Instance.CurrentRound;
-		roundStatusText.enabled = true;
 	}
 }
