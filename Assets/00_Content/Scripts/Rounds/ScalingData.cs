@@ -18,7 +18,12 @@ namespace Rounds {
 		[SerializeField, Tooltip("Multiplier controlling how fast mood decline")]
 		private AnimationCurve moodDeclineMultiplier;
 
-	#region ScalingCalculations
+		[Header("Money")]
+		[SerializeField] private int initialMoneyGoal = 150;
+		[SerializeField] private int moneyGoalIncreasePerRound = 10;
+		[SerializeField] private int maxMoneyGoal = 250;
+
+		#region ScalingCalculations
 
 		/// <summary>
 		/// Calculates the spawn delay in relation to <paramref name="round"/>
@@ -39,6 +44,10 @@ namespace Rounds {
 		/// </summary>
 		public float ScaledMoodDeclineMultiplier(int round) {
 			return EvalPointOnCurve(moodDeclineMultiplier, round - 1);
+		}
+
+		public int ScaledMoneyGoal(int round) {
+			return Mathf.Min(maxMoneyGoal, initialMoneyGoal + moneyGoalIncreasePerRound * (round - 1));
 		}
 
 		/// <summary>
@@ -67,6 +76,6 @@ namespace Rounds {
 			return a * Mathf.Pow(b, x) + c;
 		}
 
-	#endregion
+		#endregion
 	}
 }

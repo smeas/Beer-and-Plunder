@@ -20,7 +20,6 @@ namespace Rounds {
 		[SerializeField] private GameOver gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
-		[SerializeField] private int requiredMoney = 250;
 
 		[Header("Timeline")]
 		[SerializeField] private PlayableDirector timelineDirector;
@@ -49,7 +48,7 @@ namespace Rounds {
 
 		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
-		public int RequiredMoney => requiredMoney;
+		public int RequiredMoney => CurrentDifficulty.ScaledMoneyGoal(currentRound);
 		public bool IsRoundActive => isRoundActive;
 		public bool IsGamePlayActive => isGamePlayActive;
 
@@ -89,7 +88,7 @@ namespace Rounds {
 			}
 		}
 
-		private void RoundOver() { 
+		private void RoundOver() {
 			AudioManager.Instance.PlayEffect(SoundEffect.Gameplay_WarHorn);
 
 			StartCoroutine(CoWaitForVikingsLeaving());
@@ -108,15 +107,15 @@ namespace Rounds {
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 
-			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+			if (Tavern.Instance != null && Tavern.Instance.Money < RequiredMoney) {
 				TavernBankrupt();
-				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{requiredMoney})");
+				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{RequiredMoney})");
 			}
 			else {
 				ShowScoreCard();
 			}
 		}
-		
+
 		private void SendNextDifficulty() {
 			if (VikingController.Instance == null) return;
 
