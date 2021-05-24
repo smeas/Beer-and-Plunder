@@ -11,13 +11,14 @@ namespace Interactables.Beers {
 		[SerializeField] private Vector3 soloCarryRotation;
 		[SerializeField] private float multiCarrySpeedMultiplier = 0.8f;
 		[SerializeField] private Vector3 multiCarryRotation;
-		[SerializeField] private Collider multiCarryCollider;
+		[SerializeField] private BoxCollider multiCarryCollider;
 		[SerializeField] private float carryRadius = 1.5f;
 
 		private Transform carryPoint1;
 		private Transform carryPoint2;
 
 		private List<PlayerMovement> carriers = new List<PlayerMovement>();
+		private float startDrag;
 
 		public override bool IsHeavy => !IsMultiCarried;
 
@@ -26,6 +27,8 @@ namespace Interactables.Beers {
 
 			OnPickedUp += HandleOnPickedUp;
 			OnDropped += HandleOnDrop;
+
+			startDrag = rigidbody.drag;
 
 			CreateCarryPoints();
 		}
@@ -37,6 +40,8 @@ namespace Interactables.Beers {
 				Vector3 position = transform.position;
 				carrier.transform.LookAt(new Vector3(position.x, carrier.transform.position.y, position.z));
 			}
+
+			rigidbody.velocity = Vector3.zero;
 
 			if (carriers[0].MoveInput != Vector2.zero && carriers[1].MoveInput != Vector2.zero)
 				Move();
@@ -61,7 +66,7 @@ namespace Interactables.Beers {
 
 			Vector3 avgVelocity = (carriers[0].Velocity + carriers[1].Velocity) / 2;
 
-			rigidbody.MovePosition(rigidbody.position + avgVelocity * Time.deltaTime);
+			rigidbody.velocity = avgVelocity;
 		}
 
 		private void Rotate(PlayerMovement rotatingPlayer, PlayerMovement stillPlayer) {
@@ -87,10 +92,19 @@ namespace Interactables.Beers {
 			carriers.Add(playerMovement);
 			Transform myTransform = transform;
 
+			Physics.IgnoreCollision(objectCollider, playerMovement.MovementCollider, true);
+
 			if (carriers.Count > 1) {
 				myTransform.localEulerAngles = multiCarryRotation;
 				myTransform.parent = null;
+
+				// Set the height due to different models carrying at different heights
+				float desiredY = multiCarryCollider.size.y / 2;
+				Vector3 myPosition = myTransform.position;
+				myTransform.position = new Vector3(myPosition.x, desiredY, myPosition.z);
+
 				rigidbody.isKinematic = false;
+				rigidbody.drag = 0;
 
 				foreach (PlayerMovement carrier in carriers) {
 					carrier.SpeedMultiplier = multiCarrySpeedMultiplier;
@@ -99,6 +113,7 @@ namespace Interactables.Beers {
 					Physics.IgnoreCollision(multiCarryCollider, carrier.MovementCollider, true);
 				}
 
+				transform.rotation = Quaternion.LookRotation(carriers[0].transform.forward, carriers[0].transform.up);
 				LockPosition(carriers[0], carryPoint1);
 				LockPosition(carriers[1], carryPoint2);
 
@@ -133,6 +148,8 @@ namespace Interactables.Beers {
 		private void HandleOnDrop(PickUp _, PlayerComponent player) {
 			PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
 
+			Physics.IgnoreCollision(objectCollider, playerMovement.MovementCollider, false);
+
 			if (IsMultiCarried) {
 				foreach (PlayerMovement carrier in carriers) {
 					carrier.SpeedMultiplier = 1f;
@@ -146,6 +163,7 @@ namespace Interactables.Beers {
 				rigidbody.constraints &= ~RigidbodyConstraints.FreezePositionY
 				                         & ~RigidbodyConstraints.FreezeRotationX
 				                         & ~RigidbodyConstraints.FreezeRotationZ;
+				rigidbody.drag = startDrag;
 
 				multiCarryCollider.enabled = false;
 				objectCollider.enabled = true;

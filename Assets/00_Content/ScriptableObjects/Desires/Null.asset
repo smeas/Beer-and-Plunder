@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca8dd7ee01e43edbcaed6a55d602f6c, type: 3}
+  m_Name: Null
+  m_EditorClassIdentifier: 
+  type: 5
+  randomWeight: 0
+  visualisationSprite: {fileID: 0}
+  isMaterialDesire: 0
+  shouldThrowItem: 0
+  isOrder: 0
+  visualisationAfterPrefab: {fileID: 0}
+  desireFulfillTime: 0
