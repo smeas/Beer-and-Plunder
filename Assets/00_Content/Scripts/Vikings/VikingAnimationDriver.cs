@@ -4,6 +4,19 @@ using UnityEngine;
 
 namespace Vikings {
 	public class VikingAnimationDriver : MonoBehaviour {
+		private static readonly int sittingId = Animator.StringToHash("Sitting");
+		private static readonly int speedId = Animator.StringToHash("Speed");
+		private static readonly int gettingAngryId = Animator.StringToHash("GettingAngry");
+		private static readonly int drinkingId = Animator.StringToHash("Drinking");
+		private static readonly int eatingId = Animator.StringToHash("Eating");
+		private static readonly int brawlId = Animator.StringToHash("Brawl");
+		private static readonly int tableBrawlId = Animator.StringToHash("TableBrawl");
+		private static readonly int happyId = Animator.StringToHash("Happy");
+		private static readonly int attackId = Animator.StringToHash("Attack");
+		private static readonly int throwId = Animator.StringToHash("Throw");
+		private static readonly int requestId = Animator.StringToHash("Request");
+		private static readonly int gettingAngryEffectId = Animator.StringToHash("GettingAngryEffect");
+
 		[SerializeField] private AnimationClip referenceSitAnimation;
 		[SerializeField] private AnimationClip referenceUnsitAnimation;
 		[SerializeField] private float sitTurnDuration = 0.5f;
@@ -27,6 +40,7 @@ namespace Vikings {
 		public bool IsSitting { get; private set; }
 		public bool IsPlayingHappyAnimation { get; private set; }
 		public bool IsPlayingAttackAnimation { get; private set; }
+		public bool IsThrowing { get; private set; }
 
 		private void Start() {
 			animator = GetComponent<Animator>();
@@ -75,7 +89,7 @@ namespace Vikings {
 				.Append(vikingTransform.DORotateQuaternion(preSitRotation, sitTurnDuration))
 				.AppendCallback(() => {
 					AttachSitTransform();
-					animator.SetBool("Sitting", true);
+					animator.SetBool(sittingId, true);
 				})
 				.Append(sitTransform.DOMove(sitPoint, referenceSitAnimation.length))
 				.AppendCallback(() => firstSitTweenDone = true);
@@ -104,7 +118,7 @@ namespace Vikings {
 			firstSitTweenDone = false;
 			isBeginningSitting = false;
 
-			animator.SetBool("Sitting", false);
+			animator.SetBool(sittingId, false);
 
 			DetachSitTransform();
 		}
@@ -136,7 +150,7 @@ namespace Vikings {
 				.Append(sitTransform.DORotateQuaternion(dismountRotation, sitTurnDuration))
 				.AppendCallback(() => {
 					DetachSitTransform();
-					animator.SetBool("Sitting", false);
+					animator.SetBool(sittingId, false);
 				})
 				.Append(vikingTransform.DOMove(dismountPosition, referenceUnsitAnimation.length));
 		}
@@ -148,7 +162,7 @@ namespace Vikings {
 			sitTween = null;
 			isUnsitting = false;
 
-			animator.SetBool("Sitting", true);
+			animator.SetBool(sittingId, true);
 
 			AttachSitTransform();
 		}
@@ -187,26 +201,30 @@ namespace Vikings {
 
 		#endregion
 
-		public float Speed { set => animator.SetFloat("Speed", value); }
-		public bool GettingAngry { set => animator.SetBool("GettingAngry", value); }
-		public bool Drinking { set => animator.SetBool("Drinking", value); }
-		public bool Eating { set => animator.SetBool("Eating", value); }
-		public bool Brawl { set => animator.SetBool("Brawl", value); }
-		public bool TableBrawl { set => animator.SetBool("TableBrawl", value); }
+		public float Speed { set => animator.SetFloat(speedId, value); }
+		public bool GettingAngry { set => animator.SetBool(gettingAngryId, value); }
+		public bool Drinking { set => animator.SetBool(drinkingId, value); }
+		public bool Eating { set => animator.SetBool(eatingId, value); }
+		public bool Brawl { set => animator.SetBool(brawlId, value); }
+		public bool TableBrawl { set => animator.SetBool(tableBrawlId, value); }
 
 		public void TriggerHappy() {
-			animator.SetTrigger("Happy");
+			animator.SetTrigger(happyId);
 			IsPlayingHappyAnimation = true;
 		}
 
 		public void TriggerAttack() {
-			animator.SetTrigger("Attack");
+			animator.SetTrigger(attackId);
 			IsPlayingAttackAnimation = true;
 		}
 
-		public void TriggerThrow() => animator.SetTrigger("Throw");
-		public void TriggerRequest() => animator.SetTrigger("Request");
-		public void TriggerGettingAngryEffect() => animator.SetTrigger("GettingAngryEffect");
+		public void TriggerThrow() {
+			animator.SetTrigger(throwId);
+			IsThrowing = true;
+		}
+
+		public void TriggerRequest() => animator.SetTrigger(requestId);
+		public void TriggerGettingAngryEffect() => animator.SetTrigger(gettingAngryEffectId);
 
 		#region Animation Events
 
@@ -222,13 +240,11 @@ namespace Vikings {
 			OnEndSittingCompleted();
 		}
 
-		private void OnHappyEnd() {
-			IsPlayingHappyAnimation = false;
-		}
+		private void OnHappyEnd() => IsPlayingHappyAnimation = false;
 
-		private void OnAttackEnd() {
-			IsPlayingAttackAnimation = false;
-		}
+		private void OnAttackEnd() => IsPlayingAttackAnimation = false;
+
+		private void OnThrowEnd() => IsThrowing = false;
 
 		#endregion
 	}

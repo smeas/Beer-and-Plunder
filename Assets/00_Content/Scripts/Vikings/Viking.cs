@@ -192,7 +192,11 @@ namespace Vikings {
 		}
 
 		public void JoinBrawl() {
-			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
+			Table[] possibleTargets = Table.AllTables.Where(x => !x.IsDestroyed).ToArray();
+			if (possibleTargets.Length != 0)
+				ChangeState(new BrawlingVikingState(this, Util.RandomElement(possibleTargets)));
+			else
+				Leave();
 		}
 
 		public void MakeAttack() {
@@ -252,7 +256,8 @@ namespace Vikings {
 
 				bodyMeshRenderer.material.color = hitColor;
 
-				if (CurrentChair == null) {
+				// Do knockback
+				if (CurrentChair == null && !animationDriver.IsSitting) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
 					Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
 					navMeshAgent.enabled = false;
