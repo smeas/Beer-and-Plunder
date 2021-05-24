@@ -1,23 +1,36 @@
+using DG.Tweening;
 using Player;
 using Scenes;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameOver : MonoBehaviour {
-	[SerializeField] private TMP_Text gameOverMessage;
-	[SerializeField] private string destructionMessage;
-	[SerializeField] private string bankrupcyMessage;
-	[SerializeField] private Selectable firstSelected;
+	[SerializeField] private Image image;
+	[SerializeField] private Sprite bankruptSprite;
+	[SerializeField] private Sprite destructionSprite;
+
+	[Header("Settings")]
+	[SerializeField] private float signEnterDuration;
+
+	private RectTransform imageRect;
+
+	private void Awake() {
+		imageRect = image.GetComponent<RectTransform>();
+	}
 
 	public void Show(LoseCondition loseCondition) {
-		if (loseCondition == LoseCondition.Bankrupcy) gameOverMessage.text = bankrupcyMessage;
-		else if (loseCondition == LoseCondition.Destruction) gameOverMessage.text = destructionMessage;
+		image.sprite = loseCondition switch {
+			LoseCondition.Bankrupcy => bankruptSprite,
+			LoseCondition.Destruction => destructionSprite,
+			_ => image.sprite
+		};
+
+		Vector3 correctPosition = imageRect.anchoredPosition;
+		imageRect.anchoredPosition = Vector3.zero;
+		imageRect.DOAnchorPos(correctPosition, signEnterDuration).SetEase(Ease.OutBounce);
 
 		gameObject.SetActive(true);
-		EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
 	}
 
 	public void RestartGame() {
