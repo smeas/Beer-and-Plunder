@@ -23,7 +23,13 @@ namespace Audio {
 		PourBeer = 387602004,
 		Repair = -39618835,
 		Viking_AxeHit = 382397011,
-		Viking_DesireFilledMan = -574487926
+		Viking_Brawling_Angry = 1516207403,
+		Viking_Desire_DesireFullfilled = -799215494,
+		Viking_Desire_Irritated = -98052361,
+		Viking_Desire_NeedBeer = 54628094,
+		Viking_Desire_NeedFood = -272874605,
+		Viking_Desire_NeedMusic = -831503651,
+		Viking_Desire_NeedTable = 1309949203
 	}
 
 	public static partial class AudioIndex {
@@ -48,7 +54,13 @@ namespace Audio {
 			{ 387602004, "Audio/SoundEffects/PourBeer" },
 			{ -39618835, "Audio/SoundEffects/Repair" },
 			{ 382397011, "Audio/SoundEffects/Viking/AxeHit" },
-			{ -574487926, "Audio/SoundEffects/Viking/DesireFilledMan" }
+			{ 1516207403, "Audio/SoundEffects/Viking/Brawling/Angry" },
+			{ -799215494, "Audio/SoundEffects/Viking/Desire/DesireFullfilled" },
+			{ -98052361, "Audio/SoundEffects/Viking/Desire/Irritated" },
+			{ 54628094, "Audio/SoundEffects/Viking/Desire/NeedBeer" },
+			{ -272874605, "Audio/SoundEffects/Viking/Desire/NeedFood" },
+			{ -831503651, "Audio/SoundEffects/Viking/Desire/NeedMusic" },
+			{ 1309949203, "Audio/SoundEffects/Viking/Desire/NeedTable" }
 		};
 	}
 }

@@ -1,4 +1,5 @@
 using System.Linq;
+using Audio;
 using DG.Tweening;
 using Interactables;
 using Interactables.Weapons;
@@ -42,7 +43,7 @@ namespace Vikings.States {
 
 		public override VikingState Enter() {
 			viking.animationDriver.Brawl = true;
-
+			AudioManager.PlayEffectSafe(SoundEffect.Viking_Brawling_Angry);
 			if (viking.CurrentChair != null) {
 				if (brawlType == BrawlType.TableBrawl && targetTable.Chairs.Contains(viking.CurrentChair))
 					isBrawlingCurrentTable = true;
