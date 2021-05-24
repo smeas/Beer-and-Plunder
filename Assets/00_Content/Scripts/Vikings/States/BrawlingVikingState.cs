@@ -42,6 +42,7 @@ namespace Vikings.States {
 
 		public override VikingState Enter() {
 			viking.animationDriver.Brawl = true;
+			viking.angryParticleSystem.Play();
 
 			if (viking.CurrentChair != null) {
 				viking.DismountChair();
@@ -59,6 +60,7 @@ namespace Vikings.States {
 			viking.animationDriver.TableBrawl = false;
 
 			viking.NavMeshAgent.enabled = false;
+			viking.angryParticleSystem.Stop();
 		}
 
 		private void OnChairDismounted() {
