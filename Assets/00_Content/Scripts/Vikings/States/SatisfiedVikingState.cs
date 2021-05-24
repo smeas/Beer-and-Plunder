@@ -75,7 +75,7 @@ namespace Vikings.States {
 
 				if (satisfiedDesire.isMaterialDesire && !satisfiedDesire.shouldThrowItem)
 					Object.Destroy(givenItem.gameObject);
-				else
+				else if (satisfiedDesire.shouldThrowItem)
 					BeginThrowItem();
 
 				isWaitingForHappyToEnd = true;
