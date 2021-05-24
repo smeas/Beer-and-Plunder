@@ -8,8 +8,11 @@ namespace Player {
 		private InteractionDetector detector;
 		private PlayerPickUp playerPickUp;
 		private PlayerSteward playerSteward;
+		private bool isInteracting;
 
 		private Interactable currentInteractable;
+
+		public bool IsInteracting => isInteracting;
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();
@@ -27,13 +30,15 @@ namespace Player {
 
 				detector.ClosestInteractable.Interact(playerRoot, playerPickUp.PickedUpItem);
 				currentInteractable = detector.ClosestInteractable;
+				isInteracting = true;
 			}
 		}
 
 		public void EndInteract() {
-			if (currentInteractable != null) {
+			if (isInteracting && currentInteractable != null) {
 				currentInteractable.CancelInteraction(playerRoot, playerPickUp.PickedUpItem);
 				currentInteractable = null;
+				isInteracting = false;
 			}
 		}
 

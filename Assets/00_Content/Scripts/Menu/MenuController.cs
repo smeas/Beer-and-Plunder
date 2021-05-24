@@ -16,11 +16,16 @@ namespace Menu {
 		[SerializeField] private GameObject startGameButton;
 		[SerializeField] private ParticleSystem clickEffect;
 
+		[Space]
+		[SerializeField] private InputActionProperty backAction;
+
 		[Header("Timeline")]
 		[SerializeField] private PlayableDirector timelineDirector;
 		[SerializeField] private TimelineAsset toLobbyTimeline;
 
-		private Stack<GameObject> panels = new Stack<GameObject>();
+		private Stack<(GameObject panel, GameObject selection)> panels = new Stack<(GameObject panel, GameObject selection)>();
+		private GameObject currentPanel;
+		private bool transitionActive;
 
 		private void Start() {
 			if (PlayerManager.Instance != null) {
@@ -30,41 +35,70 @@ namespace Menu {
 				}
 			}
 
+			currentPanel = startPanel;
+
 			startPanel.SetActive(true);
-			panels.Push(startPanel);
 			backButton.SetActive(false);
+
+			backAction.action.Enable();
+			backAction.action.performed += OnBackActionPerformed;
+		}
+
+		private void OnDestroy() {
+			backAction.action.performed -= OnBackActionPerformed;
+		}
+
+		private void OnBackActionPerformed(InputAction.CallbackContext _) {
+			ClosePanel();
 		}
 
 		public void GoToLobby() {
+			if (transitionActive) return;
+
 			EventSystem.current.SetSelectedGameObject(null);
 			timelineDirector.playableAsset = toLobbyTimeline;
 			timelineDirector.Play();
+			transitionActive = true;
 		}
 
 		public void GoToTutorial() {
+			if (transitionActive) return;
+
 			SceneLoadManager.Instance.LoadTutorial();
+			transitionActive = true;
 		}
 
 		public void ShowPanel(GameObject panel) {
+			if (transitionActive) return;
+
 			clickEffect.Play();
 
-			panels.Peek().SetActive(false);
-			panel.SetActive(true);
-			panels.Push(panel);
+			currentPanel.SetActive(false);
 
-			if (panels.Count > 1)
+			panels.Push((currentPanel, EventSystem.current.currentSelectedGameObject));
+
+			panel.SetActive(true);
+			currentPanel = panel;
+
+			if (panels.Count > 0)
 				backButton.SetActive(true);
 		}
 
 		public void ClosePanel() {
-			if (panels.Count == 1) return;
+			if (transitionActive) return;
+			if (panels.Count == 0) return;
 
 			clickEffect.Play();
 
-			panels.Pop().SetActive(false);
-			panels.Peek().SetActive(true);
+			currentPanel.SetActive(false);
 
-			if (panels.Count == 1)
+			(GameObject panel, GameObject selection) = panels.Pop();
+			panel.SetActive(true);
+			currentPanel = panel;
+
+			EventSystem.current.SetSelectedGameObject(selection);
+
+			if (panels.Count == 0)
 				backButton.SetActive(false);
 		}
 
@@ -79,6 +113,7 @@ namespace Menu {
 		// Run from animation event
 		public void SelectStartGame() {
 			EventSystem.current.SetSelectedGameObject(startGameButton);
+			transitionActive = false;
 		}
 	}
 }

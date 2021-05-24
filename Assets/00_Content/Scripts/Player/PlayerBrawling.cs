@@ -22,6 +22,7 @@ namespace Player {
 		private Axe heldAxe;
 
 		public event Action OnAttack;
+		public event Action OnStun;
 
 		private void Start() {
 			playerComponent = GetComponent<PlayerComponent>();
@@ -121,7 +122,7 @@ namespace Player {
 		private IEnumerator StunPlayer() {
 
 			PlayerMovement playerMovement = GetComponent<PlayerMovement>();
-			playerMovement.CanMove = false;
+			playerMovement.BlockMovement();
 
 			playerComponent.BodyMeshRenderer.material.color = Color.yellow;
 
@@ -130,11 +131,12 @@ namespace Player {
 			isInvulnerable = true;
 
 			particleSystemStunned.Play();
+			OnStun?.Invoke();
 
 			yield return new WaitForSeconds(playerData.stunDuration);
 
 			isStunned = false;
-			playerMovement.CanMove = true;
+			playerMovement.UnblockMovement();
 			isInvulnerable = false;
 			brawlHealth = 3;
 			isRegeneratingHealth = false;

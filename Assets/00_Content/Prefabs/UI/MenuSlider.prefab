@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7760493687671045354}
   - component: {fileID: 3204782142440910733}
+  - component: {fileID: 6172244756908399597}
   m_Layer: 5
   m_Name: MenuSlider
   m_TagString: Untagged
@@ -60,10 +61,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -86,10 +87,22 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.502
+  m_Value: 0.702
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6172244756908399597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2195539420964996553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601b1728193e4d6dadef07999590a95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3380890039753922921
 GameObject:
   m_ObjectHideFlags: 0

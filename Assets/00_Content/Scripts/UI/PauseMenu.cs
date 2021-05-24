@@ -3,17 +3,19 @@ using Scenes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using Utilities;
 
 namespace UI {
 	public class PauseMenu : SingletonBehaviour<PauseMenu> {
 		[SerializeField] private InputActionProperty pauseAction;
-		[SerializeField] private Selectable firstSelected;
+		[SerializeField] private InputActionProperty backAction;
+
 		[SerializeField] private Canvas canvas;
 
 		[SerializeField] private GameObject pausePanel;
 		[SerializeField] private GameObject settingsPanel;
+
+		[SerializeField] private GameObject optionsButton;
 
 		private bool isPaused;
 
@@ -25,16 +27,29 @@ namespace UI {
 			canvas.gameObject.SetActive(false);
 			pauseAction.action.Enable();
 			pauseAction.action.performed += HandleOnPausePressed;
+
+			backAction.action.Enable();
+			backAction.action.performed += HandleOnBackPressed;
 		}
 
 		protected override void OnDestroy() {
 			base.OnDestroy();
 
 			pauseAction.action.performed -= HandleOnPausePressed;
+			backAction.action.performed -= HandleOnBackPressed;
+		}
+
+		private void HandleOnBackPressed(InputAction.CallbackContext ctx) {
+			HandleOnPausePressed(ctx);
 		}
 
 		private void HandleOnPausePressed(InputAction.CallbackContext ctx) {
 			if (RoundController.Instance != null && !RoundController.Instance.IsRoundActive) return;
+
+			if (settingsPanel.activeSelf) {
+				ExitOptions();
+				return;
+			}
 
 			TogglePaused();
 		}
@@ -42,8 +57,8 @@ namespace UI {
 		public void TogglePaused() {
 			isPaused = !isPaused;
 			if (isPaused) {
+				if (settingsPanel.activeSelf) ExitOptions();
 				canvas.gameObject.SetActive(true);
-				EventSystem.current.SetSelectedGameObject(firstSelected.gameObject);
 				Time.timeScale = 0f;
 			}
 			else {
@@ -66,6 +81,7 @@ namespace UI {
 		public void ExitOptions() {
 			settingsPanel.SetActive(false);
 			pausePanel.SetActive(true);
+			EventSystem.current.SetSelectedGameObject(optionsButton);
 		}
 
 		public void ExitToMenu() {
