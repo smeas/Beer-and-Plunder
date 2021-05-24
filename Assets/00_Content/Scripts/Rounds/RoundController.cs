@@ -45,12 +45,14 @@ namespace Rounds {
 
 		public event Action OnRoundOver;
 		public event Action OnNewRoundStart;
+		public event Action OnIntermissionStart;
 
 		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
 		public int RequiredMoney => CurrentDifficulty.ScaledMoneyGoal(currentRound);
 		public bool IsRoundActive => isRoundActive;
 		public bool IsGamePlayActive => isGamePlayActive;
+		public int CurrentRound => currentRound;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
@@ -76,20 +78,22 @@ namespace Rounds {
 			roundTimer += Time.deltaTime;
 
 			if (roundDuration - roundTimer <= 10 && !isTenSecondTimerStarted) {
-				clockTickSound = AudioManager.Instance.PlayEffect(SoundEffect.ClockTick, true);
+				clockTickSound = AudioManager.PlayEffectSafe(SoundEffect.ClockTick, true);
 				isTenSecondTimerStarted = true;
 			}
 
 			if (roundTimer >= roundDuration) {
 				clockTickSound.Stop();
 				isTenSecondTimerStarted = false;
-				RoundOver();
-				isGamePlayActive = false;
+				StartIntermission();
 			}
 		}
 
-		private void RoundOver() {
-			AudioManager.Instance.PlayEffect(SoundEffect.Gameplay_WarHorn);
+		private void StartIntermission() {
+			isGamePlayActive = false;
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_WarHorn);
+
+			OnIntermissionStart?.Invoke();
 
 			StartCoroutine(CoWaitForVikingsLeaving());
 		}

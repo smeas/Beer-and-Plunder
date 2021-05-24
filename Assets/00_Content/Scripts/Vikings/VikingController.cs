@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Audio;
 using Rounds;
@@ -27,6 +28,14 @@ namespace Vikings {
 
 		public event Action<Viking> VikingSpawned;
 
+		private void Start() {
+			if (RoundController.Instance != null)
+				RoundController.Instance.OnNewRoundStart += HandleOnRoundStart;
+
+			ResetSpawnTimer();
+			HandleOnRoundStart();
+		}
+
 		private void Update() {
 			if (!CanSpawn) return;
 
@@ -34,8 +43,20 @@ namespace Vikings {
 
 			if (spawnTimer <= 0) {
 				SpawnViking();
-				spawnTimer = spawnDelay + Random.Range(-spawnVariance, spawnVariance);
+				ResetSpawnTimer();
 			}
+		}
+
+		private void HandleOnRoundStart() {
+			if (RoundController.Instance == null)
+				return;
+
+			int vikingsToSpawn = Mathf.Min(maxVikings, RoundController.Instance.CurrentDifficulty.ScaledInitialVikings(RoundController.Instance.CurrentRound));
+			StartCoroutine(CoSpawnVikings(vikingsToSpawn, 1f));
+		}
+
+		private void ResetSpawnTimer() {
+			spawnTimer = spawnDelay + Random.Range(-spawnVariance, spawnVariance);
 		}
 
 		private void SpawnViking() {
@@ -72,6 +93,18 @@ namespace Vikings {
 		public void LeaveAllVikings() {
 			foreach (Viking viking in vikings) {
 				viking.Leave();
+			}
+		}
+
+		private IEnumerator CoSpawnVikings(int count, float delay) {
+			for (int i = 0; i < count; i++) {
+				if (vikings.Count >= maxVikings)
+					yield break;
+
+				SpawnViking();
+				ResetSpawnTimer();
+
+				yield return new WaitForSeconds(delay);
 			}
 		}
 	}

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Harp
   m_EditorClassIdentifier: 
   music: {fileID: 0}
-  effectRadius: 6
+  effectRadius: 4.5
   playerCanMoveWhileUsing: 0
   desireType: 3

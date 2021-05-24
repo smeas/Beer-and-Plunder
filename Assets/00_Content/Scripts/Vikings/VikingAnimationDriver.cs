@@ -246,6 +246,10 @@ namespace Vikings {
 
 		private void OnThrowEnd() => IsThrowing = false;
 
+		private void OnHitTable() {
+			// TODO: Play table hit sound here.
+		}
+
 		#endregion
 	}
 }

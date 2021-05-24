@@ -3,12 +3,15 @@
 namespace Rounds {
 	[CreateAssetMenu(fileName = "new Scaling", menuName = "Game/Scaling", order = 0)]
 	public class ScalingData : ScriptableObject {
-		[Header("SpawnDelay")]
+		[Header("Spawning")]
 		[SerializeField, Tooltip("Delay between viking spawns in seconds")]
 		private AnimationCurve spawnDelayCurve;
 
 		[SerializeField, Min(0), Tooltip("Excluded from the value in the Spawn Delay Curve")]
 		public float spawnDelayVariance;
+
+		[SerializeField, Tooltip("Amount of vikings to spawn on round start")]
+		private AnimationCurve initialVikingsCurve;
 
 		[Header("StartingMood")]
 		[SerializeField, Tooltip("Multiplier controlling how much mood vikings start to")]
@@ -48,6 +51,10 @@ namespace Rounds {
 
 		public int ScaledMoneyGoal(int round) {
 			return Mathf.Min(maxMoneyGoal, initialMoneyGoal + moneyGoalIncreasePerRound * (round - 1));
+		}
+
+		public int ScaledInitialVikings(int round) {
+			return Mathf.Max(0, Mathf.FloorToInt(initialVikingsCurve.Evaluate(round)));
 		}
 
 		/// <summary>
