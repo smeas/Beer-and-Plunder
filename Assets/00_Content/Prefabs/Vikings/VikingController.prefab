@@ -55,6 +55,7 @@ MonoBehaviour:
   - {fileID: 7194713805221475525, guid: 41900de144c02e945b69deb0dc5e9535, type: 3}
   - {fileID: 3823324680259448005, guid: 199e70ad729c15349a4388cb77cc341a, type: 3}
   - {fileID: 6683088623605380979, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
+  vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
 --- !u!1 &7359549989527738492
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,7 +80,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7359549989527738492}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 30.21, y: 0, z: 0.59}
+  m_LocalPosition: {x: -15.52, y: 0, z: 5.509}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6367915420586774654}
@@ -98,7 +99,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311799412541948628, guid: 24ffb7189157e6f45a03a9cd83aca82a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.97
+      value: 15.82
       objectReference: {fileID: 0}
     - target: {fileID: 4311799412541948628, guid: 24ffb7189157e6f45a03a9cd83aca82a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -106,7 +107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311799412541948628, guid: 24ffb7189157e6f45a03a9cd83aca82a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.96
+      value: 4.02
       objectReference: {fileID: 0}
     - target: {fileID: 4311799412541948628, guid: 24ffb7189157e6f45a03a9cd83aca82a, type: 3}
       propertyPath: m_LocalRotation.w

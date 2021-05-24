@@ -20,7 +20,6 @@ namespace Rounds {
 		[SerializeField] private GameOver gameOverPanelPrefab;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
-		[SerializeField] private int requiredMoney = 250;
 
 		[Header("Timeline")]
 		[SerializeField] private PlayableDirector timelineDirector;
@@ -50,7 +49,7 @@ namespace Rounds {
 
 		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
-		public int RequiredMoney => requiredMoney;
+		public int RequiredMoney => CurrentDifficulty.ScaledMoneyGoal(currentRound);
 		public bool IsRoundActive => isRoundActive;
 		public bool IsGamePlayActive => isGamePlayActive;
 		public int CurrentRound => currentRound;
@@ -67,6 +66,10 @@ namespace Rounds {
 			followingCamera = Camera.main.GetComponent<FollowingCamera>();
 
 			SendNextDifficulty();
+		}
+
+		private void OnDisable() {
+			clockTickSound?.Stop();
 		}
 
 		private void Update() {
@@ -108,9 +111,9 @@ namespace Rounds {
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 
-			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+			if (Tavern.Instance != null && Tavern.Instance.Money < RequiredMoney) {
 				TavernBankrupt();
-				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{requiredMoney})");
+				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{RequiredMoney})");
 			}
 			else {
 				ShowScoreCard();

@@ -15,6 +15,7 @@ namespace Interactables {
 		[SerializeField] private LayerMask itemSlotLayer = 1 << 9;
 		[SerializeField] protected Collider objectCollider;
 		[SerializeField] public Transform ItemSlotPivot;
+		[SerializeField] public float highlightSize = 0.5f;
 
 		protected new Rigidbody rigidbody;
 		protected bool isBeingCarried;
@@ -28,6 +29,7 @@ namespace Interactables {
 		public ItemSlot StartItemSlot { private get; set; }
 		public ItemSlot CurrentItemSlot { get; set; }
 		public virtual bool IsHeavy => false;
+		public Collider ObjectCollider => objectCollider;
 
 		public Vector3 ItemGrabOffset {
 			get => itemGrabOffset;

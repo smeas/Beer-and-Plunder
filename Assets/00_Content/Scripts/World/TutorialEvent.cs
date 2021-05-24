@@ -19,5 +19,7 @@
 		CookingFinished,
 		FoodPickedUp,
 		GoblinLeave,
+		ContinuePressed,
+		VikingSatisfiedEnd,
 	}
 }

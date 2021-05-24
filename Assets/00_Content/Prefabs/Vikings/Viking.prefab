@@ -38,6 +38,7 @@ Transform:
   - {fileID: 5881218908136036595}
   - {fileID: 8273866561871697723}
   - {fileID: 4824911068634423702}
+  - {fileID: 8465404498144396428}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -69,17 +70,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bcbdfb71e95467c96689f074b1d9229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlightPivot: {fileID: 8465404498144396428}
+  highlightSize: 0.55
   vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
   beingSeatedHighlightPrefab: {fileID: 5559515752884507063, guid: fdb61ac553e38354c8810b736ec885b0, type: 3}
   disappearParticleSystem: {fileID: 8556211515451625476, guid: c3a8a384de49be546b9f712c78db4ae4, type: 3}
-  maxLeavingTime: 10
+  maxLeavingTime: 15
   coinPrefab: {fileID: 3315992428341184797, guid: 0cb549ea7c1e0304c9f4d205dc9b7d7c, type: 3}
   kitchenTicketPrefab: {fileID: 482211264044046102, guid: 88d643d9c464d014995555ca35e17371, type: 3}
   desireVisualiser: {fileID: 2110882707906954946}
   progressBar: {fileID: 1725203097003537118}
   bodyMeshRenderer: {fileID: 724876860708356633}
-  normalMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  brawlingMaterial: {fileID: 2100000, guid: 3882778ca4ffcce4790366e2b8a5b0a5, type: 2}
+  hitColor: {r: 1, g: 0, b: 0, a: 1}
   itemThrowConeHalfAngle: 15
   throwStrength: 5
   modelRoot: {fileID: 5434854226010570008}
@@ -197,7 +199,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0.50670415, y: -0.13506454, z: -0.23861846}
   m_RotationAtRest: {x: 5.4369226, y: -125.10159, z: -114.19496}
   m_TranslationOffsets:
-  - {x: 0, y: 0.25000048, z: 0}
+  - {x: 0, y: 0.2500003, z: 0}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -421,8 +423,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4213457561575349729}
-  m_LocalRotation: {x: 0.22874963, y: -0.2518428, z: -0.03432661, w: 0.9397183}
-  m_LocalPosition: {x: 0.4696017, y: 0.92140406, z: -0.43873155}
+  m_LocalRotation: {x: 0.22874972, y: -0.25184277, z: -0.034326587, w: 0.9397183}
+  m_LocalPosition: {x: 0.46960157, y: 0.92140406, z: -0.43873155}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6566487511925349869}
@@ -583,7 +585,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: -0.5473138, y: -0.13889813, z: -0.40888214}
   m_RotationAtRest: {x: -2.2190874, y: 158.67706, z: 91.39045}
   m_TranslationOffsets:
-  - {x: 0, y: 0.25, z: 0}
+  - {x: 0, y: 0.25000042, z: 0}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -642,6 +644,36 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8070471379347072985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8465404498144396428}
+  m_Layer: 0
+  m_Name: Highlight Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8465404498144396428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8070471379347072985}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6566487511925349869}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8927038979639077804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,6 +1163,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
+--- !u!4 &1381843411193907755 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6337911703329811913, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
+  m_PrefabInstance: {fileID: 4961139811570083810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &724876860708356633 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5680945638611805691, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
@@ -1149,10 +1186,5 @@ Transform:
 --- !u!4 &5318956444458518649 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 939344579555454875, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
-  m_PrefabInstance: {fileID: 4961139811570083810}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1381843411193907755 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6337911703329811913, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
   m_PrefabInstance: {fileID: 4961139811570083810}
   m_PrefabAsset: {fileID: 0}

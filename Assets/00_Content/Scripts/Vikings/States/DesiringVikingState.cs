@@ -15,8 +15,11 @@ namespace Vikings.States {
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-			viking.animationDriver.TriggerRequest();
-			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
+			if (viking.CurrentDesire.type != DesireType.Null) {
+				viking.animationDriver.TriggerRequest();
+				viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
+			}
+
 			return this;
 		}
 
@@ -102,7 +105,7 @@ namespace Vikings.States {
 			hasActiveFulfillment = true;
 			fulfillmentTimer = 0;
 			viking.progressBar.Show();
-			fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = false;
+			fulfillingPlayer.GetComponentInChildren<PlayerMovement>().BlockMovement();
 
 			return this;
 		}
@@ -110,7 +113,7 @@ namespace Vikings.States {
 		public override void CancelInteraction(GameObject player, PickUp item) {
 			if (player != fulfillingPlayer) return;
 
-			fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
+			fulfillingPlayer.GetComponentInChildren<PlayerMovement>().UnblockMovement();
 
 			hasActiveFulfillment = false;
 			fulfillingPlayer = null;
@@ -132,7 +135,7 @@ namespace Vikings.States {
 				playerPickUp.DropItem();
 				givenItem.VikingPickUpItem(viking);
 
-				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
+				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().UnblockMovement();
 				return new SatisfiedVikingState(viking, desire, givenItem);
 			}
 
