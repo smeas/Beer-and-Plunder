@@ -51,11 +51,19 @@ public class HUD : MonoBehaviour {
 
 		moneyFillBar.fillAmount = (float)Tavern.Instance.Money / requiredMoney;
 
-		moneyCurrentText.text = Tavern.Instance.Money.ToString();
+		UpdateMoneyText();
+
 		moneyCurrentText.transform.DOKill();
 		moneyCurrentText.transform.localScale = Vector3.one;
 		moneyCurrentText.transform.DOPunchScale(new Vector2(moneyPunchStrength, moneyPunchStrength), moneyCurrentPunchDuration);
+	}
 
+	public void UpdateMoneyText() {
+		if (Tavern.Instance == null) return;
+
+		int requiredMoney = RoundController.Instance != null ? RoundController.Instance.RequiredMoney : 0;
+
+		moneyCurrentText.text = Tavern.Instance.Money.ToString();
 		moneyRequiredText.text = requiredMoney.ToString();
 	}
 
@@ -66,5 +74,11 @@ public class HUD : MonoBehaviour {
 
 	private void HandleOnRoundOver() {
 		roundStatusText.enabled = false;
+	}
+
+	// Run from animation event
+	public void EmptyMoneyBag(float duration) {
+		if (Tavern.Instance != null)
+			Tavern.Instance.ResetMoney(duration);
 	}
 }

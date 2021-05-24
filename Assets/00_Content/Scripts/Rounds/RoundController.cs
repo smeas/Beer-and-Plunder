@@ -18,6 +18,7 @@ namespace Rounds {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
 		[SerializeField] private GameOver gameOverPanelPrefab;
+		[SerializeField] private HUD hud;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
 
@@ -49,10 +50,10 @@ namespace Rounds {
 
 		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
-		public int RequiredMoney => CurrentDifficulty.ScaledMoneyGoal(currentRound);
 		public bool IsRoundActive => isRoundActive;
 		public bool IsGamePlayActive => isGamePlayActive;
 		public int CurrentRound => currentRound;
+		public int RequiredMoney { get; private set; }
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
@@ -65,6 +66,7 @@ namespace Rounds {
 
 			followingCamera = Camera.main.GetComponent<FollowingCamera>();
 
+			RequiredMoney = CurrentDifficulty.ScaledMoneyGoal(currentRound);
 			SendNextDifficulty();
 		}
 
@@ -179,15 +181,10 @@ namespace Rounds {
 		}
 
 		private void HandleOnNextRound() {
-			isRoundActive = true;
-			isGamePlayActive = true;
 			currentRound++;
 			SendNextDifficulty();
-			roundTimer = 0f;
 
-			if (Tavern.Instance != null)
-				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
-
+			isRoundActive = true;
 			OnNewRoundStart?.Invoke();
 
 			StartCoroutine(CoLeaveScoreCard());
@@ -208,10 +205,22 @@ namespace Rounds {
 
 			yield return new WaitForSeconds((float)hideScoreCardTimeline.duration);
 
+			isGamePlayActive = true;
+			roundTimer = 0f;
+
+			RequiredMoney = CurrentDifficulty.ScaledMoneyGoal(currentRound);
+
+			hud.UpdateMoneyText();
+
 			EnableGamePlay();
 		}
 
 		private void HandleOnTablesDestroyed() {
+			if (VikingController.Instance != null) {
+				VikingController.Instance.CanSpawn = false;
+				VikingController.Instance.LeaveAllVikings();
+			}
+
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 			DisableGamePlay();
