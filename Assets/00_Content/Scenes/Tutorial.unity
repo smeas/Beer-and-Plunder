@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -412,6 +412,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7382046824845036128, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 7805bf35b0d62f643a919de8831b00f3, type: 2}
+    - target: {fileID: 7382046824845036128, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382046824845036128, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382046824845036128, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382046824845036128, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7382046824845036128, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4410201411331406585, guid: 7805bf35b0d62f643a919de8831b00f3, type: 2}
     - target: {fileID: 7555673374434960929, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -492,6 +516,105 @@ PrefabInstance:
       propertyPath: instrument
       value: 
       objectReference: {fileID: 1234827394}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[0].text
+      value: "Welcome to \u201CBeer & Plunder\u201D! While other vikings are off
+        getting rich from pillaging you have decided to open a bar instead, earning
+        money from the rowdy raiders!\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[1].text
+      value: Our first guest is here! Guests wait by the entrance. <color="green"><b>Interact</b></color>
+        with the viking that is waiting to be <color="yellow"><b>seated</b></color>.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[2].text
+      value: Good! Now the viking will follow you as you <b>pick a table</b> for
+        them to sit at.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[3].text
+      value: Now this viking wants a beer. Pick up an <b>empty tankard</b> and pour
+        up a beer from the <b>beer tap</b> behind the counter.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[5].text
+      value: Excellent! Now bring the <b>filled tankard</b> over to the customer.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[6].text
+      value: <b>Happy</b> vikings will tip you. Faster service means <b>more gold</b>
+        and gold is what you're after!
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[7].text
+      value: Now you should <b>refill</b> the <b>beer tap</b> behind the counter.
+        Pick up a <b>barrel</b> from the stack by the wall.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[8].text
+      value: "Heavy and slow right? Running a bar alone isn\u2019t easy, later on
+        you might want to get <b>a friend to help</b> with carrying heavy things."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[9].text
+      value: "Vikings don\u2019t care about picking up after themselves."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[10].text
+      value: The viking wants another <b>beer</b> Just refill the <b>same tankard</b>
+        from before.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[11].text
+      value: Now the viking wants to hear some music. Pick up the <b>harp</b> and
+        play for them until they are satisfied.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[13].text
+      value: Woho! The crowd loves you! <b>Drop the harp</b> for now.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[14].text
+      value: Now the viking is hungry and wants to <b>order food</b>. You should
+        ask them for their order.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[15].text
+      value: "Right, now you have their order on the <b>ticket</b> you\u2019re holding.
+        Hand it into the <b>kitchen window</b>\r."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[16].text
+      value: Orders up! Time to <b>deliver the food</b>.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[18].text
+      value: Look out! Your home is beset by <b>thieving goblins</b> that try to
+        steal your money. Quickly, grab your <b>axe</b> and chase it off.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[21].text
+      value: 'Oh no! Our customer is tearing the place apart. This happens if the
+        <b>service is too slow</b>.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[22].text
+      value: Hit them with your <b>axe</b> until they want to <b>leave</b>.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[23].text
+      value: Now you need to repair the table. <b>Drop your axe</b> and equip the
+        <b>hammer</b>. Use the hammer to repair the <b>table</b>.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
+      propertyPath: phases.Array.data[25].text
+      value: Congratulations! The bar is in one piece and you are now ready to open
+        the bar for real. Can you and your friends make enough <b>gold</b> before
+        <b>time runs out</b>?
+      objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[1].highlightTarget
       value: 
