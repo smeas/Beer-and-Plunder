@@ -155,6 +155,13 @@ namespace Vikings.States {
 		private void LookAtTable() {
 			Vector3 tableDirection = (targetTable.transform.position - viking.transform.position).normalized;
 			viking.transform.DORotateQuaternion(Quaternion.LookRotation(tableDirection), 0.2f);
+
+			const float targetDistanceFromTable = 1.8f;
+			float distanceFromTable = Vector3.Distance(viking.transform.position, targetTable.transform.position);
+			if (distanceFromTable > targetDistanceFromTable) {
+				Vector3 targetPosition = targetTable.transform.position - tableDirection * targetDistanceFromTable;
+				viking.transform.DOMove(targetPosition, (distanceFromTable - targetDistanceFromTable) / viking.NavMeshAgent.speed);
+			}
 		}
 
 		private VikingState DoVikingBrawl() {
