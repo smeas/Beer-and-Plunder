@@ -14,6 +14,7 @@ namespace Player {
 		private static readonly int playInstrumentId = Animator.StringToHash("PlayInstrument");
 		private static readonly int attackId = Animator.StringToHash("Attack");
 		private static readonly int celebratingId = Animator.StringToHash("Celebrating");
+		private static readonly int repairingId = Animator.StringToHash("Repairing");
 
 		private PlayerComponent playerComponent;
 		private PlayerMovement playerMovement;
@@ -43,6 +44,9 @@ namespace Player {
 			Instrument instrument = playerPickUp.PickedUpItem as Instrument;
 			bool holdingInstrument = instrument != null;
 
+			RepairTool repairTool = playerPickUp.PickedUpItem as RepairTool;
+			bool holdingRepairTool = repairTool != null;
+
 			playerComponent.CharacterAnimator.SetFloat(speedId, playerMovement.ActualSpeed / playerMovement.MaxSpeed);
 			playerComponent.CharacterAnimator.SetBool(stunnedId, playerBrawling.IsStunned);
 
@@ -52,6 +56,8 @@ namespace Player {
 
 			playerComponent.CharacterAnimator.SetBool(holdInstrumentId, holdingInstrument);
 			playerComponent.CharacterAnimator.SetBool(playInstrumentId, holdingInstrument && instrument.IsPlaying);
+			playerComponent.CharacterAnimator.SetBool(repairingId, holdingRepairTool && repairTool.IsRepairing);
+
 		}
 
 		private void HandleOnAttack() {

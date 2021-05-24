@@ -55,21 +55,26 @@ namespace Vikings {
 		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
-		public VikingData Data => vikingData;
 		public DesireData[] Desires { get; private set; }
 		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
 		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
+		public bool Invulnerable { get; set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
 		public bool IsAttacking => animationDriver.IsPlayingAttackAnimation;
 		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
+		public VikingData Data {
+			get => vikingData;
+			set => vikingData = value;
+		}
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
 		public Action TakingSeat;
 		public Action BecameSatisfied;
+		public Action SatisfiedEnd;
 		public Action OrderTaken;
 		public Action Hit;
 
@@ -188,7 +193,11 @@ namespace Vikings {
 		}
 
 		public void JoinBrawl() {
-			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
+			Table[] possibleTargets = Table.AllTables.Where(x => !x.IsDestroyed).ToArray();
+			if (possibleTargets.Length != 0)
+				ChangeState(new BrawlingVikingState(this, Util.RandomElement(possibleTargets)));
+			else
+				Leave();
 		}
 
 		public void MakeAttack() {
@@ -239,7 +248,7 @@ namespace Vikings {
 
 		private void RegisterHitFromPlayer(Axe axe) {
 
-			if (state is LeavingVikingState)
+			if (state is LeavingVikingState || Invulnerable)
 				return;
 
 			if (axe.IsAttacking && !isAttacked) {
@@ -248,7 +257,8 @@ namespace Vikings {
 
 				bodyMeshRenderer.material.color = hitColor;
 
-				if (CurrentChair == null) {
+				// Do knockback
+				if (CurrentChair == null && !animationDriver.IsSitting) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
 					Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
 					navMeshAgent.enabled = false;

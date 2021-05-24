@@ -80,7 +80,7 @@ namespace Interactables {
 			tool.BeginRepairing(repairTime, transform.position + new Vector3(0, 3f, 0)); //event
 			tool.RepairDone += HandleRepairDone;
 
-			player.GetComponent<PlayerMovement>().CanMove = false;
+			player.GetComponent<PlayerMovement>().BlockMovement();
 		}
 
 		private void EndRepairing(GameObject player, RepairTool tool) {
@@ -88,7 +88,7 @@ namespace Interactables {
 			tool.EndRepairing();
 			tool.RepairDone -= HandleRepairDone;
 
-			player.GetComponent<PlayerMovement>().CanMove = true;
+			player.GetComponent<PlayerMovement>().UnblockMovement();
 		}
 
 		private void HandleRepairDone() {

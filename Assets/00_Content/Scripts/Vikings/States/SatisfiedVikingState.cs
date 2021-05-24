@@ -19,6 +19,7 @@ namespace Vikings.States {
 
 		private bool isWaitingForHappyToEnd;
 		private bool isDroppingCoins;
+		private bool isWaitingForThrowToEnd;
 
 		public SatisfiedVikingState(Viking viking, DesireData satisfiedDesire) : base(viking) {
 			this.satisfiedDesire = satisfiedDesire;
@@ -49,22 +50,17 @@ namespace Vikings.States {
 
 			if (givenItem != null) {
 				if (satisfiedDesire.shouldThrowItem) {
-					viking.animationDriver.TriggerThrow();
-
-					givenItem.VikingDropItem();
+					// If the state is force changed, just do the old teleport->throw
+					BeginThrowItem();
 					givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
-
-					Vector3 throwDirection = -viking.transform.forward;
-					throwDirection.y = 0.7f;
-
-					givenItem.GetComponent<Rigidbody>().velocity =
-						MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) *
-						viking.throwStrength;
+					EndThrowItem();
 				}
 				else {
 					Object.Destroy(givenItem.gameObject);
 				}
 			}
+
+			viking.SatisfiedEnd?.Invoke();
 		}
 
 		public override VikingState Update() {
@@ -79,20 +75,43 @@ namespace Vikings.States {
 
 				if (satisfiedDesire.isMaterialDesire && !satisfiedDesire.shouldThrowItem)
 					Object.Destroy(givenItem.gameObject);
+				else
+					BeginThrowItem();
 
 				isWaitingForHappyToEnd = true;
 
 				SetupDroppingCoins();
 			}
 
+			if (isWaitingForThrowToEnd && !viking.animationDriver.IsThrowing) {
+				isWaitingForThrowToEnd = false;
+				EndThrowItem();
+			}
+
 			if (isDroppingCoins) {
 				if (coinsToDrop > 0)
 					DropCoins();
-				else if (isWaitingForHappyToEnd && !viking.animationDriver.IsPlayingHappyAnimation)
+				else if (isWaitingForHappyToEnd && !viking.animationDriver.IsPlayingHappyAnimation && !isWaitingForThrowToEnd)
 					return SelectNextState();
 			}
 
 			return this;
+		}
+
+		private void BeginThrowItem() {
+			viking.animationDriver.TriggerThrow();
+			isWaitingForThrowToEnd = true;
+		}
+
+		private void EndThrowItem() {
+			givenItem.VikingDropItem();
+
+			Vector3 throwDirection = -viking.transform.forward;
+			throwDirection.y = 0.7f;
+
+			givenItem.GetComponent<Rigidbody>().velocity =
+				MathX.RandomDirectionInCone(throwDirection, viking.itemThrowConeHalfAngle) *
+				viking.throwStrength;
 		}
 
 		private void SetupDroppingCoins() {

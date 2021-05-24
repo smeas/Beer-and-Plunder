@@ -55,6 +55,7 @@ MonoBehaviour:
   - {fileID: 7194713805221475525, guid: 41900de144c02e945b69deb0dc5e9535, type: 3}
   - {fileID: 3823324680259448005, guid: 199e70ad729c15349a4388cb77cc341a, type: 3}
   - {fileID: 6683088623605380979, guid: c7c27d54a9079f340bd5ed6b507f68c1, type: 3}
+  vikingData: {fileID: 11400000, guid: 5a79fea3486b0a34d8603bad58103da1, type: 2}
 --- !u!1 &7359549989527738492
 GameObject:
   m_ObjectHideFlags: 0

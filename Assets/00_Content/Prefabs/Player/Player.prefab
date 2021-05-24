@@ -749,6 +749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpHighlightPrefab: {fileID: 5559515752884507063, guid: f80721870a785cd43b8c8367a6934816, type: 3}
   interactableHighlightPrefab: {fileID: 5559515752884507063, guid: e73de03f083e05a4280e7a3f9a7577ee, type: 3}
+  highlightPrefab: {fileID: 7393748757348335433, guid: 4a107445d037caf499b6dca4353d734f, type: 3}
   pickUpLayer:
     serializedVersion: 2
     m_Bits: 64

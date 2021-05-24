@@ -48,14 +48,6 @@ namespace Interactables.Beers {
 			fillProgressBar.UpdateProgress(1);
 
 			pourRectTransform = pourProgressBar.GetComponent<RectTransform>();
-
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += Refill;
-		}
-
-		private void OnDestroy() {
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver -= Refill;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
@@ -77,7 +69,7 @@ namespace Interactables.Beers {
 			StartCoroutine(PouringBeer());
 
 			pouringPlayer = player.GetComponent<PlayerMovement>();
-			pouringPlayer.CanMove = false;
+			pouringPlayer.BlockMovement();
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
@@ -150,7 +142,7 @@ namespace Interactables.Beers {
 			perfectProgressIndicator.gameObject.SetActive(false);
 
 			pourSoundHandle?.FadeOutAndStop(0.2f);
-			pouringPlayer.CanMove = true;
+			pouringPlayer.UnblockMovement();
 			pouringPlayer = null;
 		}
 
