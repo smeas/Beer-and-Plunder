@@ -1529,6 +1529,10 @@ PrefabInstance:
       propertyPath: maxVikings
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3533185723031067887, guid: cae821057f76de24fa9ec96856889c72, type: 3}
+      propertyPath: vikingData
+      value: 
+      objectReference: {fileID: 11400000, guid: 59acb38000e0222479c572ecde4b4c93, type: 2}
     - target: {fileID: 6367915420586774654, guid: cae821057f76de24fa9ec96856889c72, type: 3}
       propertyPath: m_RootOrder
       value: 4
