@@ -7,6 +7,8 @@ TagManager:
   - PickUp
   - Coin
   - Goblin
+  - Missile
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -25,9 +27,9 @@ TagManager:
   - Ground
   - 
   - Goblin
-  - 
-  - 
-  - 
+  - Shrapnel
+  - PlayerBarrier
+  - IgnorePlayer
   - 
   - 
   - 
@@ -39,7 +41,7 @@ TagManager:
   - GlowRing
   - 
   - 
-  - 
+  - Outside
   m_SortingLayers:
   - name: UI
     uniqueID: 1965997467

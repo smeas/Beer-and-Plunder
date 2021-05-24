@@ -15,6 +15,7 @@ namespace Vikings.States {
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
+			viking.animationDriver.TriggerRequest();
 			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
 			return this;
 		}
@@ -91,6 +92,7 @@ namespace Vikings.States {
 			if (viking.CurrentDesire.isOrder && !isOrderGiven) {
 				SpawnOrderTicket(player);
 				viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
+				viking.OrderTaken?.Invoke();
 				return this;
 			}
 
@@ -126,8 +128,9 @@ namespace Vikings.States {
 			if (desire.isMaterialDesire) {
 				PlayerPickUp playerPickUp = fulfillingPlayer.GetComponentInChildren<PlayerPickUp>();
 				PickUp givenItem = playerPickUp.PickedUpItem;
-				givenItem.gameObject.SetActive(false);
+
 				playerPickUp.DropItem();
+				givenItem.VikingPickUpItem(viking);
 
 				fulfillingPlayer.GetComponentInChildren<PlayerMovement>().CanMove = true;
 				return new SatisfiedVikingState(viking, desire, givenItem);

@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Interactables;
 using Rounds;
 using UnityEngine;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace World {
 	public class GoblinController : SingletonBehaviour<GoblinController> {
@@ -18,6 +20,13 @@ namespace World {
 		private Transform[] spawnPoints;
 		private List<Goblin> goblins = new List<Goblin>();
 		private float spawnTimer;
+
+		public int MaxGoblins {
+			get => maxGoblins;
+			set => maxGoblins = value;
+		}
+
+		public event Action<Goblin> GoblinSpawned;
 
 		private void Start() {
 			spawnPoints = transform.Cast<Transform>().ToArray();
@@ -75,6 +84,7 @@ namespace World {
 			}
 
 			goblin.PickRandomTargetsAndGo(goblinTargetCount, exitPoint.position);
+			GoblinSpawned?.Invoke(goblin);
 			return true;
 		}
 

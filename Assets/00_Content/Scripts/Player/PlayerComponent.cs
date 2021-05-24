@@ -3,6 +3,7 @@ using Extensions;
 using Rounds;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using World;
@@ -10,6 +11,7 @@ using World;
 namespace Player {
 	public class PlayerComponent : MonoBehaviour, IRespawnable {
 		[SerializeField] private Transform modelRoot;
+		[SerializeField] private Transform grabPoint;
 		[SerializeField] private PlayerData playerData;
 		[SerializeField] private MeshRenderer glowRingRenderer;
 
@@ -89,6 +91,9 @@ namespace Player {
 
 			if (Grabber == null)
 				Debug.LogError("No grabber found on model", model);
+
+			grabPoint.GetComponent<ParentConstraint>()
+				.SetSource(0, new ConstraintSource {sourceTransform = Grabber, weight = 1});
 		}
 
 		private void OnRoundOver() {

@@ -1,3 +1,4 @@
+using System;
 using Audio;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,16 +9,20 @@ using Rounds;
 
 namespace Interactables.Kitchens {
 	public class Kitchen : Interactable {
-		[SerializeField] ProgressBar cookingProgressBar;
-		[SerializeField] Transform foodSpawnpoint;
+		[SerializeField] private ProgressBar cookingProgressBar;
+		[SerializeField] private Transform foodSpawnpoint;
 		[SerializeField] private ParticleSystem foodSpawnEffect;
-		[SerializeField] GameObject foodPrefab;
+		[SerializeField] private Food foodPrefab;
+		[SerializeField] private ParticleSystem smokeParticleSystem;
 
 		[Header("Settings")]
 		[SerializeField] private float cookingTime = 10;
 
 		private Queue<KitchenTicket> tickets = new Queue<KitchenTicket>();
 		private bool isCooking;
+		private SoundHandle cookingSound;
+
+		public event Action<Food> CookingFinished;
 
 		private void OnEnable() {
 			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver += HandleOnNewRoundStart;
@@ -45,6 +50,11 @@ namespace Interactables.Kitchens {
 			float cookingProgress = 0;
 			isCooking = true;
 			cookingProgressBar.Show();
+			smokeParticleSystem.Play(true);
+
+			if(tickets.Count == 1) {
+				cookingSound = AudioManager.Instance.PlayEffect(SoundEffect.Cooking, true);
+			}
 
 			while (isCooking && cookingProgress <= cookingTime) {
 
@@ -68,12 +78,16 @@ namespace Interactables.Kitchens {
 			if (tickets.Count == 0) {
 				cookingProgressBar.Hide();
 				isCooking = false;
+				smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+				cookingSound.Stop();
 			}
 
-			Instantiate(foodPrefab, foodSpawnpoint);
+			Food food = Instantiate(foodPrefab, foodSpawnpoint);
 			foodSpawnEffect.Play();
 
 			AudioManager.Instance.PlayEffect(SoundEffect.FoodReady);
+
+			CookingFinished?.Invoke(food);
 		}
 		/// <summary>
 		/// Resets the progress etc on the kitchen between each round

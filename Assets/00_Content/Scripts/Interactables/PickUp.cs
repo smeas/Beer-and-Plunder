@@ -4,6 +4,7 @@ using System.Linq;
 using Player;
 using Rounds;
 using UnityEngine;
+using Vikings;
 using World;
 
 namespace Interactables {
@@ -16,7 +17,7 @@ namespace Interactables {
 		[SerializeField] public Transform ItemSlotPivot;
 
 		protected new Rigidbody rigidbody;
-		private bool isBeingCarried;
+		protected bool isBeingCarried;
 
 		private Vector3 startPosition;
 		private Quaternion startRotation;
@@ -110,6 +111,22 @@ namespace Interactables {
 			isBeingCarried = true;
 			OnPickedUp?.Invoke(this, playerGrabTransform.GetComponentInParent<PlayerComponent>());
 			return true;
+		}
+
+		public void VikingPickUpItem(Viking viking) {
+			MoveToPoint(viking.handTransform);
+
+			objectCollider.enabled = false;
+			isBeingCarried = true;
+		}
+
+		public void VikingDropItem() {
+			SetParent(null);
+			if (rigidbody != null)
+				rigidbody.isKinematic = false;
+
+			objectCollider.enabled = true;
+			isBeingCarried = false;
 		}
 
 		protected void MoveToPoint(Transform point) {

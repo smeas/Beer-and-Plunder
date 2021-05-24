@@ -46,7 +46,12 @@ namespace Player {
 				}
 			}
 			else if (interactableLayer.ContainsLayer(other.gameObject.layer)) {
-				interactablesInRange.Add(other.GetComponentInParent<Interactable>());
+				Interactable interactable = other.GetComponentInParent<Interactable>();
+
+				// This is needed as vikings may double enter when seating/unseating because of reparenting. Exit
+				// should always work though.
+				if (!interactablesInRange.Contains(interactable))
+					interactablesInRange.Add(interactable);
 			}
 		}
 

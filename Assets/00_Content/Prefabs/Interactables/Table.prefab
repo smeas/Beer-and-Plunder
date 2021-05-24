@@ -152,6 +152,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightPivot: {fileID: 8240370413421485099}
+  maxHealth: 10
+  repairTime: 5
+  bodyRenderer: {fileID: 4412895045616829311}
+  damageStates:
+  - {fileID: 2100000, guid: 5012b5a358d7ef448a6f296eec735845, type: 2}
+  - {fileID: 2100000, guid: 4a10db699b127cc49bc4f9c4beeb9219, type: 2}
+  - {fileID: 2100000, guid: 28dc7b5bd9846a644a6a07e595a3cafc, type: 2}
+  - {fileID: 2100000, guid: 53260e3f602c0f24ba9f321aef5052fb, type: 2}
+  brokenTablePrefab: {fileID: 7982976234653449887, guid: 534c6a9463104d94b9d5150c962b79b0, type: 3}
 --- !u!1001 &3097444136768249851
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -237,5 +246,10 @@ GameObject:
 --- !u!4 &3276065768177760272 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f42bc8f87946c1942bd28a38b44867d8, type: 3}
+  m_PrefabInstance: {fileID: 3097444136768249851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4412895045616829311 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: f42bc8f87946c1942bd28a38b44867d8, type: 3}
   m_PrefabInstance: {fileID: 3097444136768249851}
   m_PrefabAsset: {fileID: 0}

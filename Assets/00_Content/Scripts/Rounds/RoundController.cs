@@ -31,9 +31,13 @@ namespace Rounds {
 		private GameOver gameOverPanel;
 		private FollowingCamera followingCamera;
 		private ScoreCard scoreCard;
+		private SoundHandle clockTickSound;
 		private float roundTimer;
 		private int currentRound = 1;
 		private bool isRoundActive = true;
+		private bool isGamePlayActive = true;
+		private bool isTenSecondTimerStarted = false;
+		//ensures the horn has only sounded once at end of round
 
 		public ScalingData CurrentDifficulty =>
 			playerDifficulties[PlayerManager.Instance && PlayerManager.Instance.NumPlayers > 0
@@ -47,6 +51,7 @@ namespace Rounds {
 		public float RoundTimer => roundTimer;
 		public int RequiredMoney => requiredMoney;
 		public bool IsRoundActive => isRoundActive;
+		public bool IsGamePlayActive => isGamePlayActive;
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
@@ -62,17 +67,30 @@ namespace Rounds {
 			SendNextDifficulty();
 		}
 
+		private void OnDisable() {
+			clockTickSound?.Stop();
+		}
+
 		private void Update() {
-			if (!isRoundActive) return;
+			if (!isGamePlayActive) return;
 
 			roundTimer += Time.deltaTime;
 
-			if (roundTimer >= roundDuration) RoundOver();
+			if (roundDuration - roundTimer <= 10 && !isTenSecondTimerStarted) {
+				clockTickSound = AudioManager.Instance.PlayEffect(SoundEffect.ClockTick, true);
+				isTenSecondTimerStarted = true;
+			}
+
+			if (roundTimer >= roundDuration) {
+				clockTickSound.Stop();
+				isTenSecondTimerStarted = false;
+				RoundOver();
+				isGamePlayActive = false;
+			}
 		}
 
-		private void RoundOver() {
-			isRoundActive = false;
-			// TODO: Add round over horn SFX
+		private void RoundOver() { 
+			AudioManager.Instance.PlayEffect(SoundEffect.Gameplay_WarHorn);
 
 			StartCoroutine(CoWaitForVikingsLeaving());
 		}
@@ -87,6 +105,7 @@ namespace Rounds {
 			}
 
 			DisableGamePlay();
+			isRoundActive = false;
 			OnRoundOver?.Invoke();
 
 			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
@@ -122,12 +141,14 @@ namespace Rounds {
 		}
 
 		private void ShowScoreCard() {
+
 			Transform camTransform = followingCamera.transform;
 			virtualFollowingCamera.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 
 			scoreCard.UpdateScoreCard(currentRound);
 
 			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundWon);
+
 			StartCoroutine(CoMoveToScoreCard());
 		}
 
@@ -155,9 +176,11 @@ namespace Rounds {
 		}
 
 		private void HandleOnNextRound() {
+			isRoundActive = true;
+			isGamePlayActive = true;
 			currentRound++;
 			SendNextDifficulty();
-			roundTimer = roundDuration;
+			roundTimer = 0f;
 
 			if (Tavern.Instance != null)
 				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
@@ -183,7 +206,6 @@ namespace Rounds {
 			yield return new WaitForSeconds((float)hideScoreCardTimeline.duration);
 
 			EnableGamePlay();
-			isRoundActive = true;
 		}
 
 		private void HandleOnTablesDestroyed() {
