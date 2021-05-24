@@ -86,6 +86,8 @@ namespace Interactables.Kitchens {
 		private void FinishCooking() {
 			Destroy(tickets.Dequeue());
 
+			cookingCounter.SetCounter(tickets.Count);
+
 			if (tickets.Count == 1)
 				cookingCounter.Disable();
 
