@@ -18,6 +18,7 @@ namespace Vikings.States {
 		private float attackTimer;
 		private bool isDismountingChair;
 		private bool lastIsMoving;
+		private bool isBrawlingCurrentTable;
 
 		private bool IsMoving =>  viking.NavMeshAgent.pathPending || viking.NavMeshAgent.desiredVelocity.sqrMagnitude != 0;
 
@@ -44,6 +45,9 @@ namespace Vikings.States {
 			viking.animationDriver.Brawl = true;
 
 			if (viking.CurrentChair != null) {
+				if (targetTable.Chairs.Contains(viking.CurrentChair))
+					isBrawlingCurrentTable = true;
+
 				viking.DismountChair();
 				isDismountingChair = true;
 			}
@@ -63,12 +67,17 @@ namespace Vikings.States {
 
 		private void OnChairDismounted() {
 			isDismountingChair = false;
-
 			viking.NavMeshAgent.enabled = true;
 
 			if (brawlType == BrawlType.TableBrawl) {
-				viking.NavMeshAgent.enabled = false;
-				LookAtTable();
+				if (isBrawlingCurrentTable) {
+					viking.NavMeshAgent.enabled = false;
+					LookAtTable();
+				}
+				else {
+					viking.NavMeshAgent.SetDestination(targetTable.transform.position);
+					attackTimer = viking.Data.attackRate;
+				}
 			}
 		}
 
@@ -143,6 +152,7 @@ namespace Vikings.States {
 
 				int index = Random.Range(0, possibleTargets.Length);
 				targetTable = possibleTargets[index];
+				isBrawlingCurrentTable = false;
 
 				viking.NavMeshAgent.enabled = true;
 				viking.NavMeshAgent.SetDestination(targetTable.transform.position);

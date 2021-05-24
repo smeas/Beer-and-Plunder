@@ -187,7 +187,11 @@ namespace Vikings {
 		}
 
 		public void JoinBrawl() {
-			ChangeState(new BrawlingVikingState(this, CurrentChair.Table));
+			Table[] possibleTargets = Table.AllTables.Where(x => !x.IsDestroyed).ToArray();
+			if (possibleTargets.Length != 0)
+				ChangeState(new BrawlingVikingState(this, Util.RandomElement(possibleTargets)));
+			else
+				Leave();
 		}
 
 		public void MakeAttack() {
