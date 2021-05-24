@@ -334,10 +334,29 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
     m_Reference: {fileID: 8279734527049959713, guid: e1cc5eb7194ca2941b57e137fcc9d7d7, type: 3}
-  firstSelected: {fileID: 6471117610543515424}
+  backAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Back
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 3a025e43-22ab-4656-99ac-b1a62222bf09
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 3ece823a-4935-4b74-806c-d469dfc93548
+        m_Path: <Gamepad>/buttonEast
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Back
+        m_Flags: 0
+    m_Reference: {fileID: 0}
   canvas: {fileID: 2202262457529601648}
   pausePanel: {fileID: 7113924078739384874}
   settingsPanel: {fileID: 160114534780641785}
+  optionsButton: {fileID: 4355254953840688598}
 --- !u!1 &7929277658381255162
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +369,7 @@ GameObject:
   - component: {fileID: 2202262457529601648}
   - component: {fileID: 1120810774648298654}
   - component: {fileID: 993418340689155056}
+  - component: {fileID: 3385806125853095639}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -441,6 +461,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3385806125853095639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7929277658381255162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c1f3a69a442419edc5dff1503f7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selection: {fileID: 6471117610543515424}
 --- !u!1001 &2937193891598284148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -978,6 +1011,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
+--- !u!1 &4355254953840688598 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8328911642051506029, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
+  m_PrefabInstance: {fileID: 5757505007087211195}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4355254953840688599 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8328911642051506028, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}

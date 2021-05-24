@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 1015360838154347616}
   - component: {fileID: 5799750428005154543}
   - component: {fileID: 3143614089432559477}
+  - component: {fileID: 4351515931852729999}
   m_Layer: 5
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -234,6 +235,19 @@ MonoBehaviour:
   masterSlider: {fileID: 6647174762895019100}
   musicSlider: {fileID: 2029046520674579956}
   sfxSlider: {fileID: 6244920011466781072}
+--- !u!114 &4351515931852729999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7101323164978993995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c1f3a69a442419edc5dff1503f7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selection: {fileID: 6647174762895019100}
 --- !u!1001 &2346001929656898435
 PrefabInstance:
   m_ObjectHideFlags: 0
