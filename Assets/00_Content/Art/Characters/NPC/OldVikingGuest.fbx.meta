@@ -68,13 +68,15 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
-    animationImportErrors: 
-    animationImportWarnings: Event OnUnsitEnd has a time (1.600000) outside the clip's
-      valid range (0.000000..1.600000). It will never be fired
-    animationRetargetingWarnings: 
+    motionNodeName:
+    rigImportErrors:
+    rigImportWarnings:
+    animationImportErrors:
+    animationImportWarnings: Event OnAttackEnd has a time (1.320000) outside the
+      clip's valid range (0.000000..1.320000). It will never be firedEvent OnUnsitEnd
+      has a time (1.600000) outside the clip's valid range (0.000000..1.600000).
+      It will never be fired
+    animationRetargetingWarnings:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -113,7 +115,7 @@ ModelImporter:
       events:
       - time: 1
         functionName: OnUnsitEnd
-        data: 
+        data:
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -236,7 +238,7 @@ ModelImporter:
       events:
       - time: 1
         functionName: OnAttackEnd
-        data: 
+        data:
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -301,7 +303,7 @@ ModelImporter:
       events:
       - time: 1
         functionName: OnHappyEnd
-        data: 
+        data:
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -424,7 +426,7 @@ ModelImporter:
       events:
       - time: 1
         functionName: OnUnsitEnd
-        data: 
+        data:
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -489,7 +491,7 @@ ModelImporter:
       events:
       - time: 1
         functionName: OnSitEnd
-        data: 
+        data:
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -609,7 +611,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.6
+        functionName: OnThrowEnd
+        data:
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -698,7 +707,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
@@ -709,6 +718,6 @@ ModelImporter:
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  userData:
+  assetBundleName:
+  assetBundleVariant:
