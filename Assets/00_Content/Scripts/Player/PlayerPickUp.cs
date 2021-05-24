@@ -20,6 +20,7 @@ namespace Player {
 		public Transform PlayerGrabTransform => playerGrabTransform;
 
 		public PickUp PickedUpItem => pickedUpItem;
+		public bool IsUsingItem => isUsingItem;
 
 		private void Awake() {
 			detector = GetComponent<InteractionDetector>();

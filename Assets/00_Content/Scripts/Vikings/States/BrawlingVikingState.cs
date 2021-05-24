@@ -18,6 +18,7 @@ namespace Vikings.States {
 		private float attackTimer;
 		private bool isDismountingChair;
 		private bool lastIsMoving;
+		private bool isBrawlingCurrentTable;
 
 		private bool IsMoving =>  viking.NavMeshAgent.pathPending || viking.NavMeshAgent.desiredVelocity.sqrMagnitude != 0;
 
@@ -36,7 +37,6 @@ namespace Vikings.States {
 		public BrawlingVikingState(Viking viking, PlayerComponent playerTarget) : base(viking) {
 			Debug.Assert(playerTarget != null, "Viking is entering a playerBrawl with no target");
 			this.playerTarget = playerTarget;
-			viking.DismountChair();
 			brawlType = BrawlType.PlayerBrawl;
 		}
 
@@ -44,6 +44,9 @@ namespace Vikings.States {
 			viking.animationDriver.Brawl = true;
 
 			if (viking.CurrentChair != null) {
+				if (brawlType == BrawlType.TableBrawl && targetTable.Chairs.Contains(viking.CurrentChair))
+					isBrawlingCurrentTable = true;
+
 				viking.DismountChair();
 				isDismountingChair = true;
 			}
@@ -63,12 +66,17 @@ namespace Vikings.States {
 
 		private void OnChairDismounted() {
 			isDismountingChair = false;
-
 			viking.NavMeshAgent.enabled = true;
 
 			if (brawlType == BrawlType.TableBrawl) {
-				viking.NavMeshAgent.enabled = false;
-				LookAtTable();
+				if (isBrawlingCurrentTable) {
+					viking.NavMeshAgent.enabled = false;
+					LookAtTable();
+				}
+				else {
+					viking.NavMeshAgent.SetDestination(targetTable.transform.position);
+					attackTimer = viking.Data.attackRate;
+				}
 			}
 		}
 
@@ -143,6 +151,7 @@ namespace Vikings.States {
 
 				int index = Random.Range(0, possibleTargets.Length);
 				targetTable = possibleTargets[index];
+				isBrawlingCurrentTable = false;
 
 				viking.NavMeshAgent.enabled = true;
 				viking.NavMeshAgent.SetDestination(targetTable.transform.position);
@@ -155,6 +164,13 @@ namespace Vikings.States {
 		private void LookAtTable() {
 			Vector3 tableDirection = (targetTable.transform.position - viking.transform.position).normalized;
 			viking.transform.DORotateQuaternion(Quaternion.LookRotation(tableDirection), 0.2f);
+
+			const float targetDistanceFromTable = 1.8f;
+			float distanceFromTable = Vector3.Distance(viking.transform.position, targetTable.transform.position);
+			if (distanceFromTable > targetDistanceFromTable) {
+				Vector3 targetPosition = targetTable.transform.position - tableDirection * targetDistanceFromTable;
+				viking.transform.DOMove(targetPosition, (distanceFromTable - targetDistanceFromTable) / viking.NavMeshAgent.speed);
+			}
 		}
 
 		private VikingState DoVikingBrawl() {
