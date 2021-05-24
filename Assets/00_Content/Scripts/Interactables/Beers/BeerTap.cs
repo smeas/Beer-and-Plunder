@@ -48,14 +48,6 @@ namespace Interactables.Beers {
 			fillProgressBar.UpdateProgress(1);
 
 			pourRectTransform = pourProgressBar.GetComponent<RectTransform>();
-
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver += Refill;
-		}
-
-		private void OnDestroy() {
-			if (RoundController.Instance != null)
-				RoundController.Instance.OnRoundOver -= Refill;
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
