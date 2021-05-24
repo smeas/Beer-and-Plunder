@@ -202,9 +202,9 @@ namespace Player {
 
 		// Run from unity event
 		public void HandleEndInput() {
-			if (playerPickUp.PickedUpItem is IUseable)
+			if (playerPickUp.PickedUpItem is IUseable && playerPickUp.IsUsingItem)
 				playerPickUp.EndUseItem();
-			else
+			else if (playerInteract.IsInteracting)
 				playerInteract.EndInteract();
 		}
 	}
