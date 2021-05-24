@@ -65,6 +65,8 @@ namespace Vikings.States {
 					Object.Destroy(givenItem.gameObject);
 				}
 			}
+
+			viking.SatisfiedEnd?.Invoke();
 		}
 
 		public override VikingState Update() {

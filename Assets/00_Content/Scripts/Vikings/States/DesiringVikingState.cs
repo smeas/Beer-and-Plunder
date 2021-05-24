@@ -15,8 +15,11 @@ namespace Vikings.States {
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
 		public override VikingState Enter() {
-			viking.animationDriver.TriggerRequest();
-			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
+			if (viking.CurrentDesire.type != DesireType.Null) {
+				viking.animationDriver.TriggerRequest();
+				viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
+			}
+
 			return this;
 		}
 
