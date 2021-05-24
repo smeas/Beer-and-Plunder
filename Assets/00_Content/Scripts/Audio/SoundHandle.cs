@@ -35,7 +35,8 @@ namespace Audio {
 		public void Stop() {
 			if (!isValid) return;
 
-			source.Stop();
+			if (source != null)
+				source.Stop();
 			Invalidate();
 		}
 
