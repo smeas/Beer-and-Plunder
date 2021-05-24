@@ -87,7 +87,7 @@ namespace Interactables.Instruments {
 
 			usingPlayer = user;
 			if (!instrumentData.playerCanMoveWhileUsing)
-				usingPlayer.GetComponent<PlayerMovement>().CanMove = false;
+				usingPlayer.GetComponent<PlayerMovement>().BlockMovement();
 
 			musicSource.clip = instrumentData.music;
 			musicSource.Play();
@@ -104,7 +104,7 @@ namespace Interactables.Instruments {
 			if (!isPlaying) return;
 			isPlaying = false;
 
-			usingPlayer.GetComponent<PlayerMovement>().CanMove = true;
+			usingPlayer.GetComponent<PlayerMovement>().UnblockMovement();
 
 			musicSource.Stop();
 

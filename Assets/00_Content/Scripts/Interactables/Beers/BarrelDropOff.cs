@@ -24,7 +24,7 @@ namespace Interactables.Beers {
 			StartCoroutine(SwitchBeerTapBarrel(barrel));
 
 			holdingPlayer = player.GetComponent<PlayerMovement>();
-			holdingPlayer.CanMove = false;
+			holdingPlayer.BlockMovement();
 		}
 
 		public override void CancelInteraction(GameObject player, PickUp item) {
@@ -62,7 +62,7 @@ namespace Interactables.Beers {
 			switchingProgress = 0;
 			progressBar.Hide();
 
-			holdingPlayer.CanMove = true;
+			holdingPlayer.UnblockMovement();
 		}
 	}
 }
