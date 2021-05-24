@@ -251,7 +251,8 @@ namespace Vikings {
 
 				bodyMeshRenderer.material.color = hitColor;
 
-				if (CurrentChair == null) {
+				// Do knockback
+				if (CurrentChair == null && !animationDriver.IsSitting) {
 					PlayerComponent playerComponent = axe.GetComponentInParent<PlayerComponent>();
 					Vector3 direction = (playerComponent.transform.position - transform.position).normalized;
 					navMeshAgent.enabled = false;
