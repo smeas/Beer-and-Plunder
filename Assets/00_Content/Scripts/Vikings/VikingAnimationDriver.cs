@@ -173,6 +173,7 @@ namespace Vikings {
 			vikingTransform.SetParent(sitTransform);
 
 			sitTransformAttached = true;
+			viking.highlightPivot.position = sitTransform.position;
 		}
 
 		private void DetachSitTransform() {
@@ -181,6 +182,7 @@ namespace Vikings {
 			// Restore old parent
 			vikingTransform.SetParent(sitTransform.parent);
 			sitTransformAttached = false;
+			viking.highlightPivot.localPosition = Vector3.zero;
 		}
 
 		#endregion
