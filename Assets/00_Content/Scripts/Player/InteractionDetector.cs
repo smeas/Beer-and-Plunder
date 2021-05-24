@@ -159,7 +159,7 @@ namespace Player {
 
 		private void HighlightPickUp(PickUp pickUp) {
 			Bounds objectBounds = pickUp.ObjectCollider.bounds;
-			MoveHighlight(objectBounds.center - new Vector3(0, objectBounds.extents.y, 0));
+			MoveHighlight(objectBounds.center - new Vector3(0, objectBounds.extents.y, 0), pickUp.highlightSize);
 
 			closestObject = pickUp;
 		}
@@ -167,16 +167,18 @@ namespace Player {
 		private void HighlightInteractable(Interactable interactable) {
 			MoveHighlight(interactable.highlightPivot != null
 					? interactable.highlightPivot.position
-					: interactable.transform.position);
+					: interactable.transform.position, interactable.highlightSize);
 
 			closestObject = interactable;
 		}
 
-		private void MoveHighlight(Vector3 position) {
+		private void MoveHighlight(Vector3 position, float size) {
 			if (highlight == null)
 				SetupHighlight();
 
-			highlight.transform.position = position;
+			Transform highlightTransform = highlight.transform;
+			highlightTransform.position = position;
+			highlightTransform.localScale = new Vector3(size, size, size);
 
 			if (!highlight.isPlaying)
 				highlight.Play(true);
