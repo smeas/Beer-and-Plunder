@@ -13,6 +13,7 @@ namespace Vikings {
 		[SerializeField] private Transform exitPoint;
 		[SerializeField] private QueueController queueController;
 		[SerializeField] private GameObject[] vikingModelPrefabs;
+		[SerializeField] private VikingData vikingData;
 
 		private List<Viking> vikings = new List<Viking>();
 		private float spawnDelay = 1f;
@@ -44,6 +45,7 @@ namespace Vikings {
 			Viking viking = Instantiate(vikingPrefab, transform);
 			viking.ChangeModel(Util.RandomElement(vikingModelPrefabs));
 			viking.SetScaling(StatScaling);
+			viking.Data = vikingData;
 			viking.LeaveTavern += OnLeaveTavern;
 
 			vikings.Add(viking);

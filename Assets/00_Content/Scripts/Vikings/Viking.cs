@@ -54,21 +54,26 @@ namespace Vikings {
 		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
-		public VikingData Data => vikingData;
 		public DesireData[] Desires { get; private set; }
 		public DesireData CurrentDesire => Desires[CurrentDesireIndex];
 		public List<float> MoodWhenDesireFulfilled { get; } = new List<float>();
 		public VikingStats Stats { get; private set; }
+		public bool Invulnerable { get; set; }
 		public Chair CurrentChair { get; set; }
 		public int CurrentDesireIndex { get; set; }
 		public int QueuePosition { get; set; }
 		public bool IsAttacking => animationDriver.IsPlayingAttackAnimation;
 		public bool IsAttacked { get => isAttacked; set => isAttacked = value; }
+		public VikingData Data {
+			get => vikingData;
+			set => vikingData = value;
+		}
 
 		public event VikingLeaving LeaveTavern;
 		public event VikingLeavingQueue LeaveQueue;
 		public Action TakingSeat;
 		public Action BecameSatisfied;
+		public Action SatisfiedEnd;
 		public Action OrderTaken;
 		public Action Hit;
 
@@ -238,7 +243,7 @@ namespace Vikings {
 
 		private void RegisterHitFromPlayer(Axe axe) {
 
-			if (state is LeavingVikingState)
+			if (state is LeavingVikingState || Invulnerable)
 				return;
 
 			if (axe.IsAttacking && !isAttacked) {

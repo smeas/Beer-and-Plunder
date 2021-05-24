@@ -11,6 +11,7 @@ using Taverns;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using Vikings;
 using Vikings.States;
 
@@ -18,7 +19,6 @@ namespace World {
 	public class Tutorial : MonoBehaviour {
 		[Header("Tutorial objects")]
 		[SerializeField] private PlayerComponent player;
-		[SerializeField] private Viking viking;
 		[SerializeField] private Tankard tankard;
 		[SerializeField] private BeerTap beerTap;
 		[SerializeField] private BeerCellar beerCellar;
@@ -30,7 +30,14 @@ namespace World {
 
 		[Space]
 		[SerializeField] private DialogueText dialogueText;
+		[SerializeField] private GameObject moveControls;
+		[SerializeField] private GameObject interactControls;
+		[SerializeField] private GameObject dropControls;
+		[SerializeField] private GameObject continuePrompt;
 		[SerializeField] private GameObject highlightPrefab;
+
+		[Space]
+		[SerializeField] private InputActionProperty continueAction;
 
 		[Space]
 		[SerializeField] private TutorialPhase[] phases;
@@ -40,6 +47,7 @@ namespace World {
 		private GameObject highlight;
 		private bool highlightActive;
 		private FollowingCamera cam;
+		private Viking viking;
 
 		private bool autoFill = true;
 		private NavMeshAgent goblinAgent;
@@ -58,12 +66,21 @@ namespace World {
 			PreparePhase();
 		}
 
+		private void OnEnable() {
+			continueAction.action.Enable();
+			continueAction.action.performed += OnContinuePerformed;
+		}
+
 		private void AddEventListeners() {
-			viking.LeaveQueue += OnVikingLeaveQueue;
-			viking.TakingSeat += OnVikingTakeSeat;
-			viking.BecameSatisfied += OnVikingSatisfied;
-			viking.Hit += OnVikingHit;
-			viking.OrderTaken += OnVikingOrderTaken;
+			VikingController.Instance.VikingSpawned += vik => {
+				viking = vik;
+				viking.LeaveQueue += OnVikingLeaveQueue;
+				viking.TakingSeat += OnVikingTakeSeat;
+				viking.BecameSatisfied += OnVikingSatisfied;
+				viking.SatisfiedEnd += OnVikingSatisfiedEnd;
+				viking.Hit += OnVikingHit;
+				viking.OrderTaken += OnVikingOrderTaken;
+			};
 
 			tankard.OnPickedUp += OnTankardPickedUp;
 			tankard.OnSpilled += OnTankardSpilled;
@@ -91,7 +108,6 @@ namespace World {
 		private void OnGoblinSpawned(Goblin goblin) {
 			goblinAgent = goblin.GetComponent<NavMeshAgent>();
 			goblinSpeed = goblinAgent.speed;
-			// goblinAgent.isStopped = true;
 			goblinAgent.speed = 0.01f;
 
 			goblin.OnLeave += OnGoblinLeave;
@@ -111,6 +127,7 @@ namespace World {
 		private void OnVikingLeaveQueue(Viking sender) => OnTutorialEvent(TutorialEvent.VikingLeaveQueue);
 		private void OnVikingTakeSeat() => OnTutorialEvent(TutorialEvent.VikingSeated);
 		private void OnVikingSatisfied() => OnTutorialEvent(TutorialEvent.VikingSatisfied);
+		private void OnVikingSatisfiedEnd() => OnTutorialEvent(TutorialEvent.VikingSatisfiedEnd);
 		private void OnBeerPoured() => OnTutorialEvent(TutorialEvent.BeerPoured);
 		private void OnBeerTapRefilled() => OnTutorialEvent(TutorialEvent.BeerTapRefilled);
 		private void OnMoneyChanged() => OnTutorialEvent(TutorialEvent.MoneyEarned);
@@ -130,6 +147,7 @@ namespace World {
 		}
 		private void OnFoodPickedUp(PickUp _, PlayerComponent __) => OnTutorialEvent(TutorialEvent.FoodPickedUp);
 		private void OnGoblinLeave(Goblin obj) => OnTutorialEvent(TutorialEvent.GoblinLeave);
+		private void OnContinuePerformed(InputAction.CallbackContext obj) => OnTutorialEvent(TutorialEvent.ContinuePressed);
 
 		#endregion
 
@@ -171,6 +189,12 @@ namespace World {
 
 			if (CurrentPhase.SetDuration)
 				StartCoroutine(CoWaitPhaseDuration(CurrentPhase.Duration));
+
+			moveControls.SetActive(CurrentPhase.ShowMoveControls);
+			interactControls.SetActive(CurrentPhase.ShowInteractControls);
+			dropControls.SetActive(CurrentPhase.ShowDropControls);
+
+			continuePrompt.SetActive(CurrentPhase.CompleteOn == TutorialEvent.ContinuePressed);
 		}
 
 		private IEnumerator CoWaitPhaseDuration(float duration) {
@@ -187,7 +211,8 @@ namespace World {
 		public void SpawnGoblin() => GoblinController.Instance.MaxGoblins = 1;
 		public void DisableGoblinSpawning() => GoblinController.Instance.MaxGoblins = 0;
 		public void EnableGoblin() => goblinAgent.speed = goblinSpeed;
-		public void NullifyViking() => viking.ForceChangeState(new NullVikingState(viking));
+		public void EnableHittingViking() => viking.Invulnerable = false;
+		public void DisableHittingViking() => viking.Invulnerable = true;
 
 		#endregion
 	}
