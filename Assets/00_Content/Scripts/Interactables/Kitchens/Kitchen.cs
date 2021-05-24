@@ -109,7 +109,10 @@ namespace Interactables.Kitchens {
 		private void HandleOnNewRoundStart() {
 			isCooking = false;
 			StopAllCoroutines();
-			cookingSound.Stop();
+
+			if(cookingSound != null)
+				cookingSound.Stop();
+
 			smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
 			if (cookingCounter.isActiveAndEnabled)
