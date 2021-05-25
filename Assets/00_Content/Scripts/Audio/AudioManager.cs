@@ -87,7 +87,7 @@ namespace Audio {
 			if (cue != null)
 				PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop, cue.volume);
 			else
-				PlayMusic(null, null, fade, fadeDuration, restart, loop, cue.volume);
+				PlayMusic(null, null, fade, fadeDuration, restart, loop);
 		}
 
 		private void PlayMusic(AudioClip introClip, AudioClip musicClip, MusicFadeType fade = MusicFadeType.None,
