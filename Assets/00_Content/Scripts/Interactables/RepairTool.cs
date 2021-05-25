@@ -34,6 +34,7 @@ namespace Interactables {
 
 			if (!isRepairing) return;
 
+			repairTimer += Time.deltaTime;
 			floorHitTimer += Time.deltaTime;
 			if (repairTimer >= repairDuration) {
 				isRepairing = false;
