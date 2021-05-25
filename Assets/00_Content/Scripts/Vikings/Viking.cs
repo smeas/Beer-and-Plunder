@@ -24,7 +24,6 @@ namespace Vikings {
 
 	public class Viking : Interactable, IHittable {
 		[SerializeField] private VikingData vikingData;
-		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public ParticleSystem disappearParticleSystem;
 		[SerializeField] public ParticleSystem angryParticleSystem;
 		[SerializeField] public float maxLeavingTime = 10f;
