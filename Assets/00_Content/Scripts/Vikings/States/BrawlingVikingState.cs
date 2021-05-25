@@ -121,20 +121,10 @@ namespace Vikings.States {
 		}
 
 		private VikingState DoTableBrawl() {
-			viking.animationDriver.TableBrawl = !IsMoving;
-
 			// When we stop moving, make sure we're looking at the table.
 			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
 				viking.NavMeshAgent.enabled = false;
 				LookAtTable();
-			}
-
-			if (IsMoving) return this;
-
-			attackTimer -= Time.deltaTime;
-			if (attackTimer <= 0) {
-				targetTable.Damage(viking.Data.damage);
-				attackTimer = viking.Data.attackRate;
 			}
 
 			if (targetTable.IsDestroyed) {
@@ -159,6 +149,16 @@ namespace Vikings.States {
 
 				viking.NavMeshAgent.enabled = true;
 				viking.NavMeshAgent.SetDestination(targetTable.transform.position);
+				attackTimer = viking.Data.attackRate;
+			}
+
+			viking.animationDriver.TableBrawl = !IsMoving;
+
+			if (IsMoving) return this;
+
+			attackTimer -= Time.deltaTime;
+			if (attackTimer <= 0) {
+				targetTable.Damage(viking.Data.damage);
 				attackTimer = viking.Data.attackRate;
 			}
 

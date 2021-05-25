@@ -173,7 +173,7 @@ namespace Vikings {
 
 		public void Leave() {
 			if (!(state is LeavingVikingState))
-				ChangeState(new LeavingVikingState(this));
+				ForceChangeState(new LeavingVikingState(this));
 		}
 
 		public void SetScaling(VikingScaling scaling) {
