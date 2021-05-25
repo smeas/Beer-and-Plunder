@@ -68,9 +68,12 @@ MonoBehaviour:
     m_Bits: 512
   objectCollider: {fileID: 7638650648582139330}
   ItemSlotPivot: {fileID: 1896289389646977378}
+  highlightSize: 0.5
   shrinkTime: 1
   repairProgressCanvas: {fileID: 3418456946252394427}
   repairProgressImage: {fileID: 929576792369695688}
+  floorHitSoundVelocityLimit: 0.5
+  floorHitDelay: 1
 --- !u!54 &7638650649491389683
 Rigidbody:
   m_ObjectHideFlags: 0

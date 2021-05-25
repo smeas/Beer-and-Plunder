@@ -62,7 +62,7 @@ namespace Interactables.Beers {
 
 		private void OnCollisionEnter(Collision collision) {
 			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
-				AudioManager.PlayEffectSafe(SoundEffect.BeerDrop);
+				AudioManager.PlayEffectSafe(SoundEffect.Physics_TankardDrop);
 			}
 		}
 	}
