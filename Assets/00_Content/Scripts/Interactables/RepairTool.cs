@@ -49,8 +49,6 @@ namespace Interactables {
 			repairProgressImage.fillAmount = 0f;
 			repairProgressCanvas.SetActive(true);
 			repairProgressCanvas.transform.SetPositionAndRotation(progressBarPosition, Quaternion.identity);
-
-			soundHandle = AudioManager.PlayEffectSafe(SoundEffect.Repair, loop: true);
 		}
 
 		public void EndRepairing() {
