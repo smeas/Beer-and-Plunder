@@ -13,13 +13,15 @@ namespace Player {
 		public const int MaxPlayers = 4;
 
 		private PlayerInputManager playerInputManager;
-		private bool allowJoining;
 
 		public bool AllowJoining {
-			get => allowJoining;
+			get => playerInputManager.joiningEnabled;
 			set {
-				allowJoining = value;
-				UpdateJoiningEnabled();
+				if (value == playerInputManager.joiningEnabled) return;
+				if (value)
+					playerInputManager.EnableJoining();
+				else
+					playerInputManager.DisableJoining();
 			}
 		}
 
@@ -56,32 +58,15 @@ namespace Player {
 
 		public void AddPlayer(PlayerComponent player) {
 			Players.Add(player);
-
-			UpdateJoiningEnabled();
 		}
 
 		public void RemovePlayer(PlayerComponent player) {
 			Players.Remove(player);
-
-			UpdateJoiningEnabled();
-		}
-
-		private void UpdateJoiningEnabled() {
-			bool shouldEnableJoining = NumPlayers < MaxPlayers && allowJoining;
-			if (shouldEnableJoining == playerInputManager.joiningEnabled)
-				return;
-
-			if (shouldEnableJoining)
-				playerInputManager.EnableJoining();
-			else
-				playerInputManager.DisableJoining();
 		}
 
 		#region Event Handlers
 
 		private void OnPlayerJoined(PlayerInput playerInput) {
-			UpdateJoiningEnabled();
-
 			PlayerComponent player = playerInput.GetComponent<PlayerComponent>();
 			if (player == null) {
 				Debug.Assert(false, "Joined player has PlayerComponent");
@@ -94,8 +79,6 @@ namespace Player {
 		}
 
 		private void OnPlayerLeft(PlayerInput playerInput) {
-			UpdateJoiningEnabled();
-
 			PlayerComponent player = playerInput.GetComponent<PlayerComponent>();
 			if (player == null) {
 				Debug.Assert(false, "Leaving player has PlayerComponent");
