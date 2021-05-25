@@ -121,12 +121,6 @@ namespace Vikings.States {
 		}
 
 		private VikingState DoTableBrawl() {
-			// When we stop moving, make sure we're looking at the table.
-			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
-				viking.NavMeshAgent.enabled = false;
-				LookAtTable();
-			}
-
 			if (targetTable.IsDestroyed) {
 				MakeTableBrawl(targetTable);
 
@@ -153,6 +147,12 @@ namespace Vikings.States {
 			}
 
 			viking.animationDriver.TableBrawl = !IsMoving;
+
+			// When we stop moving, make sure we're looking at the table.
+			if (lastIsMoving != (lastIsMoving = IsMoving) && !IsMoving) {
+				viking.NavMeshAgent.enabled = false;
+				LookAtTable();
+			}
 
 			if (IsMoving) return this;
 

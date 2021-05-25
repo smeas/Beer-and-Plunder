@@ -225,6 +225,7 @@ namespace Rounds {
 			}
 
 			isRoundActive = false;
+			isGamePlayActive = false;
 			DisableGamePlay();
 			gameOverPanel.Show(LoseCondition.Destruction);
 			hud.HideRoundStatus();
@@ -238,6 +239,7 @@ namespace Rounds {
 			}
 
 			isRoundActive = false;
+			isGamePlayActive = false;
 			gameOverPanel.Show(LoseCondition.Bankrupcy);
 			hud.HideRoundStatus();
 			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
