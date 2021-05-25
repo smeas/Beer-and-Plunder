@@ -19,7 +19,9 @@ namespace Vikings.States {
 
 		private bool isWaitingForHappyToEnd;
 		private bool isDroppingCoins;
-		private bool isWaitingForThrowToEnd;
+		private bool isThrowing;
+		private bool hasThrownItem;
+		private bool hasHappyEnded;
 
 		public SatisfiedVikingState(Viking viking, DesireData satisfiedDesire) : base(viking) {
 			this.satisfiedDesire = satisfiedDesire;
@@ -50,10 +52,12 @@ namespace Vikings.States {
 
 			if (givenItem != null) {
 				if (satisfiedDesire.shouldThrowItem) {
-					// If the state is force changed, just do the old teleport->throw
-					BeginThrowItem();
-					givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
-					EndThrowItem();
+					if (!hasThrownItem) {
+						// If the state is force changed, just do the old teleport->throw
+						BeginThrowItem();
+						givenItem.transform.position = viking.transform.position + new Vector3(0, 2.5f, 0);
+						EndThrowItem();
+					}
 				}
 				else {
 					Object.Destroy(givenItem.gameObject);
@@ -70,29 +74,41 @@ namespace Vikings.States {
 				viking.animationDriver.Eating = false;
 				viking.animationDriver.Drinking = false;
 				viking.animationDriver.TriggerHappy();
+				isWaitingForHappyToEnd = true;
+
 				if (givenItem is Tankard tankard)
 					tankard.IsFull = false;
 
 				if (satisfiedDesire.isMaterialDesire && !satisfiedDesire.shouldThrowItem)
 					Object.Destroy(givenItem.gameObject);
-				else if (satisfiedDesire.shouldThrowItem)
-					BeginThrowItem();
-
-				isWaitingForHappyToEnd = true;
 
 				SetupDroppingCoins();
 			}
 
-			if (isWaitingForThrowToEnd && !viking.animationDriver.IsThrowing) {
-				isWaitingForThrowToEnd = false;
+			if (isThrowing && !viking.animationDriver.IsThrowing) {
+				isThrowing = false;
 				EndThrowItem();
 			}
 
+			if (isWaitingForHappyToEnd && !viking.animationDriver.IsPlayingHappyAnimation) {
+				isWaitingForHappyToEnd = false;
+				hasHappyEnded = true;
+			}
+
+			if (satisfiedDesire.shouldThrowItem && !isThrowing && !hasThrownItem && hasHappyEnded) {
+				BeginThrowItem();
+			}
+
 			if (isDroppingCoins) {
-				if (coinsToDrop > 0)
+				if (coinsToDrop > 0) {
 					DropCoins();
-				else if (isWaitingForHappyToEnd && !viking.animationDriver.IsPlayingHappyAnimation && !isWaitingForThrowToEnd)
+				}
+				else {
+					if (!hasHappyEnded) return this;
+					if (satisfiedDesire.shouldThrowItem && !hasThrownItem) return this;
+
 					return SelectNextState();
+				}
 			}
 
 			return this;
@@ -100,10 +116,11 @@ namespace Vikings.States {
 
 		private void BeginThrowItem() {
 			viking.animationDriver.TriggerThrow();
-			isWaitingForThrowToEnd = true;
+			isThrowing = true;
 		}
 
 		private void EndThrowItem() {
+			hasThrownItem = true;
 			givenItem.VikingDropItem();
 
 			Vector3 throwDirection = -viking.transform.forward;
