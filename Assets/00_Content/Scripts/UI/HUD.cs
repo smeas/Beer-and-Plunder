@@ -73,6 +73,10 @@ public class HUD : MonoBehaviour {
 	}
 
 	private void HandleOnRoundOver() {
+		HideRoundStatus();
+	}
+
+	public void HideRoundStatus() {
 		roundStatusText.enabled = false;
 	}
 

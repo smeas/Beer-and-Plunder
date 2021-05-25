@@ -72,6 +72,9 @@ namespace Rounds {
 
 		private void OnDisable() {
 			clockTickSound?.Stop();
+
+			scoreCard.OnNextRound -= HandleOnNextRound;
+			Table.OnTablesDestroyed -= HandleOnTablesDestroyed;
 		}
 
 		private void Update() {
@@ -111,13 +114,13 @@ namespace Rounds {
 
 			DisableGamePlay();
 			isRoundActive = false;
-			OnRoundOver?.Invoke();
 
 			if (Tavern.Instance != null && Tavern.Instance.Money < RequiredMoney) {
 				TavernBankrupt();
 				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{RequiredMoney})");
 			}
 			else {
+				OnRoundOver?.Invoke();
 				ShowScoreCard();
 			}
 		}
@@ -222,15 +225,21 @@ namespace Rounds {
 			}
 
 			isRoundActive = false;
-			OnRoundOver?.Invoke();
 			DisableGamePlay();
 			gameOverPanel.Show(LoseCondition.Destruction);
+			hud.HideRoundStatus();
 			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 		}
 
 		private void TavernBankrupt() {
+			if (VikingController.Instance != null) {
+				VikingController.Instance.CanSpawn = false;
+				VikingController.Instance.LeaveAllVikings();
+			}
+
 			isRoundActive = false;
 			gameOverPanel.Show(LoseCondition.Bankrupcy);
+			hud.HideRoundStatus();
 			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_RoundLost);
 		}
 	}

@@ -13,18 +13,14 @@ public class GameOver : MonoBehaviour {
 	[Header("Settings")]
 	[SerializeField] private float signEnterDuration;
 
-	private RectTransform imageRect;
-
-	private void Awake() {
-		imageRect = image.GetComponent<RectTransform>();
-	}
-
 	public void Show(LoseCondition loseCondition) {
 		image.sprite = loseCondition switch {
 			LoseCondition.Bankrupcy => bankruptSprite,
 			LoseCondition.Destruction => destructionSprite,
 			_ => image.sprite
 		};
+
+		RectTransform imageRect = (RectTransform)image.transform;
 
 		Vector3 correctPosition = imageRect.anchoredPosition;
 		imageRect.anchoredPosition = Vector3.zero;
