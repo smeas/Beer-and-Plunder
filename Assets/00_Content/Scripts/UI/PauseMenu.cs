@@ -40,7 +40,8 @@ namespace UI {
 		}
 
 		private void HandleOnBackPressed(InputAction.CallbackContext ctx) {
-			HandleOnPausePressed(ctx);
+			if (isPaused)
+				HandleOnPausePressed(ctx);
 		}
 
 		private void HandleOnPausePressed(InputAction.CallbackContext ctx) {
