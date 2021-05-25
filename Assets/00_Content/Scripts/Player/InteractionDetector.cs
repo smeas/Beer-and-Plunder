@@ -72,7 +72,7 @@ namespace Player {
 
 		private void OnDestroy() {
 			if (highlight != null)
-				Destroy(highlight);
+				Destroy(highlight.gameObject);
 		}
 
 		private void SetupHighlight() {
