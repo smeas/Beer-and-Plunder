@@ -5,5 +5,8 @@ namespace Audio {
 	public class MusicCue : ScriptableObject {
 		public AudioClip introClip;
 		public AudioClip mainClip;
+
+		[Range(0, 1)]
+		public float volume = 1f;
 	}
 }
