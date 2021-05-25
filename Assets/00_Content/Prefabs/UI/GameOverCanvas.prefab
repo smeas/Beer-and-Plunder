@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1524899062512769048}
   - component: {fileID: 3898536260493564112}
   - component: {fileID: 2967257529519440624}
+  - component: {fileID: 7467984368589240254}
   m_Layer: 5
   m_Name: GameOverCanvas
   m_TagString: Untagged
@@ -113,10 +114,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b0908246eca0d4492b108f9e7051e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverMessage: {fileID: 4667632192489043287}
-  destructionMessage: The tavern was destroyed!
-  bankrupcyMessage: You went bankrupt!
-  firstSelected: {fileID: 4798687925561701807}
+  image: {fileID: 5961564203580613333}
+  bankruptSprite: {fileID: 21300000, guid: 56538763108c0e641a1700b65a50c0c6, type: 3}
+  destructionSprite: {fileID: 21300000, guid: dbdf8481fe0da4d4cb5726c42761627b, type: 3}
+  signEnterDuration: 1.5
+--- !u!114 &7467984368589240254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5628492489294928276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c1f3a69a442419edc5dff1503f7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selection: {fileID: 4798687925561701807}
 --- !u!1001 &7510107607431044850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,6 +145,10 @@ PrefabInstance:
     - target: {fileID: 1137556124687638918, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: GoToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2954222454477581219, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3071769587703704413, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -252,6 +270,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9009804605269963630, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009804605269963630, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009804605269963630, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009804605269963630, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 651.50806
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009804605269963630, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009804605269963630, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -540
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
 --- !u!224 &4462253596752670549 stripped
@@ -259,6 +301,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6184672732920426919, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
   m_PrefabInstance: {fileID: 7510107607431044850}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5961564203580613333 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4216204994174106663, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
+  m_PrefabInstance: {fileID: 7510107607431044850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4798687925561701807 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3071769587703704413, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
@@ -268,16 +321,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4667632192489043287 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2954222454477581221, guid: 1a636fbecd8093d4ca352f7d1df5acca, type: 3}
-  m_PrefabInstance: {fileID: 7510107607431044850}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
