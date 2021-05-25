@@ -64,6 +64,14 @@ namespace Vikings.States {
 				}
 			}
 
+			// TODO: Prettify throwing of coins
+			if (satisfiedTimer > 0) {
+				SetupDroppingCoins();
+
+				while (coinsToDrop > 0)
+					DropCoin();
+			}
+
 			viking.SatisfiedEnd?.Invoke();
 		}
 
