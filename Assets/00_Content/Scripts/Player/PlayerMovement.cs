@@ -81,7 +81,9 @@ namespace Player {
 			Vector3 movement3 = new Vector3(movement2.x, 0, movement2.y);
 
 			rigidbody.velocity = movement3;
-			transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
+
+			if (movement2 != Vector2.zero)
+				transform.rotation = Quaternion.LookRotation(movement3, Vector3.up);
 		}
 
 		public Vector2 MakeCameraRelative(Vector2 movement) {
