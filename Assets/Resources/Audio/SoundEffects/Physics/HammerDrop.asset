@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HammerDrop
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: a2100c0b4f2743547a22e4bd7a976e21, type: 3}
-  volume: 0.082
-  pitch: 0.71
+  - {fileID: 8300000, guid: 14d0d2b8e4ef2e448bf85c1925616ae9, type: 3}
+  - {fileID: 8300000, guid: ec39500fb6b606445a6d3655fae3614b, type: 3}
+  volume: 0.535
+  pitch: 1
