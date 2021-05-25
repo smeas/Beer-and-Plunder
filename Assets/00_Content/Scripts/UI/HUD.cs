@@ -69,7 +69,7 @@ public class HUD : MonoBehaviour {
 
 	private void HandleOnIntermissionStart() {
 		roundStatusText.enabled = true;
-		roundStatusText.text = "Intermission";
+		roundStatusText.text = "Bar Closed";
 	}
 
 	private void HandleOnRoundOver() {
