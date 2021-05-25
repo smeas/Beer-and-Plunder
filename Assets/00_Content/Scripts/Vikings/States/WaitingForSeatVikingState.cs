@@ -35,8 +35,12 @@ namespace Vikings.States {
 				viking.Stats.Decline();
 			}
 
-			if (viking.Stats.Mood < viking.Data.impatientMoodThreshold)
+			if (viking.Stats.Mood < viking.Data.impatientMoodThreshold) {
+				if (PlayerManager.Instance != null)
+					return new BrawlingVikingState(viking, Util.RandomElement(PlayerManager.Instance.Players));
+
 				return TakeRandomSeat();
+			}
 
 			return this;
 		}

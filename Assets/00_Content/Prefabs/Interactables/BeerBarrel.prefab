@@ -72,7 +72,7 @@ MonoBehaviour:
   ItemSlotPivot: {fileID: 0}
   highlightSize: 0.65
   shrinkTime: 1
-  soloCarrySpeedMultiplier: 0.3
+  soloCarrySpeedMultiplier: 0.15
   soloCarryRotation: {x: -90, y: 0, z: 0}
   multiCarrySpeedMultiplier: 0.8
   multiCarryRotation: {x: 0, y: 0, z: 0}
