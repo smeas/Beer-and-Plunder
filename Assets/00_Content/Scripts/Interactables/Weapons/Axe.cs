@@ -11,10 +11,14 @@ namespace Interactables.Weapons {
 		[SerializeField] private AnimationClip referenceAnimation;
 		[SerializeField] private int beginAttackFrame;
 		[SerializeField] private ParticleSystem particleSystemHit;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1.5f;
+		[SerializeField] private float floorHitDelay = 1f;
 
+		private bool hasHitFloor;
 		private bool isAttacking;
 		private bool isAnimating;
 		private float animationTimer;
+		private float floorHitTimer;
 
 		public bool IsAttacking => isAttacking;
 
@@ -29,6 +33,8 @@ namespace Interactables.Weapons {
 		}
 
 		private void Update() {
+
+			if (hasHitFloor) floorHitTimer += Time.deltaTime;
 			if (!isAnimating) return;
 
 			animationTimer += Time.deltaTime;
@@ -37,6 +43,21 @@ namespace Interactables.Weapons {
 			}
 			else if (isAttacking && animationTimer >= referenceAnimation.length) {
 				EndAttack();
+			}
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+
+				if (!hasHitFloor) {
+					AudioManager.PlayEffectSafe(SoundEffect.Physics_AxeDrop);
+					hasHitFloor = true;
+				}
+
+				if (floorHitTimer >= floorHitDelay) {
+					floorHitTimer = 0;
+					hasHitFloor = false;
+				}
 			}
 		}
 

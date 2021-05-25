@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
+  m_Name: HammerRepairHit
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: b89fef848a27b5444b4cb8656018ad0f, type: 3}
+  - {fileID: 8300000, guid: 3f3bcaf5c995b334abf757e1ba7726a8, type: 3}
+  - {fileID: 8300000, guid: bcd21867afeb5d5409f1a126d59d3ea7, type: 3}
+  - {fileID: 8300000, guid: 708df72a462692c4cb6697e487a2f19d, type: 3}
+  volume: 0.2
+  pitch: 1

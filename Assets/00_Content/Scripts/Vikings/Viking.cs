@@ -26,6 +26,7 @@ namespace Vikings {
 		[SerializeField] private VikingData vikingData;
 		[SerializeField] public GameObject beingSeatedHighlightPrefab;
 		[SerializeField] public ParticleSystem disappearParticleSystem;
+		[SerializeField] public ParticleSystem angryParticleSystem;
 		[SerializeField] public float maxLeavingTime = 10f;
 		[SerializeField] public Coin coinPrefab;
 		[SerializeField] public KitchenTicket kitchenTicketPrefab;

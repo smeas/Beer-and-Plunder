@@ -4,16 +4,14 @@ using Taverns;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities;
 
 public class HUD : MonoBehaviour {
-	[SerializeField] private TMP_Text tavernMoneyText;
-
 	[SerializeField] private Image clockBackgroundDark;
 	[SerializeField] private Transform clockPointer;
 	[SerializeField] private Image moneyFillBar;
 	[SerializeField] private TMP_Text moneyCurrentText;
 	[SerializeField] private TMP_Text moneyRequiredText;
+	[SerializeField] private TMP_Text roundStatusText;
 
 	[Header("Effects")]
 	[SerializeField] private float moneyPunchStrength = 1.25f;
@@ -26,7 +24,11 @@ public class HUD : MonoBehaviour {
 			Tavern.Instance.OnMoneyChanges += HandleOnMoneyChanges;
 		} else {
 			Debug.Log("The HUD cannot find an instance of the Tavern-singleton while in the Start-function.");
-			tavernMoneyText.text = " ";
+		}
+
+		if (RoundController.Instance != null) {
+			RoundController.Instance.OnIntermissionStart += HandleOnIntermissionStart;
+			RoundController.Instance.OnRoundOver += HandleOnRoundOver;
 		}
 	}
 
@@ -49,11 +51,34 @@ public class HUD : MonoBehaviour {
 
 		moneyFillBar.fillAmount = (float)Tavern.Instance.Money / requiredMoney;
 
-		moneyCurrentText.text = Tavern.Instance.Money.ToString();
+		UpdateMoneyText();
+
 		moneyCurrentText.transform.DOKill();
 		moneyCurrentText.transform.localScale = Vector3.one;
 		moneyCurrentText.transform.DOPunchScale(new Vector2(moneyPunchStrength, moneyPunchStrength), moneyCurrentPunchDuration);
+	}
 
+	public void UpdateMoneyText() {
+		if (Tavern.Instance == null) return;
+
+		int requiredMoney = RoundController.Instance != null ? RoundController.Instance.RequiredMoney : 0;
+
+		moneyCurrentText.text = Tavern.Instance.Money.ToString();
 		moneyRequiredText.text = requiredMoney.ToString();
+	}
+
+	private void HandleOnIntermissionStart() {
+		roundStatusText.enabled = true;
+		roundStatusText.text = "Intermission";
+	}
+
+	private void HandleOnRoundOver() {
+		roundStatusText.enabled = false;
+	}
+
+	// Run from animation event
+	public void EmptyMoneyBag(float duration) {
+		if (Tavern.Instance != null)
+			Tavern.Instance.ResetMoney(duration);
 	}
 }

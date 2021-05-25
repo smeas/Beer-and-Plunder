@@ -14,6 +14,7 @@ namespace Interactables.Kitchens {
 		[SerializeField] private ParticleSystem foodSpawnEffect;
 		[SerializeField] private Food foodPrefab;
 		[SerializeField] private ParticleSystem smokeParticleSystem;
+		[SerializeField] private CookingCounter cookingCounter;
 
 		[Header("Settings")]
 		[SerializeField] private float cookingTime = 10;
@@ -23,6 +24,8 @@ namespace Interactables.Kitchens {
 		private SoundHandle cookingSound;
 
 		public event Action<Food> CookingFinished;
+
+		
 
 		private void OnEnable() {
 			if(RoundController.Instance != null) RoundController.Instance.OnRoundOver += HandleOnNewRoundStart;
@@ -46,14 +49,22 @@ namespace Interactables.Kitchens {
 		}
 
 		private IEnumerator StartCooking(KitchenTicket ticket) {
+
+			if(tickets.Count == 0) {
+				cookingSound = AudioManager.Instance.PlayEffect(SoundEffect.Cooking, true);
+			}
+
 			tickets.Enqueue(ticket);
 			float cookingProgress = 0;
 			isCooking = true;
 			cookingProgressBar.Show();
 			smokeParticleSystem.Play(true);
 
-			if(tickets.Count == 1) {
-				cookingSound = AudioManager.Instance.PlayEffect(SoundEffect.Cooking, true);
+			if(tickets.Count > 1) {
+				if (!cookingCounter.isActiveAndEnabled)
+					cookingCounter.Enable();
+
+				cookingCounter.SetCounter(tickets.Count);
 			}
 
 			while (isCooking && cookingProgress <= cookingTime) {
@@ -74,6 +85,11 @@ namespace Interactables.Kitchens {
 
 		private void FinishCooking() {
 			Destroy(tickets.Dequeue());
+
+			cookingCounter.SetCounter(tickets.Count);
+
+			if (tickets.Count == 1)
+				cookingCounter.Disable();
 
 			if (tickets.Count == 0) {
 				cookingProgressBar.Hide();
@@ -96,7 +112,15 @@ namespace Interactables.Kitchens {
 			isCooking = false;
 			StopAllCoroutines();
 
-			while(tickets.Count > 0) {
+			if(cookingSound != null)
+				cookingSound.Stop();
+
+			smokeParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+			if (cookingCounter.isActiveAndEnabled)
+				cookingCounter.Disable();
+
+			while (tickets.Count > 0) {
 				Destroy(tickets.Dequeue());
 			}
 

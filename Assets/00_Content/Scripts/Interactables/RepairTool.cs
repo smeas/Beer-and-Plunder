@@ -8,10 +8,15 @@ namespace Interactables {
 		[Space]
 		[SerializeField] private GameObject repairProgressCanvas;
 		[SerializeField] private Image repairProgressImage;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1.5f;
+		[SerializeField] private float floorHitDelay = 2f;
 
 		private bool isRepairing;
 		private float repairDuration;
 		private float repairTimer;
+		private float floorHitTimer;
+		private bool hasHitFloor;
+
 		private SoundHandle soundHandle;
 
 		public bool IsRepairing => isRepairing;
@@ -24,6 +29,9 @@ namespace Interactables {
 		}
 
 		private void Update() {
+			if (hasHitFloor)
+				floorHitTimer += Time.deltaTime;
+
 			if (!isRepairing) return;
 
 			repairTimer += Time.deltaTime;
@@ -41,15 +49,12 @@ namespace Interactables {
 
 		public void BeginRepairing(float duration, Vector3 progressBarPosition) {
 			Debug.Assert(!isRepairing, "Already repairing!", this);
-
 			isRepairing = true;
 			repairDuration = duration;
 			repairTimer = 0f;
 			repairProgressImage.fillAmount = 0f;
 			repairProgressCanvas.SetActive(true);
 			repairProgressCanvas.transform.SetPositionAndRotation(progressBarPosition, Quaternion.identity);
-
-			soundHandle = AudioManager.PlayEffectSafe(SoundEffect.Repair, loop: true);
 		}
 
 		public void EndRepairing() {
@@ -58,6 +63,20 @@ namespace Interactables {
 			isRepairing = false;
 			repairProgressCanvas.SetActive(false);
 			soundHandle?.FadeOutAndStop(0.2f);
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+				if (!hasHitFloor) {
+					AudioManager.PlayEffectSafe(SoundEffect.Physics_HammerDrop);
+					hasHitFloor = true;
+				}
+
+				if (floorHitTimer >= floorHitDelay) {
+					floorHitTimer = 0;
+					hasHitFloor = false;
+				}
+			}
 		}
 	}
 }

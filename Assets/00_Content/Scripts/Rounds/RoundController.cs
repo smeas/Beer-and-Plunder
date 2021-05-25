@@ -18,9 +18,9 @@ namespace Rounds {
 		[SerializeField] private ScalingData[] playerDifficulties;
 		[SerializeField] private ScoreCard scoreCardPrefab;
 		[SerializeField] private GameOver gameOverPanelPrefab;
+		[SerializeField] private HUD hud;
 		[SerializeField, Tooltip("seconds/round")]
 		private int roundDuration;
-		[SerializeField] private int requiredMoney = 250;
 
 		[Header("Timeline")]
 		[SerializeField] private PlayableDirector timelineDirector;
@@ -46,12 +46,14 @@ namespace Rounds {
 
 		public event Action OnRoundOver;
 		public event Action OnNewRoundStart;
+		public event Action OnIntermissionStart;
 
 		public int RoundDuration => roundDuration;
 		public float RoundTimer => roundTimer;
-		public int RequiredMoney => requiredMoney;
 		public bool IsRoundActive => isRoundActive;
 		public bool IsGamePlayActive => isGamePlayActive;
+		public int CurrentRound => currentRound;
+		public int RequiredMoney { get; private set; }
 
 		private void Start() {
 			scoreCard = Instantiate(scoreCardPrefab);
@@ -64,6 +66,7 @@ namespace Rounds {
 
 			followingCamera = Camera.main.GetComponent<FollowingCamera>();
 
+			RequiredMoney = CurrentDifficulty.ScaledMoneyGoal(currentRound);
 			SendNextDifficulty();
 		}
 
@@ -77,20 +80,22 @@ namespace Rounds {
 			roundTimer += Time.deltaTime;
 
 			if (roundDuration - roundTimer <= 10 && !isTenSecondTimerStarted) {
-				clockTickSound = AudioManager.Instance.PlayEffect(SoundEffect.ClockTick, true);
+				clockTickSound = AudioManager.PlayEffectSafe(SoundEffect.ClockTick, true);
 				isTenSecondTimerStarted = true;
 			}
 
 			if (roundTimer >= roundDuration) {
 				clockTickSound.Stop();
 				isTenSecondTimerStarted = false;
-				RoundOver();
-				isGamePlayActive = false;
+				StartIntermission();
 			}
 		}
 
-		private void RoundOver() { 
-			AudioManager.Instance.PlayEffect(SoundEffect.Gameplay_WarHorn);
+		private void StartIntermission() {
+			isGamePlayActive = false;
+			AudioManager.PlayEffectSafe(SoundEffect.Gameplay_WarHorn);
+
+			OnIntermissionStart?.Invoke();
 
 			StartCoroutine(CoWaitForVikingsLeaving());
 		}
@@ -108,15 +113,15 @@ namespace Rounds {
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 
-			if (Tavern.Instance != null && Tavern.Instance.Money < requiredMoney) {
+			if (Tavern.Instance != null && Tavern.Instance.Money < RequiredMoney) {
 				TavernBankrupt();
-				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{requiredMoney})");
+				Debug.Log($"Required money goal was not reached. ({Tavern.Instance.Money}/{RequiredMoney})");
 			}
 			else {
 				ShowScoreCard();
 			}
 		}
-		
+
 		private void SendNextDifficulty() {
 			if (VikingController.Instance == null) return;
 
@@ -176,15 +181,10 @@ namespace Rounds {
 		}
 
 		private void HandleOnNextRound() {
-			isRoundActive = true;
-			isGamePlayActive = true;
 			currentRound++;
 			SendNextDifficulty();
-			roundTimer = 0f;
 
-			if (Tavern.Instance != null)
-				Tavern.Instance.Money = Tavern.Instance.StartingMoney;
-
+			isRoundActive = true;
 			OnNewRoundStart?.Invoke();
 
 			StartCoroutine(CoLeaveScoreCard());
@@ -205,10 +205,22 @@ namespace Rounds {
 
 			yield return new WaitForSeconds((float)hideScoreCardTimeline.duration);
 
+			isGamePlayActive = true;
+			roundTimer = 0f;
+
+			RequiredMoney = CurrentDifficulty.ScaledMoneyGoal(currentRound);
+
+			hud.UpdateMoneyText();
+
 			EnableGamePlay();
 		}
 
 		private void HandleOnTablesDestroyed() {
+			if (VikingController.Instance != null) {
+				VikingController.Instance.CanSpawn = false;
+				VikingController.Instance.LeaveAllVikings();
+			}
+
 			isRoundActive = false;
 			OnRoundOver?.Invoke();
 			DisableGamePlay();

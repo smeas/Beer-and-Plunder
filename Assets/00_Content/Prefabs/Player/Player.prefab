@@ -428,7 +428,6 @@ MonoBehaviour:
   deceleration: 48
   maxVelocity: 6
   speedMultiplier: 1
-  canMove: 1
 --- !u!114 &4711298765348120590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,6 +605,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 0
+--- !u!114 &8655242358781850754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175021466973622618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b223294647e614aa5034100ac19af8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7916151724118421930
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +707,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4223223547760060935}
-  - component: {fileID: 3382940680453500590}
+  - component: {fileID: 3998113064725202027}
   - component: {fileID: 6391018513655201212}
   - component: {fileID: 1635980267}
   - component: {fileID: 4004794608759683555}
@@ -722,8 +733,8 @@ Transform:
   m_Father: {fileID: 2187889529978375779}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3382940680453500590
-SphereCollider:
+--- !u!65 &3998113064725202027
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -733,8 +744,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!114 &6391018513655201212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,8 +758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a2668eb15041a09619547a8ed7f1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpHighlightPrefab: {fileID: 5559515752884507063, guid: f80721870a785cd43b8c8367a6934816, type: 3}
-  interactableHighlightPrefab: {fileID: 5559515752884507063, guid: e73de03f083e05a4280e7a3f9a7577ee, type: 3}
   highlightPrefab: {fileID: 7393748757348335433, guid: 4a107445d037caf499b6dca4353d734f, type: 3}
   pickUpLayer:
     serializedVersion: 2
@@ -849,6 +858,11 @@ Transform:
 --- !u!4 &1947054089663384544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5922738050530735865, guid: 327cdc29c9f9e27499dfaa555f62b529, type: 3}
+  m_PrefabInstance: {fileID: 5275009841063623961}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1175021466973622618 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6447494734098377795, guid: 327cdc29c9f9e27499dfaa555f62b529, type: 3}
   m_PrefabInstance: {fileID: 5275009841063623961}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7050301283337642701
