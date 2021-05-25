@@ -112,7 +112,7 @@ namespace Player {
 				yield return null;
 
 			navMeshAgent.enabled = false;
-			transform.rotation = SpawnPoint.rotation;
+			Respawn();
 		}
 
 		public void Respawn() {
