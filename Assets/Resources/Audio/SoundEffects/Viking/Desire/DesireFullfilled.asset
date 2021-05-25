@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f710fc8becec4e0cad9e725aa9818c5f, type: 3}
+  m_Name: DesireFullfilled
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 4fdd7a15719fb3a42967a5a38f3946da, type: 3}
+  - {fileID: 8300000, guid: 773b4358bf9767c488c5fecc5f65c4a2, type: 3}
+  - {fileID: 8300000, guid: a5748888144e2a94c8a235d545ccfc90, type: 3}
+  - {fileID: 8300000, guid: 7b1ddcdc53601c1419a96860da0c8633, type: 3}
+  volume: 1
+  pitch: 1

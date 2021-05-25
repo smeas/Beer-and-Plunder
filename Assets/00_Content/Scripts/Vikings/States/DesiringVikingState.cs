@@ -11,6 +11,7 @@ namespace Vikings.States {
 		private float fulfillmentTimer;
 		private GameObject fulfillingPlayer;
 		private bool isOrderGiven;
+		private bool isIrritaded;
 
 		public DesiringVikingState(Viking viking) : base(viking) { }
 
@@ -18,6 +19,7 @@ namespace Vikings.States {
 			if (viking.CurrentDesire.type != DesireType.Null) {
 				viking.animationDriver.TriggerRequest();
 				viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationSprite);
+				PlayDesireAudio(viking.CurrentDesire.type);
 			}
 
 			return this;
@@ -32,6 +34,14 @@ namespace Vikings.States {
 			float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.brawlMoodThreshold, viking.Stats.StartMood, 0, 1);
 			viking.desireVisualiser.SetDesireColor(remappedMood);
 			viking.desireVisualiser.SetTweenSpeed(remappedMood);
+
+			if(viking.Stats.Mood <= 30 && !isIrritaded) {
+				AudioManager.PlayEffectSafe(SoundEffect.Viking_Desire_Irritated);
+				isIrritaded = true;
+			}
+
+			if (viking.Stats.Mood > 30)
+				isIrritaded = false;
 
 			if (hasActiveFulfillment) {
 				fulfillmentTimer += Time.deltaTime;
@@ -126,7 +136,7 @@ namespace Vikings.States {
 			viking.CurrentDesireIndex++;
 			viking.MoodWhenDesireFulfilled.Add(viking.Stats.Mood);
 			viking.Stats.BoostMood(viking.Data.moodBoostDesireFulfilled);
-			AudioManager.PlayEffectSafe(SoundEffect.Viking_DesireFilledMan);
+			AudioManager.PlayEffectSafe(SoundEffect.Viking_Desire_DesireFullfilled);
 
 			if (desire.isMaterialDesire) {
 				PlayerPickUp playerPickUp = fulfillingPlayer.GetComponentInChildren<PlayerPickUp>();
@@ -148,6 +158,20 @@ namespace Vikings.States {
 			PickUp ticket = Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
 			if (player.GetComponentInChildren<PlayerPickUp>().TryReceiveItem(ticket))
 				isOrderGiven = true;
+		}
+
+		private void PlayDesireAudio(DesireType type) {
+			switch (type) {
+				case DesireType.Beer:
+					AudioManager.PlayEffectSafe(SoundEffect.Viking_Desire_NeedBeer);
+					break;
+				case DesireType.Harp:
+					AudioManager.PlayEffectSafe(SoundEffect.Viking_Desire_NeedMusic);
+					break;
+				case DesireType.Food:
+					AudioManager.PlayEffectSafe(SoundEffect.Viking_Desire_NeedFood);
+					break;
+			}
 		}
 	}
 }

@@ -143,13 +143,15 @@ MonoBehaviour:
     m_Bits: 512
   objectCollider: {fileID: 1113167590017774379}
   ItemSlotPivot: {fileID: 2236711834209687227}
-  ItemCenter: {fileID: 0}
+  highlightSize: 0.5
   shrinkTime: 1
   weaponCollider: {fileID: 7602050476943310791}
   weaponData: {fileID: 11400000, guid: 2240e11cb45323e4fbbe31e2086e2248, type: 2}
   referenceAnimation: {fileID: 368175923009134368, guid: 13de1d3e8bb95ee4cb2d2f135c9f6fb8, type: 3}
   beginAttackFrame: 3
   particleSystemHit: {fileID: 3291743995900505044}
+  floorHitSoundVelocityLimit: 0.5
+  floorHitDelay: 1
 --- !u!54 &8619401761067881784
 Rigidbody:
   m_ObjectHideFlags: 0

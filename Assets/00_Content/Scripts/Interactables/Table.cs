@@ -11,7 +11,8 @@ namespace Interactables {
 		public static List<Table> AllTables { get; } = new List<Table>();
 		public static event Action OnTablesDestroyed;
 
-		[SerializeField] private float maxHealth = 10f;
+		public float maxHealth = 10f;
+
 		[SerializeField] private float repairTime = 5f;
 		[SerializeField] private Renderer bodyRenderer;
 		[SerializeField] private Material[] damageStates;
