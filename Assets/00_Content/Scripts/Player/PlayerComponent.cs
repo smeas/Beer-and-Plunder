@@ -27,6 +27,7 @@ namespace Player {
 		public PlayerData PlayerData { get => playerData; set => playerData = value; }
 
 		private bool hasSetUpModel;
+		private Coroutine reachSpawnPointRoutine;
 
 		public Color PlayerColor {
 			get => playerColor;
@@ -54,15 +55,21 @@ namespace Player {
 		}
 
 		private void OnDestroy() {
-			if (RoundController.Instance != null)
+			if (RoundController.Instance != null) {
 				RoundController.Instance.OnRoundOver -= OnRoundOver;
+				RoundController.Instance.OnNewRoundStart += OnRoundStart;
+			}
 
 			SceneManager.sceneLoaded -= HandleOnSceneLoaded;
 		}
 
 		private void HandleOnSceneLoaded(Scene _, LoadSceneMode __) {
-			if (RoundController.Instance != null)
+			if (RoundController.Instance != null) {
 				RoundController.Instance.OnRoundOver += OnRoundOver;
+				RoundController.Instance.OnNewRoundStart += OnRoundStart;
+			}
+
+			GetComponentInChildren<InteractionDetector>().ClearObjectsInRange();
 		}
 
 		public void Initialize() {
@@ -104,7 +111,7 @@ namespace Player {
 
 			navMeshAgent.enabled = true;
 			navMeshAgent.SetDestination(SpawnPoint.position);
-			StartCoroutine(CoWaitReachSpawnPoint());
+			reachSpawnPointRoutine = StartCoroutine(CoWaitReachSpawnPoint());
 		}
 
 		private IEnumerator CoWaitReachSpawnPoint() {
@@ -113,6 +120,15 @@ namespace Player {
 
 			navMeshAgent.enabled = false;
 			Respawn();
+		}
+
+		private void OnRoundStart() {
+			if (reachSpawnPointRoutine != null) {
+				StopCoroutine(reachSpawnPointRoutine);
+				reachSpawnPointRoutine = null;
+			}
+
+			navMeshAgent.enabled = false;
 		}
 
 		public void Respawn() {

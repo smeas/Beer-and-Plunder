@@ -207,5 +207,10 @@ namespace Player {
 			else if (playerInteract.IsInteracting)
 				playerInteract.EndInteract();
 		}
+
+		public void ClearObjectsInRange() {
+			pickUpsInRange.Clear();
+			interactablesInRange.Clear();
+		}
 	}
 }

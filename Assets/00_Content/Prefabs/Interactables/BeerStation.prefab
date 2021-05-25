@@ -128,8 +128,16 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4531005154091563104, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531005154091563104, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139303200665706429, guid: 39116bf79faceb648839154c8cc90979, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6139303200665706429, guid: 39116bf79faceb648839154c8cc90979, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -257,8 +265,16 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8124820875032068910, guid: 759d7610a9790f64fb657065126dac33, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8124820875032068910, guid: 759d7610a9790f64fb657065126dac33, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8124820875032068911, guid: 759d7610a9790f64fb657065126dac33, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.48
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 759d7610a9790f64fb657065126dac33, type: 3}

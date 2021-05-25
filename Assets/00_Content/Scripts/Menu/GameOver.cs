@@ -33,6 +33,8 @@ public class GameOver : MonoBehaviour {
 		foreach (PlayerComponent player in PlayerManager.Instance.Players) {
 			PlayerInput playerInput = player.GetComponent<PlayerInput>();
 			playerInput.SwitchCurrentActionMap("Game");
+
+			player.GetComponentInChildren<PlayerPickUp>().DropItem();
 		}
 
 		SceneLoadManager.Instance.LoadGame();

@@ -765,10 +765,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 760983128}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
-      propertyPath: phases.Array.data[22].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1439517817}
-    - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[0].onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: BlockMovement
       objectReference: {fileID: 0}

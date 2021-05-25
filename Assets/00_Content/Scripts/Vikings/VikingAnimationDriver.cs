@@ -206,7 +206,16 @@ namespace Vikings {
 		public bool GettingAngry { set => animator.SetBool(gettingAngryId, value); }
 		public bool Drinking { set => animator.SetBool(drinkingId, value); }
 		public bool Eating { set => animator.SetBool(eatingId, value); }
-		public bool Brawl { set => animator.SetBool(brawlId, value); }
+		public bool Brawl {
+			set {
+				animator.SetBool(brawlId, value);
+				if (!value) {
+					animator.ResetTrigger(attackId);
+					IsPlayingAttackAnimation = false;
+				}
+			}
+		}
+
 		public bool TableBrawl { set => animator.SetBool(tableBrawlId, value); }
 
 		public void TriggerHappy() {

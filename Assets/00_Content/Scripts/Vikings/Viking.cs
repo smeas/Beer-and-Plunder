@@ -50,7 +50,6 @@ namespace Vikings {
 		private Rigidbody rb;
 		private NavMeshAgent navMeshAgent;
 		private bool isAttacked;
-		private bool isAttacking;
 		[NonSerialized] public VikingAnimationDriver animationDriver;
 
 		public NavMeshAgent NavMeshAgent => navMeshAgent;
