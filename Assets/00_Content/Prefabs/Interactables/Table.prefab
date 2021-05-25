@@ -152,7 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightPivot: {fileID: 8240370413421485099}
-  maxHealth: 10
+  highlightSize: 0.5
+  maxHealth: 5
   repairTime: 5
   bodyRenderer: {fileID: 4412895045616829311}
   damageStates:
