@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Audio;
 using Player;
-using Rounds;
 using UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -124,9 +123,6 @@ namespace Interactables.Beers {
 
 			beerAmount -= 1;
 
-			if (beerAmount > showFillThreshold)
-				fillProgressBar.Hide();
-
 			ResetPouring();
 		}
 
@@ -138,6 +134,9 @@ namespace Interactables.Beers {
 			fillingTankard = null;
 
 			fillProgressBar.UpdateProgress(fillPortion * beerAmount);
+			if (beerAmount > showFillThreshold)
+				fillProgressBar.Hide();
+
 			pourProgressBar.Hide();
 			perfectProgressIndicator.gameObject.SetActive(false);
 
