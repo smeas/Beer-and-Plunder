@@ -19,7 +19,6 @@ namespace Editors {
 			if (GUILayout.Button("Destroy Table")) {
 				table.Damage(table.maxHealth);
 			} 
-			
 		}
 	}
 }

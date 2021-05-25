@@ -24,10 +24,8 @@ namespace Vikings.States {
 
 		public override VikingState Update() {
 			if (viking.QueuePosition == 0) {
-				if (!viking.desireVisualiser.IsShowing) {
+				if (!viking.desireVisualiser.IsShowing)
 					viking.desireVisualiser.ShowNewDesire(viking.Data.desireSeatVisualisation);
-					//AudioManager.PlayEffectSafe(SoundEffect.Viking_Desire_NeedTable);
-				}
 
 				float remappedMood = MathX.RemapClamped(viking.Stats.Mood, viking.Data.impatientMoodThreshold, viking.Stats.StartMood, 0, 1);
 

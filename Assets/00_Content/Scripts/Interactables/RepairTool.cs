@@ -11,7 +11,6 @@ namespace Interactables {
 		[SerializeField] private float floorHitSoundVelocityLimit = 1.5f;
 		[SerializeField] private float floorHitDelay = 2f;
 
-
 		private bool isRepairing;
 		private float repairDuration;
 		private float repairTimer;
@@ -30,7 +29,6 @@ namespace Interactables {
 		}
 
 		private void Update() {
-
 			if (hasHitFloor)
 				floorHitTimer += Time.deltaTime;
 
@@ -51,7 +49,6 @@ namespace Interactables {
 
 		public void BeginRepairing(float duration, Vector3 progressBarPosition) {
 			Debug.Assert(!isRepairing, "Already repairing!", this);
-			
 			isRepairing = true;
 			repairDuration = duration;
 			repairTimer = 0f;
@@ -70,7 +67,6 @@ namespace Interactables {
 
 		private void OnCollisionEnter(Collision collision) {
 			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
-
 				if (!hasHitFloor) {
 					AudioManager.PlayEffectSafe(SoundEffect.Physics_HammerDrop);
 					hasHitFloor = true;

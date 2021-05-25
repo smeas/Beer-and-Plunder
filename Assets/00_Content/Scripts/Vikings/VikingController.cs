@@ -75,7 +75,6 @@ namespace Vikings {
 				queueController.AddToQueue(viking);
 
 			VikingSpawned?.Invoke(viking);
-			//AudioManager.PlayEffectSafe(SoundEffect.Gameplay_GuestEnter);
 		}
 
 		private void OnLeaveTavern(Viking sender) {

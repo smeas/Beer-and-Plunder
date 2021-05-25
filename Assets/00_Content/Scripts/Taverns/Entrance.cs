@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Taverns {
-
 	public class Entrance : MonoBehaviour
 	{
 		[SerializeField] private LayerMask vikingLayer;
