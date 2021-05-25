@@ -19,6 +19,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-594397510775697964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762872401146547993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b223294647e614aa5034100ac19af8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3068877822045925960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +84,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 53aff7128f17a8242998ac0d47b418cb, type: 3}
       propertyPath: m_Name
-      value: VikingRon
+      value: Ron
       objectReference: {fileID: 0}
     - target: {fileID: 2209215271627665369, guid: 53aff7128f17a8242998ac0d47b418cb, type: 3}
       propertyPath: m_Materials.Array.data[0]

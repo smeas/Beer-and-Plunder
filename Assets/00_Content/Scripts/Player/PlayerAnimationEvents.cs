@@ -1,14 +1,19 @@
 using Audio;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using Interactables;
 using UnityEngine;
 
 namespace Player {
 	public class PlayerAnimationEvents : MonoBehaviour {
+		private PlayerPickUp playerPickUp;
+
+		private void Start() {
+			PlayerComponent player = GetComponentInParent<PlayerComponent>();
+			playerPickUp = player.GetComponentInChildren<PlayerPickUp>();
+		}
+
 		public void HandleOnHammerRepairHit() {
-			AudioManager.PlayEffectSafe(SoundEffect.Player_HammerRepairHit);
+			if (playerPickUp.PickedUpItem is RepairTool)
+				AudioManager.PlayEffectSafe(SoundEffect.Player_HammerRepairHit);
 		}
 	}
 }
