@@ -43,7 +43,7 @@ namespace Vikings {
 		public bool IsPlayingAttackAnimation { get; private set; }
 		public bool IsThrowing { get; private set; }
 
-		private void Start() {
+		private void Awake() {
 			animator = GetComponent<Animator>();
 			viking = GetComponentInParent<Viking>();
 			vikingTransform = viking.transform;

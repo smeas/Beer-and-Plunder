@@ -1,6 +1,4 @@
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utilities;
 
@@ -18,7 +16,7 @@ namespace Vikings {
 
 		public bool IsShowing { get; private set; }
 
-		private void Start() {
+		private void Awake() {
 			desireBubbleImage = desireBubble.gameObject.GetComponent<Image>();
 		}
 
