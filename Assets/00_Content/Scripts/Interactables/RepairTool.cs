@@ -8,6 +8,7 @@ namespace Interactables {
 		[Space]
 		[SerializeField] private GameObject repairProgressCanvas;
 		[SerializeField] private Image repairProgressImage;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1.5f;
 
 		private bool isRepairing;
 		private float repairDuration;
@@ -58,6 +59,12 @@ namespace Interactables {
 			isRepairing = false;
 			repairProgressCanvas.SetActive(false);
 			soundHandle?.FadeOutAndStop(0.2f);
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+				AudioManager.PlayEffectSafe(SoundEffect.Physics_HammerDrop);
+			}
 		}
 	}
 }

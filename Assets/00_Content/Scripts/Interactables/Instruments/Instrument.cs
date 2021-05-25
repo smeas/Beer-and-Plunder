@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Audio;
 using Player;
 using UnityEngine;
 using Vikings;
@@ -10,6 +11,7 @@ namespace Interactables.Instruments {
 		[SerializeField] private InstrumentData instrumentData;
 		[SerializeField] private GameObject areaField;
 		[SerializeField] private new ParticleSystem particleSystem;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1.5f;
 
 		private AudioSource musicSource;
 		private SphereCollider sphereCollider;
@@ -116,6 +118,12 @@ namespace Interactables.Instruments {
 			}
 
 			//musicSoundHandle?.FadeOutAndStop(0.3f);
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+				AudioManager.PlayEffectSafe(SoundEffect.Physics_HarpDrop);
+			}
 		}
 
 		private void OnTriggerEnter(Collider other) {

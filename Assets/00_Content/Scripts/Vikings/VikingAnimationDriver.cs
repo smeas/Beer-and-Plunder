@@ -1,3 +1,4 @@
+using Audio;
 using DG.Tweening;
 using Interactables;
 using UnityEngine;
@@ -246,8 +247,9 @@ namespace Vikings {
 
 		private void OnThrowEnd() => IsThrowing = false;
 
+		//Called from animation event
 		private void OnHitTable() {
-			// TODO: Play table hit sound here.
+			AudioManager.PlayEffectSafe(SoundEffect.Viking_Brawling_TableHit);
 		}
 
 		#endregion

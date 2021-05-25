@@ -11,6 +11,7 @@ namespace Interactables.Weapons {
 		[SerializeField] private AnimationClip referenceAnimation;
 		[SerializeField] private int beginAttackFrame;
 		[SerializeField] private ParticleSystem particleSystemHit;
+		[SerializeField] private float floorHitSoundVelocityLimit = 1.5f;
 
 		private bool isAttacking;
 		private bool isAnimating;
@@ -37,6 +38,12 @@ namespace Interactables.Weapons {
 			}
 			else if (isAttacking && animationTimer >= referenceAnimation.length) {
 				EndAttack();
+			}
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (collision.gameObject.CompareTag("Ground") && collision.relativeVelocity.y > floorHitSoundVelocityLimit) {
+				AudioManager.PlayEffectSafe(SoundEffect.Physics_AxeDrop);
 			}
 		}
 
