@@ -9,9 +9,9 @@ namespace UI {
 		[Header("Settings")]
 		[SerializeField] private float switchDuration = 1f;
 
-		private float baseAlpha;
+		private float baseAlpha = 1f;
 
-		private void Start() {
+		private void Awake() {
 			baseAlpha = textArea.color.a;
 		}
 
