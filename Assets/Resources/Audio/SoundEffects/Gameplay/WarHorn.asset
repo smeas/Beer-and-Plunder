@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: WarHorn
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: 33b8899c6bc8db24f9fbb6fad9ef3452, type: 3}
+  - {fileID: 8300000, guid: f43adc307124c0b4f8b1d142c4b9d71a, type: 3}
   volume: 0.5
   pitch: 1
