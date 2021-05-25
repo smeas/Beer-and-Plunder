@@ -76,21 +76,22 @@ namespace Audio {
 		/// <param name="fadeDuration">The duration of the fade.</param>
 		/// <param name="restart">Whether to restart playback if the same track is already playing.</param>
 		/// <param name="loop">Whether to loop the track.</param>
+		/// <param name="volume">The volume of the music</param>
 		public void PlayMusic(AudioClip musicClip, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
-		                      bool restart = false, bool loop = true) {
-			PlayMusic(null, musicClip, fade, fadeDuration, restart, loop);
+		                      bool restart = false, bool loop = true, float volume = 1f) {
+			PlayMusic(null, musicClip, fade, fadeDuration, restart, loop, volume);
 		}
 
 		public void PlayMusic(MusicCue cue, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
 		                      bool restart = false, bool loop = true) {
 			if (cue != null)
-				PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
+				PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop, cue.volume);
 			else
 				PlayMusic(null, null, fade, fadeDuration, restart, loop);
 		}
 
 		private void PlayMusic(AudioClip introClip, AudioClip musicClip, MusicFadeType fade = MusicFadeType.None,
-		                       float fadeDuration = 0f, bool restart = false, bool loop = true) {
+		                       float fadeDuration = 0f, bool restart = false, bool loop = true, float volume = 1f) {
 			if (!restart
 				&& musicIntroSource.clip == introClip && musicSource.clip == musicClip
 				&& (musicIntroSource.isPlaying || musicSource.isPlaying)) return;
@@ -104,17 +105,17 @@ namespace Audio {
 
 			switch (fade) {
 				case MusicFadeType.LinearOutIn:
-					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop));
+					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop, volume));
 					break;
 				case MusicFadeType.LinearIn:
 					musicIntroSource.Stop();
 					musicSource.Stop();
-					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop));
+					StartCoroutine(CoFadeMusicOutIn(introClip, musicClip, fadeDuration, loop, volume));
 					break;
 				default:
 					musicIntroSource.Stop();
 					musicSource.Stop();
-					PlayMusicNowInternal(introClip, musicClip, loop, 1f);
+					PlayMusicNowInternal(introClip, musicClip, loop, volume);
 					break;
 			}
 		}
@@ -157,7 +158,8 @@ namespace Audio {
 			StopAllCoroutines();
 		}
 
-		private IEnumerator CoFadeMusicOutIn(AudioClip newIntroClip, AudioClip newMusicClip, float duration, bool loop) {
+		private IEnumerator CoFadeMusicOutIn(AudioClip newIntroClip, AudioClip newMusicClip, float duration, bool loop,
+		                                     float endVolume) {
 			bool alreadyPlaying = musicSource.isPlaying || musicIntroSource.isPlaying;
 
 			if (alreadyPlaying) {
@@ -167,7 +169,7 @@ namespace Audio {
 			// Start new track
 			PlayMusicNowInternal(newIntroClip, newMusicClip, loop, 0f);
 
-			yield return CoFadeMusicIn(alreadyPlaying ? duration / 2f : duration);
+			yield return CoFadeMusicIn(alreadyPlaying ? duration / 2f : duration, endVolume);
 		}
 
 		private IEnumerator CoFadeMusicOut(float duration) {
@@ -183,9 +185,9 @@ namespace Audio {
 			musicSource.Stop();
 		}
 
-		private IEnumerator CoFadeMusicIn(float duration) {
+		private IEnumerator CoFadeMusicIn(float duration, float endVolume) {
 			for (float time = 0f; time < duration; time += Time.unscaledDeltaTime) {
-				float volume = time / duration;
+				float volume = time / duration * endVolume;
 				musicIntroSource.volume = volume;
 				musicSource.volume = volume;
 
@@ -236,15 +238,15 @@ namespace Audio {
 
 		/// <inheritdoc cref="PlayMusic"/>
 		public static void PlayMusicSafe(AudioClip musicClip, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
-		                                 bool restart = false, bool loop = true) {
+		                                 bool restart = false, bool loop = true, float volume = 1f) {
 			if (Instance != null)
-				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop);
+				Instance.PlayMusic(musicClip, fade, fadeDuration, restart, loop, volume);
 		}
 
 		public static void PlayMusicSafe(MusicCue cue, MusicFadeType fade = MusicFadeType.None, float fadeDuration = 0f,
 		                                 bool restart = false, bool loop = true) {
 			if (Instance != null)
-				Instance.PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop);
+				Instance.PlayMusic(cue.introClip, cue.mainClip, fade, fadeDuration, restart, loop, cue.volume);
 		}
 
 		public static void StopMusicSafe(float fadeDuration = 0f) {
