@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a10e0a233a3431ba60a6b628a62c061, type: 3}
-  m_Name: Quadplayer
+  m_Name: Duoplayer
   m_EditorClassIdentifier: 
   spawnDelayCurve:
     serializedVersion: 2
@@ -42,7 +42,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 69
@@ -51,7 +51,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 3
-      value: 4
+      value: 3
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
@@ -60,7 +60,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 6
-      value: 5
+      value: 4
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
@@ -84,7 +84,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 6
-      value: 0.85
+      value: 0.9
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -99,25 +99,25 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.99916875
       inSlope: 0
-      outSlope: 0
-      tangentMode: 136
+      outSlope: 0.050103903
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 8
-      value: 1.5
-      inSlope: 0
+      value: 1.4
+      inSlope: 0.050103903
       outSlope: 0
-      tangentMode: 136
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  initialMoneyGoal: 180
-  moneyGoalIncreasePerRound: 10
+  initialMoneyGoal: 160
+  moneyGoalIncreasePerRound: 5
   maxMoneyGoal: 250

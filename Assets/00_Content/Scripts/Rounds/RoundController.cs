@@ -85,6 +85,9 @@ namespace Rounds {
 			if (roundDuration - roundTimer <= 10 && !isTenSecondTimerStarted) {
 				clockTickSound = AudioManager.PlayEffectSafe(SoundEffect.ClockTick, true);
 				isTenSecondTimerStarted = true;
+
+				if (VikingController.Instance != null)
+					VikingController.Instance.CanSpawn = false;
 			}
 
 			if (roundTimer >= roundDuration) {

@@ -85,12 +85,12 @@ namespace Vikings.States {
 		}
 
 		public override bool CanInteract(GameObject player, PickUp item) {
+			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
+
 			if (viking.CurrentDesire.isOrder && !isOrderGiven && item == null) return true;
 			if (!(item is IDesirable givenItem)) return false;
 			if (!viking.CurrentDesire.isMaterialDesire) return false;
 			if (hasActiveFulfillment) return false;
-
-			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
 			if (givenItem.DesireType != viking.CurrentDesire.type) return false;
 			if (item is Tankard {IsFull: false})
@@ -141,6 +141,8 @@ namespace Vikings.States {
 			if (desire.isMaterialDesire) {
 				PlayerPickUp playerPickUp = fulfillingPlayer.GetComponentInChildren<PlayerPickUp>();
 				PickUp givenItem = playerPickUp.PickedUpItem;
+
+				Debug.Assert(givenItem != null, "Viking was given item null");
 
 				playerPickUp.DropItem();
 				givenItem.VikingPickUpItem(viking);

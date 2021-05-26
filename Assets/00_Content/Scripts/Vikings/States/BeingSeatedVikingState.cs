@@ -1,7 +1,6 @@
 using Interactables;
 using Player;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Vikings.States {
 	/// <summary>
@@ -23,12 +22,19 @@ namespace Vikings.States {
 			_ = viking.NavMeshAgent.SetDestination(player.transform.position);
 			pathTimer = RecalculatePathDelay;
 
+			Color playerColor = player.GetComponent<PlayerComponent>().PlayerColor;
+			Material material = viking.followingRingRenderer.material;
+			material.color = new Color(playerColor.r, playerColor.g, playerColor.b, material.color.a);
+			viking.followingRingRenderer.enabled = true;
+
 			return this;
 		}
 
 		public override void Exit() {
 			viking.NavMeshAgent.enabled = false;
 			player.GetComponent<PlayerSteward>().EndSeatingViking(viking);
+
+			viking.followingRingRenderer.enabled = false;
 		}
 
 		public override VikingState Update() {

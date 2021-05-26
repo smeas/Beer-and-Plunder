@@ -27,10 +27,11 @@ namespace Player {
 			if (playerSteward.Follower != null && detector.ClosestInteractable is Table table)
 				TryTakeSeatForViking(table);
 			else {
-
-				detector.ClosestInteractable.Interact(playerRoot, playerPickUp.PickedUpItem);
-				currentInteractable = detector.ClosestInteractable;
-				isInteracting = true;
+				if (CanInteract(detector.ClosestInteractable)) {
+					detector.ClosestInteractable.Interact(playerRoot, playerPickUp.PickedUpItem);
+					currentInteractable = detector.ClosestInteractable;
+					isInteracting = true;
+				}
 			}
 		}
 

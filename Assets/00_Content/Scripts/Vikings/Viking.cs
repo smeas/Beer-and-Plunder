@@ -32,6 +32,7 @@ namespace Vikings {
 		[SerializeField] public DesireVisualiser desireVisualiser;
 		[SerializeField] public ProgressBar progressBar;
 		[SerializeField] public Renderer bodyMeshRenderer;
+		[SerializeField] public MeshRenderer followingRingRenderer;
 		[SerializeField] private Color hitColor = Color.red;
 
 		[Space]
