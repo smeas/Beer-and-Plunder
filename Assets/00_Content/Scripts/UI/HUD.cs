@@ -72,7 +72,7 @@ public class HUD : MonoBehaviour {
 
 	private void HandleOnNewRoundStart() {
 		currentRoundText.enabled = true;
-		currentRoundText.text = "Round " + (RoundController.Instance != null ? RoundController.Instance.CurrentRound : 1);
+		currentRoundText.text = "Shift " + (RoundController.Instance != null ? RoundController.Instance.CurrentRound : 1);
 	}
 
 	private void HandleOnIntermissionStart() {
