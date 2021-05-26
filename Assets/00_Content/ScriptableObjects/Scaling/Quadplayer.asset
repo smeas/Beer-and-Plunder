@@ -118,6 +118,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  initialMoneyGoal: 180
+  initialMoneyGoal: 160
   moneyGoalIncreasePerRound: 10
   maxMoneyGoal: 250

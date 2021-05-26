@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1797045603870212927}
   - component: {fileID: 2493232089606574164}
   - component: {fileID: 1797045603870212926}
-  - component: {fileID: 2136619842155986125}
   m_Layer: 6
   m_Name: BeerBarrel
   m_TagString: Untagged
@@ -32,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 5624331134437905844}
   - {fileID: 4813734360999332076}
+  - {fileID: 5713546530355164655}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -76,15 +76,46 @@ MonoBehaviour:
   soloCarryRotation: {x: -90, y: 0, z: 0}
   multiCarrySpeedMultiplier: 0.8
   multiCarryRotation: {x: 0, y: 0, z: 0}
-  multiCarryCollider: {fileID: 2136619842155986125}
+  multiCarryCollider: {fileID: 3253083807617147726}
   carryRadius: 1.25
---- !u!65 &2136619842155986125
+--- !u!1 &3991865513785561471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5713546530355164655}
+  - component: {fileID: 3253083807617147726}
+  m_Layer: 6
+  m_Name: TwoCarryCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5713546530355164655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991865513785561471}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1797045603870212927}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3253083807617147726
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1797045603870212913}
+  m_GameObject: {fileID: 3991865513785561471}
   m_Material: {fileID: 13400000, guid: d312ee16874e35b4088b0ee5a4b35bcd, type: 2}
   m_IsTrigger: 0
   m_Enabled: 0

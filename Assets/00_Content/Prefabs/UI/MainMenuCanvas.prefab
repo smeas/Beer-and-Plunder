@@ -337,6 +337,14 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 8328911642650427601, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328911642650427601, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8477255995676191800, guid: 537ffc82d6f4b9c46a9aafddd3094163, type: 3}
       propertyPath: m_Controller
       value: 
