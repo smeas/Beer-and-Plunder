@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour {
 	[SerializeField] private TMP_Text moneyCurrentText;
 	[SerializeField] private TMP_Text moneyRequiredText;
 	[SerializeField] private TMP_Text roundStatusText;
+	[SerializeField] private TMP_Text currentRoundText;
 
 	[Header("Effects")]
 	[SerializeField] private float moneyPunchStrength = 1.25f;
@@ -29,6 +30,7 @@ public class HUD : MonoBehaviour {
 		if (RoundController.Instance != null) {
 			RoundController.Instance.OnIntermissionStart += HandleOnIntermissionStart;
 			RoundController.Instance.OnRoundOver += HandleOnRoundOver;
+			RoundController.Instance.OnNewRoundStart += HandleOnNewRoundStart;
 		}
 	}
 
@@ -67,6 +69,12 @@ public class HUD : MonoBehaviour {
 		moneyRequiredText.text = requiredMoney.ToString();
 	}
 
+
+	private void HandleOnNewRoundStart() {
+		currentRoundText.enabled = true;
+		currentRoundText.text = "Round " + (RoundController.Instance != null ? RoundController.Instance.CurrentRound : 1);
+	}
+
 	private void HandleOnIntermissionStart() {
 		roundStatusText.enabled = true;
 		roundStatusText.text = "Bar Closed";
@@ -78,6 +86,7 @@ public class HUD : MonoBehaviour {
 
 	public void HideRoundStatus() {
 		roundStatusText.enabled = false;
+		currentRoundText.enabled = false;
 	}
 
 	// Run from animation event
