@@ -1479,7 +1479,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1505,7 +1505,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762898020}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 25.329996, y: 1.5, z: 2.8367982}
+  m_LocalPosition: {x: 23.53, y: 1.5, z: 2.8367982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1744,8 +1744,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811449948}
-  m_LocalRotation: {x: -0, y: -0.12559864, z: -0, w: 0.99208117}
-  m_LocalPosition: {x: 3.4728932, y: 1.5, z: 4.0672255}
+  m_LocalRotation: {x: -0, y: -0.13330401, z: -0, w: 0.9910752}
+  m_LocalPosition: {x: 3.4689054, y: 1.5, z: 4.161584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1618866203}
@@ -1945,7 +1945,7 @@ PlayableDirector:
   m_GameObject: {fileID: 992268717}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 60f7bfa07f659a541b121006ea3745fb, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 3627600ca5df47140b026e066ecdd71e, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -2219,15 +2219,15 @@ MonoBehaviour:
     width: 0.2
   m_Looped: 0
   m_Waypoints:
-  - position: {x: 24.576077, y: 1.5, z: 2.8215578}
+  - position: {x: 22.922155, y: 1.5, z: 2.8215578}
     roll: 0
   - position: {x: 16.090158, y: 1.5, z: 3.3398423}
     roll: 0
   - position: {x: 11.127825, y: 1.5, z: 2.6932673}
     roll: 0
-  - position: {x: 5.3458934, y: 1.5, z: 1.8173902}
+  - position: {x: 5.509562, y: 1.5, z: 1.3323575}
     roll: 0
-  - position: {x: 3.4028933, y: 1.5, z: 4.0672255}
+  - position: {x: 3.3989055, y: 1.5, z: 4.161584}
     roll: 0
 --- !u!4 &1078782498
 Transform:
@@ -2948,6 +2948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1506531633}
   - component: {fileID: 1506531632}
+  - component: {fileID: 1506531634}
   m_Layer: 0
   m_Name: Lobby VirtualCamera
   m_TagString: Untagged
@@ -3005,6 +3006,23 @@ Transform:
   m_Father: {fileID: 1543302734}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1506531634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506531631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449ef5ebbe24720439ec31d15f7b6f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusTracking: 0
+  m_FocusTarget: {fileID: 0}
+  m_FocusOffset: 0
+  m_Profile: {fileID: 0}
 --- !u!1 &1543302733
 GameObject:
   m_ObjectHideFlags: 0
@@ -3960,7 +3978,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -3982,7 +4000,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802000897}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 25.329996, y: 1.5, z: 2.8367982}
+  m_LocalPosition: {x: 23.53, y: 1.5, z: 2.8367982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 181061101}
