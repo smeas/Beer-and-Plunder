@@ -22,6 +22,7 @@ namespace Vikings.States {
 		private bool isThrowing;
 		private bool hasThrownItem;
 		private bool hasHappyEnded;
+		public bool isExitingBecauseOfLeaving;
 
 		public SatisfiedVikingState(Viking viking, DesireData satisfiedDesire) : base(viking) {
 			this.satisfiedDesire = satisfiedDesire;
@@ -65,7 +66,7 @@ namespace Vikings.States {
 			}
 
 			// TODO: Prettify throwing of coins
-			if (satisfiedTimer > 0) {
+			if (satisfiedTimer > 0 && isExitingBecauseOfLeaving) {
 				SetupDroppingCoins();
 
 				while (coinsToDrop > 0)

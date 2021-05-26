@@ -171,8 +171,12 @@ namespace Vikings {
 		}
 
 		public void Leave() {
-			if (!(state is LeavingVikingState))
+			if (!(state is LeavingVikingState)) {
+				if (state is SatisfiedVikingState satisfiedState)
+					satisfiedState.isExitingBecauseOfLeaving = true;
+
 				ForceChangeState(new LeavingVikingState(this));
+			}
 		}
 
 		public void SetScaling(VikingScaling scaling) {
