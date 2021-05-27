@@ -1,6 +1,5 @@
 using System.Collections;
 using Player;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -8,7 +7,7 @@ using UnityEngine.UI;
 namespace Menu {
 	public class PlayerSlotObject : MonoBehaviour {
 		[SerializeField] private Vector2 offset;
-		[SerializeField] private TextMeshProUGUI joinText;
+		[SerializeField] private GameObject joinText;
 		[SerializeField] private Image inputTypeImage;
 
 		[Space]
@@ -34,20 +33,20 @@ namespace Menu {
 
 		// Delay frames to prevent flickering of text
 		private IEnumerator CoDelayJoinText() {
-			joinText.gameObject.SetActive(false);
+			joinText.SetActive(false);
 			const int framesToWait = 1;
 
 			for (int i = 0; i < framesToWait; i++)
 				yield return null;
 
-			joinText.gameObject.SetActive(!isTaken);
+			joinText.SetActive(!isTaken);
 		}
 
 		public void JoinPlayer(PlayerComponent player) {
 			if (isTaken)
 				return;
 
-			joinText.gameObject.SetActive(false);
+			joinText.SetActive(false);
 			inputTypeImage.gameObject.SetActive(true);
 
 			inputTypeImage.color = player.PlayerColor;
@@ -64,7 +63,7 @@ namespace Menu {
 		}
 
 		public void LeavePlayer() {
-			joinText.gameObject.SetActive(true);
+			joinText.SetActive(true);
 			inputTypeImage.gameObject.SetActive(false);
 
 			isTaken = false;
