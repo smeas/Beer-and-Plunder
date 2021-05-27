@@ -552,15 +552,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[7].text
-      value: Now you should <color=green><b>refill</b></color> the <color=yellow><b>beer
-        tap</b></color> behind the counter. Pick up a barrel from the stack by the
-        wall.
+      value: The <color=yellow><b>beer tap</b></color> is empty. You should <color=green><b>refill</b></color>
+        it. Pick up a barrel from the stack by the wall.
       objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[8].text
-      value: "Heavy and slow right? Running a bar isn\u2019t easy alone, later on
-        you might want to <color=yellow><b>get a friend</b></color> to help you with
-        carrying heavy things.\r\n"
+      value: 'Heavy and slow right? Later you should <color=yellow><b>get a friend</b></color>
+        to help you. Two players carry the barrel <color=yellow><b>faster together</b></color>.
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[9].text
@@ -568,10 +568,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[10].text
-      value: 'The viking wants another <color=yellow><b>beer</b></color>! Just refill
-        the <color=yellow><b>tankard</b></color> from before.
-
-'
+      value: The viking wants another <color=yellow><b>beer</b></color>! Refilling
+        the <color=yellow><b>tankard</b></color>, try and release on the indication
+        to instantly fill it.
       objectReference: {fileID: 0}
     - target: {fileID: 7555673374434960930, guid: 54ab91780f8dd114ea08ad12184cf7ba, type: 3}
       propertyPath: phases.Array.data[11].text
@@ -1365,6 +1364,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4252427951814545035, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.600006
+      objectReference: {fileID: 0}
     - target: {fileID: 4252427951918424374, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1381,6 +1384,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4355254953375961706, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.600006
+      objectReference: {fileID: 0}
     - target: {fileID: 4355254953840688599, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1396,6 +1403,10 @@ PrefabInstance:
     - target: {fileID: 4355254953840688599, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471117610135824538, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.600006
       objectReference: {fileID: 0}
     - target: {fileID: 6471117610543515431, guid: 8e8f95860d893b24d9e510830f5bc916, type: 3}
       propertyPath: m_AnchorMax.y
