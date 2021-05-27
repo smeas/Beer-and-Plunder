@@ -87,7 +87,7 @@ namespace Vikings.States {
 		public override bool CanInteract(GameObject player, PickUp item) {
 			Debug.Assert(viking.CurrentDesireIndex < viking.Desires.Length, "Viking is desiring more than it can");
 
-			if (viking.CurrentDesire.isOrder && !isOrderGiven && item == null) return true;
+			if (viking.CurrentDesire.isOrder && !isOrderGiven) return item == null;
 			if (!(item is IDesirable givenItem)) return false;
 			if (!viking.CurrentDesire.isMaterialDesire) return false;
 			if (hasActiveFulfillment) return false;
@@ -158,8 +158,8 @@ namespace Vikings.States {
 			viking.desireVisualiser.ShowNewDesire(viking.CurrentDesire.visualisationAfterPrefab);
 
 			PickUp ticket = Object.Instantiate(viking.kitchenTicketPrefab, viking.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-			if (player.GetComponentInChildren<PlayerPickUp>().TryReceiveItem(ticket))
-				isOrderGiven = true;
+			player.GetComponentInChildren<PlayerPickUp>().TryReceiveItem(ticket);
+			isOrderGiven = true;
 		}
 
 		private void PlayDesireAudio(DesireType type) {
