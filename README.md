@@ -28,10 +28,10 @@ Jimmy Saarela ([tzaa](https://github.com/tzaarela))
 
 **Art**
 
-Linda Davidsson ([Pelleman](https://pelleman.itch.io/)) \
-Robin Ekström ([European_Robin](https://european-robin.itch.io/)) \
-Kristina Jönsson ([Tiinea](https://tiinea.itch.io/)) \
-Alice Persdotter Rydberg ([Alice P. Rydberg](https://itsnoonytime.itch.io/))
+Linda Davidsson ([Pelleman](https://davidssonart.artstation.com/)) \
+Robin Ekström ([European_Robin](https://european_robin.artstation.com/)) \
+Kristina Jönsson ([Tiinea](https://tiinea.artstation.com/)) \
+Alice Persdotter Rydberg ([Alice P. Rydberg](https://itsnoonytime.artstation.com/))
 
 **Music**
 
