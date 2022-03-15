@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using Player;
 using Scenes;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Player;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -11,6 +11,7 @@ namespace Menu {
 	public class MenuController : MonoBehaviour {
 		[SerializeField] private GameObject startPanel;
 		[SerializeField] private GameObject backButton;
+		[SerializeField] private GameObject feedbackButton;
 
 		[Space]
 		[SerializeField] private GameObject startGameButton;
@@ -80,8 +81,10 @@ namespace Menu {
 			panel.SetActive(true);
 			currentPanel = panel;
 
-			if (panels.Count > 0)
+			if (panels.Count > 0) {
 				backButton.SetActive(true);
+				feedbackButton.SetActive(false);
+			}
 		}
 
 		public void ClosePanel() {
@@ -98,8 +101,14 @@ namespace Menu {
 
 			EventSystem.current.SetSelectedGameObject(selection);
 
-			if (panels.Count == 0)
+			if (panels.Count == 0) {
 				backButton.SetActive(false);
+				feedbackButton.SetActive(true);
+			}
+		}
+
+		public void OpenFeedBackSurvey() {
+			Application.OpenURL("https://forms.gle/JRiHycVZS6LwuDf37");
 		}
 
 		public void QuitGame() {
